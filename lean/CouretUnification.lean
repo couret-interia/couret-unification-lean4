@@ -207,3 +207,6 @@ import CouretUnification.Tower.ConcreteKernel210Card
 import CouretUnification.Tower.ConcreteKernelAction210
 import CouretUnification.Tower.ConcreteKernelLiftAction210
 import CouretUnification.Tower.ConcreteKernelOrbit210
+
+-- v32.4
+import CouretUnification.Core.Classification63
