@@ -216,3 +216,6 @@ import CouretUnification.Core.CayleySpectrum
 
 -- v32.6
 import CouretUnification.Core.CenteredEigenspace
+
+-- v32.7
+import CouretUnification.Core.Kurtosis
