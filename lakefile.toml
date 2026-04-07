@@ -1,0 +1,13 @@
+name = "CouretUnification"
+defaultTargets = ["CouretUnification"]
+srcDir = "lean"
+
+[[lean_lib]]
+name = "CouretUnification"
+roots = ["CouretUnification"]
+globs = ["CouretUnification.+"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "stable"
