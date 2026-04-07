@@ -213,3 +213,6 @@ import CouretUnification.Core.Classification63
 
 -- v32.5
 import CouretUnification.Core.CayleySpectrum
+
+-- v32.6
+import CouretUnification.Core.CenteredEigenspace
