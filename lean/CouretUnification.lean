@@ -222,3 +222,6 @@ import CouretUnification.Core.Kurtosis
 
 -- v32.8
 import CouretUnification.Core.ParsevalL5
+
+-- v32.9
+import CouretUnification.Core.OddDimComplexObstruction
