@@ -1,119 +1,135 @@
-import Mathlib.Data.Fin.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fintype.Basic
+import CouretUnification.Core.Characters30
 import Mathlib.Tactic
 
-open Finset
-
 namespace CouretUnification.Core
+namespace Classification63
 
 /-!
-# Integer-spectrum classification of subsets of (ℤ/30ℤ)×
+# Classification 63/255
 
-For a subset S of G = (ℤ/30ℤ)× ≅ C₂ × C₄, the Cayley operator
-has eigenvalues given by the Fourier transform on the dual group:
+Among the 2⁸ − 1 = 255 non-empty subsets of (ℤ/30ℤ)×,
+exactly 63 have an all-integer Cayley spectrum.
 
-  λ(u,v) = Σ_{(a,b)∈S} (-1)^{ua} · i^{vb}
-
-where (a,b) are the CRT coordinates of each element.
-
-The spectrum is *integer* when all eigenvalues are real integers,
-i.e., when all imaginary parts vanish.
-
-## Main result
-
-Among the 255 non-empty subsets, exactly 63 have integer spectrum.
+The proof is by exhaustive decidable computation via `native_decide`.
 -/
 
-namespace IntegerSpectrumClassification
+/-- Gaussian integer as (real part, imaginary part). -/
+abbrev GI := Int × Int
 
-/-!
-### CRT isomorphism (ℤ/30ℤ)× → C₂ × C₄
+@[inline] def gi_zero : GI := (0, 0)
+@[inline] def gi_add (a b : GI) : GI := (a.1 + b.1, a.2 + b.2)
 
-We use discrete logarithms:
-- C₂ component: generator 2 mod 3 (so 1↦0, 2↦1)
-- C₄ component: generator 2 mod 5 (so 1↦0, 2↦1, 4↦2, 3↦3)
+/-- i^n mod 4, returning (re, im). -/
+@[inline] def gi_ipow (n : Nat) : GI :=
+  match n % 4 with
+  | 0 => (1, 0)
+  | 1 => (0, 1)
+  | 2 => (-1, 0)
+  | 3 => (0, -1)
+  | _ => (1, 0)
 
-This is verified to be a group homomorphism.
+/-- (-1)^n as Gaussian integer. -/
+@[inline] def gi_signpow (n : Nat) : GI :=
+  if n % 2 = 0 then (1, 0) else (-1, 0)
+
+/-- Gaussian integer multiplication. -/
+@[inline] def gi_mul (a b : GI) : GI :=
+  (a.1 * b.1 - a.2 * b.2, a.1 * b.2 + a.2 * b.1)
+
+/--
+CRT coordinates (ε, k) ∈ C₂ × C₄ for the 8 units mod 30,
+in the documentary order [1, 7, 11, 13, 17, 19, 23, 29].
 -/
+@[inline] def crtCoord : Fin 8 → Nat × Nat
+  | ⟨0, _⟩ => (0, 0)  -- 1
+  | ⟨1, _⟩ => (0, 1)  -- 7
+  | ⟨2, _⟩ => (1, 2)  -- 11
+  | ⟨3, _⟩ => (0, 3)  -- 13
+  | ⟨4, _⟩ => (1, 3)  -- 17
+  | ⟨5, _⟩ => (0, 2)  -- 19
+  | ⟨6, _⟩ => (1, 1)  -- 23
+  | ⟨7, _⟩ => (1, 0)  -- 29
 
-/-- C₂ component of the CRT isomorphism.
-1→0, 7→0, 11→1, 13→0, 17→1, 19→0, 23→1, 29→1 -/
-def crtA : Fin 8 → Nat
-  | ⟨0, _⟩ => 0 | ⟨1, _⟩ => 0 | ⟨2, _⟩ => 1 | ⟨3, _⟩ => 0
-  | ⟨4, _⟩ => 1 | ⟨5, _⟩ => 0 | ⟨6, _⟩ => 1 | ⟨7, _⟩ => 1
-
-/-- C₄ component of the CRT isomorphism.
-1→0, 7→1, 11→0, 13→3, 17→1, 19→2, 23→3, 29→2 -/
-def crtB : Fin 8 → Nat
-  | ⟨0, _⟩ => 0 | ⟨1, _⟩ => 1 | ⟨2, _⟩ => 0 | ⟨3, _⟩ => 3
-  | ⟨4, _⟩ => 1 | ⟨5, _⟩ => 2 | ⟨6, _⟩ => 3 | ⟨7, _⟩ => 2
-
-/-- (-1)^n as integer. -/
-def negOnePow (n : Nat) : Int :=
-  if n % 2 = 0 then 1 else -1
-
-/-- Im(i^k): imaginary part of the k-th power of i = exp(iπ/2). -/
-def iPowIm (k : Nat) : Int :=
-  match k % 4 with
-  | 1 => 1
-  | 3 => -1
-  | _ => 0
-
-/-- Imaginary part of Fourier eigenvalue λ(u,v) for subset given by indicator `f`.
-
-  Im(λ(u,v)) = Σ_{j : f(j)=true} (-1)^{u·a_j} · Im(i^{v·b_j})
+/--
+Character coordinates (u, b) ∈ Ĉ₂ × Ĉ₄ for the 8 dual characters,
+in the documentary order.
 -/
-def eigenIm (f : Fin 8 → Bool) (u : Fin 2) (v : Fin 4) : Int :=
-  (univ : Finset (Fin 8)).sum fun i =>
-    if f i then negOnePow (u.val * crtA i) * iPowIm (v.val * crtB i)
-    else 0
+@[inline] def dualCoord : Fin 8 → Nat × Nat
+  | ⟨0, _⟩ => (0, 0)
+  | ⟨1, _⟩ => (0, 1)
+  | ⟨2, _⟩ => (0, 3)
+  | ⟨3, _⟩ => (1, 1)
+  | ⟨4, _⟩ => (0, 2)
+  | ⟨5, _⟩ => (1, 3)
+  | ⟨6, _⟩ => (1, 0)
+  | ⟨7, _⟩ => (1, 2)
 
-/-- A subset has integer spectrum iff all Fourier eigenvalues have
-zero imaginary part. -/
-def hasIntegerSpectrum (f : Fin 8 → Bool) : Prop :=
-  ∀ u : Fin 2, ∀ v : Fin 4, eigenIm f u v = 0
+/--
+Character χ_{u,b} evaluated at group element (ε,k):
+  χ(g) = (−1)^{uε} · i^{bk}
+as a Gaussian integer.
+-/
+@[inline] def giCharEval (χ g : Fin 8) : GI :=
+  let (u, b) := dualCoord χ
+  let (ε, k) := crtCoord g
+  gi_mul (gi_signpow (u * ε)) (gi_ipow (b * k))
 
-/-- A subset indicator is non-empty. -/
-def isNonempty (f : Fin 8 → Bool) : Prop :=
-  ∃ i : Fin 8, f i = true
+/-- Test if bit i is set in mask. -/
+@[inline] def bitSet (mask : Nat) (i : Fin 8) : Bool :=
+  (mask / (2 ^ i.1)) % 2 == 1
 
-/-- Combined predicate for counting. -/
-def intSpecPred (f : Fin 8 → Bool) : Prop :=
-  isNonempty f ∧ hasIntegerSpectrum f
+/-- Fourier coefficient of bitmask subset for character χ, as GI. -/
+def subsetFourier (mask : Nat) (χ : Fin 8) : GI :=
+  (List.finRange 8).foldl
+    (fun acc g => if bitSet mask g then gi_add acc (giCharEval χ g) else acc)
+    gi_zero
 
-instance : DecidablePred intSpecPred := fun _ => inferInstance
+/-- Does the bitmask subset have all-integer Cayley spectrum? (Bool) -/
+@[inline] def hasIntSpec (mask : Nat) : Bool :=
+  (List.finRange 8).all fun χ => (subsetFourier mask χ).2 == 0
 
-/-- Number of non-empty subsets with integer spectrum. -/
+/-- Count of non-empty subsets (1..255) with all-integer spectrum. -/
 def intSpecCount : Nat :=
-  ((univ : Finset (Fin 8 → Bool)).filter intSpecPred).card
+  (List.range 255).countP fun k => hasIntSpec (k + 1)
 
-/-- There are 255 non-empty subsets of (ℤ/30ℤ)×. -/
-theorem totalNonempty_eq_255 :
-    ((univ : Finset (Fin 8 → Bool)).filter fun f =>
-      isNonempty f).card = 255 := by
+/--
+**Main theorem**: exactly 63 of the 255 non-empty subsets of (ℤ/30ℤ)×
+have an all-integer Cayley spectrum.
+-/
+theorem classification_63_of_255 : intSpecCount = 63 := by
   native_decide
 
-/-- **Main theorem.** Among the 255 non-empty subsets of (ℤ/30ℤ)×,
-exactly 63 have integer Fourier spectrum. -/
-theorem intSpecCount_eq_63 : intSpecCount = 63 := by
+/-- The Couret triplet T_C = {1,11,29} has bitmask 2⁰ + 2² + 2⁷ = 133. -/
+def couretMask : Nat := 1 + 4 + 128
+
+theorem couretMask_eq : couretMask = 133 := by decide
+
+/-- T_C is among the 63 integer-spectrum subsets. -/
+theorem couret_has_integer_spectrum : hasIntSpec couretMask = true := by
   native_decide
 
-/-- The Couret triplet T_C = {1,11,29} has integer spectrum. -/
-def couretIndicator : Fin 8 → Bool
-  | ⟨0, _⟩ => true   -- 1
-  | ⟨1, _⟩ => false
-  | ⟨2, _⟩ => true   -- 11
-  | ⟨3, _⟩ => false
-  | ⟨4, _⟩ => false
-  | ⟨5, _⟩ => false
-  | ⟨6, _⟩ => false
-  | ⟨7, _⟩ => true   -- 29
+/-- T_C has Fourier coefficients [3,1,1,1,3,1,−1,−1]. -/
+theorem couret_fourier_0 : subsetFourier couretMask 0 = (3, 0) := by native_decide
+theorem couret_fourier_1 : subsetFourier couretMask 1 = (1, 0) := by native_decide
+theorem couret_fourier_2 : subsetFourier couretMask 2 = (1, 0) := by native_decide
+theorem couret_fourier_3 : subsetFourier couretMask 3 = (1, 0) := by native_decide
+theorem couret_fourier_4 : subsetFourier couretMask 4 = (3, 0) := by native_decide
+theorem couret_fourier_5 : subsetFourier couretMask 5 = (1, 0) := by native_decide
+theorem couret_fourier_6 : subsetFourier couretMask 6 = (-1, 0) := by native_decide
+theorem couret_fourier_7 : subsetFourier couretMask 7 = (-1, 0) := by native_decide
 
-theorem couret_has_integer_spectrum :
-    hasIntegerSpectrum couretIndicator := by
-  native_decide
+/-- Parseval mass for T_C: Σ|F̂|² = 24. -/
+def parsevalMass (mask : Nat) : Nat :=
+  (List.finRange 8).foldl
+    (fun acc χ =>
+      let f := subsetFourier mask χ
+      acc + (f.1 * f.1 + f.2 * f.2).natAbs)
+    0
 
-end IntegerSpectrumClassification
+theorem couret_parseval : parsevalMass couretMask = 24 := by native_decide
 
+/-- 63 = 2⁶ − 1, a Mersenne number. -/
+theorem count_is_mersenne : intSpecCount = 2 ^ 6 - 1 := by native_decide
+
+end Classification63
 end CouretUnification.Core
