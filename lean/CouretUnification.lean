@@ -144,3 +144,17 @@ import CouretUnification.Meta.Empirical
 import CouretUnification.Meta.Manifest
 import CouretUnification.Meta.Audit
 import CouretUnification.Meta.Reproducibility
+
+import CouretUnification.Spectral.FiniteCore
+import CouretUnification.Spectral.T2Gap
+import CouretUnification.Spectral.H1Bridge
+import CouretUnification.Spectral.H2Transfer
+
+import CouretUnification.Spectral.H3Trace
+import CouretUnification.Spectral.H3ArithmeticBridge
+import CouretUnification.Spectral.H3Status
+import CouretUnification.Tower.PrimorialCharacterTower
+import CouretUnification.Tower.ConcreteUnits30
+import CouretUnification.Tower.ConcreteUnits210
+import CouretUnification.Tower.ConcreteTransition30To210
+import CouretUnification.Tower.ConcreteKernel210
