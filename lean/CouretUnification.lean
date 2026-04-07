@@ -210,3 +210,6 @@ import CouretUnification.Tower.ConcreteKernelOrbit210
 
 -- v32.4
 import CouretUnification.Core.Classification63
+
+-- v32.5
+import CouretUnification.Core.CayleySpectrum
