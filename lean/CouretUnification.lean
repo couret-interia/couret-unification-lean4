@@ -219,3 +219,6 @@ import CouretUnification.Core.CenteredEigenspace
 
 -- v32.7
 import CouretUnification.Core.Kurtosis
+
+-- v32.8
+import CouretUnification.Core.ParsevalL5
