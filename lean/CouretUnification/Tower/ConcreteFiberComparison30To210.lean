@@ -60,8 +60,7 @@ def visibleOrbitCardinality : ℕ :=
 @[simp]
 theorem visibleOrbitCardinality_eq :
     visibleOrbitCardinality = 1 := by
-  simpa [visibleOrbitCardinality] using
-    CouretUnification.ConcreteKernelLiftAction210.trivialLiftVisibleOrbit_card
+  simp [visibleOrbitCardinality]
 
 /--
 Accord visible fibre/orbite : fermé dans le modèle minimal courant.

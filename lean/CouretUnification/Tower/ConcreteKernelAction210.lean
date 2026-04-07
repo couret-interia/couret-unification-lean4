@@ -30,7 +30,7 @@ Pour l'instant :
 - cela permet de brancher toute l'infrastructure sans bloquer
 - sera enrichi ensuite
 -/
-def kernelAction (u : Kernel210) (χ : Character 210) : Character 210 :=
+def kernelAction (_u : Kernel210) (χ : Character 210) : Character 210 :=
   χ
 
 @[simp]

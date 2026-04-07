@@ -61,10 +61,7 @@ theorem canonicalConcreteCharacters210FamilySummary_doctrine :
     canonicalConcreteCharacters210FamilySummary.familyStatus = TowerStepStatus.scaffolded ∧
     canonicalConcreteCharacters210FamilySummary.completeEnumeration = false ∧
     canonicalConcreteCharacters210FamilySummary.targetCardinality = 6 := by
-  simp [
-    canonicalConcreteCharacters210FamilySummary,
-    visibleCharacterFamily210_card
-  ]
+  simp [canonicalConcreteCharacters210FamilySummary]
 
 /--
 Version H7 :
@@ -98,10 +95,7 @@ theorem canonicalH7Characters210FamilyRecord_doctrine :
     canonicalH7Characters210FamilyRecord.familyStatus = TowerStepStatus.scaffolded ∧
     canonicalH7Characters210FamilyRecord.workStatus = WorkStatus.ready ∧
     canonicalH7Characters210FamilyRecord.enumerationClosed = false := by
-  simp [
-    canonicalH7Characters210FamilyRecord,
-    visibleCharacterFamily210_card
-  ]
+  simp [canonicalH7Characters210FamilyRecord]
 
 end
 end ConcreteCharacters210Family

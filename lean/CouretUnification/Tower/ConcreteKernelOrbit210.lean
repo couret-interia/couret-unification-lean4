@@ -26,7 +26,7 @@ abbrev Kernel210 : Type :=
 Action conservative actuelle du noyau sur les caractères modulo 210 :
 elle est triviale à ce stade.
 -/
-def kernelAction (u : Kernel210) (χ : Character 210) : Character 210 :=
+def kernelAction (_u : Kernel210) (χ : Character 210) : Character 210 :=
   χ
 
 @[simp]

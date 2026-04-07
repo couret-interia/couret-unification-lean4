@@ -20,14 +20,12 @@ def targetFiberCardinality : ℕ :=
 @[simp]
 theorem visibleFiberCardinality_eq :
     visibleFiberCardinality = 1 := by
-  simpa [visibleFiberCardinality] using
-    CouretUnification.ConcreteFiberComparison30To210.visibleFiberCardinality_eq
+  simp [visibleFiberCardinality]
 
 @[simp]
 theorem targetFiberCardinality_eq :
     targetFiberCardinality = 6 := by
-  simpa [targetFiberCardinality] using
-    CouretUnification.ConcreteFiberComparison30To210.closedKernelCardinality_eq
+  simp [targetFiberCardinality]
 
 /--
 La fibre visible n’est pas encore complète.

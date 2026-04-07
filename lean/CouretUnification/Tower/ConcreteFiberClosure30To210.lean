@@ -25,20 +25,17 @@ def closedKernelCardinality : ℕ :=
 @[simp]
 theorem visibleFiberCardinality_eq :
     visibleFiberCardinality = 1 := by
-  simpa [visibleFiberCardinality] using
-    CouretUnification.ConcreteFiberCompletion30To210.visibleFiberCardinality_eq
+  simp [visibleFiberCardinality]
 
 @[simp]
 theorem visibleOrbitCardinality_eq :
     visibleOrbitCardinality = 1 := by
-  simpa [visibleOrbitCardinality] using
-    CouretUnification.ConcreteFiberComparison30To210.visibleOrbitCardinality_eq
+  simp [visibleOrbitCardinality]
 
 @[simp]
 theorem closedKernelCardinality_eq :
     closedKernelCardinality = 6 := by
-  simpa [closedKernelCardinality] using
-    CouretUnification.ConcreteFiberComparison30To210.closedKernelCardinality_eq
+  simp [closedKernelCardinality]
 
 /--
 À ce stade concret visible, la fibre et l’orbite ont même cardinal.
@@ -60,7 +57,7 @@ theorem visibleFiber_lt_closedKernel :
 
 theorem visibleFiber_le_visibleOrbit :
     visibleFiberCardinality ≤ visibleOrbitCardinality := by
-  simp [visibleFiber_eq_visibleOrbit_cardinality]
+  simp
 
 theorem visibleOrbit_le_closedKernel :
     visibleOrbitCardinality ≤ closedKernelCardinality := by

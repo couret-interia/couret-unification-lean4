@@ -111,8 +111,7 @@ Projection de l’orbite triviale vers l’orbite du caractère trivial lifté.
 theorem trivialLiftVisibleOrbit_projects_to_trivialLiftOrbit :
     trivialLiftVisibleOrbit.image liftToCharacter =
       kernelOrbit (liftToCharacter trivialLiftCandidate) := by
-  simpa [trivialLiftVisibleOrbit] using
-    kernelLiftOrbit_character_projection trivialLiftCandidate
+  simp [trivialLiftVisibleOrbit]
 
 /--
 Cible doctrinale future :
