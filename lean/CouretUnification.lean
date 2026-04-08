@@ -255,3 +255,6 @@ import CouretUnification.Core.TraceRecurrence
 
 -- v32.19
 import CouretUnification.Core.MersenneMod30
+
+-- v32.20
+import CouretUnification.Core.CarlemanUniqueness
