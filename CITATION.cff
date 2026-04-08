@@ -1,24 +1,22 @@
 cff-version: 1.2.0
-title: "Couret--Unification / Hilbert--Polya: Finite Exact Core in Lean 4 and Conditional Research Architecture"
-message: "If you use this archive, please cite it as follows."
+title: "Couret-Unification: Finite Exact Spectral Core on (Z/30Z)× in Lean 4"
+message: "If you use this software, please cite it as follows."
 type: software
 authors:
   - family-names: "Couret"
     given-names: "Alexandre"
-    affiliation: "Independent researcher"
-    country: "France"
-repository-code: "https://example.invalid/couret-unification-hilbert-polya"
+    affiliation: "Independent researcher, Rasiguères, France"
 abstract: >
-  Finite exact spectral core on (Z/30Z)^x ≅ C2 × C4 with
-  closed finite Fourier formula, Parseval identity, canonical geometric
-  scale lambda = 1/sqrt(7), and exact coercive gap kappa = 2 on the
-  explicit coercive sector H° ∩ altVec⊥. No proof of RH is claimed.
+  224 Lean 4 files, 0 sorry, 3510 jobs. Finite exact spectral core
+  on (Z/30Z)× with 29 machine-certified results including Cayley
+  spectrum, 63/255 classification, Parseval tower, coercive gap,
+  and universal trace recurrence. No proof of RH is claimed.
 license: "MIT"
 keywords:
   - number theory
   - finite spectral model
-  - Hilbert-Polya
   - Lean 4
+  - formal verification
   - modular arithmetic
-version: "2026-03-25"
-date-released: "2026-03-25"
+version: "32.20"
+date-released: "2026-04-08"

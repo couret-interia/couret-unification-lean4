@@ -1,6 +1,6 @@
-# H1–H7 — État complet après v32.13
+# H1–H7 — État complet après v32.20
 ## Programme Couret-Unification — 8 avril 2026
-## 217 fichiers, 0 sorry, 3503 jobs, lake build ✓
+## 224 fichiers, 0 sorry, 3510 jobs, lake build ✓
 
 ---
 
@@ -10,7 +10,7 @@ Le bilan v31 portait la mention : *"le code Lean n'a JAMAIS été compilé
 intégralement avec `lake build`"*. **C'est désormais résolu.**
 
 Tout ce qui suit est **certifié machine** : `lake build` passe
-intégralement, 0 sorry, 0 erreur, 3503 jobs.
+intégralement, 0 sorry, 0 erreur, 3510 jobs.
 
 La phrase *"prouvé si ça compile"* est remplacée par **"prouvé"**.
 

@@ -1,6 +1,6 @@
 # Couret-Unification
 
-**Formalisation Lean 4 d’un noyau spectral fini mod 30 et encodage structurel du programme Hilbert–Pólya autour de l’Hypothèse de Riemann.**
+**Formalisation Lean 4 d'un noyau spectral fini mod 30 et encodage structurel du programme Hilbert–Pólya autour de l'Hypothèse de Riemann.**
 
 *Dédié à la mémoire de Bernard Couret (1928–2010)*
 
@@ -8,145 +8,139 @@
 
 ## ⚠️ RHClaimed = false
 
-Ce projet **ne prétend pas prouver** l’Hypothèse de Riemann.
+Ce projet **ne prétend pas prouver** l'Hypothèse de Riemann.
 
 Il formalise en Lean 4 un **noyau fini exact** autour de la structure mod 30, et
 encode proprement les couches analytiques supérieures comme **interfaces**,
 **bridges** ou **programmes de recherche**.
 
-Le dépôt prouve exactement ce qu’il dit, et ne dit rien de plus.
+Le dépôt prouve exactement ce qu'il dit, et ne dit rien de plus.
 
 ---
 
-## État du dépôt (v32.13 — 8 avril 2026)
+## État du dépôt (v32.20 — 8 avril 2026)
 
 | Métrique | Valeur |
 |----------|--------|
-| Fichiers | 217 |
+| Fichiers .lean | 224 |
 | sorry | 0 |
 | Compilation | `lake build` ✓ |
-| Jobs | 3503 |
+| Jobs | 3510 |
+| Lean | 4.29.0 |
+| Mathlib | stable |
 | RHClaimed | `false` |
 
 **Changement majeur depuis les bilans antérieurs :**
-le dépôt a désormais été **compilé intégralement** avec `lake build`.
-La formule *« prouvé si ça compile »* est remplacée ici par **« prouvé »**
-lorsqu’il s’agit du contenu effectivement certifié par Lean.
+le dépôt a été **compilé intégralement** avec `lake build`, 0 erreur, 0 sorry.
+La formule *« prouvé si ça compile »* est remplacée par **« prouvé »**.
 
 ---
 
-## Position éditoriale
+## Résultats certifiés machine (exhaustif)
 
-Le cadrage du projet est le suivant :
+Tous les résultats ci-dessous sont vérifiés par le compilateur Lean 4.
 
-- **noyau fini exact** ;
-- **λ = 1/sqrt(7)** comme invariant géométrique interne du modèle fini ;
-- **non-universalité** vis-à-vis des zéros de `ζ` ;
-- **bon observable local-global** : la structure finie et ses invariants, pas une identification globale à `ξ(s)` ;
-- **H3** reste le **mur ouvert** ;
-- **pont global vers RH absent** au sens mathématique fort.
+### Spectre et algèbre linéaire
 
-### Phrase de référence
+| # | Résultat | Fichier | Méthode |
+|---|----------|---------|---------|
+| 1 | Spec(A) = {3², 1⁴, (−1)²} | CayleySpectrum | `native_decide` |
+| 2 | (A−3I)(A−I)(A+I) = 0 | CayleySpectrum | `native_decide` |
+| 3 | 8 eigenvectors orthogonaux non nuls | CayleySpectrum | `native_decide` |
+| 4 | Polynôme car. (X−3)²(X−1)⁴(X+1)² | CharPoly | `native_decide` |
+| 5 | Unicité des multiplicités (2,4,2) | MultiplicityUniqueness | `omega` |
+| 6 | Unicité altVec centré pour λ=3 | CenteredEigenspace | `omega` |
+| 7 | Gap coercif κ = 2 sur H° ∩ altVec⊥ | FiniteCore | preuve algébrique |
+| 8 | λ² = 1/7 | Lambda | `nlinarith` |
 
-> **Le noyau fini est exact ; le pont global reste ouvert.**
-> **RHClaimed = false.**
+### Graphe de Cayley
+
+| # | Résultat | Fichier | Méthode |
+|---|----------|---------|---------|
+| 9 | Cayley **déconnecté** (2 composantes) | CayleyConnected | `native_decide` |
+| 10 | Spec composantes = {3,1,1,−1} | ComponentSpectrum | `native_decide` |
+| 11 | Aeven = Aodd (matrices identiques) | ComponentSpectrum | `native_decide` |
+
+> **Correction #31** : la synthèse v31 affirmait la connexité. C'est **faux**,
+> prouvé par `native_decide`. Le graphe a 2 composantes (parité C₄).
+
+### Classification et combinatoire
+
+| # | Résultat | Fichier | Méthode |
+|---|----------|---------|---------|
+| 12 | 63/255 sous-ensembles à spectre entier | Classification63 | `native_decide` |
+| 13 | Ventilation palindromique 4,8,12,14,12,8,4,1 | Classification63Detail | `native_decide` |
+| 14 | 8 coefficients de Fourier de TC | Classification63 | `native_decide` |
+| 15 | Défaut δ₁₉−δ₂₉ sur 4 canaux | DefectProjection | `native_decide` |
+
+### Tour primorielle et Parseval
+
+| # | Résultat | Fichier | Méthode |
+|---|----------|---------|---------|
+| 16 | Parseval = 24, E = 3 (L3, L4) | Parseval + InvariantE | `native_decide` |
+| 17 | Parseval = 960, E = 2 (L5) | ParsevalL5 | `native_decide` |
+| 18 | gcd(11,2310) = 11 (correction v17→v18) | ParsevalL5 | `native_decide` |
+| 19 | E/|TC_cop| = 1 aux 3 niveaux | ParsevalL5 | `norm_num` |
+| 20 | ker(210→30).card = 6 | ConcreteKernel210 | `native_decide` |
+
+### Moments spectraux et récurrence
+
+| # | Résultat | Fichier | Méthode |
+|---|----------|---------|---------|
+| 21 | Formule L_k = 2 + (4+2(−1)ᵏ)/3ᵏ, k=1..10 | FormuleLk | `norm_num` |
+| 22 | Paires L_{2j−1} = L_{2j}, monotonie | FormuleLk | `norm_num` |
+| 23 | Kurtosis brute 7/3, ratio non trivial 5/3 | Kurtosis | `norm_num` |
+| 24 | Récurrence s_k = 3s_{k−1}+s_{k−2}−3s_{k−3} (∀k≥3) | TraceRecurrence | `ring` + `pow_add` |
+
+### Propriétés algébriques
+
+| # | Résultat | Fichier | Méthode |
+|---|----------|---------|---------|
+| 25 | TC auto-inverse (1²=11²=29²≡1 mod 30) | TCAutoInverse | `native_decide` |
+| 26 | TC non sous-groupe (11·29≡19∉TC) | TCAutoInverse | `native_decide` |
+| 27 | J²=−I impossible en dim impaire | OddDimComplexObstruction | `nlinarith` + `omega` |
+| 28 | Mersenne mod 30 ∈ {1,7} (p=3..31) | MersenneMod30 | `native_decide` |
+| 29 | Vandermonde det = 16 ≠ 0 (unicité de μ) | CarlemanUniqueness | `native_decide` |
 
 ---
 
-## Ce que le dépôt prouve réellement
+## Ce qui n'est PAS dans le dépôt
 
-Le contenu mathématique certifié se concentre dans **Core/** et **Tower/**.
-
-### Noyau fini certifié
-
-Résultats effectivement prouvés en Lean :
-
-- **gap coercif κ = 2** sur le secteur centré pertinent ;
-- **λ² = 1/7** ;
-- spectre du noyau de Cayley :
-  **Spec(A) = {3², 1⁴, (−1)²}** ;
-- relation polynomiale :
-  **(A − 3I)(A − I)(A + I) = 0** ;
-- **altVec** unique vecteur centré pour la valeur propre 3 ;
-- classification **63/255** ;
-- coefficients de Fourier de `TC` ;
-- invariants de Parseval :
-  - niveau 30 : **Parseval = 24**, **E = 3** ;
-  - niveau 210 : **Parseval = 144**, **E = 3** ;
-  - niveau 2310 : **Parseval = 960**, **E = 2** ;
-- correction certifiée :
-  **gcd(11,2310)=11**, expliquant la rupture au niveau 2310 ;
-- formule fermée des **L_k** pour `k = 1..10` ;
-- paires **L_{2j−1} = L_{2j}** et décroissance vers 2 ;
-- **ker(210→30).card = 6** ;
-- `TC` auto-inverse mais **non sous-groupe** ;
-- obstruction en dimension impaire :
-  impossibilité de `J² = −I` ;
-- graphe de Cayley **déconnecté** en 2 composantes.
+- Borne analytique ‖M‖_HS ≤ P(3/2) < 1 (analyse fonctionnelle, pas d'API Lean)
+- Auto-adjonction KLMN / Friedrichs
+- det₂(I−zS) = ξ (= RH, ouvert depuis 1912)
+- V_eff = 0.055 (résultat numérique PARI/GP, dans `scripts/`)
 
 ---
 
 ## Statut honnête de H1–H7
 
-Le dépôt distingue strictement les couches.
+| Niveau | Statut réel | Contenu |
+|--------|-------------|---------|
+| **H1** | Interface structurelle | Empaquetage du gap (contenu réel dans FiniteCore) |
+| **H2** | Gap prouvé + interface | κ = 2 certifié, transfert = placeholder |
+| **H3** | **Mur ouvert** | Scaffolding structurel, 0 contenu mathématique |
+| **H4** | **Prouvé** | CRT, Parseval, tour — le bloc le plus riche |
+| **H5** | 1 théorème + scaffolding | Obstruction J² = seul vrai théorème |
+| **H6** | Scaffolding | Structures à statut `candidate`, 0 preuve |
+| **H7** | Programme encodé | 23 fichiers de programme de recherche |
 
-| Niveau | Statut réel |
-|--------|-------------|
-| **H1** | interface structurelle |
-| **H2** | gap réel prouvé + interface |
-| **H3** | scaffolding structurel, **mur ouvert** |
-| **H4** | résultats CRT / tour primorielle **prouvés** |
-| **H5** | 1 vrai théorème + scaffolding |
-| **H6** | scaffolding doctrinal |
-| **H7** | programme de recherche encodé |
-
-### Lecture correcte
-
-- **H1** n’est pas une preuve analytique KLMN complète en Lean.
-- **H2** contient un vrai contenu via le **gap coercif**, mais le “transfert spectral” reste surtout une interface.
-- **H3** n’est **pas fermé** : il organise les pièces manquantes du pont vers RH, mais ne les prouve pas.
-- **H4** est l’un des blocs les plus solides du dépôt.
-- **H5–H7** servent principalement à **structurer** les verrous, les barrières et le programme.
+Le contenu mathématique réel est dans **Core/** et **Tower/**.
+Les couches H3-H7 structurent les questions ouvertes mais ne prouvent rien.
+Voir `H1_H7_STATUS_v32.md` pour le détail complet.
 
 ---
 
-## Ce qui n’est pas prouvé dans le dépôt
+## Architecture
 
-Les points suivants **ne sont pas** établis dans Lean :
-
-- la borne analytique de type Hilbert–Schmidt ;
-- l’auto-adjonction KLMN/Friedrichs ;
-- une théorie Lean complète des opérateurs compacts pertinente ici ;
-- une identité du type
-
-  `det₂(I - zS) = ξ(1/2 + iz) / ξ(1/2)`
-
-- l’existence d’un opérateur auto-adjoint compact `S` tel que
-
-  `Spec(S) = {±1/γ_n}`
-
-- le recollement global archimédien + eulérien + zéros.
-
-En clair :
-
-> **le pont vers RH n’est pas formalisé, ni prouvé, ni remplacé par des `sorry`.**
-
----
-
-## Architecture du dépôt
-
-Le projet suit une séparation stricte :
-
-- **FiniteCore / Core** : contenu fini exact ;
-- **Tower** : transport CRT, noyaux, orbites, fibres ;
-- **Spectral / H1–H7** : interfaces, statuts, bridges, programme de recherche.
-
-Cette architecture évite de sur-vendre les couches ouvertes et conserve
-une frontière nette entre :
-
-- **[A] résultats exacts certifiés** ;
-- **[B] structures d’interface** ;
-- **[C] questions ouvertes / doctrine**.
+```
+lean/CouretUnification/
+├── Core/           ← noyau fini exact (29 résultats certifiés)
+├── Tower/          ← transport CRT 30→210, noyaux, fibres
+├── Spectral/       ← FiniteCore (κ=2), H1-H7 (interfaces)
+├── Bridge/         ← ponts structurels
+└── Meta/           ← audit, empirique, manifeste
+```
 
 ---
 
@@ -157,30 +151,32 @@ lake update
 lake build
 ```
 
-Compilation intégrale validée : **3503 jobs, 0 erreur, 0 sorry**.
+Compilation intégrale : **3510 jobs, 0 erreur, 0 sorry**.
 
 ---
 
-## Scripts utiles
+## Scripts numériques
 
 ```bash
-python3 scripts/verify_full_pack.py
-python3 scripts/compute_moments.py
-python3 scripts/test_lock3_spectral.py
+gp < scripts/test_veff.gp              # V_eff par PARI/GP (falsification λ=1/√7)
+python3 scripts/evidence_veff.py        # V_eff version Python
+python3 scripts/compute_moments.py      # Moments spectraux sur la tour
+python3 scripts/channel_bridge_v3.py    # Défaut δ₁₉−δ₂₉ + Guinand-Weil
 ```
 
 ---
 
-## Résumé en une ligne
+## Phrase de référence
 
-**Le noyau spectral fini mod 30 est compilé et certifié ; le pont analytique global vers RH reste ouvert.**
+> **Le noyau fini est exact et compilé ; le pont global reste ouvert.**
+> **RHClaimed = false.**
+
+*Prouver ce qui est prouvable. Corriger ce qui est faux. Nommer ce qui est ouvert.*
 
 ---
 
-## Licence / intention scientifique
+## Licence
 
-Ce dépôt est un programme de formalisation et de clarification conceptuelle.
-Il vise la **rigueur**, la **séparation honnête des niveaux de preuve**,
-et la **transparence épistémique**.
+MIT — voir `LICENSE`.
 
-**RHClaimed = false**
+Alexandre Couret — Rasiguères — Avril 2026
