@@ -75,13 +75,13 @@ def powerSum (k : Nat) : Int :=
 
 -- Match against certified traces (k = 1..4 from CayleySpectrum)
 theorem newton_1 : powerSum 1 = tr A := by
-  simp [powerSum]; rw [trace_A]; norm_num
+  native_decide
 theorem newton_2 : powerSum 2 = tr (mm A A) := by
-  simp [powerSum]; rw [trace_A2]; norm_num
+  native_decide
 theorem newton_3 : powerSum 3 = tr (mm (mm A A) A) := by
-  simp [powerSum]; rw [trace_A3]; norm_num
+  native_decide
 theorem newton_4 : powerSum 4 = tr (mm (mm (mm A A) A) A) := by
-  simp [powerSum]; rw [trace_A4]; norm_num
+  native_decide
 
 -- Higher power sums (from formula, no matrix computation)
 theorem newton_5 : powerSum 5 = 488 := by norm_num [powerSum]
