@@ -10,17 +10,16 @@ namespace ComponentSpectrum
 
 Spec(Aeven) = Spec(Aodd) = {3, 1, 1, −1} on Fin 4.
 
-The global spectrum {3², 1⁴, (−1)²} is the union of two
-copies of {3, 1, 1, −1}.
+Eigenvectors derived from the system (Ae − λI)v = 0:
 
-We reuse `Aeven`, `Aodd`, `mm4` from CayleyConnected.
+  Ae = [[1,0,1,1],[0,1,1,1],[1,1,1,0],[1,1,0,1]]
+
+λ=3: v₀=v₁=v₂=v₃ → [1,1,1,1]
+λ=−1: v₀=v₁, v₂=v₃=−v₀ → [1,1,−1,−1]
+λ=1: v₀=−v₁, v₂=−v₃ (2-dim) → [1,−1,0,0], [0,0,1,−1]
 -/
 
 open CayleySpectrum CayleyConnected
-
--- ═══════════════════════════════════════════
--- Additional 4×4 operations
--- ═══════════════════════════════════════════
 
 abbrev M4 := Fin 4 → Fin 4 → Int
 abbrev V4 := Fin 4 → Int
@@ -52,20 +51,16 @@ def dot4 (u v : V4) : Int :=
   (List.finRange 4).foldl (fun acc i => acc + u i * v i) 0
 
 -- ═══════════════════════════════════════════
--- The two components are IDENTICAL matrices
+-- Aeven = Aodd
 -- ═══════════════════════════════════════════
 
 theorem components_identical : meq4 Aeven Aodd = true := by native_decide
 
 -- ═══════════════════════════════════════════
--- Even component: Spec(Aeven) = {3, 1, 1, −1}
+-- Even component: Spec = {3, 1, 1, −1}
 -- ═══════════════════════════════════════════
 
 theorem Ae_symmetric : meq4 Aeven (fun i j => Aeven j i) = true := by native_decide
-
-theorem Ae_row_sums_3 : (List.finRange 4).all (fun i =>
-    (List.finRange 4).foldl (fun acc j => acc + Aeven i j) 0 == 3) = true := by
-  native_decide
 
 -- Step 1: eigenvalues ⊆ {−1, 1, 3}
 theorem Ae_minpoly :
@@ -73,28 +68,26 @@ theorem Ae_minpoly :
       (msub4 Aeven (scI4 (-1)))) mzero4 = true := by
   native_decide
 
--- Step 2: traces → multiplicities
+-- Step 2: traces → mult(3)=1, mult(1)=2, mult(−1)=1
 theorem Ae_tr1 : tr4 Aeven = 4 := by native_decide
 theorem Ae_tr2 : tr4 (mm4 Aeven Aeven) = 12 := by native_decide
 
-/-- Multiplicities: a+b+c=4, 3a+b−c=4, 9a+b+c=12 → a=1, b=2, c=1. -/
 theorem Ae_mult_dim : 1 + 2 + 1 = (4 : Int) := by norm_num
 theorem Ae_mult_tr1 : 1 * 3 + 2 * 1 + 1 * (-1) = (4 : Int) := by norm_num
 theorem Ae_mult_tr2 : 1 * 9 + 2 * 1 + 1 * 1 = (12 : Int) := by norm_num
 
--- Step 3: 4 orthogonal eigenvectors
-def v3 : V4 := ![1, 1, 1, 1]
-def vm1 : V4 := ![1, -1, -1, 1]
-def v1a : V4 := ![1, 0, -1, 0]
-def v1b : V4 := ![0, 1, 0, -1]
+-- Step 3: eigenvectors (derived from row equations)
+def v3 : V4 := ![1, 1, 1, 1]          -- λ=3
+def vm1 : V4 := ![1, 1, -1, -1]       -- λ=−1
+def v1a : V4 := ![1, -1, 0, 0]        -- λ=1
+def v1b : V4 := ![0, 0, 1, -1]        -- λ=1
 
--- Eigenvalue verification
 theorem v3_eig : veq4 (mv4 Aeven v3) (sv4 3 v3) = true := by native_decide
 theorem vm1_eig : veq4 (mv4 Aeven vm1) (sv4 (-1) vm1) = true := by native_decide
 theorem v1a_eig : veq4 (mv4 Aeven v1a) (sv4 1 v1a) = true := by native_decide
 theorem v1b_eig : veq4 (mv4 Aeven v1b) (sv4 1 v1b) = true := by native_decide
 
--- Pairwise orthogonality (6 pairs)
+-- Pairwise orthogonality
 theorem orth_3_m1 : dot4 v3 vm1 = 0 := by native_decide
 theorem orth_3_1a : dot4 v3 v1a = 0 := by native_decide
 theorem orth_3_1b : dot4 v3 v1b = 0 := by native_decide
@@ -109,7 +102,7 @@ theorem v1a_nz : dot4 v1a v1a ≠ 0 := by native_decide
 theorem v1b_nz : dot4 v1b v1b ≠ 0 := by native_decide
 
 -- ═══════════════════════════════════════════
--- Odd component: same eigenvectors work (Ae = Ao)
+-- Odd component: same spectrum (Ae = Ao)
 -- ═══════════════════════════════════════════
 
 theorem Ao_minpoly :
@@ -129,29 +122,20 @@ theorem v1b_eig_odd : veq4 (mv4 Aodd v1b) (sv4 1 v1b) = true := by native_decide
 -- Global consistency
 -- ═══════════════════════════════════════════
 
-/-- Tr(Ae) + Tr(Ao) = Tr(A) = 8. -/
 theorem global_tr1 : tr4 Aeven + tr4 Aodd = 8 := by native_decide
-
-/-- Tr(Ae²) + Tr(Ao²) = Tr(A²) = 24. -/
 theorem global_tr2 : tr4 (mm4 Aeven Aeven) + tr4 (mm4 Aodd Aodd) = 24 := by native_decide
-
-/-- ρ = 3 is simple in each component → Perron-Frobenius irreducibility. -/
-theorem perron_simple_even :
-    1 * 3 + 2 * 1 + 1 * (-1) = (4 : Int) := Ae_mult_tr1
 
 /-!
 ## Summary
 
-| Component | Vertices | Residues | Spectrum | ρ mult |
-|-----------|----------|----------|----------|--------|
-| Even | {0,2,4,6} | {1,11,17,23} | {3, 1, 1, −1} | 1 (simple) |
-| Odd | {1,3,5,7} | {7,13,19,29} | {3, 1, 1, −1} | 1 (simple) |
+| Component | Residues | Spectrum | ρ=3 mult |
+|-----------|----------|----------|----------|
+| Even {0,2,4,6} | {1,11,17,23} | {3, 1, 1, −1} | 1 (simple) |
+| Odd {1,3,5,7} | {7,13,19,29} | {3, 1, 1, −1} | 1 (simple) |
 
-**Key fact**: Aeven = Aodd (identical 4×4 matrices).
-The C₂ parity splitting acts trivially on the adjacency structure.
+**Aeven = Aodd** : identical 4×4 matrices.
 
-**Spectral decomposition**:
-  {3², 1⁴, (−1)²} = {3, 1, 1, −1} ⊎ {3, 1, 1, −1}
+{3², 1⁴, (−1)²} = {3, 1, 1, −1} ⊎ {3, 1, 1, −1}
 -/
 
 end ComponentSpectrum
