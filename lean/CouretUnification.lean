@@ -243,3 +243,6 @@ import CouretUnification.Core.ComponentSpectrum
 
 -- v32.15
 import CouretUnification.Core.Classification63Detail
+
+-- v32.16
+import CouretUnification.Core.CharPoly
