@@ -249,3 +249,6 @@ import CouretUnification.Core.CharPoly
 
 -- v32.17
 import CouretUnification.Core.MultiplicityUniqueness
+
+-- v32.18
+import CouretUnification.Core.TraceRecurrence
