@@ -234,3 +234,6 @@ import CouretUnification.Core.TCAutoInverse
 
 -- v32.12
 import CouretUnification.Core.CayleyConnected
+
+-- v32.13
+import CouretUnification.Core.DefectProjection
