@@ -225,3 +225,6 @@ import CouretUnification.Core.ParsevalL5
 
 -- v32.9
 import CouretUnification.Core.OddDimComplexObstruction
+
+-- v32.10
+import CouretUnification.Core.FormuleLk
