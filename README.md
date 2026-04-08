@@ -1,220 +1,186 @@
-# CouretUnification
+# Couret-Unification
 
-Prototype spectral fini pour la structure active de \((\mathbb{Z}/30\mathbb{Z})^\times\), formalisé en Lean 4.
+**Formalisation Lean 4 d’un noyau spectral fini mod 30 et encodage structurel du programme Hilbert–Pólya autour de l’Hypothèse de Riemann.**
 
-## Statut actuel
-
-**v26.3-core** correspond à un noyau fini minimal, compilable et discipliné.
-
-Cette version fige proprement :
-
-- l’espace actif des 8 résidus modulo 30 ;
-- l’opérateur fini distingué associé au triplet \(T_C = \{1,11,29\}\) ;
-- le spectre documentaire gelé ;
-- la couche harmonique minimale ;
-- le recollement harmonique du seul cas Couret.
-
-Le dépôt sépare volontairement :
-
-- le **noyau fini certifié** ;
-- les **extensions harmoniques générales** ;
-- les **filtres globaux** ;
-- le **Bridge** analytique / arithmétique.
-
-## Compatibilité
-
-Testé avec :
-
-- **Lean** `v4.29.0`
-- **mathlib** `v4.29.0`
-
-Dans cette configuration, le noyau `v26.3-core` compile avec :
-
-```bash
-lake update
-lake build
-```
-
-## Ce que garantit `v26.3-core`
-
-À ce stade, le dépôt garantit un noyau `Core/` avec les propriétés suivantes :
-
-* aucun `sorry` dans la partie noyau visée ;
-* aucun axiome ajouté ;
-* aucun placeholder du type `Prop := True` ;
-* séparation stricte entre données documentaires, calcul harmonique minimal et extensions futures ;
-* dépendances structurelles propres dans la branche `Core/`.
-
-## Architecture du noyau
-
-L’ordre logique actuel est le suivant :
-
-1. `Core/Mod30.lean`
-2. `Core/FiniteOperator.lean`
-3. `Core/SpectralProfile.lean`
-4. `Core/ExceptionalTriplets.lean`
-5. `Core/Characters30.lean`
-6. `Core/Fourier30.lean`
-7. `Core/TripletSpectrum.lean`
-8. `Core/IntegralSpectrum.lean`
-9. `Core/TripletHarmonicSpectrum.lean`
-10. `Core/TripletToFiniteSpectrum.lean`
-
-## Contenu mathématique figé dans cette version
-
-### 1. Base active modulo 30
-
-Le noyau travaille sur les 8 résidus inversibles actifs :
-
-[
-[1,7,11,13,17,19,23,29].
-]
-
-### 2. Triplet distingué
-
-Le triplet central du noyau est :
-
-[
-T_C = {1,11,29}.
-]
-
-### 3. Spectre documentaire gelé
-
-Le multiensemble brut visé est :
-
-[
-{3,3,1,1,1,1,-1,-1}.
-]
-
-L’ordre documentaire choisi est :
-
-[
-[3,1,1,1,3,1,-1,-1].
-]
-
-Le profil quadratique historique correspondant est :
-
-[
-[9,1,1,1,9,1,1,1].
-]
-
-### 4. Couche harmonique minimale
-
-La couche Fourier dans `Core/Fourier30.lean` reste volontairement minimale :
-
-* calcul des coefficients ;
-* ordre documentaire gelé ;
-* pas de DFT générale fermée ;
-* pas d’orthogonalité complète publique ;
-* pas de Parseval global réintroduit trop tôt.
-
-### 5. Recollement du cas Couret
-
-Le point actuellement fermé est le suivant :
-
-* le calcul harmonique complexe du triplet distingué redonne bien le spectre historique gelé ;
-* ce calcul recolle avec le `FiniteSpectrum` documentaire déjà fixé.
-
-Autrement dit, pour le seul cas (T_C), le passage
-
-[
-\text{triplet harmonique} \longrightarrow \text{spectre documentaire fini}
-]
-
-est maintenant validé dans le noyau.
-
-## Ce que cette version ne prétend pas encore faire
-
-**v26.3-core** ne prétend pas encore :
-
-* définir une DFT générale fermée sur tous les triplets ;
-* construire un `FiniteSpectrum` entier pour un triplet arbitraire ;
-* filtrer globalement les 21 triplets ;
-* démontrer le théorème `5/21` dans cette branche minimale ;
-* introduire le `Bridge/` analytique complet ;
-* établir un lien de type Hilbert–Pólya ;
-* prouver RH.
-
-Cette retenue est volontaire. Elle fait partie de la discipline du projet.
-
-## Doctrine de séparation
-
-Le dépôt suit une règle simple :
-
-* **Core/** : seulement le noyau fini exact, documentaire et harmonique minimal ;
-* **Bridge/** : seulement après stabilisation complète du noyau ;
-* **opérateur sur (\ell^2(\mathbb P))** : branche expérimentale séparée ;
-* **chaîne analytique globale** : explicitement ouverte tant que non fermée.
-
-## Prochaines étapes naturelles
-
-Une fois `v26.3-core` stabilisé, les suites possibles sont :
-
-### Branche A — stabilisation du noyau
-
-* nettoyage final des imports ;
-* documentation module par module ;
-* gel de version du noyau minimal ;
-* note de compatibilité Lean/mathlib.
-
-### Branche B — extension harmonique finie
-
-* spectre harmonique d’un triplet arbitraire ;
-* conversion contrôlée vers un `FiniteSpectrum` fini ;
-* filtrage global seulement après cette étape.
-
-### Branche C — expérimentation opératorielle
-
-En parallèle du noyau Lean, une branche expérimentale peut étudier des opérateurs réels symétriques sur les premiers :
-
-[
-(S_N f)(p_i)=\sum_{j=1}^N K_N(p_i,p_j)f(p_j),
-]
-
-avec comparaison prudente entre :
-
-* spectres finis réels ;
-* statistiques d’espacements ;
-* fenêtres de zéros de (\zeta).
-
-Cette branche reste expérimentale et n’est pas confondue avec le noyau fini certifié.
-
-## Ajustement doctrinal recommandé pour `Bridge/`
-
-Quand `Bridge/` sera réintroduit, il est recommandé d’utiliser un statut explicite des énoncés, par exemple :
-
-```lean
-inductive ClaimStatus
-  | formalized
-  | constructed
-  | conditional
-  | open_
-  | roadmap
-```
-
-Cela évite de sur-vendre le statut des résultats et garde une lecture épistémique claire.
-
-## Résumé
-
-**v26.3-core** doit être lu comme :
-
-* un **noyau spectral fini minimal** ;
-* **compilable** sous Lean 4.29.0 / mathlib 4.29.0 ;
-* **strictement séparé** des extensions analytiques ;
-* suffisamment fermé pour fixer les objets de base ;
-* volontairement incomplet sur tout ce qui relèverait d’une théorie globale.
+*Dédié à la mémoire de Bernard Couret (1928–2010)*
 
 ---
 
-## Commandes
+## ⚠️ RHClaimed = false
+
+Ce projet **ne prétend pas prouver** l’Hypothèse de Riemann.
+
+Il formalise en Lean 4 un **noyau fini exact** autour de la structure mod 30, et
+encode proprement les couches analytiques supérieures comme **interfaces**,
+**bridges** ou **programmes de recherche**.
+
+Le dépôt prouve exactement ce qu’il dit, et ne dit rien de plus.
+
+---
+
+## État du dépôt (v32.13 — 8 avril 2026)
+
+| Métrique | Valeur |
+|----------|--------|
+| Fichiers | 217 |
+| sorry | 0 |
+| Compilation | `lake build` ✓ |
+| Jobs | 3503 |
+| RHClaimed | `false` |
+
+**Changement majeur depuis les bilans antérieurs :**
+le dépôt a désormais été **compilé intégralement** avec `lake build`.
+La formule *« prouvé si ça compile »* est remplacée ici par **« prouvé »**
+lorsqu’il s’agit du contenu effectivement certifié par Lean.
+
+---
+
+## Position éditoriale
+
+Le cadrage du projet est le suivant :
+
+- **noyau fini exact** ;
+- **λ = 1/sqrt(7)** comme invariant géométrique interne du modèle fini ;
+- **non-universalité** vis-à-vis des zéros de `ζ` ;
+- **bon observable local-global** : la structure finie et ses invariants, pas une identification globale à `ξ(s)` ;
+- **H3** reste le **mur ouvert** ;
+- **pont global vers RH absent** au sens mathématique fort.
+
+### Phrase de référence
+
+> **Le noyau fini est exact ; le pont global reste ouvert.**
+> **RHClaimed = false.**
+
+---
+
+## Ce que le dépôt prouve réellement
+
+Le contenu mathématique certifié se concentre dans **Core/** et **Tower/**.
+
+### Noyau fini certifié
+
+Résultats effectivement prouvés en Lean :
+
+- **gap coercif κ = 2** sur le secteur centré pertinent ;
+- **λ² = 1/7** ;
+- spectre du noyau de Cayley :
+  **Spec(A) = {3², 1⁴, (−1)²}** ;
+- relation polynomiale :
+  **(A − 3I)(A − I)(A + I) = 0** ;
+- **altVec** unique vecteur centré pour la valeur propre 3 ;
+- classification **63/255** ;
+- coefficients de Fourier de `TC` ;
+- invariants de Parseval :
+  - niveau 30 : **Parseval = 24**, **E = 3** ;
+  - niveau 210 : **Parseval = 144**, **E = 3** ;
+  - niveau 2310 : **Parseval = 960**, **E = 2** ;
+- correction certifiée :
+  **gcd(11,2310)=11**, expliquant la rupture au niveau 2310 ;
+- formule fermée des **L_k** pour `k = 1..10` ;
+- paires **L_{2j−1} = L_{2j}** et décroissance vers 2 ;
+- **ker(210→30).card = 6** ;
+- `TC` auto-inverse mais **non sous-groupe** ;
+- obstruction en dimension impaire :
+  impossibilité de `J² = −I` ;
+- graphe de Cayley **déconnecté** en 2 composantes.
+
+---
+
+## Statut honnête de H1–H7
+
+Le dépôt distingue strictement les couches.
+
+| Niveau | Statut réel |
+|--------|-------------|
+| **H1** | interface structurelle |
+| **H2** | gap réel prouvé + interface |
+| **H3** | scaffolding structurel, **mur ouvert** |
+| **H4** | résultats CRT / tour primorielle **prouvés** |
+| **H5** | 1 vrai théorème + scaffolding |
+| **H6** | scaffolding doctrinal |
+| **H7** | programme de recherche encodé |
+
+### Lecture correcte
+
+- **H1** n’est pas une preuve analytique KLMN complète en Lean.
+- **H2** contient un vrai contenu via le **gap coercif**, mais le “transfert spectral” reste surtout une interface.
+- **H3** n’est **pas fermé** : il organise les pièces manquantes du pont vers RH, mais ne les prouve pas.
+- **H4** est l’un des blocs les plus solides du dépôt.
+- **H5–H7** servent principalement à **structurer** les verrous, les barrières et le programme.
+
+---
+
+## Ce qui n’est pas prouvé dans le dépôt
+
+Les points suivants **ne sont pas** établis dans Lean :
+
+- la borne analytique de type Hilbert–Schmidt ;
+- l’auto-adjonction KLMN/Friedrichs ;
+- une théorie Lean complète des opérateurs compacts pertinente ici ;
+- une identité du type
+
+  `det₂(I - zS) = ξ(1/2 + iz) / ξ(1/2)`
+
+- l’existence d’un opérateur auto-adjoint compact `S` tel que
+
+  `Spec(S) = {±1/γ_n}`
+
+- le recollement global archimédien + eulérien + zéros.
+
+En clair :
+
+> **le pont vers RH n’est pas formalisé, ni prouvé, ni remplacé par des `sorry`.**
+
+---
+
+## Architecture du dépôt
+
+Le projet suit une séparation stricte :
+
+- **FiniteCore / Core** : contenu fini exact ;
+- **Tower** : transport CRT, noyaux, orbites, fibres ;
+- **Spectral / H1–H7** : interfaces, statuts, bridges, programme de recherche.
+
+Cette architecture évite de sur-vendre les couches ouvertes et conserve
+une frontière nette entre :
+
+- **[A] résultats exacts certifiés** ;
+- **[B] structures d’interface** ;
+- **[C] questions ouvertes / doctrine**.
+
+---
+
+## Compilation
 
 ```bash
 lake update
 lake build
 ```
 
-## Philosophie du dépôt
+Compilation intégrale validée : **3503 jobs, 0 erreur, 0 sorry**.
 
-Mieux vaut un noyau fini exact, modeste et proprement séparé,
-qu’une architecture ambitieuse où les couches documentaires,
-harmoniques et analytiques sont mélangées trop tôt.
+---
+
+## Scripts utiles
+
+```bash
+python3 scripts/verify_full_pack.py
+python3 scripts/compute_moments.py
+python3 scripts/test_lock3_spectral.py
+```
+
+---
+
+## Résumé en une ligne
+
+**Le noyau spectral fini mod 30 est compilé et certifié ; le pont analytique global vers RH reste ouvert.**
+
+---
+
+## Licence / intention scientifique
+
+Ce dépôt est un programme de formalisation et de clarification conceptuelle.
+Il vise la **rigueur**, la **séparation honnête des niveaux de preuve**,
+et la **transparence épistémique**.
+
+**RHClaimed = false**
