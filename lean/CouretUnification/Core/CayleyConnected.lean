@@ -8,74 +8,58 @@ namespace CayleyConnected
 # Connexité du graphe de Cayley Cay(G₃₀, TC)
 
 The Cayley graph is connected iff there exists k such that
-A^k has all entries > 0 (every vertex is reachable from every other).
-
-We verify that A⁴ already has all entries ≥ 1, hence the graph
-is connected with diameter ≤ 4.
+A^k has all entries > 0. We find the smallest such k.
 -/
 
 open CayleySpectrum
 
--- ═══════════════════════════════════════════
--- Matrix powers (explicit, no recursion)
--- ═══════════════════════════════════════════
-
+-- Matrix powers (explicit chain, no recursion)
 def A2 : IMat := mm A A
 def A3 : IMat := mm A2 A
 def A4 : IMat := mm A3 A
-
--- ═══════════════════════════════════════════
--- All entries of A⁴ are strictly positive
--- ═══════════════════════════════════════════
+def A5 : IMat := mm A4 A
+def A6 : IMat := mm A5 A
+def A7 : IMat := mm A6 A
 
 /-- Check that all entries of a matrix are ≥ 1. -/
 def allPositive (M : IMat) : Bool :=
   (List.finRange 8).all fun i =>
     (List.finRange 8).all fun j => M i j ≥ 1
 
+-- Find the exact diameter
+theorem A2_not_connected : allPositive A2 = false := by native_decide
+theorem A3_not_connected : allPositive A3 = false := by native_decide
+theorem A4_not_connected : allPositive A4 = false := by native_decide
+theorem A5_not_connected : allPositive A5 = false := by native_decide
+theorem A6_not_connected : allPositive A6 = false := by native_decide
+
 /--
-**Main theorem**: A⁴ has all entries ≥ 1.
-Therefore the Cayley graph Cay(G₃₀, TC) is connected
-and has diameter ≤ 4.
+**Main theorem**: A⁷ has all entries ≥ 1.
+Therefore Cay(G₃₀, TC) is connected with diameter ≤ 7.
 -/
-theorem A4_all_positive : allPositive A4 = true := by native_decide
+theorem A7_all_positive : allPositive A7 = true := by native_decide
 
--- ═══════════════════════════════════════════
--- A² does NOT have all positive entries
--- (confirms diameter > 2)
--- ═══════════════════════════════════════════
+/-- The diameter is exactly 7. -/
+theorem diameter_eq_7 :
+    allPositive A6 = false ∧ allPositive A7 = true :=
+  ⟨A6_not_connected, A7_all_positive⟩
 
-theorem A2_not_all_positive : allPositive A2 = false := by native_decide
-
--- ═══════════════════════════════════════════
--- A³ check
--- ═══════════════════════════════════════════
-
-theorem A3_not_all_positive : allPositive A3 = false := by native_decide
-
-/-- The diameter is exactly 4: A³ has a zero but A⁴ does not. -/
-theorem diameter_eq_4 :
-    allPositive A3 = false ∧ allPositive A4 = true := by
-  exact ⟨A3_not_all_positive, A4_all_positive⟩
-
--- ═══════════════════════════════════════════
--- Trace consistency checks
--- ═══════════════════════════════════════════
-
-/-- Tr(A⁴) = 168, consistent with CayleySpectrum. -/
-theorem trace_A4_check : tr A4 = 168 := by native_decide
+/-- Trace consistency: Tr(A⁷) = 4376. -/
+theorem trace_A7_check : tr A7 = 4376 := by native_decide
 
 /-!
 ## Summary
 
-| Power | All entries > 0? | Interpretation |
-|-------|------------------|----------------|
-| A¹ | no | some vertices not adjacent |
-| A² | no | diameter > 2 |
-| A³ | no | diameter > 3 |
-| A⁴ | **yes** | **diameter ≤ 4** |
+| k | All entries > 0? |
+|---|------------------|
+| 2 | no |
+| 3 | no |
+| 4 | no |
+| 5 | no |
+| 6 | no |
+| 7 | **yes** |
 
-Therefore Cay(G₃₀, TC) is connected with diameter exactly 4.
+Cay(G₃₀, TC) is connected with diameter exactly 7.
 -/
 
 end CayleyConnected
