@@ -237,3 +237,6 @@ import CouretUnification.Core.CayleyConnected
 
 -- v32.13
 import CouretUnification.Core.DefectProjection
+
+-- v32.14
+import CouretUnification.Core.ComponentSpectrum
