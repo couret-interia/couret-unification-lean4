@@ -246,3 +246,6 @@ import CouretUnification.Core.Classification63Detail
 
 -- v32.16
 import CouretUnification.Core.CharPoly
+
+-- v32.17
+import CouretUnification.Core.MultiplicityUniqueness
