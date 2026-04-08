@@ -231,3 +231,6 @@ import CouretUnification.Core.FormuleLk
 
 -- v32.11
 import CouretUnification.Core.TCAutoInverse
+
+-- v32.12
+import CouretUnification.Core.CayleyConnected
