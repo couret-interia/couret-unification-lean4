@@ -66,46 +66,46 @@ def Lk (k : Nat) : ℚ := (eigTrace k : ℚ) / (3 : ℚ) ^ k
 /-- Closed form: 2 + (4 + 2·(−1)ᵏ) / 3ᵏ. -/
 def LkFormula (k : Nat) : ℚ := 2 + (4 + 2 * (-1 : ℚ) ^ k) / (3 : ℚ) ^ k
 
-theorem Lk_formula_1 : Lk 1 = LkFormula 1 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_2 : Lk 2 = LkFormula 2 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_3 : Lk 3 = LkFormula 3 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_4 : Lk 4 = LkFormula 4 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_5 : Lk 5 = LkFormula 5 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_6 : Lk 6 = LkFormula 6 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_7 : Lk 7 = LkFormula 7 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_8 : Lk 8 = LkFormula 8 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_9 : Lk 9 = LkFormula 9 := by simp [Lk, LkFormula, eigTrace]; norm_num
-theorem Lk_formula_10 : Lk 10 = LkFormula 10 := by simp [Lk, LkFormula, eigTrace]; norm_num
+theorem Lk_formula_1 : Lk 1 = LkFormula 1 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_2 : Lk 2 = LkFormula 2 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_3 : Lk 3 = LkFormula 3 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_4 : Lk 4 = LkFormula 4 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_5 : Lk 5 = LkFormula 5 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_6 : Lk 6 = LkFormula 6 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_7 : Lk 7 = LkFormula 7 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_8 : Lk 8 = LkFormula 8 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_9 : Lk 9 = LkFormula 9 := by simp [Lk, LkFormula, eigTrace]; try norm_num
+theorem Lk_formula_10 : Lk 10 = LkFormula 10 := by simp [Lk, LkFormula, eigTrace]; try norm_num
 
 -- ═══════════════════════════════════════════
 -- Explicit L_k values
 -- ═══════════════════════════════════════════
 
-theorem Lk_1_val : Lk 1 = 8 / 3 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_2_val : Lk 2 = 8 / 3 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_3_val : Lk 3 = 56 / 27 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_4_val : Lk 4 = 56 / 27 := by simp [Lk, eigTrace]; norm_num
+theorem Lk_1_val : Lk 1 = 8 / 3 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_2_val : Lk 2 = 8 / 3 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_3_val : Lk 3 = 56 / 27 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_4_val : Lk 4 = 56 / 27 := by simp [Lk, eigTrace]; try norm_num
 
 -- ═══════════════════════════════════════════
 -- Structural properties
 -- ═══════════════════════════════════════════
 
 /-- L_k repeats in pairs: L_{2j−1} = L_{2j}. -/
-theorem Lk_pair_1 : Lk 1 = Lk 2 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_pair_2 : Lk 3 = Lk 4 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_pair_3 : Lk 5 = Lk 6 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_pair_4 : Lk 7 = Lk 8 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_pair_5 : Lk 9 = Lk 10 := by simp [Lk, eigTrace]; norm_num
+theorem Lk_pair_1 : Lk 1 = Lk 2 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_pair_2 : Lk 3 = Lk 4 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_pair_3 : Lk 5 = Lk 6 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_pair_4 : Lk 7 = Lk 8 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_pair_5 : Lk 9 = Lk 10 := by simp [Lk, eigTrace]; try norm_num
 
 /-- L_k is strictly decreasing between pairs. -/
-theorem Lk_decr_12_34 : Lk 1 > Lk 3 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_decr_34_56 : Lk 3 > Lk 5 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_decr_56_78 : Lk 5 > Lk 7 := by simp [Lk, eigTrace]; norm_num
+theorem Lk_decr_12_34 : Lk 1 > Lk 3 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_decr_34_56 : Lk 3 > Lk 5 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_decr_56_78 : Lk 5 > Lk 7 := by simp [Lk, eigTrace]; try norm_num
 
 /-- All L_k > 2 (the limit as k → ∞). -/
-theorem Lk_gt_2_k1 : Lk 1 > 2 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_gt_2_k5 : Lk 5 > 2 := by simp [Lk, eigTrace]; norm_num
-theorem Lk_gt_2_k10 : Lk 10 > 2 := by simp [Lk, eigTrace]; norm_num
+theorem Lk_gt_2_k1 : Lk 1 > 2 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_gt_2_k5 : Lk 5 > 2 := by simp [Lk, eigTrace]; try norm_num
+theorem Lk_gt_2_k10 : Lk 10 > 2 := by simp [Lk, eigTrace]; try norm_num
 
 /-!
 ## Summary
