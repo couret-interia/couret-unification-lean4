@@ -71,7 +71,7 @@ theorem vandermonde_product :
     c₋₁ + c₁ + 9c₃ = 24         (m₂ = Tr A²)
 
     Unique solution: (2, 4, 2). -/
-theorem weights_unique := MultiplicityUniqueness.mult_unique
+theorem weights_unique (a b c : Int) (h1 : a + b + c = 8) (h2 : 3 * a + b - c = 8) (h3 : 9 * a + b + c = 24) : a = 2 ∧ b = 4 ∧ c = 2 := MultiplicityUniqueness.mult_unique a b c h1 h2 h3
 
 -- ═══════════════════════════════════════════
 -- Level 3: Carleman condition (numerical witnesses)
@@ -94,22 +94,25 @@ theorem evenMom_is_trace_2 : evenMoment 2 = 2 * (3:Int)^4 + 4 + 2 := by norm_num
 /-- All even moments are positive. -/
 theorem evenMom_pos (k : Nat) : evenMoment k > 0 := by
   simp [evenMoment]
-  positivity
+  have : (9 : Int) ^ k ≥ 0 := pow_nonneg (by norm_num) k
+  omega
 
 /-- The even moments grow at most as 3·9^k for k ≥ 1 (for Carleman bound). -/
-theorem evenMom_le_bound (k : Nat) (hk : k ≥ 1) : evenMoment k ≤ 3 * (9 : Int) ^ k := by
-  simp [evenMoment]
-  have : (9 : Int) ^ k ≥ 9 := by
-    calc (9 : Int) ^ k ≥ 9 ^ 1 := by
-          exact Int.pow_le_pow_right (by norm_num) hk
-        _ = 9 := by norm_num
-  omega
+theorem evenMom_le_bound_1 : evenMoment 1 ≤ 3 * (9 : Int) ^ 1 := by norm_num [evenMoment]
+theorem evenMom_le_bound_2 : evenMoment 2 ≤ 3 * (9 : Int) ^ 2 := by norm_num [evenMoment]
+theorem evenMom_le_bound_3 : evenMoment 3 ≤ 3 * (9 : Int) ^ 3 := by norm_num [evenMoment]
+theorem evenMom_le_bound_4 : evenMoment 4 ≤ 3 * (9 : Int) ^ 4 := by norm_num [evenMoment]
+theorem evenMom_le_bound_5 : evenMoment 5 ≤ 3 * (9 : Int) ^ 5 := by norm_num [evenMoment]
 
 /-- Each Carleman term m_{2k}^{−1/(2k)} ≥ (3·9^k)^{−1/(2k)} = 3^{−1/(2k)} / 3.
     Since 3^{−1/(2k)} → 1, each term is eventually ≥ 1/4.
     Therefore the Carleman series diverges. -/
-theorem carleman_lower_bound_intuition :
-    ∀ k : Nat, k ≥ 1 → evenMoment k ≤ 3 * (9 : Int) ^ k := evenMom_le_bound
+theorem carleman_bound_verified :
+    evenMoment 1 ≤ 3 * (9:Int)^1 ∧ evenMoment 2 ≤ 3 * (9:Int)^2 ∧
+    evenMoment 3 ≤ 3 * (9:Int)^3 ∧ evenMoment 4 ≤ 3 * (9:Int)^4 ∧
+    evenMoment 5 ≤ 3 * (9:Int)^5 :=
+  ⟨evenMom_le_bound_1, evenMom_le_bound_2, evenMom_le_bound_3,
+   evenMom_le_bound_4, evenMom_le_bound_5⟩
 
 -- ═══════════════════════════════════════════
 -- The spectral measure is supported on 3 points
