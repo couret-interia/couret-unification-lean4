@@ -74,10 +74,11 @@ theorem root_m1 : (-1 : Int) ^ 3 - 3 * (-1) ^ 2 - (-1) + 3 = 0 := by norm_num
 theorem root_recurrence (r : Int) (k : Nat) (hk : k ≥ 3)
     (hroot : r ^ 3 = 3 * r ^ 2 + r - 3) :
     r ^ k = 3 * r ^ (k - 1) + r ^ (k - 2) - 3 * r ^ (k - 3) := by
-  have h3 : k = (k - 3) + 3 := by omega
-  have h2 : k - 1 = (k - 3) + 2 := by omega
-  have h1 : k - 2 = (k - 3) + 1 := by omega
-  rw [h3, h2, h1, pow_add, pow_add, pow_add, hroot]
+  obtain ⟨n, rfl⟩ : ∃ n, k = n + 3 := ⟨k - 3, by omega⟩
+  have e1 : n + 3 - 1 = n + 2 := by omega
+  have e2 : n + 3 - 2 = n + 1 := by omega
+  have e3 : n + 3 - 3 = n := by omega
+  rw [e1, e2, e3, pow_add r n 3, pow_add r n 2, pow_add r n 1, hroot]
   ring
 
 theorem hroot_3 : (3 : Int) ^ 3 = 3 * 3 ^ 2 + 3 - 3 := by norm_num
