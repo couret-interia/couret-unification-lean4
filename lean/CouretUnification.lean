@@ -240,3 +240,6 @@ import CouretUnification.Core.DefectProjection
 
 -- v32.14
 import CouretUnification.Core.ComponentSpectrum
+
+-- v32.15
+import CouretUnification.Core.Classification63Detail
