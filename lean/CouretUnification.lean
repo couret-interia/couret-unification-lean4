@@ -228,3 +228,6 @@ import CouretUnification.Core.OddDimComplexObstruction
 
 -- v32.10
 import CouretUnification.Core.FormuleLk
+
+-- v32.11
+import CouretUnification.Core.TCAutoInverse
