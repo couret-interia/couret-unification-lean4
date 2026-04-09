@@ -258,3 +258,6 @@ import CouretUnification.Core.MersenneMod30
 
 -- v32.20
 import CouretUnification.Core.CarlemanUniqueness
+
+-- v32.24
+import CouretUnification.Core.SymplecticObstruction
