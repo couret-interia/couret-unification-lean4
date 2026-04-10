@@ -261,3 +261,25 @@ import CouretUnification.Core.CarlemanUniqueness
 
 -- v32.24
 import CouretUnification.Core.SymplecticObstruction
+
+-- v32.25
+import CouretUnification.Analytic.AbelTailCompare
+import CouretUnification.Analytic.AbelTailCore
+import CouretUnification.Analytic.Integration
+import CouretUnification.Analytic.VerifiedIntervals
+import CouretUnification.Analytic.ZeroDensityAxioms
+import CouretUnification.Bridge.GlobalBridge
+import CouretUnification.Core.FiniteCore
+import CouretUnification.Core.SymplecticObstruction
+import CouretUnification.Crown
+import CouretUnification.FunctionalFoundation.DiscreteConnection
+import CouretUnification.FunctionalFoundation.DiscretePaths
+import CouretUnification.Geometry.CouretDesics
+import CouretUnification.Geometry.CouretDesicsCayleyG30
+import CouretUnification.Geometry.CouretDesicsExistence
+import CouretUnification.Geometry.CouretDesicsSpectral
+import CouretUnification.Logic.H3.ArithmeticBridge
+import CouretUnification.Logic.H3.FunctionalFoundation
+import CouretUnification.Logic.H3.Lemma7Residual
+import CouretUnification.Logic.H3.Lock2Conditional
+import CouretUnification.Logic.H3.ZeroMatching
