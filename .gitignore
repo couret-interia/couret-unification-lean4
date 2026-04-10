@@ -3,3 +3,5 @@ patches
 .build
 .dev
 *.zip
+*.tar
+*.gz
