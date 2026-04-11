@@ -6,150 +6,320 @@ namespace CouretUnification.Criterion
 open CouretUnification.Finite
 
 /-!
-# Critère Couret-Défaut
+# CouretDefect — Critère Couret-Défaut
 
-Architecture en 4 niveaux :
-  N1 : Noyau fini exact (T1-T7, prouvé)
-  N2 : Pont arithmétique — fonctionnelle I(φ)
-  N3 : Identité spectrale conditionnelle
-  N4 : Équivalence HRG (horizon)
+Ce fichier formalise la **couche conceptuelle intermédiaire** entre :
 
-Le noyau fini fournit δ(f) = (1/8)(⟨f,χ₃⟩² + ⟨f,χ₁₅⟩²).
-La bascule épistémologique : transformer cette énergie discrète
-en fonctionnelle quadratique continue I(φ) ≥ 0 ⟺ HRG.
+- le **noyau spectral fini exact** (`Finite`, `FiniteDefect`),
+- et les formulations **arithmétiques / spectrales continues**
+  du programme Couret–Unification.
 
-RHClaimed = false.
+## Architecture en quatre niveaux
+
+On distingue ici quatre étages :
+
+- **N1** — noyau fini exact (`T1`–`T7`, déjà prouvé),
+- **N2** — canaux arithmétiques lissés et fonctionnelle de défaut `I(φ)`,
+- **N3** — reformulation spectrale conditionnelle de type Guinand–Weil,
+- **N4** — horizon d’équivalence avec HRG/GRH sur les canaux considérés.
+
+## Idée directrice
+
+Le noyau fini extrait une énergie de défaut discrète,
+portée par le secteur spectral `λ = -1`, associé ici à `chi3` et `chi15`.
+
+La transition épistémique proposée est la suivante :
+
+- partir d’un défaut **fini** et **quadratique**,
+- le prolonger en une fonctionnelle continue `I(φ)`,
+- puis relier la positivité de cette fonctionnelle à une hypothèse
+  de type HRG sur les fonctions `L(s, χ)` pertinentes.
+
+## Statut
+
+Ce fichier **type** les objets et les relations visées,
+mais ne prétend pas fermer analytiquement le programme.
+
+- Le niveau fini est acquis.
+- Les niveaux fonctionnel et spectral sont structurés.
+- L’équivalence complète avec HRG reste un **horizon**.
+
+`RHClaimed = false`.
 -/
 
 -- ═══════════════════════════════════════════════════════════
--- NIVEAU 2 : Canaux arithmétiques lissés
+-- NIVEAU 2 — Canaux arithmétiques lissés
 -- ═══════════════════════════════════════════════════════════
 
-/-- Classe de fonctions test admissibles (Weil-Li-Connes). -/
+/-!
+On introduit ici les objets analytiques minimaux nécessaires pour parler
+d’un prolongement continu du défaut fini.
+
+L’idée est d’associer à chaque caractère obstructif un canal arithmétique
+lissé, testé contre des fonctions admissibles.
+-/
+
+/--
+Classe abstraite des fonctions test admissibles,
+dans l’esprit Weil–Li–Connes.
+
+Les champs sont ici typés comme des propriétés,
+sans implémentation analytique détaillée à ce stade.
+-/
 structure AdmissibleClass where
-  /-- φ ∈ C∞_c(0,∞) : régularité et support compact. -/
+  /-- Régularité et support compact : `φ ∈ C∞_c(0,∞)`. -/
   smooth_compact_support : Prop
-  /-- La transformée de Mellin Φ(s) est entière. -/
+  /-- La transformée de Mellin `Φ(s)` est entière. -/
   mellin_entire : Prop
-  /-- Décroissance rapide : Φ(σ+it) = O(|t|^{-N}) pour tout N. -/
+  /-- Décroissance rapide sur les droites verticales. -/
   rapid_decay : Prop
-  /-- Symétrie temporelle : φ̃(x) = (1/x)φ(1/x). -/
+  /-- Symétrie involutive `φ̃(x) = (1/x) φ(1/x)`. -/
   involution_symmetry : Prop
-  /-- Vanishing : Φ̂(±i/2) = 0. -/
+  /-- Condition de vanishing aux points archimédiens critiques. -/
   vanishing_condition : Prop
 
-/-- Canal arithmétique lissé : B_χ(φ) = Σ Λ(n)χ(n)φ(log n). -/
+/--
+Canal arithmétique lissé associé à un caractère.
+
+Lecture heuristique :
+`B_χ(φ) = Σ Λ(n) χ(n) φ(log n)`.
+-/
 structure ArithmeticChannel where
+  /-- Conducteur du caractère / du canal. -/
   conductor : ℕ
-  parity : ℤ  -- 0 = pair, 1 = impair
-  /-- La série converge pour φ ∈ A. -/
+  /-- Parité : `0` pair, `1` impair. -/
+  parity : ℤ
+  /-- Convergence de la série pour les fonctions admissibles. -/
   convergence : Prop
 
-/-- Les deux canaux d'obstruction du noyau mod 30. -/
+/--
+Canal associé au caractère `χ₃`.
+-/
 def channel_chi3 : ArithmeticChannel :=
   { conductor := 3, parity := 1, convergence := True }
 
+/--
+Canal associé au caractère `χ₁₅`.
+-/
 def channel_chi15 : ArithmeticChannel :=
   { conductor := 15, parity := 1, convergence := True }
 
-/-- Les deux sont impairs : χ₃(-1) = -1 et χ₁₅(-1) = -1. -/
+/--
+Les deux canaux obstructifs sont impairs.
+-/
 theorem both_odd : channel_chi3.parity = 1 ∧ channel_chi15.parity = 1 := ⟨rfl, rfl⟩
 
 -- ═══════════════════════════════════════════════════════════
 -- Terme archimédien
 -- ═══════════════════════════════════════════════════════════
 
-/-- Terme archimédien W_arch(φ,χ) via la digamma ψ. -/
+/-!
+Le défaut complété ne dépend pas seulement du terme arithmétique discret.
+Il faut lui adjoindre une correction archimédienne.
+-/
+
+/--
+Terme archimédien associé à un canal.
+
+Il encode ici, sous forme abstraite, l’existence du terme de correction
+faisant intervenir les facteurs gamma / digamma.
+-/
 structure ArchimedeanTerm where
+  /-- Canal auquel le terme archimédien est rattaché. -/
   channel : ArithmeticChannel
-  /-- W_arch = ∫ φ(x) · [log(N/π) + ψ((s+a)/2)] dx. -/
-  value : Prop  -- existence et finitude
-  /-- Borne logarithmique : |G_χ(t)| ≤ C(1 + log(2+|t|)). -/
+  /-- Existence / finitude du terme archimédien. -/
+  value : Prop
+  /-- Borne logarithmique sur le noyau archimédien associé. -/
   log_bound : Prop
 
 -- ═══════════════════════════════════════════════════════════
 -- Fonctionnelle de défaut I(φ)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Canal complet F_χ(φ) = B_χ(φ) − W_arch(φ,χ). -/
+/-!
+On regroupe maintenant la part arithmétique et la part archimédienne
+dans un canal complété, puis on forme la fonctionnelle quadratique
+de défaut.
+-/
+
+/--
+Canal complété `F_χ(φ)`, réunissant :
+
+- la contribution arithmétique discrète,
+- la correction archimédienne.
+-/
 structure CompleteChannel where
+  /-- Partie arithmétique du canal. -/
   arithmetic : ArithmeticChannel
+  /-- Partie archimédienne du canal. -/
   archimedean : ArchimedeanTerm
 
-/-- L'invariant de Couret-Défaut :
-    I(φ) = (1/8)(F_χ₃(φ)² + F_χ₁₅(φ)²). -/
+/--
+Fonctionnelle de Couret-Défaut.
+
+Lecture heuristique :
+`I(φ) = (1/8)(F_χ₃(φ)^2 + F_χ₁₅(φ)^2)`.
+
+À ce stade, on encode seulement sa structure logique,
+pas encore une réalisation analytique complète.
+-/
 structure CouretDefectFunctional where
+  /-- Classe admissible des fonctions test. -/
   class_A : AdmissibleClass
+  /-- Canal complété associé à `χ₃`. -/
   F_chi3 : CompleteChannel
+  /-- Canal complété associé à `χ₁₅`. -/
   F_chi15 : CompleteChannel
-  /-- I(φ) = (1/8)(F₃² + F₁₅²) ≥ 0 par construction. -/
+  /-- Positivité structurelle de type somme de carrés. -/
   positivity_by_construction : Prop
 
 -- ═══════════════════════════════════════════════════════════
--- NIVEAU 3 : Identité spectrale (Guinand-Weil)
+-- NIVEAU 3 — Identité spectrale (Guinand–Weil)
 -- ═══════════════════════════════════════════════════════════
 
-/-- F_χ(φ) = Σ_ρ Φ(ρ) (formule explicite de Weil). -/
+/-!
+On encode ici la reformulation spectrale du défaut complété :
+chaque canal serait exprimable comme somme sur les zéros
+des fonctions `L` associées.
+-/
+
+/--
+Identité spectrale abstraite de type Weil :
+
+`F_χ(φ) = Σ_ρ Φ(ρ)`.
+-/
 structure SpectralIdentity where
-  /-- Pour tout φ ∈ A, F_χ(φ) = Σ_{ρ ∈ Z(χ)} Φ(ρ). -/
+  /-- Validité de la formule explicite pour les fonctions admissibles. -/
   weil_identity : Prop
 
-/-- Identité spectrale du fonctionnel :
-    I(φ) = (1/8)(|Σ_ρ₃ Φ(ρ)|² + |Σ_ρ₁₅ Φ(ρ)|²). -/
+/--
+Formulation spectrale quadratique de la fonctionnelle de défaut.
+
+Lecture heuristique :
+`I(φ) = (1/8)(|Σ_ρ₃ Φ(ρ)|² + |Σ_ρ₁₅ Φ(ρ)|²)`.
+-/
 structure SpectralFormulation where
+  /-- Identité spectrale pour le canal `χ₃`. -/
   identity_chi3 : SpectralIdentity
+  /-- Identité spectrale pour le canal `χ₁₅`. -/
   identity_chi15 : SpectralIdentity
-  /-- I_spec(φ) ≥ 0 est une identité quadratique. -/
+  /-- Positivité quadratique dans la formulation spectrale. -/
   spectral_positivity : Prop
 
 -- ═══════════════════════════════════════════════════════════
--- NIVEAU 4 : Équivalence HRG (le théorème cible)
+-- NIVEAU 4 — Équivalence HRG (horizon théorique)
 -- ═══════════════════════════════════════════════════════════
 
-/-- HRG pour les canaux χ₃ et χ₁₅. -/
+/-!
+Le niveau 4 ne constitue pas ici un théorème démontré,
+mais le **schéma cible** du programme.
+-/
+
+/--
+Version restreinte de HRG/GRH sur les deux canaux obstructifs.
+-/
 structure HRG_Channels where
-  /-- Tous les zéros de L(s,χ₃) sont sur Re(s) = 1/2. -/
+  /-- Tous les zéros de `L(s, χ₃)` sont sur `Re(s) = 1/2`. -/
   hrg_chi3 : Prop
-  /-- Tous les zéros de L(s,χ₁₅) sont sur Re(s) = 1/2. -/
+  /-- Tous les zéros de `L(s, χ₁₅)` sont sur `Re(s) = 1/2`. -/
   hrg_chi15 : Prop
 
-/-- Le Critère Couret-Défaut (théorème cible) :
-    HRG pour {χ₃, χ₁₅} ⟺ ∀ φ ∈ A, I(φ) ≥ 0.
+/--
+Schéma cible du Critère Couret-Défaut.
 
-    Direction ⟹ : Sous HRG, ρ = 1/2 + iγ ⟹ Φ(ρ) ∈ ℝ
-                  ⟹ Σ Φ(ρ) ∈ ℝ ⟹ carré ≥ 0. ✓
+Lecture attendue :
 
-    Direction ⟸ : Si ∃ ρ₀ hors droite critique,
-                  ∃ φ_rogue ∈ A tel que I(φ_rogue) < 0.
-                  Mais I = somme de carrés ⟹ contradiction. ✓ -/
+- direction directe : HRG `⇒` positivité de `I(φ)`,
+- direction réciproque : positivité universelle de `I(φ)` `⇒` HRG.
+
+Dans ce fichier, ce critère est **typé** comme objet,
+mais non démontré comme théorème clos.
+-/
 structure CouretDefectCriterion where
-  /-- Direction directe : HRG ⟹ positivité. -/
-  forward : HRG_Channels → Prop  -- ∀ φ, I(φ) ≥ 0
-  /-- Direction réciproque : positivité ⟹ HRG. -/
+  /-- Direction directe : HRG implique la positivité. -/
+  forward : HRG_Channels → Prop
+  /-- Direction réciproque : positivité implique HRG. -/
   backward : Prop → HRG_Channels
-  /-- Statut : le théorème est un HORIZON, pas un résultat acquis. -/
+  /-- Statut textuel du critère dans l’état courant du programme. -/
   status : String
 
-/-- L'état actuel du critère. -/
+/--
+État courant du critère.
+
+Il s’agit d’un **placeholder structuré** :
+- la direction directe est considérée comme schématiquement standard ;
+- la direction réciproque reste ouverte ;
+- le statut officiel est explicitement marqué comme horizon.
+-/
 def currentCriterion : CouretDefectCriterion :=
-  { forward := fun _ => True   -- direction facile, schéma connu
-  , backward := fun _ => { hrg_chi3 := True, hrg_chi15 := True }  -- placeholder
+  { forward := fun _ => True
+  , backward := fun _ => { hrg_chi3 := True, hrg_chi15 := True }
   , status := "HORIZON — direction ⟹ standard (Weil), direction ⟸ ouverte" }
 
 -- ═══════════════════════════════════════════════════════════
--- Liens avec le noyau fini (T1-T7)
+-- Liens avec le noyau fini exact
 -- ═══════════════════════════════════════════════════════════
 
-/-- Le noyau fini donne dim E₋ = 2, engendré par χ₃ et χ₁₅. -/
+/-!
+Le rôle de cette section est de rappeler le point de départ fini exact :
+
+- le secteur de défaut du noyau a dimension 2,
+- il est engendré par `chi3` et `chi15`,
+- la positivité quadratique élémentaire y est structurelle.
+-/
+
+/--
+Le secteur de défaut fini est de dimension 2.
+
+Lecture : il est engendré, dans le prototype fini, par les deux directions
+`chi3` et `chi15`.
+-/
 theorem defect_sector_dimension : (2 : ℕ) = 2 := rfl
 
-/-- La positivité de I₀ est STRUCTURELLE (somme de carrés).
-    C'est la positivité de I COMPLÉTÉ (avec archimédien) qui est non triviale. -/
+/--
+Positivité structurelle de la forme quadratique élémentaire
+portée par deux canaux réels.
+
+C’est la version la plus simple de la positivité du défaut :
+une somme de carrés pondérée.
+-/
 theorem I0_structurally_positive :
     ∀ a b : ℚ, 0 ≤ (1 : ℚ) / 8 * (a ^ 2 + b ^ 2) := by
-  intro a b; positivity
+  intro a b
+  positivity
 
+-- ═══════════════════════════════════════════════════════════
+-- Garde épistémique
+-- ═══════════════════════════════════════════════════════════
+
+/--
+Garde épistémique : ce fichier ne revendique pas la clôture analytique
+du critère Couret-Défaut ni une preuve de RH/GRH.
+-/
 def RHClaimed : Bool := false
+
+/-- Vérification formelle de la garde épistémique. -/
 theorem rh_not_claimed : RHClaimed = false := rfl
+
+/-!
+## Bilan
+
+Ce fichier établit une **architecture logique typée** pour le passage :
+
+- du défaut fini discret,
+- vers une fonctionnelle continue de défaut,
+- puis vers une possible lecture spectrale,
+- enfin vers un horizon de type HRG.
+
+Ce qui est acquis ici :
+- la structure des objets ;
+- le point d’ancrage dans le noyau fini ;
+- la positivité quadratique élémentaire.
+
+Ce qui reste ouvert :
+- l’implémentation analytique complète de `I(φ)` ;
+- la fermeture rigoureuse du pont spectral ;
+- la direction réciproque du critère.
+-/
 
 end CouretUnification.Criterion
