@@ -5,3 +5,5 @@ patches
 *.zip
 *.tar
 *.gz
+.venv
+/venv

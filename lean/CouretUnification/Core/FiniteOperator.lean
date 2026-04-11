@@ -42,7 +42,7 @@ def TCNat : Idx → Idx → Nat :=
   fun i j => if j.1 ∈ TCRowSupportVals i then 1 else 0
 
 /-- Opérateur fini exact associé à T_C. -/
-def TC : Kernel :=
+def TCKernel : Kernel :=
   fun i j => (TCNat i j : ℂ)
 
 /-- Application d'un noyau fini à un vecteur. -/
@@ -55,25 +55,25 @@ def oneVec : Vec := fun _ => 1
 /--
 Symétrie de la matrice de convolution finie associée à T_C.
 -/
-lemma TC_symm (i j : Idx) : TC i j = TC j i := by
-  fin_cases i <;> fin_cases j <;> norm_num [TC, TCNat, TCRowSupportVals]
+lemma TCKernel_symm (i j : Idx) : TCKernel i j = TCKernel j i := by
+  fin_cases i <;> fin_cases j <;> norm_num [TCKernel, TCNat, TCRowSupportVals]
 
 lemma TCNat_row_sum (i : Idx) : ∑ j : Idx, TCNat i j = 3 := by
   fin_cases i <;> native_decide
 
 /--
-Chaque ligne de TC contient exactement trois coefficients égaux à 1.
+Chaque ligne de `TCKernel` contient exactement trois coefficients égaux à 1.
 -/
-lemma TC_row_sum (i : Idx) : ∑ j : Idx, TC i j = (3 : ℂ) := by
-  simp only [TC]
+lemma TCKernel_row_sum (i : Idx) : ∑ j : Idx, TCKernel i j = (3 : ℂ) := by
+  simp only [TCKernel]
   exact_mod_cast TCNat_row_sum i
 
 /--
-Le vecteur constant 1 est vecteur propre de TC pour la valeur propre 3.
+Le vecteur constant 1 est vecteur propre de `TCKernel` pour la valeur propre 3.
 -/
-lemma TC_on_oneVec : applyKernel TC oneVec = fun _ => (3 : ℂ) := by
+lemma TCKernel_on_oneVec : applyKernel TCKernel oneVec = fun _ => (3 : ℂ) := by
   funext i
-  simp [applyKernel, oneVec, TC_row_sum]
+  simp [applyKernel, oneVec, TCKernel_row_sum]
 
 end
 

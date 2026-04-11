@@ -180,10 +180,10 @@ for u in range(2):
 assert defect_projector_support_is_only_a1(), "Défaut δ₁₉−δ₂₉ devrait vivre sur u=1 seulement"
 print()
 print("  ┌────────────────────────────────────────────────────────┐")
-print("  │  δ₁₉ − δ₂₉ = (1/4) Σ_{b=0}^{3} (−1)^b · χ_{1,b}    │")
-print("  │  Support : uniquement canaux u=1                      │")
-print("  │  19 est un FANTÔME C₄ (v: 0→2 dans secteur u=0)       │")
-print("  │  δ₁₉−δ₂₉ est un DÉFAUT C₂ (porté par u=1 seul)      │")
+print("  │  δ₁₉ − δ₂₉ = (1/4) Σ_{b=0}^{3} (−1)^b · χ_{1,b}        │")
+print("  │  Support : uniquement canaux u=1                       │")
+print("  │  19 est un FANTÔME C₄ (v: 0→2 dans secteur u=0)        │")
+print("  │  δ₁₉−δ₂₉ est un DÉFAUT C₂ (porté par u=1 seul)         │")
 print("  └────────────────────────────────────────────────────────┘")
 
 # Vérification numérique de la formule Gemini
@@ -373,10 +373,10 @@ print("  SYNTHÈSE — ARCHITECTURE H3 STABILISÉE")
 print("=" * 72)
 print(f"""
   ┌──────────────────────────────────────────────────────────────┐
-  │  TABLE CRT GELÉE : 19 ↦ (0,2) — fantôme C₄                 │
-  │  FORMULE GEMINI : δ₁₉−δ₂₉ = (1/4) Σ (−1)^b χ₁,b           │
+  │  TABLE CRT GELÉE : 19 ↦ (0,2) — fantôme C₄                   │
+  │  FORMULE GEMINI : δ₁₉−δ₂₉ = (1/4) Σ (−1)^b χ₁,b              │
   │  SUPPORT RUPTURE : uniquement canaux u=1                     │
-  │  ANNULATION 𝟙_TC(19) : interférence de 6 canaux sur 8       │
+  │  ANNULATION 𝟙_TC(19) : interférence de 6 canaux sur 8        │
   │  CLASSE 19 : plus fort déficit de premiers (−3.2)            │
   └──────────────────────────────────────────────────────────────┘
 

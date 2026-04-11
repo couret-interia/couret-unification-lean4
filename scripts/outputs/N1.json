@@ -1,0 +1,5 @@
+{
+  "test": "N1_finite_core",
+  "pass": true,
+  "checks": 13
+}

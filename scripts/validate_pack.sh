@@ -72,7 +72,7 @@ check "grep -q 'RHClaimed' README.md" "RHClaimed mentioned in README"
 # ──── 5. Scripts ────
 echo ""
 echo "[5/5] Scripts..."
-check "test -f scripts/test_veff.gp" "scripts/test_veff.gp"
+check "test -f pari/test_veff.gp" "pari/test_veff.gp"
 check "test -f scripts/channel_bridge_v3.py" "scripts/channel_bridge_v3.py"
 check "test -f scripts/evidence_veff.py" "scripts/evidence_veff.py"
 check "test -f scripts/compute_moments.py" "scripts/compute_moments.py"
