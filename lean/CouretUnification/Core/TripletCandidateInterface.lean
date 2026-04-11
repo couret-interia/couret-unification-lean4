@@ -1,4 +1,5 @@
 import CouretUnification.Core.TripletDocumentaryCertificate
+import CouretUnification.Core.TripletDocumentaryPowerInterface
 import CouretUnification.Core.TripletPowerSpectrum
 import Mathlib.Tactic
 
@@ -55,15 +56,6 @@ theorem TripletCandidateInterface.matchesHistoricalPower
     tripletPowerSpectrum T =
       C.documentary.candidate.powerHistorical.map (fun n => (n : ℝ)) := by
   exact C.powerHistoricalRecollement
-
-/--
-Prédicat brut : un certificat documentaire porte un candidat quadratique
-cohérent avec le calcul harmonique.
--/
-def documentaryCertificateMatchesHistoricalPower
-    {T : Triplet} (D : TripletDocumentaryCertificate T) : Prop :=
-  tripletPowerSpectrum T =
-    D.candidate.powerHistorical.map (fun n => (n : ℝ))
 
 /--
 Cas Couret : candidat documentaire harmonico-quadratique canonique.
