@@ -25,8 +25,8 @@ theorem sq_7  : (7  * 7  : ZMod 30) = 19 := by native_decide
 theorem sq_11 : (11 * 11 : ZMod 30) = 1  := by native_decide
 theorem sq_29 : (29 * 29 : ZMod 30) = 1  := by native_decide
 
-def squareImage : Finset (ZMod 30) := U30.image (· * ·)
-theorem squareImage_eq : U30.image (fun x => x * x) = {1, 19} := by native_decide
+def squareImage : Finset (ZMod 30) := U30.image fun x => x * x
+theorem squareImage_eq : squareImage = {1, 19} := by native_decide
 
 theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
 theorem order_7  : (7 : ZMod 30) ^ 4 = 1 := by native_decide
