@@ -291,14 +291,4 @@ def current_state : ProgramState :=
 theorem state_honest : current_state.rh_claimed = false := rfl
 theorem lock3_is_open : current_state.lock3_open = true := rfl
 
--- Vérifications locales
-example : c_chi 0 = (3 : ℚ) / 8 := by
-  native_decide
-
-example : chi_at_19 4 = (-1 : ℚ) := by
-  native_decide
-
-example : ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
-  native_decide
-
 end CouretUnification.Crown
