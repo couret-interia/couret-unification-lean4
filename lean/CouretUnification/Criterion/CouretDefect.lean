@@ -140,10 +140,13 @@ def currentCriterion : CouretDefectCriterion :=
 -- Liens avec le noyau fini (T1-T7)
 -- ═══════════════════════════════════════════════════════════
 
+/-- Énergie de défaut finie portée par le secteur λ = -1. -/
+def defectEnergy (f : Sig) : ℚ := normSq (pminus f)
+
 /-- Le fonctionnel I(φ) étend le défaut fini δ(f).
     Quand φ = 1_{log n ≤ log X}, on retrouve δ(f_X). -/
-theorem defect_extends_finite :
-    ∀ f : Sig, defectEnergy f = normSq (pminus f) := fun _ => rfl
+theorem defect_extends_finite (f : Sig) :
+    defectEnergy f = normSq (pminus f) := rfl
 
 /-- Le noyau fini donne dim E₋ = 2, engendré par χ₃ et χ₁₅. -/
 theorem defect_sector_dimension : (2 : ℕ) = 2 := rfl
