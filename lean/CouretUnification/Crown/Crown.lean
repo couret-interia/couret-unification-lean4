@@ -58,19 +58,18 @@ theorem TC_not_subgroup :
 
 /-- Coefficients rationnels utilisés dans la lecture "fantôme". -/
 def c_chi : CouretUnification.Finite.Sig :=
-  ![(3 : ℚ)/8, (1 : ℚ)/8, (3 : ℚ)/8, (1 : ℚ)/8,
-    (-1 : ℚ)/8, (1 : ℚ)/8, (-1 : ℚ)/8, (1 : ℚ)/8]
+  ![(3 : ℚ) / 8, (1 : ℚ) / 8, (3 : ℚ) / 8, (1 : ℚ) / 8,
+    (-1 : ℚ) / 8, (1 : ℚ) / 8, (-1 : ℚ) / 8, (1 : ℚ) / 8]
 
 /--
-`chi_at_19` n'est pas redéfini localement : on réutilise le caractère réel
-déjà fixé dans `Finite/Foundations.lean`.
+`chi_at_19` est ici le caractère rationnel `chi15` du noyau fini exact.
 -/
 abbrev chi_at_19 : CouretUnification.Finite.Sig :=
   CouretUnification.Finite.chi15
 
 /--
 Nom historique conservé pour compatibilité.
-Mathématiquement, l'appariement vaut `1`, pas `0`.
+Mathématiquement, l'appariement vaut `1`.
 -/
 theorem ghost_cancellation :
     ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
@@ -148,9 +147,9 @@ def hadamard_proved : HadamardXi :=
   , B1_zero := True }
 
 structure Det2XiChain where
-  step_A : Prop  -- Hadamard → produit
-  step_B : Prop  -- B₁ = 0 → pas d'exponentielle
-  step_C : Prop  -- appariement ±γ → produit réel
+  step_A : Prop
+  step_B : Prop
+  step_C : Prop
 
 def chain_ABC_proved : Det2XiChain :=
   { step_A := True
@@ -292,16 +291,15 @@ def current_state : ProgramState :=
 theorem state_honest : current_state.rh_claimed = false := rfl
 theorem lock3_is_open : current_state.lock3_open = true := rfl
 
-
-
-example : c_chi 0 = (3 : ℚ)/8 := by
+-- Vérifications locales
+example : c_chi 0 = (3 : ℚ) / 8 := by
   norm_num [c_chi]
+
 example : chi_at_19 4 = (-1 : ℚ) := by
   norm_num [chi_at_19]
+
 example : ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
   rw [Fin.sum_univ_eight]
   norm_num [c_chi, chi_at_19]
-
-
 
 end CouretUnification.Crown
