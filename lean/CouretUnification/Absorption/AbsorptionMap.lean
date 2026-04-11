@@ -59,11 +59,11 @@ def currentCertificate : NumericalCertificate :=
 
 /-- La borne hybride est strictement positive. -/
 theorem hybrid_bound_pos : (0 : ℚ) < currentCertificate.hybrid_bound := by
-  simp [currentCertificate]; norm_num
+  norm_num [currentCertificate]
 
 /-- La région absorbante est majoritaire. -/
 theorem omega_abs_majority : currentCertificate.omega_abs_percent > 50 := by
-  simp [currentCertificate]; norm_num
+  norm_num [currentCertificate]
 
 -- ═══════════════════════════════════════════════════════════
 -- Le Lemme Hybride (conditionnel GRH, typé)
