@@ -62,7 +62,8 @@ def c_chi : CouretUnification.Finite.Sig :=
     (-1 : ℚ) / 8, (1 : ℚ) / 8, (-1 : ℚ) / 8, (1 : ℚ) / 8]
 
 /--
-`chi_at_19` est ici le caractère rationnel `chi15` du noyau fini exact.
+`chi_at_19` est ici le caractère rationnel `chi15` du noyau fini exact,
+c’est-à-dire le vecteur `![1, -1, 1, -1, -1, 1, -1, 1]`.
 -/
 abbrev chi_at_19 : CouretUnification.Finite.Sig :=
   CouretUnification.Finite.chi15
@@ -73,8 +74,7 @@ Mathématiquement, l'appariement vaut `1`.
 -/
 theorem ghost_cancellation :
     ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
-  rw [Fin.sum_univ_eight]
-  norm_num [c_chi, chi_at_19]
+  native_decide
 
 theorem parseval_24 :
     (9 + 1 + 9 + 1 + 1 + 1 + 1 + 1 : ℕ) = 24 := by
@@ -293,13 +293,12 @@ theorem lock3_is_open : current_state.lock3_open = true := rfl
 
 -- Vérifications locales
 example : c_chi 0 = (3 : ℚ) / 8 := by
-  norm_num [c_chi]
+  native_decide
 
 example : chi_at_19 4 = (-1 : ℚ) := by
-  norm_num [chi_at_19]
+  native_decide
 
 example : ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
-  rw [Fin.sum_univ_eight]
-  norm_num [c_chi, chi_at_19]
+  native_decide
 
 end CouretUnification.Crown
