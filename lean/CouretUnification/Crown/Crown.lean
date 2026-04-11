@@ -1,48 +1,107 @@
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Basic
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Fin.VecNotation
+import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.String.Defs
+import Mathlib.Tactic
+
+import CouretUnification.Finite.Foundations
+import CouretUnification.Spectral.FiniteCore
 
 /-!
 # CouretUnification.Crown — État Maximal de la Démonstration
 # Programme Couret-Unification — Alexandre Couret — Avril 2026
 # Dédié à Bernard Couret (1928–2010)
 
-## Bilan : 0 sorry, 1 axiome conjectural (lock3 : HPOperator)
-## RHClaimed = false
+## Rôle de ce fichier
+Ce fichier est une **couche de synthèse** :
+- il réutilise le noyau fini exact déjà établi dans
+  `Finite/Foundations.lean` et `Spectral/FiniteCore.lean`,
+- il assemble les statuts logiques / épistémiques du programme,
+- il conserve explicitement le caractère **conditionnel** de Lock 3.
+
+## Bilan
+- 0 sorry
+- 1 axiome conjectural (`lock3 : HPOperator`)
+- `RHClaimed = false`
 -/
 
+open scoped BigOperators
+
 namespace CouretUnification.Crown
+open CouretUnification.Finite
 
 -- ═══════════════════════════════════════════════════════════════════
--- §1. NOYAU FINI EXACT — Certifié, 0 sorry
+-- §1. Noyau fini exact — synthèse légère, sans redondance inutile
 -- ═══════════════════════════════════════════════════════════════════
 
 def phi30 : Nat := 8
+
+/-- Triplet Couret brut dans `(Z/30Z)`. -/
 def TC : Finset (ZMod 30) := {1, 11, 29}
 
-theorem TC_card : TC.card = 3 := by native_decide
-theorem phantom_product : (11 * 29 : ZMod 30) = 19 := by native_decide
-theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
-
-theorem TC_not_subgroup : ¬(∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) := by
-  intro h; have := h 11 29 (by native_decide) (by native_decide)
-  simp [phantom_product] at this; exact phantom_not_in_TC this
-
-def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
-def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
-
-theorem ghost_cancellation : ∑ i : Fin 8, c_chi i * chi_at_19 i = 0 := by
+theorem TC_card : TC.card = 3 := by
   native_decide
 
-theorem parseval_24 : (9 + 1 + 9 + 1 + 1 + 1 + 1 + 1 : ℕ) = 24 := by norm_num
-theorem classification_63_of_255 : (63 : ℕ) + 192 = 255 := by norm_num
+theorem phantom_product : (11 * 29 : ZMod 30) = 19 := by
+  native_decide
+
+theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by
+  native_decide
+
+theorem TC_not_subgroup :
+    ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) := by
+  intro h
+  have hz : (11 * 29 : ZMod 30) ∈ TC := h 11 29 (by native_decide) (by native_decide)
+  have h19 : (19 : ZMod 30) ∈ TC := by
+    simpa [phantom_product] using hz
+  exact phantom_not_in_TC h19
+
+/-- Coefficients rationnels utilisés dans la lecture "fantôme". -/
+def c_chi : CouretUnification.Finite.Sig :=
+  ![(3 : ℚ)/8, (1 : ℚ)/8, (3 : ℚ)/8, (1 : ℚ)/8,
+    (-1 : ℚ)/8, (1 : ℚ)/8, (-1 : ℚ)/8, (1 : ℚ)/8]
+
+/--
+`chi_at_19` n'est pas redéfini localement : on réutilise le caractère réel
+déjà fixé dans `Finite/Foundations.lean`.
+-/
+abbrev chi_at_19 : CouretUnification.Finite.Sig :=
+  CouretUnification.Finite.chi15
+
+/--
+Nom historique conservé pour compatibilité.
+Mathématiquement, l'appariement vaut `1`, pas `0`.
+-/
+theorem ghost_cancellation :
+    ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
+  rw [Fin.sum_univ_eight]
+  norm_num [c_chi, chi_at_19]
+
+theorem parseval_24 :
+    (9 + 1 + 9 + 1 + 1 + 1 + 1 + 1 : ℕ) = 24 := by
+  norm_num
+
+theorem classification_63_of_255 :
+    (63 : ℕ) + 192 = 255 := by
+  norm_num
+
+/-- Pont explicite vers le noyau spectral fini déjà démontré. -/
+theorem finite_core_exact_summary :
+    CouretUnification.FiniteCore.applyL CouretUnification.FiniteCore.oneVec = 0 ∧
+    CouretUnification.FiniteCore.applyL CouretUnification.FiniteCore.altVec = 0 ∧
+    (∑ i, CouretUnification.FiniteCore.altVec i = 0) := by
+  exact CouretUnification.FiniteCore.finite_spectral_structure_summary
+
+theorem lambda_sq_eq_one_seventh :
+    (1 / Real.sqrt 7)^2 = (1 : ℝ) / 7 := by
+  exact CouretUnification.FiniteCore.lambda_sq_eq_one_seventh
 
 -- ═══════════════════════════════════════════════════════════════════
--- §2. AUTO-ADJONCTION H1 — KLMN, 0 sorry
+-- §2. Auto-adjonction H1 — encapsulation logique
 -- ═══════════════════════════════════════════════════════════════════
 
-theorem klmn_bound : 8491 < 10000 := by norm_num
+theorem klmn_bound : 8491 < 10000 := by
+  native_decide
 
 structure H1_SelfAdjoint where
   operator_defined : Prop
@@ -51,7 +110,7 @@ structure H1_SelfAdjoint where
   spectrum_real : Prop
 
 -- ═══════════════════════════════════════════════════════════════════
--- §3. FERMETURE FONCTIONNELLE H3.A — 8 pièces, 0 sorry
+-- §3. Fermeture fonctionnelle H3.A — 8 pièces
 -- ═══════════════════════════════════════════════════════════════════
 
 structure H3A_FunctionalClosure where
@@ -75,7 +134,7 @@ def H3A_complete : H3A_FunctionalClosure :=
   , A8_heat_resolvent := True }
 
 -- ═══════════════════════════════════════════════════════════════════
--- §4. HADAMARD POUR ξ — Classique, 0 sorry
+-- §4. Hadamard pour ξ — chaîne classique
 -- ═══════════════════════════════════════════════════════════════════
 
 structure HadamardXi where
@@ -99,13 +158,15 @@ def chain_ABC_proved : Det2XiChain :=
   , step_C := True }
 
 -- ═══════════════════════════════════════════════════════════════════
--- §5. DISSOLUTION DE LOCK 2 — Tautologie, 0 sorry
+-- §5. Dissolution de Lock 2 — statut doctrinal
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- Lock 2 (complétion eulérienne) est dissous :
-    si Lock 3 donne Spec(S) = {±1/γ_n}, alors Hadamard donne
-    det₂(I-zS) = C·ξ(1/2+iz) automatiquement.
-    C'est une tautologie, pas un verrou indépendant. -/
+/--
+Lock 2 (complétion eulérienne) est dissous :
+si Lock 3 donne `Spec(S) = {±1/γ_n}`, alors Hadamard donne
+`det₂(I-zS) = C·ξ(1/2+iz)` automatiquement.
+Ce n'est pas un verrou indépendant.
+-/
 structure Lock2Status where
   mechanism : String
   is_independent_lock : Bool
@@ -114,18 +175,19 @@ def lock2_dissolved : Lock2Status :=
   { mechanism := "Hadamard 1893 : genre 1 + B₁=0"
   , is_independent_lock := false }
 
-theorem lock2_not_independent : lock2_dissolved.is_independent_lock = false := rfl
+theorem lock2_not_independent :
+    lock2_dissolved.is_independent_lock = false := rfl
 
 -- ═══════════════════════════════════════════════════════════════════
--- §6. RÉSULTATS NÉGATIFS CONSTRUCTIFS — 0 sorry
+-- §6. Résultats négatifs constructifs
 -- ═══════════════════════════════════════════════════════════════════
 
 inductive NegativeResult where
-  | route_mult_dead     -- R(s) croît exponentiellement
-  | sinc_not_hp         -- ratio A/B → 10¹¹
-  | connes_naive_dead   -- eigenvalues O(1) ≠ O(1/γ)
-  | berry_keating_dead  -- non compact
-  | mu_concentration_refuted  -- M₄ = 15 stable
+  | route_mult_dead
+  | sinc_not_hp
+  | connes_naive_dead
+  | berry_keating_dead
+  | mu_concentration_refuted
   deriving Repr
 
 def eliminated_routes : List NegativeResult :=
@@ -135,11 +197,12 @@ def eliminated_routes : List NegativeResult :=
   , NegativeResult.berry_keating_dead
   , NegativeResult.mu_concentration_refuted ]
 
-theorem five_routes_eliminated : eliminated_routes.length = 5 := by decide
+theorem five_routes_eliminated :
+    eliminated_routes.length = 5 := by
+  decide
 
--- Observations numériques validées
 structure NumericalValidation where
-  sigma_matching_digits : Nat  -- σ_k matching
+  sigma_matching_digits : Nat
   guinand_weil_residual : String
   heat_resolvent_error : String
   mean_spacing_ratio : String
@@ -150,7 +213,6 @@ def validated_observations : NumericalValidation :=
   , heat_resolvent_error := "1.32e-6"
   , mean_spacing_ratio := "0.62 > GUE" }
 
--- D scalaire
 structure DScalarBlock where
   defect_is_multiplicative : Prop
   not_operatorial : Prop
@@ -162,46 +224,48 @@ def D_scalar_proved : DScalarBlock :=
   , functional_equation_compatible := True }
 
 -- ═══════════════════════════════════════════════════════════════════
--- §7. LOCK 3 — LE SORRY UNIQUE
+-- §7. Lock 3 — unique point conjectural
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- L'opérateur de Hilbert-Pólya : la cible du programme. -/
+/-- L'opérateur de Hilbert–Pólya : cible du programme. -/
 structure HPOperator where
-  /-- S est auto-adjoint compact dans S₂ -/
   self_adjoint : Prop
-  /-- Spec(S) = {±1/γ_n} où γ_n parcourt les ordonnées des zéros -/
   spectrum_matches_zeros : Prop
-  /-- det₂(I - zS) converge et reproduit ξ -/
   det2_reproduces_xi : Prop
 
-/-- Les 3 routes survivantes vers Lock 3. -/
+/-- Les trois routes survivantes vers Lock 3. -/
 inductive ConstructionRoute where
   | primorial_tower
   | connes_adelic
   | guinand_weil_topdown
   deriving Repr
 
-/-- LE SORRY UNIQUE : l'existence de l'opérateur HP. -/
+/-- Unique hypothèse conjecturale du fichier. -/
 axiom lock3 : HPOperator
 
 -- ═══════════════════════════════════════════════════════════════════
--- §8. RH COMME CONSÉQUENCE — Conditionnel à §7
+-- §8. RH comme conséquence — strictement conditionnelle
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- Si Lock 3 tient, alors det₂(I-zS_GW) = C · ξ(1/2+iz). -/
+/-- Si Lock 3 tient, alors `det₂(I-zS) = C · ξ(1/2+iz)` au niveau programmatique. -/
 def det2_equals_xi (S : HPOperator) : Prop :=
   S.spectrum_matches_zeros → True
 
-/-- Si Lock 3 tient, alors RH est vraie. -/
+/--
+Si Lock 3 tient, alors RH suit.
+Les hypothèses sont volontairement présentes dans la signature,
+mais anonymisées car cette couche ne contient pas encore la preuve analytique.
+-/
 def lock3_implies_RH (S : HPOperator)
-    (hSA : S.self_adjoint) (hSpec : S.spectrum_matches_zeros) : Prop :=
+    (_hSA : S.self_adjoint) (_hSpec : S.spectrum_matches_zeros) : Prop :=
   True
 
 -- ═══════════════════════════════════════════════════════════════════
--- §9. GARDES ÉPISTÉMIQUES
+-- §9. Gardes épistémiques
 -- ═══════════════════════════════════════════════════════════════════
 
 def RHClaimed : Bool := false
+
 theorem rh_not_claimed : RHClaimed = false := rfl
 
 def axiom_count_logical : Nat := 0
@@ -227,5 +291,17 @@ def current_state : ProgramState :=
 
 theorem state_honest : current_state.rh_claimed = false := rfl
 theorem lock3_is_open : current_state.lock3_open = true := rfl
+
+
+
+example : c_chi 0 = (3 : ℚ)/8 := by
+  norm_num [c_chi]
+example : chi_at_19 4 = (-1 : ℚ) := by
+  norm_num [chi_at_19]
+example : ∑ i : Fin 8, c_chi i * chi_at_19 i = 1 := by
+  rw [Fin.sum_univ_eight]
+  norm_num [c_chi, chi_at_19]
+
+
 
 end CouretUnification.Crown
