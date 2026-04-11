@@ -57,10 +57,10 @@ theorem T3_minpoly :
             (msub cayleyMat (scI (-1)))) mzero = true := by native_decide
 
 -- §3.5 Coefficients de Fourier de TC
-theorem T3_tc_dot_one   : dot tcInd one   = 3  := by native_decide
-theorem T3_tc_dot_chi5  : dot tcInd chi5  = 3  := by native_decide
-theorem T3_tc_dot_chi3  : dot tcInd chi3  = 1  := by native_decide
-theorem T3_tc_dot_chi15 : dot tcInd chi15 = -1 := by native_decide
+theorem T3_tc_dot_one   : dot tcInd one   = 3 := by native_decide
+theorem T3_tc_dot_chi5  : dot tcInd chi5  = 1 := by native_decide
+theorem T3_tc_dot_chi3  : dot tcInd chi3  = 1 := by native_decide
+theorem T3_tc_dot_chi15 : dot tcInd chi15 = 3 := by native_decide
 
 -- ═══════════════════════════════════════════════════════════
 -- T4 — Projecteur cohérent P₃
@@ -68,14 +68,14 @@ theorem T3_tc_dot_chi15 : dot tcInd chi15 = -1 := by native_decide
 
 -- §4.1 Vérification sur TC
 theorem T4_P3_tc_0 : p3 tcInd 0 = 1/2 := by native_decide
-theorem T4_P3_tc_1 : p3 tcInd 1 = 0   := by native_decide
+theorem T4_P3_tc_1 : p3 tcInd 1 = 1/4 := by native_decide
 
 -- §4.2 Idempotence de P₃
 theorem T4_P3_idempotent :
     veq (p3 (p3 tcInd)) (p3 tcInd) = true := by native_decide
 
 -- §4.3 Énergie P₃ sur TC
-theorem T4_normSq_P3_tc : normSq (p3 tcInd) = 9/4 := by native_decide
+theorem T4_normSq_P3_tc : normSq (p3 tcInd) = 5/4 := by native_decide
 
 -- ═══════════════════════════════════════════════════════════
 -- T5 — Projecteur neutre P₁
@@ -93,26 +93,30 @@ theorem T5_normSq_P1_tc : normSq (p1 tcInd) = 1/2 := by native_decide
 -- ═══════════════════════════════════════════════════════════
 
 -- §6.1 Coordonnées de défaut de TC
-theorem T6_alpha_tc : alpha tcInd = 0  := by native_decide
-theorem T6_beta_tc  : beta tcInd  = 0  := by native_decide
+theorem T6_alpha_tc : alpha tcInd = 2 := by native_decide
+theorem T6_beta_tc  : beta tcInd  = -1 := by native_decide
 
 -- §6.2 Idempotence
 theorem T6_Pminus_idempotent :
     veq (pminus (pminus tcInd)) (pminus tcInd) = true := by native_decide
 
 -- §6.3 Énergie P₋ sur TC
-theorem T6_normSq_Pminus_tc : normSq (pminus tcInd) = 0 := by native_decide
+theorem T6_normSq_Pminus_tc : normSq (pminus tcInd) = 5/4 := by native_decide
 
 -- §6.4 Canaux quadratiques de TC
-theorem T6_B3_tc  : B3 tcInd  = 1  := by native_decide
-theorem T6_B15_tc : B15 tcInd = -1 := by native_decide
+theorem T6_B3_tc  : B3 tcInd  = 1 := by native_decide
+theorem T6_B15_tc : B15 tcInd = 3 := by native_decide
 
 -- §6.5 Annulation du fantôme
 def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
 def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
 
-theorem T6_ghost_cancellation :
-    (List.finRange 8).foldl (fun acc i => acc + c_chi i * chi_at_19 i) 0 = 0 := by
+theorem T6_ghost_19_profile :
+    p3 tcInd 5 = 1/4 ∧ p1 tcInd 5 = -1/2 ∧ pminus tcInd 5 = 1/4 := by
+  refine ⟨?_, ?_, ?_⟩ <;> native_decide
+
+theorem T6_ghost_19_cancellation :
+    p3 tcInd 5 + p1 tcInd 5 + pminus tcInd 5 = 0 := by
   native_decide
 
 -- ═══════════════════════════════════════════════════════════
@@ -126,7 +130,7 @@ theorem T7_pythagoras_tc :
 
 -- §7.2 Vérification numérique : 3 = 9/4 + 1/2 + 0 + 1/4
 -- (Note : defect=0 pour TC car alpha=beta=0; l'énergie "manquante" vient de P1)
-theorem T7_energy_check : (9 : ℚ)/4 + 1/2 + 0 = 3 - 1/4 := by norm_num
+theorem T7_energy_check : (5 : ℚ)/4 + 1/2 + 5/4 = 3 := by norm_num
 
 -- §7.3 Orthogonalité des projecteurs sur TC
 theorem T7_orth_P3_P1_tc    : dot (p3 tcInd) (p1 tcInd) = 0     := by native_decide
