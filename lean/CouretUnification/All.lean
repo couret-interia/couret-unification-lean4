@@ -333,3 +333,5 @@ import CouretUnification.Logic.H3.ZeroMatching
 -- ─── COUCHE 5 : Couronne doctrinale (1 axiom lock3) ────────
 -- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
 import CouretUnification.Crown
+-- L6 : Absorption archimédienne par canal (quasi-fermé)
+import CouretUnification.Criterion.L6_Absorption

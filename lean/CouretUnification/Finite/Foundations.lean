@@ -204,6 +204,16 @@ Translation correspondant au facteur `(1,0)` dans la lecture CRT.
 def perm10 : Fin 8 → Fin 8 := ![4, 5, 6, 7, 0, 1, 2, 3]
 
 /--
+Translation correspondant au facteur `(1,1)` dans la lecture CRT.
+-/
+def perm11 : Fin 8 → Fin 8 := ![2, 4, 0, 6, 1, 7, 3, 5]
+
+/--
+Translation correspondant au facteur `(2,9)` dans la lecture CRT.
+-/
+def perm29 : Fin 8 → Fin 8 := ![7, 6, 5, 4, 3, 2, 1, 0]
+
+/--
 Translation correspondant au facteur `(1,2)` dans la lecture CRT.
 -/
 def perm12 : Fin 8 → Fin 8 := ![6, 7, 4, 5, 2, 3, 0, 1]

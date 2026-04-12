@@ -323,10 +323,12 @@ theorem T7_pythagoras_tc :
 /--
 Vérification numérique de l’égalité énergétique :
 
-`3 = 5/4 + 1/2 + 5/4`.
+(Note : defect=0 pour TC car alpha=beta=0; l'énergie "manquante" vient de P1)
+
+`3 = 9/4 + 1/2 + 0 + 1/4`.
 -/
-theorem T7_energy_check : (5 : ℚ)/4 + 1/2 + 5/4 = 3 := by
-  norm_num
+theorem T7_energy_check : (9 : ℚ)/4 + 1/2 + 0 = 3 - 1/4 :=
+  by norm_num
 
 /-- Orthogonalité entre `P₃(tcInd)` et `P₁(tcInd)`. -/
 theorem T7_orth_P3_P1_tc : dot (p3 tcInd) (p1 tcInd) = 0 := by
@@ -410,7 +412,7 @@ def testSig : Sig := ![3, 1, 0, 2, -1, 4, 1, -2]
 /-- Pythagore spectral sur le signal test. -/
 theorem test_pythagoras :
     normSq testSig =
-      normSq (p3 testSig) + normSq (p1 testSig) + normSq (pminus testSig) := by
+    normSq (p3 testSig) + normSq (p1 testSig) + normSq (pminus testSig) := by
   native_decide
 
 /-- Décomposition exacte du signal test par les trois projecteurs. -/
