@@ -27,11 +27,12 @@ namespace CouretUnification.Core.FiniteCore
 -- §1. G₃₀
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] Résidus admissibles dans `(ℤ/30ℤ)×`. -/
-def admissibleResidues : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
+/-- [REAL] Résidus admissibles, identifiés canoniquement à `Core.U30`. -/
+abbrev admissibleResidues : Finset (ZMod 30) := CouretUnification.Core.U30
 
 /-- [REAL] Le groupe des unités modulo `30` a cardinal `8`. -/
-theorem admissibleResidues_card : admissibleResidues.card = 8 := by native_decide
+theorem admissibleResidues_card : admissibleResidues.card = 8 :=
+  CouretUnification.Core.card_U30
 
 -- ═══════════════════════════════════════════════════════════
 -- §2. TC
@@ -46,7 +47,7 @@ theorem TC_card : TC.card = 3 :=
 
 /-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles. -/
 theorem TC_subset : TC ⊆ admissibleResidues := by
-  simpa [admissibleResidues, CouretUnification.Core.U30] using CouretUnification.Core.TC_subset
+  exact CouretUnification.Core.TC_subset
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Fantôme 19
