@@ -15,14 +15,20 @@ SORRY_LINES=$(
   find "$LEAN_DIR" -type f -name "*.lean" -print0 |
   while IFS= read -r -d '' file; do
     awk -v file="$file" '
+      function has_sorry_token(text) {
+        return text ~ /(^|[^[:alnum:]_])sorry([^[:alnum:]_]|$)/
+      }
+
       function emit_if_match(text, line_no) {
-        if (text ~ /sorry/ && text !~ /sorryCount/ && text !~ /sorry_/) {
+        if (has_sorry_token(text)) {
           print file ":" line_no ":" text
         }
       }
 
       BEGIN {
         block = 0
+        in_string = 0
+        escape = 0
       }
 
       {
@@ -36,23 +42,33 @@ SORRY_LINES=$(
           ch  = substr(line, i, 1)
 
           if (block > 0) {
-            if (two == "/-") {
+            if (!in_string && two == "/-") {
               block++
               i += 2
-            } else if (two == "-/") {
+            } else if (!in_string && two == "-/") {
               block--
               i += 2
+            } else if (ch == "\"" && !escape) {
+              in_string = !in_string
+              i++
             } else {
+              escape = (in_string && ch == "\\" && !escape)
+              if (!(in_string && ch == "\\" && !escape)) escape = 0
               i++
             }
           } else {
-            if (two == "--") {
+            if (!in_string && two == "--") {
               break
-            } else if (two == "/-") {
+            } else if (!in_string && two == "/-") {
               block++
               i += 2
+            } else if (ch == "\"" && !escape) {
+              in_string = !in_string
+              i++
             } else {
-              out = out ch
+              if (!in_string) out = out ch
+              escape = (in_string && ch == "\\" && !escape)
+              if (!(in_string && ch == "\\" && !escape)) escape = 0
               i++
             }
           }
@@ -65,7 +81,7 @@ SORRY_LINES=$(
 )
 
 printf '%s\n' "$SORRY_LINES"
-SORRY_COUNT=$(printf '%s\n' "$SORRY_LINES" | sed '/^$/d' | wc -l)
+SORRY_COUNT=$(printf '%s\n' "$SORRY_LINES" | sed '/^$/d' | wc -l | tr -d ' ')
 echo "  Total sorry: $SORRY_COUNT"
 echo ""
 
