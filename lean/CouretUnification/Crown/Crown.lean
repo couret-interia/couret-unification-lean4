@@ -4,6 +4,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.String.Defs
 import Mathlib.Tactic
 
+import CouretUnification.Core.U30
 import CouretUnification.Finite.Foundations
 import CouretUnification.Spectral.FiniteCore
 
@@ -36,25 +37,21 @@ open CouretUnification.Finite
 
 def phi30 : Nat := 8
 
-/-- Triplet Couret brut dans `(Z/30Z)`. -/
-def TC : Finset (ZMod 30) := {1, 11, 29}
+/-- Triplet Couret. -/
+abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
 
-theorem TC_card : TC.card = 3 := by
-  native_decide
+theorem TC_card : TC.card = 3 :=
+  CouretUnification.Core.TC_card
 
-theorem phantom_product : (11 * 29 : ZMod 30) = 19 := by
-  native_decide
+theorem phantom_product : (11 * 29 : ZMod 30) = 19 :=
+  CouretUnification.Core.phantom_product
 
-theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by
-  native_decide
+theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
+  CouretUnification.Core.phantom_not_in_TC
 
 theorem TC_not_subgroup :
-    ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) := by
-  intro h
-  have hz : (11 * 29 : ZMod 30) ∈ TC := h 11 29 (by native_decide) (by native_decide)
-  have h19 : (19 : ZMod 30) ∈ TC := by
-    simpa [phantom_product] using hz
-  exact phantom_not_in_TC h19
+    ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
+  CouretUnification.Core.TC_not_subgroup
 
 /-- Coefficients rationnels utilisés dans la lecture "fantôme". -/
 def c_chi : CouretUnification.Finite.Sig :=

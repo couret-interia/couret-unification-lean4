@@ -52,6 +52,9 @@ theorem card_U30 : U30.card = 8 := by native_decide
 /-- Le triplet `TC` contient exactement 3 éléments. -/
 theorem card_TC : TC.card = 3 := by native_decide
 
+/-- Alias de card_TC. -/
+theorem TC_card : TC.card = 3 := card_TC
+
 /-- Le triplet de Couret est inclus dans l’ensemble des unités mod 30. -/
 theorem TC_subset : TC ⊆ U30 := by native_decide
 

@@ -76,8 +76,8 @@ theorem half_singletons : intSpecByCard 1 = totalByCard 1 / 2 := by native_decid
 theorem full_group : intSpecByCard 8 = 1 := intSpec_8
 
 /-- TC = {1,11,29} is one of the 12 integer-spectrum triplets. -/
-theorem TC_card : popcount couretMask = 3 := by native_decide
-theorem TC_int_spec : hasIntSpec couretMask = true := by native_decide
+theorem couretMask_card : popcount couretMask = 3 := by native_decide
+theorem couretMask_int_spec : hasIntSpec couretMask = true := by native_decide
 
 /-- Peak at |S| = 4 (14 subsets). -/
 theorem peak_at_4 : intSpecByCard 4 = 14 := intSpec_4

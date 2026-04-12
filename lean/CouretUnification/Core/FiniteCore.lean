@@ -3,6 +3,8 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+import CouretUnification.Core.U30
+
 /-!
 # CouretUnification.Core.FiniteCore — T1 Noyau fini exact
 
@@ -36,13 +38,15 @@ theorem admissibleResidues_card : admissibleResidues.card = 8 := by native_decid
 -- ═══════════════════════════════════════════════════════════
 
 /-- [REAL] Le triplet de Couret `TC = {1, 11, 29}`. -/
-def TC : Finset (ZMod 30) := {1, 11, 29}
+abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
 
 /-- [REAL] `TC` a exactement trois éléments. -/
-theorem TC_card : TC.card = 3 := by native_decide
+theorem TC_card : TC.card = 3 :=
+  CouretUnification.Core.TC_card
 
 /-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles. -/
-theorem TC_subset : TC ⊆ admissibleResidues := by native_decide
+theorem TC_subset : TC ⊆ admissibleResidues := by
+  simpa [admissibleResidues, CouretUnification.Core.U30] using CouretUnification.Core.TC_subset
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Fantôme 19
@@ -50,10 +54,12 @@ theorem TC_subset : TC ⊆ admissibleResidues := by native_decide
 
 /-- [REAL] Produit fantôme :
 `11 * 29 ≡ 19 [ZMOD 30]`. -/
-theorem phantom_product : (11 * 29 : ZMod 30) = 19 := by native_decide
+theorem phantom_product : (11 * 29 : ZMod 30) = 19 :=
+  CouretUnification.Core.phantom_product
 
 /-- [REAL] Le fantôme `19` n’appartient pas au triplet `TC`. -/
-theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
+theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
+  CouretUnification.Core.phantom_not_in_TC
 
 /-- [REAL] Le fantôme `19` reste néanmoins admissible dans `G₃₀`. -/
 theorem phantom_in_G : (19 : ZMod 30) ∈ admissibleResidues := by native_decide
@@ -61,11 +67,9 @@ theorem phantom_in_G : (19 : ZMod 30) ∈ admissibleResidues := by native_decide
 /-- [REAL] `TC` n’est pas un sous-groupe multiplicatif de `(ℤ/30ℤ)×`.
 
 Preuve : `11,29 ∈ TC`, mais `11*29 = 19` et `19 ∉ TC`. -/
-theorem TC_not_subgroup : ¬(∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) := by
-  intro h
-  have h1 := h 11 29 (by native_decide) (by native_decide)
-  rw [phantom_product] at h1
-  exact phantom_not_in_TC h1
+theorem TC_not_subgroup :
+    ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
+  CouretUnification.Core.TC_not_subgroup
 
 -- ═══════════════════════════════════════════════════════════
 -- §4. Spectre
@@ -186,7 +190,8 @@ theorem split_11 : 480 = 48 * (11 - 1) := by norm_num
 -- ═══════════════════════════════════════════════════════════
 
 /-- [REAL] Le cardinal de `TC` est impair. -/
-theorem TC_dim_odd : ¬ 2 ∣ TC.card := by native_decide
+theorem TC_dim_odd : ¬ 2 ∣ TC.card :=
+  CouretUnification.Core.TC_dim_odd
 
 /-- [REAL] Le cardinal de `G₃₀` est pair. -/
 theorem G30_dim_even : 2 ∣ admissibleResidues.card := by native_decide

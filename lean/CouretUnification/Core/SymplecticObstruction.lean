@@ -1,7 +1,9 @@
 import Mathlib.Tactic
+import CouretUnification.Core.U30
 
 namespace CouretUnification.Core
 namespace SymplecticObstruction
+
 
 /-!
 # Obstruction symplectique : J² = −I impossible en dimension impaire
@@ -96,7 +98,11 @@ theorem symplectic_requires_even (n : Nat) (hn : ∃ k, n = 2 * k + 1) :
 -- ═══════════════════════════════════════════
 
 /-- TC itself has cardinal 3 (odd): no symplectic structure. -/
-theorem TC_card_odd : [1, 11, 29].length = 3 := by decide
+theorem TC_card_eq_three : CouretUnification.Core.TC.card = 3 :=
+  CouretUnification.Core.TC_card
+
+theorem TC_card_odd : ¬ 2 ∣ CouretUnification.Core.TC.card :=
+  CouretUnification.Core.TC_dim_odd
 
 theorem no_symplectic_TC :
     ¬ ∃ d : Int, d * d = (-1 : Int) ^ 3 := by
