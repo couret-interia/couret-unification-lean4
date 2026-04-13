@@ -1,4 +1,4 @@
-import CouretUnification.Logic.H3.AbelWeighted
+import CouretUnification.Logic.H3.AbelWeightedBound
 import CouretUnification.Core.U30
 import Mathlib.Tactic
 
@@ -112,7 +112,7 @@ def gap_30030 : SpectralGap :=
 theorem gap_grows : gap_30.gap < gap_210.gap ∧
     gap_210.gap < gap_2310.gap ∧
     gap_2310.gap < gap_30030.gap := by
-  constructor <;> [norm_num; constructor <;> norm_num]
+  refine ⟨?_, ?_, ?_⟩ <;> simp [gap_30, gap_210, gap_2310, gap_30030]
 
 -- ═══════════════════════════════════════════════════════════
 -- §2. T5_weak — Borne HS du bloc mixte
@@ -129,7 +129,7 @@ Preuve (schéma) :
 3. Chaque bloc τ contient |S₃₀|·|R₃₀| = 6·2 = 12 entrées.
 4. Donc ‖M₂₁^diag‖²_HS ≤ (φ(q)/8) · 12 · C² = (3C²/2) · φ(q).
 -/
-structure T5Weak where
+structure T5WeakData where
   /-- Constante universelle (indépendante de q). -/
   C_bound : ℚ
   /-- La constante est positive. -/
@@ -145,7 +145,7 @@ Instance courante de T5_weak.
 La constante C = (3/2) · C_θ² · V_φ² est calculable
 à partir des données du programme.
 -/
-def t5_weak_current : T5Weak :=
+def t5_weak_current : T5WeakData :=
   { C_bound := 3/2 * 19 * 19  -- (3/2) · C_PV² avec C_PV ≈ 19
   , C_pos := by norm_num
   , hs_bound_linear := True
@@ -214,7 +214,7 @@ Les vecteurs propres se localisent dans le secteur R_q.
 -/
 structure T9_SchurLocalization where
   /-- T5_weak est satisfait. -/
-  t5 : T5Weak
+  t5 : T5WeakData
   /-- T8 gap spectral. -/
   gap : SpectralGap
   /-- Le ratio de localisation. -/
