@@ -39,9 +39,15 @@ import CouretUnification.Absorption.AbsorptionMap
 import CouretUnification.Bridge.GlobalBridge
 import CouretUnification.Logic.H3.FunctionalFoundation
 import CouretUnification.Logic.H3.ArithmeticBridge
+-- Lemme Abel pondéré (annulation par caractère non trivial)
+import CouretUnification.Logic.H3.AbelWeightedBound
+-- T5_weak + T9 (localisation de Schur)
+import CouretUnification.Logic.H3.T5Weak
 import CouretUnification.Logic.H3.Lemma7Residual
 import CouretUnification.Logic.H3.Lock2Conditional
 import CouretUnification.Logic.H3.ZeroMatching
+-- L10 : persistance de masse sectorielle (fermable par BDH)
+import CouretUnification.Logic.H3.L10_MassPersistence
 
 -- ─── Couche 5 : couronne doctrinale ─────────────────────────
 -- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
