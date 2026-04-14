@@ -332,6 +332,7 @@ import CouretUnification.Logic.H3.Lemma7Residual
 import CouretUnification.Logic.H3.Lock2Conditional
 import CouretUnification.Logic.H3.ZeroMatching
 import CouretUnification.Logic.H3.L10_MassPersistence
+import CouretUnification.Logic.H3.L10Bridge
 
 -- ─── COUCHE 5 : Couronne doctrinale (1 axiom lock3) ────────
 -- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH

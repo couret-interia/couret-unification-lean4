@@ -48,6 +48,7 @@ import CouretUnification.Logic.H3.Lock2Conditional
 import CouretUnification.Logic.H3.ZeroMatching
 -- L10 : persistance de masse sectorielle (fermable par BDH)
 import CouretUnification.Logic.H3.L10_MassPersistence
+import CouretUnification.Logic.H3.L10Bridge
 
 -- ─── Couche 5 : couronne doctrinale ─────────────────────────
 -- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
