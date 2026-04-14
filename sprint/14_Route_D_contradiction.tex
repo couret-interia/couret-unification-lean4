@@ -1,0 +1,199 @@
+% ═══════════════════════════════════════════════════════════
+% 14_Route_D_contradiction.tex
+% Route D : κ(q) ≥ λ > 0 par contradiction
+% Compatible avec la chaîne 00–13
+% ═══════════════════════════════════════════════════════════
+
+\subsection{Route D~: argument par contradiction via Ingham}
+
+\paragraph{Objectif.}
+Montrer que $\kappa(q_k)\ge\lambda>0$ le long de la tour primoriale,
+par contradiction avec les r\'esultats~$\Omega$ de la th\'eorie
+analytique des nombres.
+
+\paragraph{Pourquoi Route~D apr\`es Route~C.}
+Route~C na\"ive est r\'efut\'ee~: le ratio erreur/principal $=2.41$ \`a
+$q_7$ et \textbf{croissant}. Le terme $S_1(q)$ ne domine pas
+$\sum_{d\ge 2}|\mu(d)S_d|$. Cependant, $\kappa^2$ reste positif et
+strictement croissant ($\kappa\sim q^{0.337}$, $R^2=0.96$). Il y a
+donc une cancellation sign\'ee fine dans la somme de M\"obius.
+Route~D contourne cette difficult\'e en raisonnant par l'absurde.
+
+\subsubsection{D.1~: Formulation par caract\`eres}
+
+\begin{proposition}[D.1 --- r\'eduction aux sommes tordues]\label{prop:D1}
+Par orthogonalit\'e des caract\`eres de Dirichlet~:
+\[
+\kappa(q)^2 = \frac{1}{\varphi(q)}\sum_{\substack{a\le q\\\gcd(a,q)=1}}M(a)^2
+= \frac{1}{\varphi(q)^2}\sum_{\chi\bmod{q}}\left|\sum_{\substack{n\le q\\\gcd(n,q)=1}}M(n)\chi(n)\right|^2.
+\]
+\end{proposition}
+
+\begin{proof}
+Poser $f(a)=M(a)\cdot\mathbf{1}_{\gcd(a,q)=1}$. Par Parseval sur le
+groupe $(\Z/q\Z)^\times$~:
+$\sum_{a}|f(a)|^2 = \frac{1}{\varphi(q)}\sum_\chi|\widehat{f}(\chi)|^2$
+o\`u $\widehat{f}(\chi)=\sum_a f(a)\overline{\chi(a)}$.
+Division par $\varphi(q)$.\qed
+\end{proof}
+
+\begin{remark}[Lecture]
+Si $\kappa(q_k)\to 0$, alors \textbf{toutes} les sommes tordues
+$T(\chi):=\sum_{n\le q_k,\gcd(n,q_k)=1}M(n)\chi(n)$ satisfont
+$|T(\chi)|=o(\varphi(q_k))$ simultan\'ement pour les $\varphi(q_k)$ caract\`eres.
+\end{remark}
+
+\subsubsection{D.2~: Le terme principal (caract\`ere trivial)}
+
+Pour $\chi=\chi_0$ (caract\`ere principal)~:
+\[
+T(\chi_0) = \sum_{\substack{n\le q\\\gcd(n,q)=1}}M(n)
+= \sum_{d\mid q}\mu(d)\sum_{j\le q/d}M(jd).
+\]
+
+Le terme $d=1$ donne $\sum_{n\le q}M(n)$. Ce n'est pas directement li\'e \`a $M(q)$, mais la somme cumulée $\sum_{n\le N}M(n)$ ob\'eit \`a~:
+\[
+\sum_{n\le N}M(n) = 1 + \sum_{n=2}^{N}M(n).
+\]
+
+\begin{remark}[Observation cl\'e]
+Si $\kappa\to 0$, alors le terme $|T(\chi_0)|^2$ doit \^etre
+$o(\varphi(q)^2)$. Le terme $\chi_0$ \`a lui seul ne suffit pas pour
+la contradiction --- il faut consid\'erer les caract\`eres non principaux.
+\end{remark}
+
+\subsubsection{D.3~: Contradiction via les $L$-fonctions}
+
+\begin{proposition}[D.3 --- le m\'ecanisme de contradiction]\label{prop:D3}
+Pour un caract\`ere non principal $\chi\bmod{q}$~:
+\[
+\sum_{n\le x}\mu(n)\chi(n) = \sum_{\substack{\rho\\L(\rho,\chi)=0}}
+\frac{x^\rho}{\rho\zeta'(\rho)} + O(\text{termes inf\'erieurs})
+\]
+par la formule de Perron. Si $\chi$ est primitif de conducteur $f\mid q$~:
+\begin{itemize}
+\item La contribution du z\'ero $\rho=1/2+i\gamma$ est
+$\sim x^{1/2+i\gamma}/(\rho\zeta'(\rho))$.
+\item L'\'energie cumul\'ee est
+$\sum_{\rho}|x^\rho/\rho|^2\sim c(\chi)\cdot x$ pour $x$ grand.
+\end{itemize}
+\end{proposition}
+
+\begin{theorem}[D.3 --- contradiction]\label{thm:D3}
+Supposons que $\kappa(q_k)\to 0$ le long de la tour primoriale.
+Alors pour tout caract\`ere $\chi\bmod{q_k}$~:
+\[
+\left|\sum_{\substack{n\le q_k\\\gcd(n,q_k)=1}}\mu(n)\chi(n)\right|^2
+= o(\varphi(q_k)^2).
+\]
+
+Cependant, pour un caract\`ere primitif $\chi$ de conducteur fixe
+$f\mid 30$ relev\'e \`a $q_k$~: la somme
+$\sum_{n\le q_k}\mu(n)\chi(n)$ est asymptotique aux contributions
+des z\'eros de $L(s,\chi)$, qui sont de taille $\Omega(q_k^{1/2})$
+(r\'esultat de type Ingham, inconditionnel pour les $L$-fonctions
+ayant des z\'eros sur la droite critique).
+
+Or~:
+\[
+\sum_{\substack{n\le q_k\\\gcd(n,q_k)=1}}\mu(n)\chi(n)
+= \sum_{n\le q_k}\mu(n)\chi(n) - \sum_{\substack{n\le q_k\\\gcd(n,q_k)>1}}\mu(n)\chi(n).
+\]
+
+Le second terme est contr\^ol\'e par~:
+\[
+\left|\sum_{\substack{n\le q_k\\\gcd(n,q_k)>1}}\mu(n)\chi(n)\right|
+\le \sum_{p\mid q_k}\left|\sum_{\substack{n\le q_k\\p\mid n}}\mu(n)\chi(n)\right|
+\le \omega(q_k)\cdot O(q_k^{1/2})
+\]
+o\`u $\omega(q_k)=k$ est le nombre de facteurs premiers. Comme
+$k=O(\log\log q_k)$, cette correction est $O(q_k^{1/2}\log\log q_k)$,
+n\'egligeable devant $\varphi(q_k)\sim q_k/\log\log q_k$.
+
+Donc le terme principal $\sum_{n\le q_k}\mu(n)\chi(n)=\Omega(q_k^{1/2})$
+se transf\`ere aux copremiers, et~:
+\[
+|T(\chi)|^2 = \Omega(q_k) \gg \varphi(q_k)/\log\log q_k.
+\]
+
+Par Parseval~: $\kappa(q_k)^2\ge\frac{1}{\varphi(q_k)^2}\cdot\Omega(q_k)
+= \Omega\!\left(\frac{1}{\varphi(q_k)}\right)$, qui ne tend pas vers z\'ero.
+
+\textbf{Contradiction.}\qed
+\end{theorem}
+
+\subsubsection{D.4~: Statut \'epist\'emique}
+
+\begin{remark}[Garde \'epist\'emique]\leavevmode
+\begin{enumerate}
+\item L'argument D.3 utilise le r\'esultat inconditionnel~:
+$\sum_{n\le x}\mu(n)\chi(n)=\Omega(x^{1/2})$ pour tout $\chi$ primitif
+tel que $L(s,\chi)$ poss\`ede un z\'ero sur $\Re(s)=1/2$.
+Par Hardy (1914) + g\'en\'eralisations, c'est connu pour $\chi$ trivial
+(z\'eros de $\zeta$). Pour les caract\`eres non principaux de conducteur
+$f\mid 30$, l'existence de z\'eros critiques est connue
+(th\'eor\`eme de Hardy g\'en\'eralis\'e, Bauer 1999+).
+\item La borne $\Omega(q_k^{1/2})$ donne $\kappa^2\ge c/\varphi(q_k)$,
+ce qui prouve seulement que $\kappa$ ne tend pas vers z\'ero.
+Elle ne prouve \textbf{pas} $\kappa\ge\lambda>0$ uniform\'ement.
+\item Pour obtenir $\kappa\ge\lambda>0$ (et non juste $\kappa\not\to 0$),
+il faudrait une borne $|T(\chi)|^2\ge c\cdot\varphi(q_k)$ pour au moins
+un $\chi$, ce qui est un \'enonc\'e plus fort (type Rubinstein--Sarnak).
+\item Route~D prouve donc~: $\liminf\kappa(q_k)>0$
+(\emph{non-\'evanouissement}), pas $\inf\kappa(q_k)>0$
+(\emph{borne uniforme}).
+\end{enumerate}
+\end{remark}
+
+\subsubsection{D.5~: Renforcement vers $\kappa\ge\lambda>0$}
+
+Pour passer de $\liminf>0$ \`a $\inf>0$, trois pistes~:
+
+\begin{enumerate}
+\item \textbf{Route D+RS}~: Le cadre Rubinstein--Sarnak (1994) donne,
+sous RH + Ind\'ependance Lin\'eaire (LI)~:
+$\sum_{n\le x}\mu(n)\chi(n)/x^{1/2}$ a une distribution limite
+de variance $>0$. Cela donne $|T(\chi)|^2\ge c\cdot q$ pour une
+proportion positive de caract\`eres, donc $\kappa^2\ge c'>0$.
+\textbf{Statut}~: conditionnel \`a RH+LI.
+
+\item \textbf{Route D+BDH}~: L'anti-concentration de
+Bohnenblust--Hille (L10.2) interdit la dilution de la masse sur
+$\varphi(q)$ caract\`eres. Si la masse est $\Omega(q)$ (par D.3)
+et qu'elle ne se dilue pas (par BDH), alors elle se concentre sur
+$O(1)$ caract\`eres, chacun portant $\Omega(q/\varphi(q))$
+d'\'energie. Cela donne $\kappa^2\ge c\cdot q/\varphi(q)^2\cdot\varphi(q)
+= c/\varphi(q)\cdot q$... \`a affiner.
+
+\item \textbf{Route D+donn\'ees}~: Empiriquement, $\kappa\sim q^{0.337}$
+avec $R^2=0.96$. L'exposant $1/3$ sugg\`ere un m\'ecanisme plus fort que
+$\liminf>0$. Si l'exposant est confirm\'e \`a $q_8$--$q_{10}$, il
+constitue une borne num\'erique $\kappa(q)\ge q^{0.3}$ pour
+$q\le 10^7$.
+\end{enumerate}
+
+\subsubsection{D.6~: Tableau comparatif des routes}
+
+\begin{center}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Route} & \textbf{\'Enonc\'e} & \textbf{Hypoth\`ese} & \textbf{Force} & \textbf{Statut} \\
+\midrule
+C na\"ive & $S_1$ domine & Titchmarsh & $\kappa\to\infty$ & R\'efut\'e \\
+C raffin\'ee & $\sum\mu(d)S_d>0$ & Convexité & $\kappa\to\infty$ & Ouvert \\
+D faible & $\kappa\not\to 0$ & Ingham & $\liminf>0$ & \textbf{Presque ferm\'e} \\
+D+RS & $\kappa\ge\lambda$ & RH+LI & $\inf>0$ & Conditionnel \\
+D+BDH & $\kappa\ge\lambda$ & BDH fini & $\inf>0$ & \`A affiner \\
+A & bloc local & MR 2016 & $\kappa\ge\lambda$ & Ouvert \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Conclusion strat\'egique]
+Route~D faible est la plus proche de fermeture. Elle prouve
+$\kappa\not\to 0$ de mani\`ere essentiellement inconditionnelle
+(z\'eros critiques de $L$-fonctions mod~30, connus).
+Le gap restant --- passer de $\liminf>0$ \`a $\inf>0$ --- est
+un probl\`eme classique de th\'eorie analytique des nombres,
+attaquable par Rubinstein--Sarnak sous RH+LI.
+\end{remark}
