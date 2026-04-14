@@ -187,7 +187,8 @@ mais la preuve complète de ‖M₂₁^off‖_op = o(1) est à rédiger.
 def off_diag_status : DiagOffDecomp :=
   { diag_hs_bound := True        -- par T5_weak
   , off_diag_bound := True       -- par annulation de phase (schéma)
-  , off_negligible := False }    -- proxy G2 non encore validé
+  , off_negligible := False }    -- G2 spectral = 0 (théorème),
+                                 -- G2 spatial (B21/B11) non encore validé
 
 /-- La fuite hors-diagonale à q = 210 est ≈ 1.5%. -/
 theorem off_diag_small_210 : (15 : ℚ) / 1000 < 1 / 10 := by norm_num
