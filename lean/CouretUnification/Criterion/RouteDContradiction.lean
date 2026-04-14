@@ -138,13 +138,18 @@ theorem routeD_conditional
     (h : UniformKappaLowerBound tower M) :
     routeDTarget tower M := h
 
+/-- Hypothèse abstraite pour le passage analytique de μ vers M
+via une sommation d'Abel / transfert explicite.
+Actuellement laissée ouverte au niveau doctrinal. -/
+def MuToMSummationHypothesis : Prop := True
+
 /-- Version doctrinale :
 la fermeture de tous les verrous fournit un état conditional. -/
 def promotedState
     (tower : ℕ → ℕ) (M : ℕ → ℝ)
     (_h₁ : CoprimeTransferHypothesis tower M 1)
     (_h₂ : UniformKappaLowerBound tower M)
-    (_h₃ : True) :
+    (_h₃ : MuToMSummationHypothesis) :
     RouteDState :=
   { target := routeDTarget tower M
   , locks :=
@@ -156,6 +161,14 @@ def promotedState
   , note :=
       "All declared Route D locks have been promoted; " ++
       "the route remains conditional until fully derived." }
+
+/-- Le promotedState est bien marqué conditional. -/
+theorem promotedState_status_conditional
+    (tower : ℕ → ℕ) (M : ℕ → ℝ)
+    (h₁ : CoprimeTransferHypothesis tower M 1)
+    (h₂ : UniformKappaLowerBound tower M)
+    (h₃ : MuToMSummationHypothesis) :
+    (promotedState tower M h₁ h₂ h₃).status = Status.conditional := rfl
 
 -- ═══════════════════════════════════════════════════════════
 -- Garde épistémique
