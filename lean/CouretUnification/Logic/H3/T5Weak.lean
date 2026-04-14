@@ -187,7 +187,7 @@ mais la preuve complète de ‖M₂₁^off‖_op = o(1) est à rédiger.
 def off_diag_status : DiagOffDecomp :=
   { diag_hs_bound := True        -- par T5_weak
   , off_diag_bound := True       -- par annulation de phase (schéma)
-  , off_negligible := True }     -- ε(q) → 0 numériquement
+  , off_negligible := False }    -- proxy G2 non encore validé
 
 /-- La fuite hors-diagonale à q = 210 est ≈ 1.5%. -/
 theorem off_diag_small_210 : (15 : ℚ) / 1000 < 1 / 10 := by norm_num
@@ -269,7 +269,7 @@ structure L10_Prerequisites where
 def l10_current_status : L10_Prerequisites :=
   { localization_established := True   -- T5_weak + T9
   , projector_alignment := True        -- = T6 (acquis)
-  , mass_persistence := True }         -- BDH (schéma, à rédiger)
+  , mass_persistence := False }  -- schéma BDH, non encore fermé
 
 -- ═══════════════════════════════════════════════════════════
 -- §6. Chaîne doctrinale mise à jour

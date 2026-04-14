@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """
+# ATTENTION : proxy exploratoire.
+# Ne mesure PAS le vrai ‖M₂₁^off‖_HS (bloc de Schur).
+# Le diagnostic spectral mod 30 (section 2) est fiable.
+# Le tableau E_diag/E_off (section 1) utilise un mauvais objet.
+
 couret_offdiag_leakage.py — Mesure de la fuite hors-diagonale M₂₁^off
 Programme Couret-Unification — Condition G2 pour gel de L10
 
@@ -71,10 +76,10 @@ def dirichlet_characters_mod30():
     # Table des caractères mod 30 (via CRT : Z/30 ≅ Z/2 × Z/3 × Z/5)
     # chi_0 = trivial
     chi = np.zeros((8, 8), dtype=complex)
-    
+
     # Caractère trivial
     chi[0] = np.ones(8)
-    
+
     # Construire via les générateurs
     # ord(7) = 4 dans (Z/30Z)*, ord(11) = 2
     # chi_{a,b}(7) = i^a, chi_{a,b}(11) = (-1)^b
@@ -83,13 +88,13 @@ def dirichlet_characters_mod30():
     for k in range(4):
         gen7_powers[g % 30] = k
         g = (g * 7) % 30
-    
+
     gen11_powers = {}
     g = 1
     for k in range(2):
         gen11_powers[g % 30] = k
         g = (g * 11) % 30
-    
+
     idx = 0
     for a in range(4):
         for b in range(2):
@@ -108,40 +113,40 @@ def dirichlet_characters_mod30():
                         break
                 chi[idx, j] = val
             idx += 1
-    
+
     return residues, chi
 
 def compute_offdiag_leakage(q, primes, N_max=2_000_000):
     """
     Calcule la fuite hors-diagonale pour le primoriel q.
-    
+
     Retourne :
     - masse_diag : ‖M₂₁^diag‖² (blocs alignés par queue)
     - masse_off  : ‖M₂₁^off‖²  (couplage entre queues distinctes)
     - ratio      : masse_off / masse_diag
     """
     phi_q = euler_phi(q, primes)
-    
+
     print(f"\n  Calcul pour q = {q}, φ(q) = {phi_q}")
     print(f"  Crible de Möbius jusqu'à N = {N_max:,}...")
-    
+
     mu = mobius_sieve(N_max)
     M = mertens_values(mu, N_max)
-    
+
     # Résidus copremiers
     residues = get_coprime_residues(q, primes)
     assert len(residues) == phi_q
-    
+
     # Vecteur de Mertens sur les copremiers
     # M(a) pour a ∈ {1,...,q}, (a,q)=1
     M_vec = np.array([M[a] for a in residues], dtype=np.float64)
-    
+
     # Moyenne
     M_mean = np.mean(M_vec)
-    
+
     # Masse totale c₀(q)
     c0 = np.mean(M_vec ** 2)
-    
+
     # Classification par résidu mod 30
     res_mod30 = residues % 30
     classes_30 = {}
@@ -149,7 +154,7 @@ def compute_offdiag_leakage(q, primes, N_max=2_000_000):
         if r30 not in classes_30:
             classes_30[r30] = []
         classes_30[r30].append(i)
-    
+
     # Partie diagonale : variance INTRA chaque classe mod 30
     # (blocs alignés par la même queue mod 30)
     masse_diag = 0.0
@@ -160,16 +165,16 @@ def compute_offdiag_leakage(q, primes, N_max=2_000_000):
         # plus la contribution de la moyenne de classe
         masse_diag += np.sum(vals ** 2)
     masse_diag /= phi_q
-    
+
     # Partie hors-diagonale : covariance INTER classes mod 30
     # M₂₁^off mesure le couplage entre classes distinctes
     # Par Pythagore : masse_totale = masse_intra + masse_inter
     # masse_inter = Σ_{r≠s} Σ_{i∈class_r, j∈class_s} M(a_i)·M(a_j) / φ(q)²
-    
+
     # Plus précisément, pour les blocs de Schur :
     # masse_diag = somme des ‖blocs diagonaux‖²
     # masse_off = somme des ‖blocs hors-diagonaux‖²
-    
+
     # Calcul via les moyennes par classe
     class_means = {}
     class_vars = {}
@@ -177,52 +182,52 @@ def compute_offdiag_leakage(q, primes, N_max=2_000_000):
         vals = M_vec[indices]
         class_means[r30] = np.mean(vals)
         class_vars[r30] = np.var(vals)
-    
+
     # Matrice de covariance inter-classes (8×8 pour mod 30)
     residues_30 = sorted(classes_30.keys())
     n_classes = len(residues_30)
     cov_matrix = np.zeros((n_classes, n_classes))
-    
+
     for i, r1 in enumerate(residues_30):
         for j, r2 in enumerate(residues_30):
             vals1 = M_vec[classes_30[r1]]
             vals2 = M_vec[classes_30[r2]]
             # Covariance croisée normalisée
             cov_matrix[i, j] = np.mean(vals1) * np.mean(vals2)
-    
+
     # La fuite hors-diagonale est la norme HS de la partie off-diag
     # de la matrice de covariance inter-classes
     diag_energy = np.sum(np.diag(cov_matrix) ** 2)
     total_energy = np.sum(cov_matrix ** 2)
     offdiag_energy = total_energy - diag_energy
-    
+
     # Ratio de fuite
     if diag_energy > 0:
         ratio = offdiag_energy / diag_energy
     else:
         ratio = float('inf')
-    
+
     # Aussi : mesure directe par DFT
     # La fuite se mesure mieux par les caractères non-principaux mod 30
     _, chi_table = dirichlet_characters_mod30()
     res30_list = [1, 7, 11, 13, 17, 19, 23, 29]
-    
+
     # Moyennes de M par classe mod 30
     m_by_class = np.zeros(8)
     for i, r30 in enumerate(res30_list):
         if r30 in classes_30:
             m_by_class[i] = np.mean(M_vec[classes_30[r30]])
-    
+
     # Transformée de Fourier sur (Z/30Z)*
     fourier_coeffs = chi_table @ m_by_class
-    
+
     # Énergie spectrale par caractère
     spectral_energy = np.abs(fourier_coeffs) ** 2
-    
+
     # Partie diagonale (chi_0) vs non-principale
     energy_principal = spectral_energy[0]
     energy_nonprincipal = np.sum(spectral_energy[1:])
-    
+
     return {
         'q': q,
         'phi_q': phi_q,
@@ -242,16 +247,16 @@ def main():
     print("  Condition G2 pour gel de L10")
     print("  Dédié à Bernard Couret (1928–2010)")
     print("=" * 76)
-    
+
     N_max = 2_000_000
-    
+
     results = []
-    
+
     for k in [3, 4, 5]:  # q = 30, 210, 2310
         q, primes = primorial(k)
         r = compute_offdiag_leakage(q, primes, N_max)
         results.append(r)
-    
+
     # Tableau récapitulatif
     print("\n" + "─" * 76)
     print("  TABLEAU RÉCAPITULATIF — FUITE HORS-DIAGONALE")
@@ -259,40 +264,40 @@ def main():
     print(f"  {'q':>8}  {'φ(q)':>6}  {'c₀(q)':>12}  {'E_diag':>12}  {'E_off':>12}  {'Ratio':>8}")
     print(f"  {'':>8}  {'':>6}  {'':>12}  {'':>12}  {'':>12}  {'off/diag':>8}")
     print("  " + "─" * 68)
-    
+
     for r in results:
         print(f"  {r['q']:>8}  {r['phi_q']:>6}  {r['c0']:>12.4f}  "
               f"{r['masse_diag']:>12.4f}  {r['masse_off']:>12.6f}  "
               f"{r['ratio_leakage']:>8.4%}")
-    
+
     # Diagnostic spectral
     print("\n" + "─" * 76)
     print("  DIAGNOSTIC SPECTRAL MOD 30")
     print("─" * 76)
-    
+
     for r in results:
         total = r['energy_principal'] + r['energy_nonprincipal']
         ratio_np = r['energy_nonprincipal'] / total if total > 0 else 0
         print(f"  q = {r['q']:>6} : E_princ = {r['energy_principal']:>10.2f}, "
               f"E_non_princ = {r['energy_nonprincipal']:>10.2f}, "
               f"ratio = {ratio_np:.4%}")
-    
+
     # Moyennes par classe
     print("\n" + "─" * 76)
     print("  MOYENNES DE M(a) PAR CLASSE MOD 30")
     print("─" * 76)
-    
+
     for r in results:
         means = r['class_means']
         print(f"\n  q = {r['q']}, φ(q) = {r['phi_q']}:")
         for r30 in sorted(means.keys()):
             print(f"    classe {r30:>2} : <M> = {means[r30]:>10.4f}")
-    
+
     # Verdict
     print("\n" + "=" * 76)
     print("  VERDICT — CONDITION G2")
     print("=" * 76)
-    
+
     last = results[-1]
     if last['ratio_leakage'] < 0.02:
         print(f"\n  Fuite à q={last['q']} : {last['ratio_leakage']:.4%} < 2%")
@@ -304,13 +309,13 @@ def main():
     else:
         print(f"\n  Fuite à q={last['q']} : {last['ratio_leakage']:.4%} ≥ 5%")
         print("  ❌ Condition G2 NON satisfaite — investigation requise")
-    
+
     # Tendance
     if len(results) >= 2:
         trend = results[-1]['ratio_leakage'] - results[-2]['ratio_leakage']
         direction = "DÉCROISSANTE ↓" if trend < 0 else "CROISSANTE ↑"
         print(f"  Tendance de la fuite : {direction}")
-    
+
     print(f"\n  RHClaimed = false")
     print("=" * 76)
 
