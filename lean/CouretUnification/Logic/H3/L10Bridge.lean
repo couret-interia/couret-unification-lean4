@@ -12,7 +12,7 @@ noncomputable section
 namespace CouretUnification
 namespace Logic
 namespace H3
-namespace L10
+namespace L10Bridge
 
 variable {X : Type*} [Fintype X] [DecidableEq X]
 
@@ -167,7 +167,7 @@ Total : 5 sorry identifiés, tous techniques (algèbre linéaire finie).
 RHClaimed = false.
 -/
 
-end L10
+end L10Bridge
 end H3
 end Logic
 end CouretUnification
