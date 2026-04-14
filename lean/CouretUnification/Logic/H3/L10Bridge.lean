@@ -39,13 +39,13 @@ def l2Norm (f : X → ℂ) : ℝ :=
 lemma l2Inner_add_left (f g h : X → ℂ) :
     l2Inner (f + g) h = l2Inner f h + l2Inner g h := by
   unfold l2Inner
-  simp [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add, left_distrib, right_distrib]
+  simp [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]
 
 /-- l2Inner is additive in the second argument. -/
 lemma l2Inner_add_right (f g h : X → ℂ) :
     l2Inner f (g + h) = l2Inner f g + l2Inner f h := by
   unfold l2Inner
-  simp [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, left_distrib, right_distrib]
+  simp [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /-- l2Inner is ℂ-linear in the first argument. -/
 lemma l2Inner_smul_left (c : ℂ) (f g : X → ℂ) :
@@ -57,7 +57,8 @@ lemma l2Inner_smul_left (c : ℂ) (f g : X → ℂ) :
         =
       ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, c * (f x * (starRingEnd ℂ) (g x)) := by
           congr 1
-          ext x
+          apply Finset.sum_congr rfl
+          intro x hx
           ring
     _ =
       ((Fintype.card X : ℂ)⁻¹) * (c * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
@@ -76,7 +77,8 @@ lemma l2Inner_smul_right (c : ℂ) (f g : X → ℂ) :
         =
       ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, (star c) * (f x * (starRingEnd ℂ) (g x)) := by
           congr 1
-          ext x
+          apply Finset.sum_congr rfl
+          intro x hx
           ring
     _ =
       ((Fintype.card X : ℂ)⁻¹) * ((star c) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
