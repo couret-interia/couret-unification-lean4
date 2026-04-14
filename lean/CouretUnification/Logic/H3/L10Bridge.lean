@@ -1,8 +1,7 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib
+import Mathlib.Tactic
 
 open scoped BigOperators
 open Finset
@@ -39,30 +38,59 @@ def l2Norm (f : X → ℂ) : ℝ :=
 /-- l2Inner is additive in the first argument. -/
 lemma l2Inner_add_left (f g h : X → ℂ) :
     l2Inner (f + g) h = l2Inner f h + l2Inner g h := by
-  simp only [l2Inner, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]
+  unfold l2Inner
+  simp [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add, left_distrib, right_distrib]
 
 /-- l2Inner is additive in the second argument. -/
 lemma l2Inner_add_right (f g h : X → ℂ) :
     l2Inner f (g + h) = l2Inner f g + l2Inner f h := by
-  simp only [l2Inner, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, mul_add]
+  unfold l2Inner
+  simp [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, left_distrib, right_distrib]
 
-/-- l2Inner is ℂ-linear in the first argument (scalar multiplication). -/
+/-- l2Inner is ℂ-linear in the first argument. -/
 lemma l2Inner_smul_left (c : ℂ) (f g : X → ℂ) :
     l2Inner (c • f) g = c * l2Inner f g := by
-  simp only [l2Inner, Pi.smul_apply, smul_eq_mul]
-  rw [← mul_assoc, mul_comm c, mul_assoc]
-  congr 1
-  rw [← Finset.mul_sum]
-  congr 1
-  ext x
-  ring
+  unfold l2Inner
+  simp only [Pi.smul_apply, smul_eq_mul]
+  calc
+    ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, c * f x * (starRingEnd ℂ) (g x)
+        =
+      ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, c * (f x * (starRingEnd ℂ) (g x)) := by
+          congr 1
+          ext x
+          ring
+    _ =
+      ((Fintype.card X : ℂ)⁻¹) * (c * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
+          congr 1
+          rw [Finset.mul_sum]
+    _ = c * (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
+          ring
+
+/-- l2Inner is conjugate-linear in the second argument. -/
+lemma l2Inner_smul_right (c : ℂ) (f g : X → ℂ) :
+    l2Inner f (c • g) = (star c) * l2Inner f g := by
+  unfold l2Inner
+  simp only [Pi.smul_apply, smul_eq_mul, map_mul]
+  calc
+    ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * ((starRingEnd ℂ) c * (starRingEnd ℂ) (g x))
+        =
+      ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, (star c) * (f x * (starRingEnd ℂ) (g x)) := by
+          congr 1
+          ext x
+          ring
+    _ =
+      ((Fintype.card X : ℂ)⁻¹) * ((star c) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
+          congr 1
+          rw [Finset.mul_sum]
+    _ = (star c) * (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
+          ring
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Structure de décomposition par couches
 -- ═══════════════════════════════════════════════════════════
 
 /-- Abstract layer decomposition indexed by natural degrees.
-    Includes Pythagorean property (consequence of orthogonality). -/
+    Includes a Pythagorean property for the raw layers. -/
 structure LayerDecomposition (X : Type*) [Fintype X] [DecidableEq X] where
   layer : ℕ → (X → ℂ) → (X → ℂ)
   support : (X → ℂ) → Finset ℕ
@@ -70,9 +98,6 @@ structure LayerDecomposition (X : Type*) [Fintype X] [DecidableEq X] where
   reconstruction : ∀ f, f = ∑ d ∈ support f, layer d f
   orthogonal : ∀ f {d e : ℕ}, d ≠ e →
     l2Inner (layer d f) (layer e f) = 0
-  /-- Pythagorean identity for orthogonal layers.
-      Follows from orthogonality + sesquilinearity of l2Inner.
-      Included as a field to avoid heavy Mathlib plumbing. -/
   pythagorean : ∀ f (S : Finset ℕ),
     (∀ d ∈ S, ∀ e ∈ S, d ≠ e → l2Inner (layer d f) (layer e f) = 0) →
     l2NormSq (∑ d ∈ S, layer d f) = ∑ d ∈ S, l2NormSq (layer d f)
@@ -95,8 +120,7 @@ def noiseOp (ρ : ℝ) (f : X → ℂ) : X → ℂ :=
 structure DiagOffSplit (main diag off : X → ℂ) where
   sum_eq : ∀ x, main x = diag x + off x
 
-/-- Abstract certificate data for the bridge.
-    Includes Cauchy-Schwarz for the specific pair (main, Psi). -/
+/-- Abstract certificate data for the bridge. -/
 structure CertificateData where
   diag : X → ℂ
   off  : X → ℂ
@@ -122,7 +146,7 @@ structure HCData where
   hrho_upper : rho ≤ 1
 
 -- ═══════════════════════════════════════════════════════════
--- §5. Théorèmes délégués (de la structure)
+-- §5. Théorèmes délégués
 -- ═══════════════════════════════════════════════════════════
 
 theorem layer_orthogonal (f : X → ℂ) {d e : ℕ} (hde : d ≠ e) :
@@ -139,128 +163,58 @@ theorem sum_layers_eq (f : X → ℂ) :
   LD.reconstruction f
 
 -- ═══════════════════════════════════════════════════════════
--- §6. FERMÉ : Pythagorean pour noiseOp et lowProj
+-- §6. Énergie
 -- ═══════════════════════════════════════════════════════════
 
-/-- The scaled layers ρ^d • f_d are pairwise orthogonal.
-    Follows from orthogonality of the layers + l2Inner_smul_left. -/
-lemma noise_layers_orthogonal (ρ : ℝ) (f : X → ℂ) (d e : ℕ)
-    (hde : d ≠ e) (hd : d ∈ LD.support f) (he : e ∈ LD.support f) :
-    l2Inner (((ρ : ℂ) ^ d) • LD.layer d f)
-            (((ρ : ℂ) ^ e) • LD.layer e f) = 0 := by
-  rw [l2Inner_smul_left]
-  rw [LD.orthogonal f hde]
-  ring
-
-/-- Scaling property: l2NormSq (c • f) = ‖c‖² * l2NormSq f.
-    For c = ρ^d with ρ : ℝ, this gives ρ^(2d) * l2NormSq f. -/
-lemma l2NormSq_smul_real_pow (ρ : ℝ) (d : ℕ) (f : X → ℂ) :
-    l2NormSq (((ρ : ℂ) ^ d) • f) = (ρ ^ (2 * d)) * l2NormSq f := by
-  unfold l2NormSq
-  rw [l2Inner_smul_left]
-  simp only [l2Inner, Pi.smul_apply, smul_eq_mul, map_mul, Complex.star_def]
-  sorry -- requires conj(c^d * f) = conj(c)^d * conj(f) + real ρ simplification
-
-/-- Weighted L2 energy identity for the noise operator. CLOSED.
-    Uses Pythagorean property from LayerDecomposition. -/
+/-- Weighted L2 energy identity for the noise operator.
+    Still open with the current structure: LD.pythagorean only applies
+    to raw layers, not to the scaled family ((ρ:ℂ)^d • layer d f). -/
 theorem l2NormSq_noiseOp (ρ : ℝ) (f : X → ℂ) :
     l2NormSq (noiseOp LD ρ f)
       = ∑ d ∈ LD.support f, (ρ ^ (2 * d)) * l2NormSq (LD.layer d f) := by
-  unfold noiseOp
-  -- Apply Pythagorean identity to the sum of orthogonal scaled layers
-  have hortho : ∀ d ∈ LD.support f, ∀ e ∈ LD.support f, d ≠ e →
-      l2Inner (((ρ : ℂ) ^ d) • LD.layer d f)
-              (((ρ : ℂ) ^ e) • LD.layer e f) = 0 :=
-    fun d hd e he hde => noise_layers_orthogonal LD ρ f d e hde hd he
-  rw [LD.pythagorean f (LD.support f) (by convert hortho using 2)]
-  congr 1
-  ext d
-  exact l2NormSq_smul_real_pow ρ d (LD.layer d f)
+  sorry
 
-/-- L2 energy identity for the low-degree projection. CLOSED.
-    Uses Pythagorean property from LayerDecomposition. -/
+/-- L2 energy identity for the low-degree projection. CLOSED. -/
 theorem l2NormSq_lowProj (d0 : ℕ) (f : X → ℂ) :
     l2NormSq (lowProj LD d0 f)
       = ∑ d ∈ (LD.support f).filter fun d => d ≤ d0,
           l2NormSq (LD.layer d f) := by
   unfold lowProj
-  apply LD.pythagorean
-  intro d hd e he hde
-  have hd' := (Finset.mem_filter.mp hd).1
-  have he' := (Finset.mem_filter.mp he).1
-  exact LD.orthogonal f hde
+  simpa using
+    LD.pythagorean f ((LD.support f).filter fun d => d ≤ d0)
+      (by
+        intro d hd e he hde
+        exact LD.orthogonal f hde)
 
 -- ═══════════════════════════════════════════════════════════
--- §7. Bridge : Cauchy-Schwarz + triangle
+-- §7. Bridge
 -- ═══════════════════════════════════════════════════════════
 
 /-- Cauchy-Schwarz inequality for l2Inner.
-    Standard result for finite-dimensional Hilbert spaces.
-    Provable from the definition via the discriminant argument.
-    Left as sorry: requires ~40 lines of Mathlib plumbing
-    (conjugate symmetry, positive-definiteness, discriminant). -/
+    Left open for now. -/
 lemma cauchy_schwarz_l2 (f g : X → ℂ) :
     ‖l2Inner f g‖ ≤ l2Norm f * l2Norm g := by
   sorry
 
-/-- Additivity of l2Inner under pointwise function decomposition.
-    If main = diag + off pointwise, then l2Inner main Ψ = l2Inner diag Ψ + l2Inner off Ψ. -/
+/-- Additivity of l2Inner under pointwise decomposition. -/
 lemma l2Inner_split (main diag off Psi : X → ℂ)
     (hsplit : ∀ x, main x = diag x + off x) :
     l2Inner main Psi = l2Inner diag Psi + l2Inner off Psi := by
   have hmain : main = diag + off := funext hsplit
   rw [hmain, l2Inner_add_left]
 
-/-- Abstract bridge theorem. CLOSED modulo Cauchy-Schwarz.
-    Proof: triangle inequality + CS + algebra. -/
+/-- Abstract bridge theorem.
+    Left open for now. -/
 theorem bridge_lower_bound
     (main : X → ℂ)
     (CD : CertificateData (X := X))
     (hsplit : ∀ x, main x = CD.diag x + CD.off x) :
     ((1 - CD.lambda) ^ 2 * CD.beta ^ 2) / (CD.B ^ 2)
       ≤ l2NormSq main := by
-  -- Step 1: ‖⟨main, Ψ⟩‖ ≥ β - λβ = (1-λ)β  by triangle
-  have hsplit_inner := l2Inner_split main CD.diag CD.off CD.Psi hsplit
-  have htri : (1 - CD.lambda) * CD.beta ≤ ‖l2Inner main CD.Psi‖ := by
-    calc ‖l2Inner main CD.Psi‖
-        = ‖l2Inner CD.diag CD.Psi + l2Inner CD.off CD.Psi‖ := by rw [hsplit_inner]
-      _ ≥ ‖l2Inner CD.diag CD.Psi‖ - ‖l2Inner CD.off CD.Psi‖ := by
-          exact norm_add_le_of_le (le_refl _) (le_refl _) |>.symm ▸
-            sub_le_iff_le_add.mpr (norm_add_le _ _) |>.symm ▸
-            le_of_eq rfl -- this needs reverse triangle
-          sorry -- reverse triangle: ‖a+b‖ ≥ ‖a‖ - ‖b‖
-      _ ≥ CD.beta - CD.lambda * CD.beta := by
-          linarith [CD.hbeta_bound, CD.hgamma_bound]
-      _ = (1 - CD.lambda) * CD.beta := by ring
-  -- Step 2: ‖⟨main, Ψ⟩‖ ≤ l2Norm(main) * B  by Cauchy-Schwarz + ‖Ψ‖ ≤ B
-  have hCS := cauchy_schwarz_l2 main CD.Psi
-  have hPsi := CD.hnorm
-  have hCS_B : ‖l2Inner main CD.Psi‖ ≤ l2Norm main * CD.B := by
-    calc ‖l2Inner main CD.Psi‖
-        ≤ l2Norm main * l2Norm CD.Psi := hCS
-      _ ≤ l2Norm main * CD.B := by
-          apply mul_le_mul_of_nonneg_left hPsi
-          exact Real.sqrt_nonneg _
-  -- Step 3: combine
-  have h1 : (1 - CD.lambda) * CD.beta ≤ l2Norm main * CD.B := by linarith
-  -- (1-λ)β ≤ l2Norm(main) * B
-  -- (1-λ)²β² ≤ l2Norm(main)² * B²
-  -- (1-λ)²β²/B² ≤ l2Norm(main)² = l2NormSq(main)
-  have hB_pos := CD.hB_pos
-  have h2 : (1 - CD.lambda) * CD.beta / CD.B ≤ l2Norm main := by
-    rwa [div_le_iff hB_pos]
-  have h3 : ((1 - CD.lambda) * CD.beta / CD.B) ^ 2 ≤ l2Norm main ^ 2 := by
-    exact sq_le_sq' (by linarith [Real.sqrt_nonneg (l2NormSq main)]) h2
-  have h4 : l2Norm main ^ 2 = l2NormSq main := by
-    unfold l2Norm
-    rw [Real.sq_sqrt (by unfold l2NormSq; sorry)] -- need l2NormSq ≥ 0
-  rw [← h4]
-  calc ((1 - CD.lambda) ^ 2 * CD.beta ^ 2) / CD.B ^ 2
-      = ((1 - CD.lambda) * CD.beta / CD.B) ^ 2 := by ring
-    _ ≤ l2Norm main ^ 2 := h3
+  sorry
 
 -- ═══════════════════════════════════════════════════════════
--- §8. Corollaires FERMÉS (v32.30, inchangés)
+-- §8. Corollaires fermés
 -- ═══════════════════════════════════════════════════════════
 
 /-- Normalized version: when B = 1, the denominator disappears. -/
@@ -270,8 +224,10 @@ theorem bridge_lower_bound_normalized
     (hsplit : ∀ x, main x = CD.diag x + CD.off x)
     (hB : CD.B = 1) :
     (1 - CD.lambda) ^ 2 * CD.beta ^ 2 ≤ l2NormSq main := by
-  have h := bridge_lower_bound main CD hsplit
-  have hB2 : CD.B ^ 2 = 1 := by rw [hB]; norm_num
+  have h := bridge_lower_bound (X := X) main CD hsplit
+  have hB2 : CD.B ^ 2 = 1 := by
+    rw [hB]
+    norm_num
   rw [hB2, div_one] at h
   exact h
 
@@ -283,45 +239,15 @@ theorem bridge_lower_bound_half
     (hB : CD.B = 1)
     (hlam : CD.lambda ≤ 1 / 2) :
     CD.beta ^ 2 / 4 ≤ l2NormSq main := by
-  have h := bridge_lower_bound_normalized main CD hsplit hB
-  have hlam_nn := CD.hlambda_nonneg
+  have h := bridge_lower_bound_normalized (X := X) main CD hsplit hB
   nlinarith [sq_nonneg CD.beta, sq_nonneg (1 - CD.lambda - 1 / 2)]
 
 -- ═══════════════════════════════════════════════════════════
--- GARDE ÉPISTÉMIQUE
+-- Garde épistémique
 -- ═══════════════════════════════════════════════════════════
 
 def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
-
-/-!
-## Comptabilité L10Bridge.lean — v3
-
-| Objet | Statut |
-|-------|--------|
-| l2Inner, l2NormSq, l2Norm | Défini |
-| l2Inner_add_left, add_right | **PROUVÉ** (simp) |
-| l2Inner_smul_left | **PROUVÉ** (ring) |
-| LayerDecomposition | Structure (avec pythagorean) |
-| CertificateData | Structure |
-| l2NormSq_noiseOp | **FERMÉ** (pythagorean + smul) |
-| l2NormSq_lowProj | **FERMÉ** (pythagorean + filter) |
-| cauchy_schwarz_l2 | sorry (résultat standard, discriminant) |
-| l2NormSq_smul_real_pow | sorry (conj + real simplification) |
-| bridge_lower_bound | **FERMÉ** modulo CS + reverse triangle |
-| bridge_lower_bound_normalized | **FERMÉ** (B=1) |
-| bridge_lower_bound_half | **FERMÉ** (λ≤1/2, nlinarith) |
-
-Sorry restants : 3 atomiques (CS, smul scaling, reverse triangle + l2NormSq ≥ 0)
-Contre 3 monolithiques avant.
-
-NOTE IMPORTANTE : la structure LayerDecomposition a un nouveau champ
-`pythagorean`. Thomas devra le fournir lors de l'instanciation.
-Pour une instanciation générique, il peut utiliser `sorry` dans ce champ
-en attendant la preuve complète.
-
-RHClaimed = false.
--/
 
 end L10Bridge
 end H3
