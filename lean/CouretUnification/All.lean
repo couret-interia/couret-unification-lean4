@@ -339,3 +339,6 @@ import CouretUnification.Logic.H3.L10Bridge
 import CouretUnification.Crown
 -- L6 : Absorption archimédienne par canal (quasi-fermé)
 import CouretUnification.Criterion.L6_Absorption
+
+-- ─── route D : Contradiction formelle avec kappa ───────────
+import CouretUnification.Criterion.RouteDContradiction

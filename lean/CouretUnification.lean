@@ -54,6 +54,9 @@ import CouretUnification.Logic.H3.L10Bridge
 -- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
 import CouretUnification.Crown.Crown
 
--- ─── Couche 6 : absorption avancée / verrou L6 ─────────────
+-- ─── Couche 6 : absorption avancée / verrou L6 ──────────────
 -- L6 : absorption archimédienne par canal (quasi-fermé)
 import CouretUnification.Criterion.L6_Absorption
+
+-- ─── route D : Contradiction formelle avec kappa ────────────
+import CouretUnification.Criterion.RouteDContradiction
