@@ -92,26 +92,34 @@ theorem sum_layers_eq (f : X → ℂ) :
     f = ∑ d ∈ LD.support f, LD.layer d f :=
   LD.reconstruction f
 
+-- ═══════════════════════════════════════════════════════════
+-- SORRY 1 & 2 : identités d'énergie (Pythagore fini)
+-- ═══════════════════════════════════════════════════════════
+
 /-- Weighted L2 energy identity for the noise operator.
     Lean translation of Lemma 11.2.
-    Left as sorry: requires finite Hilbert space summation lemmas. -/
+    Left as sorry: requires Pythagorean theorem for l2Inner
+    (sesquilinearity + orthogonality over finite sums). -/
 theorem l2NormSq_noiseOp (ρ : ℝ) (f : X → ℂ) :
     l2NormSq (noiseOp LD ρ f)
       = ∑ d ∈ LD.support f, (ρ ^ (2 * d)) * l2NormSq (LD.layer d f) := by
   sorry
 
 /-- L2 energy identity for the low-degree projection.
-    Left as sorry: requires orthogonality summation. -/
+    Left as sorry: requires Pythagorean theorem for l2Inner. -/
 theorem l2NormSq_lowProj (d0 : ℕ) (f : X → ℂ) :
     l2NormSq (lowProj LD d0 f)
       = ∑ d ∈ (LD.support f).filter fun d => d ≤ d0,
           l2NormSq (LD.layer d f) := by
   sorry
 
+-- ═══════════════════════════════════════════════════════════
+-- SORRY 3 : bridge (Cauchy-Schwarz + triangle)
+-- ═══════════════════════════════════════════════════════════
+
 /-- Abstract bridge theorem: certificate + weak leakage imply
     a uniform lower bound on the L2 norm of main.
-    Lean translation of Theorem 13 (L10.7.2).
-    Left as sorry: requires Cauchy-Schwarz + triangle inequality. -/
+    Left as sorry: requires Cauchy-Schwarz for l2Inner. -/
 theorem bridge_lower_bound
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -120,16 +128,25 @@ theorem bridge_lower_bound
       ≤ l2NormSq main := by
   sorry
 
-/-- Normalized version of the abstract bridge. -/
+-- ═══════════════════════════════════════════════════════════
+-- FERMÉS : corollaires du bridge
+-- ═══════════════════════════════════════════════════════════
+
+/-- Normalized version: when B = 1, the denominator disappears.
+    CLOSED: follows from bridge_lower_bound by substituting B = 1. -/
 theorem bridge_lower_bound_normalized
     (main : X → ℂ)
     (CD : CertificateData (X := X))
     (hsplit : ∀ x, main x = CD.diag x + CD.off x)
     (hB : CD.B = 1) :
     (1 - CD.lambda) ^ 2 * CD.beta ^ 2 ≤ l2NormSq main := by
-  sorry
+  have h := bridge_lower_bound main CD hsplit
+  have hB2 : CD.B ^ 2 = 1 := by rw [hB]; norm_num
+  rw [hB2, div_one] at h
+  exact h
 
-/-- Simple corollary when lambda ≤ 1/2. -/
+/-- Corollary when lambda ≤ 1/2: the bridge gives at least β²/4.
+    CLOSED: (1-λ) ≥ 1/2 implies (1-λ)² ≥ 1/4. -/
 theorem bridge_lower_bound_half
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -137,7 +154,9 @@ theorem bridge_lower_bound_half
     (hB : CD.B = 1)
     (hlam : CD.lambda ≤ 1 / 2) :
     CD.beta ^ 2 / 4 ≤ l2NormSq main := by
-  sorry
+  have h := bridge_lower_bound_normalized main CD hsplit hB
+  have hlam_nn := CD.hlambda_nonneg
+  nlinarith [sq_nonneg CD.beta, sq_nonneg (1 - CD.lambda - 1 / 2)]
 
 -- ═══════════════════════════════════════════════════════════
 -- GARDE ÉPISTÉMIQUE
@@ -147,7 +166,7 @@ def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
 
 /-!
-## Comptabilité L10Bridge.lean
+## Comptabilité L10Bridge.lean — v2
 
 | Objet | Statut |
 |-------|--------|
@@ -156,13 +175,14 @@ theorem rh_not_claimed : RHClaimed = false := rfl
 | lowProj, noiseOp | Définis |
 | DiagOffSplit, CertificateData | Structures |
 | layer_orthogonal, sum_layers_eq | Prouvés (délégation) |
-| l2NormSq_noiseOp | sorry (sommation orthogonale) |
-| l2NormSq_lowProj | sorry (sommation orthogonale) |
-| bridge_lower_bound | sorry (Cauchy-Schwarz + triangle) |
-| bridge_lower_bound_normalized | sorry (normalisation) |
-| bridge_lower_bound_half | sorry (cas λ ≤ 1/2) |
+| l2NormSq_noiseOp | sorry (Pythagore fini) |
+| l2NormSq_lowProj | sorry (Pythagore fini) |
+| bridge_lower_bound | sorry (Cauchy-Schwarz) |
+| bridge_lower_bound_normalized | **FERMÉ** (corollaire B=1) |
+| bridge_lower_bound_half | **FERMÉ** (corollaire λ≤1/2, nlinarith) |
 
-Total : 5 sorry identifiés, tous techniques (algèbre linéaire finie).
+Total : 3 sorry (contre 5 avant).
+Réduction : 2 sorry fermés.
 
 RHClaimed = false.
 -/
