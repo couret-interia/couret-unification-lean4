@@ -5,13 +5,13 @@
 # Le diagnostic spectral mod 30 (section 2) est fiable.
 # Le tableau E_diag/E_off (section 1) utilise un mauvais objet.
 
-couret_offdiag_leakage.py — Mesure de la fuite hors-diagonale M₂₁^off
+couret_offdiag_proxy.py — Proxy exploratoire pour la fuite hors-diagonale
 Programme Couret-Unification — Condition G2 pour gel de L10
 
 Objectif : mesurer ‖M₂₁^off‖_HS à q=2310 et q=30030
 Si la fuite reste < 2% de la masse diagonale, T9 est numériquement verrouillé.
 
-Usage : python couret_offdiag_leakage.py
+Usage : python couret_offdiag_proxy.py
 
 RHClaimed = false
 Dédié à Bernard Couret (1928–2010)
