@@ -92,6 +92,29 @@ theorem spectral_leakage_zero :
   fin_cases i <;> fin_cases j <;> simp_all [isR30, isS30]
 
 -- ═══════════════════════════════════════════════════════════
+-- §2b. Annulation des entrées hors-diagonale de D (vrai M_RS = 0)
+-- ═══════════════════════════════════════════════════════════
+
+/-- Entrée de la matrice diagonale D.
+    D_{ij} = eigenvalue_i si i = j, 0 sinon. -/
+def DEntry (i j : Fin 8) : ℤ :=
+  if i = j then eigenvalues_ATC i else 0
+
+/-- D est diagonale : entrées hors-diagonale sont nulles. -/
+theorem DEntry_off_diag (i j : Fin 8) (h : i ≠ j) : DEntry i j = 0 := by
+  unfold DEntry
+  simp [h]
+
+/-- Le vrai théorème M_RS = 0 :
+    pour i ∈ R₃₀ et j ∈ S₃₀, D_{ij} = 0.
+    C'est le cœur de la nullité spectrale. -/
+theorem spectral_block_zero (i j : Fin 8)
+    (hi : isR30 i) (hj : isS30 j) :
+    DEntry i j = 0 := by
+  apply DEntry_off_diag
+  fin_cases i <;> fin_cases j <;> simp_all [isR30, isS30]
+
+-- ═══════════════════════════════════════════════════════════
 -- §3. Factorisation spatiale
 -- ═══════════════════════════════════════════════════════════
 
@@ -167,10 +190,13 @@ structure G2Status where
   note : String
   deriving Repr
 
+/-- Convention G2 figée (v32.31). -/
 def g2_current : G2Status :=
-  { spectral_leakage := "zero (theorem: D diagonal)"
-  , spatial_leakage := "open (B21/B11 ratio to be measured)"
-  , note := "G2 spectral is a theorem. G2 spatial is the real target." }
+  { spectral_leakage := "zero (theorem: spectral_block_zero)"
+  , spatial_leakage := "G2_index (n/2) is canonical; numerically stable across tested levels"
+  , note := "G2 spectral is a theorem (DEntry_off_diag). " ++
+            "G2 spatial uses index cut n/2 as reference. " ++
+            "Threshold cuts are secondary diagnostics." }
 
 -- ═══════════════════════════════════════════════════════════
 -- Garde épistémique

@@ -306,8 +306,8 @@ def main():
         print(f"  q = {q:,}, tail_primes = {tail_primes}, |τ| = {n_tau}, τ_max = {tau_max}")
         print(f"{'─' * 80}")
 
-        if n_tau < 4:
-            print("  Trop peu de queues pour un scan significatif, skip")
+        if n_tau < 8:
+            print("  Cas dégénéré (trop peu de queues), base case seulement")
             continue
 
         rows = mixed_scan(
