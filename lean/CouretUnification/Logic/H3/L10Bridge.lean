@@ -13,7 +13,7 @@ namespace Logic
 namespace H3
 namespace L10Bridge
 
-variable {X : Type*} [Fintype X] [DecidableEq X]
+variable {X : Type*} [Fintype X]
 
 -- ═══════════════════════════════════════════════════════════
 -- §1. Définitions fondamentales
@@ -90,6 +90,8 @@ lemma l2Inner_smul_right (c : ℂ) (f g : X → ℂ) :
     _ = (star c) *
         (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
           ring
+
+variable [DecidableEq X]
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Structure de décomposition par couches
@@ -202,6 +204,7 @@ lemma cauchy_schwarz_l2 (f g : X → ℂ) :
     ‖l2Inner f g‖ ≤ l2Norm f * l2Norm g := by
   sorry
 
+omit [DecidableEq X] in
 /-- Additivity of l2Inner under pointwise decomposition. -/
 lemma l2Inner_split (main diag off Psi : X → ℂ)
     (hsplit : ∀ x, main x = diag x + off x) :
