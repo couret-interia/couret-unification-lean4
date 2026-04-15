@@ -73,18 +73,22 @@ lemma l2Inner_smul_right (c : ℂ) (f g : X → ℂ) :
   unfold l2Inner
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
   calc
-    ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * ((starRingEnd ℂ) c * (starRingEnd ℂ) (g x))
-        =
-      ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, (star c) * (f x * (starRingEnd ℂ) (g x)) := by
+    ((Fintype.card X : ℂ)⁻¹) *
+        ∑ x : X, f x * ((starRingEnd ℂ) c * (starRingEnd ℂ) (g x))
+      =
+    ((Fintype.card X : ℂ)⁻¹) *
+        ∑ x : X, (star c) * (f x * (starRingEnd ℂ) (g x)) := by
           congr 1
           apply Finset.sum_congr rfl
           intro x hx
-          ring
+          simp [mul_left_comm]
     _ =
-      ((Fintype.card X : ℂ)⁻¹) * ((star c) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
+    ((Fintype.card X : ℂ)⁻¹) *
+        ((star c) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
           congr 1
           rw [Finset.mul_sum]
-    _ = (star c) * (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
+    _ = (star c) *
+        (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
           ring
 
 -- ═══════════════════════════════════════════════════════════
