@@ -104,10 +104,24 @@ lemma l2NormSq_smul_real_pow (ρ : ℝ) (d : ℕ) (f : X → ℂ) :
 -- §2c. Non-négativité de l2NormSq
 -- ═══════════════════════════════════════════════════════════
 
-/-- l2NormSq f ≥ 0. Standard for sesquilinear forms.
-    sorry: requires Σ |f(x)|² ≥ 0 + (card X)⁻¹ ≥ 0 in ℂ then .re -/
+/-- l2NormSq f ≥ 0. CLOSED. -/
 lemma l2NormSq_nonneg (f : X → ℂ) : 0 ≤ l2NormSq f := by
-  sorry
+  unfold l2NormSq l2Inner
+  have hsum :
+      (∑ x : X, f x * (starRingEnd ℂ) (f x))
+        = ∑ x : X, (Complex.normSq (f x) : ℂ) := by
+    apply Finset.sum_congr rfl
+    intro x _
+    simp [Complex.mul_conj]
+  have hcard :
+      ((Fintype.card X : ℂ)⁻¹) = ↑((Fintype.card X : ℝ)⁻¹) := by
+    simp
+  rw [hcard, hsum]
+  rw [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
+  simp only [zero_mul, sub_zero, Complex.re_sum, Complex.ofReal_re]
+  apply mul_nonneg
+  · positivity
+  · exact Finset.sum_nonneg (fun x _ => Complex.normSq_nonneg (f x))
 
 variable [DecidableEq X]
 
@@ -326,7 +340,7 @@ theorem rh_not_claimed : RHClaimed = false := rfl
 | l2Inner_split | **PROUVÉ** |
 | l2NormSq_smul_real_pow | **PROUVÉ** |
 | noise_layers_orthogonal | **PROUVÉ** |
-| l2NormSq_nonneg | sorry (trivial : Σ|f(x)|² ≥ 0) |
+| l2NormSq_nonneg | **FERMÉ** |
 | cauchy_schwarz_l2 | sorry (discriminant / InnerProductSpace) |
 | l2NormSq_noiseOp | **FERMÉ** |
 | l2NormSq_lowProj | **FERMÉ** |
@@ -334,14 +348,13 @@ theorem rh_not_claimed : RHClaimed = false := rfl
 | bridge_lower_bound_normalized | **FERMÉ** |
 | bridge_lower_bound_half | **FERMÉ** |
 
-Sorry dans ce fichier : 2
-  - l2NormSq_nonneg (trivial, ~5 lignes Mathlib)
+Sorry dans ce fichier : 1
   - cauchy_schwarz_l2 (standard, ~40 lignes Mathlib)
 
-Sorry total du dépôt : 3 (1 Lock 3 + 2 L10Bridge)
+Sorry total du dépôt : 2 (1 Lock 3 + 1 L10Bridge)
 
-Progression : 5 sorry (v32.28) → 3 sorry (v32.33)
-Le bridge_lower_bound est maintenant FERMÉ.
+Progression : 5 sorry (v32.28) → 2 sorry (v32.34)
+Le l2NormSq_nonneg est maintenant FERMÉ.
 
 RHClaimed = false.
 -/
