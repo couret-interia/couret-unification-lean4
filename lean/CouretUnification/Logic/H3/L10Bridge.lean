@@ -2,6 +2,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
+import Mathlib.Analysis.RCLike.Inner
+import Mathlib.Analysis.InnerProductSpace.Basic
 
 open scoped BigOperators
 open Finset
@@ -83,7 +85,17 @@ lemma l2Inner_split (main diag off Psi : X → ℂ)
   rw [hmain, l2Inner_add_left]
 
 -- ═══════════════════════════════════════════════════════════
--- §2b. Scaling lemma
+-- §2b. Conjugate symmetry
+-- ═══════════════════════════════════════════════════════════
+
+/-- Conjugate symmetry: l2Inner g f = star (l2Inner f g). -/
+lemma l2Inner_conj_symm (f g : X → ℂ) :
+    l2Inner g f = star (l2Inner f g) := by
+  unfold l2Inner
+  simp [mul_comm]
+
+-- ═══════════════════════════════════════════════════════════
+-- §2c. Scaling + non-négativité
 -- ═══════════════════════════════════════════════════════════
 
 lemma l2NormSq_smul_real_pow (ρ : ℝ) (d : ℕ) (f : X → ℂ) :
@@ -100,11 +112,6 @@ lemma l2NormSq_smul_real_pow (ρ : ℝ) (d : ℕ) (f : X → ℂ) :
   rw [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
   ring
 
--- ═══════════════════════════════════════════════════════════
--- §2c. Non-négativité de l2NormSq
--- ═══════════════════════════════════════════════════════════
-
-/-- l2NormSq f ≥ 0. CLOSED. -/
 lemma l2NormSq_nonneg (f : X → ℂ) : 0 ≤ l2NormSq f := by
   unfold l2NormSq l2Inner
   have hsum :
@@ -226,20 +233,108 @@ theorem l2NormSq_lowProj (d0 : ℕ) (f : X → ℂ) :
     (fun d hd e he hde => LD.orthogonal f hde)
 
 -- ═══════════════════════════════════════════════════════════
--- §7. Cauchy-Schwarz (unique sorry analytique)
+-- §7. Cauchy-Schwarz — FERMÉ
 -- ═══════════════════════════════════════════════════════════
 
-/-- Cauchy-Schwarz inequality for l2Inner.
-    The unique remaining analytical sorry in L10Bridge.
-    Closable by instantiating InnerProductSpace on l2Inner. -/
+omit [DecidableEq X] in
+/-- Identifies the compact normalized inner product `l2Inner`
+with the weighted inner product `wInner` using `cWeight`,
+with arguments flipped to match the conjugate convention. -/
+lemma l2Inner_eq_wInner_cWeight_flip (f g : X → ℂ) :
+    l2Inner f g = RCLike.wInner (𝕜 := ℂ) RCLike.cWeight g f := by
+  unfold l2Inner
+  rw [RCLike.wInner_cWeight_eq_smul_wInner_one, RCLike.wInner_one_eq_sum]
+  have hsum :
+      (∑ i : X, f i * (starRingEnd ℂ) (g i))
+        =
+      (∑ i : X, inner ℂ (g i) (f i)) := by
+    apply Finset.sum_congr rfl
+    intro i _
+    simp [RCLike.inner_apply]
+  rw [hsum]
+  simp [NNRat.smul_def]
+
+omit [DecidableEq X] in
+/-- Expresses `l2NormSq` as the normalized squared norm
+of `WithLp.toLp 2 f`. -/
+lemma l2NormSq_eq_scaled_norm_sq (f : X → ℂ) :
+    l2NormSq f = ((Fintype.card X : ℝ)⁻¹) * ‖WithLp.toLp 2 f‖ ^ 2 := by
+  unfold l2NormSq
+  rw [l2Inner_eq_wInner_cWeight_flip]
+  rw [RCLike.wInner_cWeight_eq_smul_wInner_one, RCLike.wInner_one_eq_inner]
+  rw [inner_self_eq_norm_sq_to_K]
+  simp [NNRat.smul_def, Complex.mul_re, pow_two]
+
+omit [DecidableEq X] in
+/-- Closed form for `l2Norm` in terms of the standard finite `L2` norm. -/
+lemma l2Norm_eq_scaled_norm (f : X → ℂ) :
+    l2Norm f = Real.sqrt ((Fintype.card X : ℝ)⁻¹) * ‖WithLp.toLp 2 f‖ := by
+  unfold l2Norm
+  rw [l2NormSq_eq_scaled_norm_sq]
+  have h1 : 0 ≤ ((Fintype.card X : ℝ)⁻¹) := by
+    positivity
+  have h2 : 0 ≤ ‖WithLp.toLp 2 f‖ := norm_nonneg _
+  rw [pow_two, Real.sqrt_mul h1]
+  congr 1
+  have hs : ‖WithLp.toLp 2 f‖ * ‖WithLp.toLp 2 f‖ = ‖WithLp.toLp 2 f‖ ^ 2 := by
+    ring
+  rw [hs, Real.sqrt_sq_eq_abs, abs_of_nonneg h2]
+
+omit [DecidableEq X] in
+/-- Finite-dimensional Cauchy–Schwarz inequality for `l2Inner`,
+reduced to the standard `WithLp` inner product. -/
 lemma cauchy_schwarz_l2 (f g : X → ℂ) :
     ‖l2Inner f g‖ ≤ l2Norm f * l2Norm g := by
-  sorry
+  rw [l2Inner_eq_wInner_cWeight_flip]
+  rw [RCLike.wInner_cWeight_eq_smul_wInner_one, RCLike.wInner_one_eq_inner]
+  rw [l2Norm_eq_scaled_norm, l2Norm_eq_scaled_norm]
+  set c : ℝ := (Fintype.card X : ℝ)⁻¹
+  set a : ℂ := ((c : ℝ) : ℂ)
+  set uf : ℝ := ‖WithLp.toLp 2 f‖
+  set ug : ℝ := ‖WithLp.toLp 2 g‖
+  set z : ℂ := inner ℂ (WithLp.toLp 2 g) (WithLp.toLp 2 f)
+
+  have hc_nonneg : 0 ≤ c := by
+    dsimp [c]
+    positivity
+
+  have hsmul : (((Fintype.card X : ℚ≥0)⁻¹) • z) = a * z := by
+    dsimp [a, c]
+    rw [NNRat.smul_def]
+    simp
+
+  have hcoeff : norm a = c := by
+    dsimp [a]
+    rw [Complex.norm_real, Real.norm_of_nonneg hc_nonneg]
+
+  have hleft : norm (((Fintype.card X : ℚ≥0)⁻¹) • z) = c * norm z := by
+    rw [hsmul, norm_mul, hcoeff]
+
+  have hsq : (Real.sqrt c) ^ 2 = c := by
+    exact Real.sq_sqrt hc_nonneg
+
+  have hfinal : c * (uf * ug) = (Real.sqrt c * uf) * (Real.sqrt c * ug) := by
+    calc
+      c * (uf * ug) = (Real.sqrt c) ^ 2 * (uf * ug) := by rw [hsq]
+      _ = (Real.sqrt c * uf) * (Real.sqrt c * ug) := by ring
+
+  calc
+    norm (((Fintype.card X : ℚ≥0)⁻¹) • inner ℂ (WithLp.toLp 2 g) (WithLp.toLp 2 f))
+        = norm (((Fintype.card X : ℚ≥0)⁻¹) • z) := by
+            simp [z]
+    _ = c * norm z := hleft
+    _ ≤ c * (ug * uf) := by
+        dsimp [z, ug, uf]
+        gcongr
+        exact norm_inner_le_norm _ _
+    _ = c * (uf * ug) := by ring
+    _ = (Real.sqrt c * uf) * (Real.sqrt c * ug) := hfinal
 
 -- ═══════════════════════════════════════════════════════════
--- §8. Bridge — FERMÉ (modulo CS + nonneg)
+-- §8. Bridge — FERMÉ (modulo CS)
 -- ═══════════════════════════════════════════════════════════
 
+omit [DecidableEq X] in
 /-- Bridge theorem. CLOSED.
     Uses: l2Inner_split, reverse triangle (norm_add_le + norm_neg),
     Cauchy-Schwarz, sq_le_sq', Real.sq_sqrt, l2NormSq_nonneg. -/
@@ -249,49 +344,39 @@ theorem bridge_lower_bound
     (hsplit : ∀ x, main x = CD.diag x + CD.off x) :
     ((1 - CD.lambda) ^ 2 * CD.beta ^ 2) / (CD.B ^ 2)
       ≤ l2NormSq main := by
-  -- Abbreviations
   set a := l2Inner CD.diag CD.Psi
   set b := l2Inner CD.off CD.Psi
-  -- Step 1: ⟨main, Ψ⟩ = a + b
   have hab : l2Inner main CD.Psi = a + b :=
     l2Inner_split main CD.diag CD.off CD.Psi hsplit
-  -- Step 2: reverse triangle  ‖a‖ - ‖b‖ ≤ ‖a + b‖
   have hrev : ‖a‖ - ‖b‖ ≤ ‖a + b‖ := by
     have h1 : ‖a‖ ≤ ‖a + b‖ + ‖b‖ := by
       calc ‖a‖ = ‖(a + b) + (-b)‖ := by congr 1; ring
         _ ≤ ‖a + b‖ + ‖-b‖ := norm_add_le _ _
         _ = ‖a + b‖ + ‖b‖ := by rw [norm_neg]
     linarith
-  -- Step 3: (1-λ)β ≤ ‖⟨main, Ψ⟩‖
   have htri : (1 - CD.lambda) * CD.beta ≤ ‖l2Inner main CD.Psi‖ := by
     rw [hab]
     calc (1 - CD.lambda) * CD.beta
         = CD.beta - CD.lambda * CD.beta := by ring
       _ ≤ ‖a‖ - ‖b‖ := by linarith [CD.hbeta_bound, CD.hgamma_bound]
       _ ≤ ‖a + b‖ := hrev
-  -- Step 4: ‖⟨main, Ψ⟩‖ ≤ l2Norm(main) * B  (by CS + ‖Ψ‖ ≤ B)
   have hCS_B : ‖l2Inner main CD.Psi‖ ≤ l2Norm main * CD.B :=
     calc ‖l2Inner main CD.Psi‖
         ≤ l2Norm main * l2Norm CD.Psi := cauchy_schwarz_l2 main CD.Psi
       _ ≤ l2Norm main * CD.B := by
           exact mul_le_mul_of_nonneg_left CD.hnorm (Real.sqrt_nonneg _)
-  -- Step 5: (1-λ)β ≤ l2Norm(main) * B
   have h1 : (1 - CD.lambda) * CD.beta ≤ l2Norm main * CD.B := by linarith
-  -- Step 6: divide by B
   have hB_pos := CD.hB_pos
-  have h2 : (1 - CD.lambda) * CD.beta / CD.B ≤ l2Norm main := by
-    rwa [div_le_iff₀ hB_pos]
-  -- Step 7: square both sides (both non-negative)
+  have h2 : (1 - CD.lambda) * CD.beta / CD.B ≤ l2Norm main :=
+    (div_le_iff₀ hB_pos).mpr h1
   have h_lhs_nn : 0 ≤ (1 - CD.lambda) * CD.beta / CD.B :=
     div_nonneg (mul_nonneg (by linarith [CD.hlambda_lt_one]) (le_of_lt CD.hbeta_pos))
                (le_of_lt CD.hB_pos)
   have h_rhs_nn : 0 ≤ l2Norm main := Real.sqrt_nonneg _
   have h3 : ((1 - CD.lambda) * CD.beta / CD.B) ^ 2 ≤ l2Norm main ^ 2 :=
     sq_le_sq' (by linarith) h2
-  -- Step 8: l2Norm² = l2NormSq
   have h4 : l2Norm main ^ 2 = l2NormSq main := by
     unfold l2Norm; exact Real.sq_sqrt (l2NormSq_nonneg main)
-  -- Step 9: conclude
   calc ((1 - CD.lambda) ^ 2 * CD.beta ^ 2) / CD.B ^ 2
       = ((1 - CD.lambda) * CD.beta / CD.B) ^ 2 := by ring
     _ ≤ l2Norm main ^ 2 := h3
@@ -301,6 +386,7 @@ theorem bridge_lower_bound
 -- §9. Corollaires FERMÉS
 -- ═══════════════════════════════════════════════════════════
 
+omit [DecidableEq X] in
 theorem bridge_lower_bound_normalized
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -312,6 +398,7 @@ theorem bridge_lower_bound_normalized
   rw [hB2, div_one] at h
   exact h
 
+omit [DecidableEq X] in
 theorem bridge_lower_bound_half
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -328,36 +415,6 @@ theorem bridge_lower_bound_half
 
 def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
-
-/-!
-## Comptabilité L10Bridge.lean — v32.33
-
-| Objet | Statut |
-|-------|--------|
-| l2Inner, l2NormSq, l2Norm | Défini |
-| l2Inner_add_left, add_right | **PROUVÉ** |
-| l2Inner_smul_left, smul_right | **PROUVÉ** |
-| l2Inner_split | **PROUVÉ** |
-| l2NormSq_smul_real_pow | **PROUVÉ** |
-| noise_layers_orthogonal | **PROUVÉ** |
-| l2NormSq_nonneg | **FERMÉ** |
-| cauchy_schwarz_l2 | sorry (discriminant / InnerProductSpace) |
-| l2NormSq_noiseOp | **FERMÉ** |
-| l2NormSq_lowProj | **FERMÉ** |
-| bridge_lower_bound | **FERMÉ** (reverse triangle + CS + sq_le_sq') |
-| bridge_lower_bound_normalized | **FERMÉ** |
-| bridge_lower_bound_half | **FERMÉ** |
-
-Sorry dans ce fichier : 1
-  - cauchy_schwarz_l2 (standard, ~40 lignes Mathlib)
-
-Sorry total du dépôt : 2 (1 Lock 3 + 1 L10Bridge)
-
-Progression : 5 sorry (v32.28) → 2 sorry (v32.34)
-Le l2NormSq_nonneg est maintenant FERMÉ.
-
-RHClaimed = false.
--/
 
 end L10Bridge
 end H3
