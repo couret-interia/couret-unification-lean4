@@ -6,12 +6,15 @@ import Mathlib.Tactic
 import CouretUnification.Logic.H3.Arithmetic
 
 /-!
-# Route C raffinée — Infrastructure formelle v32.37
+# Route C raffinée — Infrastructure formelle v32.38
 
-Second refactor : les deux sorry sont déplacés vers leurs verrous minimaux.
+Third refactor : `S1_linear_on_primorial` est déplacé vers deux sous-verrous
+combinatoires / de densité, reliés par un recollement algébrique fermé.
 
-- `S1_linear_on_primorial` — borne linéaire inférieure sur `S1(q)`
-- `routeC_error_control`   — contrôle `θ < 1` sur la somme des pièces d'erreur
+Sorry restants :
+- `S1_lower_from_squarefree`               (combinatoire arithmétique)
+- `squarefreeCount_linear_on_primorial`    (densité des squarefree)
+- `routeC_error_control`                   (contrôle θ < 1)
 
 `RHClaimed = false.`
 Dédié à Bernard Couret (1928–1999).
@@ -78,10 +81,23 @@ theorem K_decomposition (q : ℕ) : K q = MainTerm q + ErrorTerm q := by
   unfold ErrorTerm; ring
 
 -- ═══════════════════════════════════════════════════════════
--- §3. Décomposition structurelle de l'erreur
+-- §3. Squarefree count
 -- ═══════════════════════════════════════════════════════════
 
-/-- Placeholder single-piece decomposition. -/
+/-- Count of squarefree integers in {1, ..., q}, as a real.
+    We use `μ(n) ≠ 0` as the squarefree predicate (they agree for n ≥ 1). -/
+noncomputable def squarefreeCount (q : ℕ) : ℝ :=
+  ((Finset.range (q + 1)).filter
+    (fun n => 0 < n ∧ Arithmetic.mu n ≠ 0)).card
+
+theorem squarefreeCount_nonneg (q : ℕ) : 0 ≤ squarefreeCount q := by
+  unfold squarefreeCount
+  exact_mod_cast Nat.zero_le _
+
+-- ═══════════════════════════════════════════════════════════
+-- §4. Décomposition structurelle de l'erreur
+-- ═══════════════════════════════════════════════════════════
+
 def ErrorPieces (_q : ℕ) : Finset ℕ := {0}
 
 noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
@@ -91,16 +107,25 @@ theorem errorTerm_decomposition (q : ℕ) :
   simp [ErrorPieces, E]
 
 -- ═══════════════════════════════════════════════════════════
--- §4. Les deux verrous analytiques minimaux
+-- §5. Verrous analytiques minimaux
 -- ═══════════════════════════════════════════════════════════
 
-/-- **Analytical lock 1** — linear lower bound on `S1(q)` along the primorial tower. -/
-theorem S1_linear_on_primorial :
-    ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
-      ∀ n : ℕ, n₀ ≤ n → A * (primorial n : ℝ) ≤ S1 (primorial n) := by
+/-- **Verrou combinatoire** — une fraction positive des squarefree
+    contribue à `S1`. Constante `β > 0` abstraite, pas figée. -/
+theorem S1_lower_from_squarefree :
+    ∃ β : ℝ, 0 < β ∧
+      ∀ q : ℕ, β * squarefreeCount q ≤ S1 q := by
   sorry
 
-/-- **Analytical lock 2** — relative control on the total error pieces. -/
+/-- **Verrou de densité** — les squarefree sont linéairement nombreux
+    le long de la tour primorielle. -/
+theorem squarefreeCount_linear_on_primorial :
+    ∃ n₀ : ℕ, ∃ α : ℝ, 0 < α ∧
+      ∀ n : ℕ, n₀ ≤ n →
+        α * (primorial n : ℝ) ≤ squarefreeCount (primorial n) := by
+  sorry
+
+/-- **Verrou analytique Route C** — contrôle `θ < 1` sur les pièces. -/
 theorem routeC_error_control :
     ∃ n₀ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
       ∀ n : ℕ, n₀ ≤ n →
@@ -110,7 +135,36 @@ theorem routeC_error_control :
   sorry
 
 -- ═══════════════════════════════════════════════════════════
--- §5. Verrous classiques, désormais fermés
+-- §6. Recollements algébriques (fermés)
+-- ═══════════════════════════════════════════════════════════
+
+/-- Recollement Front 1 : des deux sous-verrous squarefree vers `S1 ≫ q`. -/
+theorem S1_linear_on_primorial_from_squarefree
+    (h1 : ∃ β : ℝ, 0 < β ∧
+      ∀ q : ℕ, β * squarefreeCount q ≤ S1 q)
+    (h2 : ∃ n₀ : ℕ, ∃ α : ℝ, 0 < α ∧
+      ∀ n : ℕ, n₀ ≤ n →
+        α * (primorial n : ℝ) ≤ squarefreeCount (primorial n)) :
+    ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
+      ∀ n : ℕ, n₀ ≤ n → A * (primorial n : ℝ) ≤ S1 (primorial n) := by
+  obtain ⟨β, hβ, hβq⟩ := h1
+  obtain ⟨n₀, α, hα, hαn⟩ := h2
+  refine ⟨n₀, α * β, mul_pos hα hβ, ?_⟩
+  intro n hn
+  have hsq := hαn n hn
+  have hS := hβq (primorial n)
+  nlinarith [mul_le_mul_of_nonneg_left hsq (le_of_lt hβ)]
+
+/-- `S1_linear_on_primorial` — closed via the two squarefree sub-locks. -/
+theorem S1_linear_on_primorial :
+    ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
+      ∀ n : ℕ, n₀ ≤ n → A * (primorial n : ℝ) ≤ S1 (primorial n) :=
+  S1_linear_on_primorial_from_squarefree
+    S1_lower_from_squarefree
+    squarefreeCount_linear_on_primorial
+
+-- ═══════════════════════════════════════════════════════════
+-- §7. Verrous Route C classiques, désormais fermés
 -- ═══════════════════════════════════════════════════════════
 
 theorem routeC_main_lower :
@@ -142,7 +196,7 @@ theorem routeC_error_upper :
     _ ≤ θ * MainTerm (primorial n) := hctrl n hn
 
 -- ═══════════════════════════════════════════════════════════
--- §6. Recollement algébrique (fermé)
+-- §8. Recollement Route C
 -- ═══════════════════════════════════════════════════════════
 
 theorem routeC_from_main_error
@@ -166,7 +220,7 @@ theorem routeC_from_main_error
   nlinarith [mul_le_mul_of_nonneg_left hM (show 0 ≤ 1 - θ by linarith)]
 
 -- ═══════════════════════════════════════════════════════════
--- §7. Chaîne complète (A) → (B) → (C)
+-- §9. Chaîne complète (A) → (B) → (C)
 -- ═══════════════════════════════════════════════════════════
 
 theorem routeC_explicit_core :
@@ -202,7 +256,7 @@ theorem kappa_pos_from_routeC :
   kappa_eventually_pos routeC_explicit_core
 
 -- ═══════════════════════════════════════════════════════════
--- §8. Gouvernance
+-- §10. Gouvernance
 -- ═══════════════════════════════════════════════════════════
 
 def RHClaimed : Bool := false
