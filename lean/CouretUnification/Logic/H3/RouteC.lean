@@ -101,19 +101,15 @@ theorem squarefreeCount_nonneg (q : ℕ) : 0 ≤ squarefreeCount q := by
 -- §3bis. Route Mertens : badSquareCount et union bound
 -- ═══════════════════════════════════════════════════════════
 
-/-- Nombre d'entiers NON squarefree dans `{1, …, q}`. -/
+/-- Number of NON-squarefree integers in `{1, …, q}`. -/
 noncomputable def badSquareCount (q : ℕ) : ℝ :=
   (((Finset.Icc 1 q).filter fun n => ¬ Squarefree n).card : ℕ)
 
-/-- `badSquareCount(q) ≥ 0`. -/
 theorem badSquareCount_nonneg (q : ℕ) : 0 ≤ badSquareCount q := by
   unfold badSquareCount
   positivity
 
-/-- Tout entier de `{1, …, q}` est soit squarefree, soit non squarefree.
-
-En conséquence :
-`squarefreeCount q + badSquareCount q = q`. -/
+/-- Every integer in `{1, …, q}` is either squarefree or non-squarefree. -/
 theorem squarefreeCount_add_badSquareCount (q : ℕ) :
     squarefreeCount q + badSquareCount q = (q : ℝ) := by
   unfold squarefreeCount badSquareCount
@@ -129,24 +125,38 @@ theorem squarefreeCount_add_badSquareCount (q : ℕ) :
     omega
   exact_mod_cast hcard.trans hicc
 
-/-- **Verrou analytique minimal** — borne de type union bound :
+/-- **Verrou combinatoire** : tout entier non squarefree dans `{1, …, q}`
+est divisible par `m²` pour un certain `m ∈ {2, …, q}`. La cardinalité
+des non-squarefree est donc majorée par la somme des `⌊q/m²⌋`. -/
+theorem badSquareCount_le_sum_div_sq (q : ℕ) :
+    badSquareCount q ≤
+      Finset.sum (Finset.Icc 2 q) (fun m => ((q / (m ^ 2 : ℕ) : ℕ) : ℝ)) := by
+  sorry
 
-le nombre d'entiers non squarefree ≤ `q` est majoré par `C · q`
-pour une constante explicite `C < 1`.
+/-- **Verrou de série télescopique** : la somme `Σ_{2 ≤ m ≤ q} ⌊q/m²⌋`
+est majorée par `(3/4) · q`, via :
+`Σ 1/m² ≤ 1/4 + Σ_{m≥3} 1/(m(m-1)) = 1/4 + 1/2 = 3/4`.
 
-C'est ici que se place la route élémentaire de type Mertens :
-on majore `badSquareCount(q)` par une somme de contributions des carrés
-de premiers `p²`. -/
+Aucune théorie analytique des nombres requise : juste une majoration
+finie d'une série télescopique. -/
+theorem sum_div_sq_le_three_quarters (q : ℕ) :
+    Finset.sum (Finset.Icc 2 q) (fun m => ((q / (m ^ 2 : ℕ) : ℕ) : ℝ))
+      ≤ (3 / 4 : ℝ) * (q : ℝ) := by
+  sorry
+
+/-- `badSquareCount_union_bound` — closed via `badSquareCount_le_sum_div_sq`
+and `sum_div_sq_le_three_quarters`, with explicit constant `C = 3/4`. -/
 theorem badSquareCount_union_bound :
     ∃ C : ℝ, 0 ≤ C ∧ C < 1 ∧
       ∀ q : ℕ, badSquareCount q ≤ C * (q : ℝ) := by
-  sorry
+  refine ⟨3 / 4, by norm_num, by norm_num, ?_⟩
+  intro q
+  exact le_trans
+    (badSquareCount_le_sum_div_sq q)
+    (sum_div_sq_le_three_quarters q)
 
-/-- Recollement algébrique fermé :
-
-si `badSquareCount(q)` est strictement sous-linéaire avec une constante
-`C < 1`, alors `squarefreeCount(q)` admet une borne linéaire inférieure
-de la forme `α · q`, avec `α = 1 - C > 0`. -/
+/-- Closed algebraic recombination: sublinear badSquareCount implies
+linear lower bound on squarefreeCount. -/
 theorem squarefreeCount_linear_global_from_union_bound
     (h : ∃ C : ℝ, 0 ≤ C ∧ C < 1 ∧
       ∀ q : ℕ, badSquareCount q ≤ C * (q : ℝ)) :
@@ -159,8 +169,7 @@ theorem squarefreeCount_linear_global_from_union_bound
   have hb := hbound q
   linarith
 
-/-- `squarefreeCount_linear_global` fermé à partir du verrou
-`badSquareCount_union_bound`. -/
+/-- `squarefreeCount_linear_global` closed via the union bound. -/
 theorem squarefreeCount_linear_global :
     ∃ α : ℝ, 0 < α ∧
       ∀ q : ℕ, α * (q : ℝ) ≤ squarefreeCount q :=
