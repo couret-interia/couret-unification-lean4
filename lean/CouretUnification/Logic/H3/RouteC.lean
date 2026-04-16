@@ -10,20 +10,37 @@ import CouretUnification.Logic.H3.Arithmetic
 
 ## Programme Couret-Unification v32.36
 
-Décomposition du verrou analytique en deux sous-verrous précis :
-  (i)  `routeC_main_lower`  : le terme principal est positif (S₁ ≫ q)
-  (ii) `routeC_error_upper` : l'erreur est contrôlée (θ < 1)
+Ce fichier formalise la **Route C raffinée** sous forme d'une décomposition
+claire du verrou analytique en deux sous-verrous distincts :
 
-Le lemme `routeC_from_main_error` est purement algébrique et fermé.
-Le triptyque `(A)→(B)→(C)` est inchangé et fermé.
+1. `routeC_main_lower` :
+   le terme principal est uniformément positif le long de la tour primorielle.
+
+2. `routeC_error_upper` :
+   le terme d'erreur reste dominé par une fraction `θ < 1` du terme principal.
+
+Le lemme `routeC_from_main_error` est **purement algébrique** et entièrement fermé.
+Le triptyque final
+
+- `(A)` `routeC_explicit_core`
+- `(B)` `kappa_explicit_bound`
+- `(C)` `kappa_eventually_pos`
+
+reste inchangé, mais son verrou central est désormais **factorisé proprement**
+en deux problèmes analytiques nommés.
+
+## Statut
 
 Sorry dans ce fichier : 2
-  — `routeC_main_lower`  (borne inférieure du terme principal)
-  — `routeC_error_upper` (contrôle des erreurs, θ < 1)
-Les deux sont des verrous de théorie analytique des nombres,
-formulés sur les objets arithmétiques réels de `Arithmetic.lean`.
 
-RHClaimed = false.
+- `routeC_main_lower`
+- `routeC_error_upper`
+
+Ces deux `sorry` sont des **verrous analytiques réels**, formulés sur les objets
+arithmétiques effectifs importés depuis `Arithmetic.lean`.
+Il ne s'agit pas de `sorry` d'interface.
+
+`RHClaimed = false.`
 Dédié à Bernard Couret (1928–1999).
 -/
 
@@ -37,62 +54,97 @@ namespace RouteC
 -- §1. Recollement avec l'arithmétique réelle
 -- ═══════════════════════════════════════════════════════════
 
+/-- Euler's totient, imported from `Arithmetic.lean`. -/
 noncomputable abbrev phi : ℕ → ℝ := CouretUnification.Arithmetic.phi
+
+/-- Restricted second moment `K(q)`, imported from `Arithmetic.lean`. -/
 noncomputable abbrev K : ℕ → ℝ := CouretUnification.Arithmetic.K
+
+/-- Normalized second moment `κ(q)^2 = K(q) / φ(q)`, imported from `Arithmetic.lean`. -/
 noncomputable abbrev kappaSq : ℕ → ℝ := CouretUnification.Arithmetic.kappaSq
+
+/-- `κ(q) = √(K(q)/φ(q))`, imported from `Arithmetic.lean`. -/
 noncomputable abbrev kappa : ℕ → ℝ := CouretUnification.Arithmetic.kappa
 
-/-- Primorial tower. Placeholder — TODO: canoniser via Nat.nth Prime. -/
+/-- Primorial tower.
+
+Current placeholder definition based on repeated `minFac`.
+This is sufficient for the present formal infrastructure, but should later
+be replaced by a canonical definition using the ordered sequence of primes. -/
 def primorial : ℕ → ℕ
   | 0 => 1
   | n + 1 => primorial n * (Nat.minFac (primorial n + 1))
 
+/-- Positivity of the primorial tower. -/
 theorem primorial_pos (n : ℕ) : 0 < primorial n := by
   induction n with
-  | zero => simp [primorial]
+  | zero =>
+      simp [primorial]
   | succ n ih =>
-    unfold primorial
-    exact Nat.mul_pos ih (Nat.minFac_pos _)
+      unfold primorial
+      exact Nat.mul_pos ih (Nat.minFac_pos _)
 
+/-- Positivity of `φ(primorial n)`. -/
 theorem phi_primorial_pos (n : ℕ) : 0 < phi (primorial n) := by
   unfold phi CouretUnification.Arithmetic.phi
   exact Nat.cast_pos.mpr ((Nat.totient_pos).mpr (primorial_pos n))
 
 -- ═══════════════════════════════════════════════════════════
--- §2. Décomposition MainTerm / ErrorTerm
+-- §2. Décomposition analytique : terme principal et erreur
 -- ═══════════════════════════════════════════════════════════
 
-/-- S₁(q) = Σ_{n=1}^{q} M(n)² — le second moment total (non restreint). -/
+/-- `S1(q) = Σ_{1 ≤ n ≤ q} M(n)^2`.
+
+This is the unrestricted second moment of the Mertens function. -/
 noncomputable def S1 (q : ℕ) : ℝ :=
   Finset.sum (Finset.range (q + 1))
     (fun n => if 0 < n then ((Arithmetic.mertens n : ℤ) : ℝ) ^ 2 else 0)
 
-/-- MainTerm(q) = (φ(q)/q) · S₁(q). -/
-noncomputable def MainTerm (q : ℕ) : ℝ := (phi q / (q : ℝ)) * S1 q
+/-- Main term of Route C:
+`MainTerm(q) = (φ(q) / q) · S1(q)`. -/
+noncomputable def MainTerm (q : ℕ) : ℝ :=
+  (phi q / (q : ℝ)) * S1 q
 
-/-- ErrorTerm(q) = K(q) - MainTerm(q).
-    Par définition, K = MainTerm + ErrorTerm. -/
-noncomputable def ErrorTerm (q : ℕ) : ℝ := K q - MainTerm q
+/-- Error term of Route C, defined by
+`ErrorTerm(q) = K(q) - MainTerm(q)`.
 
-/-- Décomposition tautologique : K = MainTerm + ErrorTerm. -/
+By construction, `K = MainTerm + ErrorTerm`. -/
+noncomputable def ErrorTerm (q : ℕ) : ℝ :=
+  K q - MainTerm q
+
+/-- Tautological decomposition of `K` into its main term and error term. -/
 theorem K_decomposition (q : ℕ) : K q = MainTerm q + ErrorTerm q := by
-  unfold ErrorTerm; ring
+  unfold ErrorTerm
+  ring
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Les deux verrous analytiques
 -- ═══════════════════════════════════════════════════════════
 
-/-- Verrou 1 : le terme principal est positif.
-    Requiert S₁(q) ≫ q, i.e., Titchmarsh S₁ ~ q²/(2π²). -/
+/-- Analytical lock 1.
+
+Uniform positive lower bound on the main term along the primorial tower.
+
+Heuristically, this corresponds to the asymptotic growth
+`S1(q) ≫ q`, ultimately related to the classical second-moment
+behavior of the Mertens function. -/
 theorem routeC_main_lower :
     ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
       ∀ n : ℕ, n₀ ≤ n → A * phi (primorial n) ≤ MainTerm (primorial n) := by
   sorry
 
-/-- Verrou 2 : l'erreur est contrôlée (θ < 1).
-    C'est le cœur analytique de la Route C raffinée.
-    Données numériques : θ = 0.83 (q=30), 0.45 (q=210),
-                         0.13 (q=2310), 0.02 (q=30030). -/
+/-- Analytical lock 2.
+
+Relative control of the error term by the main term, with a factor `θ < 1`.
+
+This is the central quantitative ingredient of the refined Route C.
+Empirical values discussed in the project are:
+
+- `θ = 0.83` for `q = 30`
+- `θ = 0.45` for `q = 210`
+- `θ = 0.13` for `q = 2310`
+- `θ = 0.02` for `q = 30030`
+-/
 theorem routeC_error_upper :
     ∃ n₀ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
       ∀ n : ℕ, n₀ ≤ n →
@@ -100,10 +152,14 @@ theorem routeC_error_upper :
   sorry
 
 -- ═══════════════════════════════════════════════════════════
--- §4. Recollement algébrique (FERMÉ, 0 sorry)
+-- §4. Recollement algébrique (fermé)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Algèbre pure : MainTerm positif + erreur contrôlée ⟹ K ≥ c·φ. -/
+/-- Pure algebraic recombination:
+
+if the main term is bounded below by `A · φ`,
+and the error term is bounded by a relative factor `θ < 1`,
+then `K` is bounded below by `((1 - θ)A) · φ`. -/
 theorem routeC_from_main_error
     (hmain : ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
       ∀ n : ℕ, n₀ ≤ n → A * phi (primorial n) ≤ MainTerm (primorial n))
@@ -128,13 +184,13 @@ theorem routeC_from_main_error
 -- §5. Chaîne complète (A) → (B) → (C)
 -- ═══════════════════════════════════════════════════════════
 
-/-- (A) Verrou central — assemblé depuis les deux sous-verrous. -/
+/-- Central Route C statement, assembled from the two analytical locks. -/
 theorem routeC_explicit_core :
     ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n) :=
   routeC_from_main_error routeC_main_lower routeC_error_upper
 
-/-- (B) √c ≤ κ. FERMÉ. -/
+/-- Passage from a positive lower bound on `K/φ` to a positive lower bound on `κ`. -/
 theorem kappa_explicit_bound
     (hmain : ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n)) :
@@ -149,7 +205,7 @@ theorem kappa_explicit_bound
   have hphi : 0 < phi (primorial n) := phi_primorial_pos n
   exact (le_div_iff₀ hphi).mpr (hK n hn)
 
-/-- (C) ∃ λ > 0, ∀ᶠ n, λ ≤ κ(qₙ). FERMÉ. -/
+/-- Eventual positivity of `κ` along the primorial tower. -/
 theorem kappa_eventually_pos
     (hmain : ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n)) :
@@ -158,7 +214,7 @@ theorem kappa_eventually_pos
   obtain ⟨n₀, lam, hlam, hbound⟩ := kappa_explicit_bound hmain
   exact ⟨lam, hlam, Filter.eventually_atTop.mpr ⟨n₀, hbound⟩⟩
 
-/-- Chaîne complète. -/
+/-- Full Route C conclusion from the assembled core. -/
 theorem kappa_pos_from_routeC :
     ∃ lam : ℝ, 0 < lam ∧
       ∀ᶠ n in Filter.atTop, lam ≤ kappa (primorial n) :=
@@ -172,26 +228,33 @@ def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
 
 /-!
-## Comptabilité RouteC.lean — v32.36
+## Comptabilité `RouteC.lean` — v32.36
 
-| Objet                        | Statut      |
-|------------------------------|-------------|
-| phi, K, kappaSq, kappa       | Alias Arithmetic |
-| S1, MainTerm, ErrorTerm      | Défini      |
-| K_decomposition              | **PROUVÉ**  |
-| routeC_main_lower            | **sorry**   |
-| routeC_error_upper           | **sorry**   |
-| routeC_from_main_error       | **PROUVÉ**  |
-| routeC_explicit_core         | **PROUVÉ** (via sorry ci-dessus) |
-| kappa_explicit_bound         | **PROUVÉ**  |
-| kappa_eventually_pos         | **PROUVÉ**  |
-| kappa_pos_from_routeC        | **PROUVÉ**  |
+| Objet                     | Statut |
+|--------------------------|--------|
+| `phi`, `K`, `kappaSq`, `kappa` | Alias vers `Arithmetic.lean` |
+| `primorial`             | Défini |
+| `primorial_pos`         | **PROUVÉ** |
+| `phi_primorial_pos`     | **PROUVÉ** |
+| `S1`, `MainTerm`, `ErrorTerm` | Défini |
+| `K_decomposition`       | **PROUVÉ** |
+| `routeC_main_lower`     | **sorry** |
+| `routeC_error_upper`    | **sorry** |
+| `routeC_from_main_error`| **PROUVÉ** |
+| `routeC_explicit_core`  | **PROUVÉ** (via les deux verrous ci-dessus) |
+| `kappa_explicit_bound`  | **PROUVÉ** |
+| `kappa_eventually_pos`  | **PROUVÉ** |
+| `kappa_pos_from_routeC` | **PROUVÉ** |
 
-Sorry : 2 (analytiques, sur objets réels)
-  — routeC_main_lower  (S₁ ≫ q le long de la tour)
-  — routeC_error_upper (θ < 1 pour les erreurs E_d)
+Sorry dans ce fichier : 2
 
-RHClaimed = false.
+- `routeC_main_lower`
+- `routeC_error_upper`
+
+Ces deux `sorry` sont des verrous analytiques réels, formulés sur les objets
+arithmétiques effectifs du dépôt.
+
+`RHClaimed = false.`
 -/
 
 end RouteC
