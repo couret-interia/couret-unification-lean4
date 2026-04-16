@@ -51,6 +51,9 @@ import CouretUnification.Logic.H3.L10_MassPersistence
 import CouretUnification.Logic.H3.L10Bridge
 -- Distinction spectrale vs spatiale (M_RS = 0, B_21 ≠ 0)
 import CouretUnification.Logic.H3.SpectralSpatial
+-- Route C raffinée (Σ|E_d| ≤ θ · (φ/q) · S₁)
+import CouretUnification.Logic.H3.RouteC
+import CouretUnification.Logic.H3.Arithmetic
 
 -- ─── Couche 5 : couronne doctrinale ─────────────────────────
 -- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
