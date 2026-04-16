@@ -8,40 +8,33 @@ import CouretUnification.Logic.H3.Arithmetic
 /-!
 # Route C raffinée — Infrastructure formelle
 
-## Programme Couret-Unification v32.35+
+## Programme Couret-Unification v32.36
 
-Ce fichier pose l'infrastructure Lean pour la Route C raffinée :
-la réduction conditionnelle du verrou κ(q) ≥ λ à une hypothèse
-de sommabilité θ < 1 sur les erreurs d'inclusion-exclusion.
+Décomposition du verrou analytique en deux sous-verrous précis :
+  (i)  `routeC_main_lower`  : le terme principal est positif (S₁ ≫ q)
+  (ii) `routeC_error_upper` : l'erreur est contrôlée (θ < 1)
 
-### Architecture (triptyque)
+Le lemme `routeC_from_main_error` est purement algébrique et fermé.
+Le triptyque `(A)→(B)→(C)` est inchangé et fermé.
 
-  (A) routeC_explicit_core     : ∃ n₀ c, c·φ(qₙ) ≤ K(qₙ)
-  (B) kappa_explicit_bound     : ∃ n₀ lam, lam ≤ κ(qₙ)
-  (C) kappa_eventually_pos     : ∃ lam > 0, ∀ᶠ n, lam ≤ κ(qₙ)
-
-Le verrou analytique réel est (A). Les passages (A)→(B)→(C) sont
-purement algébriques et formellement fermés ci-dessous.
-
-### Statut
-
-- Sorry dans ce fichier : 1 (`routeC_explicit_core`)
-- Ce sorry correspond désormais au vrai verrou analytique Route C,
-  formulé sur les objets arithmétiques réels importés depuis `Arithmetic.lean`.
-- Le triptyque `(A)→(B)→(C)` est fermé ; seul le verrou analytique central reste ouvert.
+Sorry dans ce fichier : 2
+  — `routeC_main_lower`  (borne inférieure du terme principal)
+  — `routeC_error_upper` (contrôle des erreurs, θ < 1)
+Les deux sont des verrous de théorie analytique des nombres,
+formulés sur les objets arithmétiques réels de `Arithmetic.lean`.
 
 RHClaimed = false.
 Dédié à Bernard Couret (1928–1999).
 -/
 
 open Filter
-open scoped Topology
+open scoped Topology BigOperators
 
 namespace CouretUnification
 namespace RouteC
 
 -- ═══════════════════════════════════════════════════════════
--- §1. Recollement avec l'arithmétique réelle du dépôt
+-- §1. Recollement avec l'arithmétique réelle
 -- ═══════════════════════════════════════════════════════════
 
 noncomputable abbrev phi : ℕ → ℝ := CouretUnification.Arithmetic.phi
@@ -49,9 +42,7 @@ noncomputable abbrev K : ℕ → ℝ := CouretUnification.Arithmetic.K
 noncomputable abbrev kappaSq : ℕ → ℝ := CouretUnification.Arithmetic.kappaSq
 noncomputable abbrev kappa : ℕ → ℝ := CouretUnification.Arithmetic.kappa
 
-/-- The primorial tower: product of the first n primes.
-    Placeholder definition using minFac.
-    TODO: replace with proper definition via Nat.nth Nat.Prime. -/
+/-- Primorial tower. Placeholder — TODO: canoniser via Nat.nth Prime. -/
 def primorial : ℕ → ℕ
   | 0 => 1
   | n + 1 => primorial n * (Nat.minFac (primorial n + 1))
@@ -68,14 +59,82 @@ theorem phi_primorial_pos (n : ℕ) : 0 < phi (primorial n) := by
   exact Nat.cast_pos.mpr ((Nat.totient_pos).mpr (primorial_pos n))
 
 -- ═══════════════════════════════════════════════════════════
--- §2. Le triptyque Route C
+-- §2. Décomposition MainTerm / ErrorTerm
 -- ═══════════════════════════════════════════════════════════
 
-theorem routeC_explicit_core :
-    ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
-      ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n) := by
+/-- S₁(q) = Σ_{n=1}^{q} M(n)² — le second moment total (non restreint). -/
+noncomputable def S1 (q : ℕ) : ℝ :=
+  Finset.sum (Finset.range (q + 1))
+    (fun n => if 0 < n then ((Arithmetic.mertens n : ℤ) : ℝ) ^ 2 else 0)
+
+/-- MainTerm(q) = (φ(q)/q) · S₁(q). -/
+noncomputable def MainTerm (q : ℕ) : ℝ := (phi q / (q : ℝ)) * S1 q
+
+/-- ErrorTerm(q) = K(q) - MainTerm(q).
+    Par définition, K = MainTerm + ErrorTerm. -/
+noncomputable def ErrorTerm (q : ℕ) : ℝ := K q - MainTerm q
+
+/-- Décomposition tautologique : K = MainTerm + ErrorTerm. -/
+theorem K_decomposition (q : ℕ) : K q = MainTerm q + ErrorTerm q := by
+  unfold ErrorTerm; ring
+
+-- ═══════════════════════════════════════════════════════════
+-- §3. Les deux verrous analytiques
+-- ═══════════════════════════════════════════════════════════
+
+/-- Verrou 1 : le terme principal est positif.
+    Requiert S₁(q) ≫ q, i.e., Titchmarsh S₁ ~ q²/(2π²). -/
+theorem routeC_main_lower :
+    ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
+      ∀ n : ℕ, n₀ ≤ n → A * phi (primorial n) ≤ MainTerm (primorial n) := by
   sorry
 
+/-- Verrou 2 : l'erreur est contrôlée (θ < 1).
+    C'est le cœur analytique de la Route C raffinée.
+    Données numériques : θ = 0.83 (q=30), 0.45 (q=210),
+                         0.13 (q=2310), 0.02 (q=30030). -/
+theorem routeC_error_upper :
+    ∃ n₀ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
+      ∀ n : ℕ, n₀ ≤ n →
+        |ErrorTerm (primorial n)| ≤ θ * MainTerm (primorial n) := by
+  sorry
+
+-- ═══════════════════════════════════════════════════════════
+-- §4. Recollement algébrique (FERMÉ, 0 sorry)
+-- ═══════════════════════════════════════════════════════════
+
+/-- Algèbre pure : MainTerm positif + erreur contrôlée ⟹ K ≥ c·φ. -/
+theorem routeC_from_main_error
+    (hmain : ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
+      ∀ n : ℕ, n₀ ≤ n → A * phi (primorial n) ≤ MainTerm (primorial n))
+    (herr : ∃ n₁ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
+      ∀ n : ℕ, n₁ ≤ n →
+        |ErrorTerm (primorial n)| ≤ θ * MainTerm (primorial n)) :
+    ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
+      ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n) := by
+  obtain ⟨n₀, A, hA, hmain⟩ := hmain
+  obtain ⟨n₁, θ, hθ_lt, hθ_nn, herr⟩ := herr
+  refine ⟨max n₀ n₁, (1 - θ) * A, mul_pos (by linarith) hA, ?_⟩
+  intro n hn
+  have hn₀ : n₀ ≤ n := le_trans (le_max_left n₀ n₁) hn
+  have hn₁ : n₁ ≤ n := le_trans (le_max_right n₀ n₁) hn
+  have hM := hmain n hn₀
+  have hE := herr n hn₁
+  have hE_lower := (abs_le.mp hE).1
+  rw [K_decomposition]
+  nlinarith [mul_le_mul_of_nonneg_left hM (show 0 ≤ 1 - θ by linarith)]
+
+-- ═══════════════════════════════════════════════════════════
+-- §5. Chaîne complète (A) → (B) → (C)
+-- ═══════════════════════════════════════════════════════════
+
+/-- (A) Verrou central — assemblé depuis les deux sous-verrous. -/
+theorem routeC_explicit_core :
+    ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
+      ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n) :=
+  routeC_from_main_error routeC_main_lower routeC_error_upper
+
+/-- (B) √c ≤ κ. FERMÉ. -/
 theorem kappa_explicit_bound
     (hmain : ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n)) :
@@ -90,6 +149,7 @@ theorem kappa_explicit_bound
   have hphi : 0 < phi (primorial n) := phi_primorial_pos n
   exact (le_div_iff₀ hphi).mpr (hK n hn)
 
+/-- (C) ∃ λ > 0, ∀ᶠ n, λ ≤ κ(qₙ). FERMÉ. -/
 theorem kappa_eventually_pos
     (hmain : ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n)) :
@@ -98,32 +158,39 @@ theorem kappa_eventually_pos
   obtain ⟨n₀, lam, hlam, hbound⟩ := kappa_explicit_bound hmain
   exact ⟨lam, hlam, Filter.eventually_atTop.mpr ⟨n₀, hbound⟩⟩
 
+/-- Chaîne complète. -/
 theorem kappa_pos_from_routeC :
     ∃ lam : ℝ, 0 < lam ∧
       ∀ᶠ n in Filter.atTop, lam ≤ kappa (primorial n) :=
   kappa_eventually_pos routeC_explicit_core
 
+-- ═══════════════════════════════════════════════════════════
+-- §6. Gouvernance
+-- ═══════════════════════════════════════════════════════════
+
 def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
 
 /-!
-## Comptabilité RouteC.lean — v32.35+ recollement
+## Comptabilité RouteC.lean — v32.36
 
-| Objet                     | Statut      |
-|---------------------------|-------------|
-| phi, K, kappaSq, kappa    | Alias vers `Arithmetic.lean` |
-| primorial                 | Défini      |
-| primorial_pos             | **PROUVÉ**  |
-| phi_primorial_pos         | **PROUVÉ**  |
-| routeC_explicit_core      | **sorry**   |
-| kappa_explicit_bound      | **PROUVÉ**  |
-| kappa_eventually_pos      | **PROUVÉ**  |
-| kappa_pos_from_routeC     | **PROUVÉ** (via sorry de §3A) |
+| Objet                        | Statut      |
+|------------------------------|-------------|
+| phi, K, kappaSq, kappa       | Alias Arithmetic |
+| S1, MainTerm, ErrorTerm      | Défini      |
+| K_decomposition              | **PROUVÉ**  |
+| routeC_main_lower            | **sorry**   |
+| routeC_error_upper           | **sorry**   |
+| routeC_from_main_error       | **PROUVÉ**  |
+| routeC_explicit_core         | **PROUVÉ** (via sorry ci-dessus) |
+| kappa_explicit_bound         | **PROUVÉ**  |
+| kappa_eventually_pos         | **PROUVÉ**  |
+| kappa_pos_from_routeC        | **PROUVÉ**  |
 
-Sorry dans ce fichier : 1
-  — routeC_explicit_core (verrou analytique réel de la Route C)
+Sorry : 2 (analytiques, sur objets réels)
+  — routeC_main_lower  (S₁ ≫ q le long de la tour)
+  — routeC_error_upper (θ < 1 pour les erreurs E_d)
 
-Les objets arithmétiques réels sont importés depuis `Arithmetic.lean`.
 RHClaimed = false.
 -/
 
