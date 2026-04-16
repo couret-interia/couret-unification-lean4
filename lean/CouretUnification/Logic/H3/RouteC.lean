@@ -98,6 +98,75 @@ theorem squarefreeCount_nonneg (q : ℕ) : 0 ≤ squarefreeCount q := by
   positivity
 
 -- ═══════════════════════════════════════════════════════════
+-- §3bis. Route Mertens : badSquareCount et union bound
+-- ═══════════════════════════════════════════════════════════
+
+/-- Nombre d'entiers NON squarefree dans `{1, …, q}`. -/
+noncomputable def badSquareCount (q : ℕ) : ℝ :=
+  (((Finset.Icc 1 q).filter fun n => ¬ Squarefree n).card : ℕ)
+
+/-- `badSquareCount(q) ≥ 0`. -/
+theorem badSquareCount_nonneg (q : ℕ) : 0 ≤ badSquareCount q := by
+  unfold badSquareCount
+  positivity
+
+/-- Tout entier de `{1, …, q}` est soit squarefree, soit non squarefree.
+
+En conséquence :
+`squarefreeCount q + badSquareCount q = q`. -/
+theorem squarefreeCount_add_badSquareCount (q : ℕ) :
+    squarefreeCount q + badSquareCount q = (q : ℝ) := by
+  unfold squarefreeCount badSquareCount
+  have hcard :
+      ((Finset.Icc 1 q).filter fun n => Squarefree n).card +
+      ((Finset.Icc 1 q).filter fun n => ¬ Squarefree n).card =
+      (Finset.Icc 1 q).card := by
+    simpa using
+      (Finset.card_filter_add_card_filter_not
+        (s := Finset.Icc 1 q) (p := fun n => Squarefree n))
+  have hicc : (Finset.Icc 1 q).card = q := by
+    rw [Nat.card_Icc]
+    omega
+  exact_mod_cast hcard.trans hicc
+
+/-- **Verrou analytique minimal** — borne de type union bound :
+
+le nombre d'entiers non squarefree ≤ `q` est majoré par `C · q`
+pour une constante explicite `C < 1`.
+
+C'est ici que se place la route élémentaire de type Mertens :
+on majore `badSquareCount(q)` par une somme de contributions des carrés
+de premiers `p²`. -/
+theorem badSquareCount_union_bound :
+    ∃ C : ℝ, 0 ≤ C ∧ C < 1 ∧
+      ∀ q : ℕ, badSquareCount q ≤ C * (q : ℝ) := by
+  sorry
+
+/-- Recollement algébrique fermé :
+
+si `badSquareCount(q)` est strictement sous-linéaire avec une constante
+`C < 1`, alors `squarefreeCount(q)` admet une borne linéaire inférieure
+de la forme `α · q`, avec `α = 1 - C > 0`. -/
+theorem squarefreeCount_linear_global_from_union_bound
+    (h : ∃ C : ℝ, 0 ≤ C ∧ C < 1 ∧
+      ∀ q : ℕ, badSquareCount q ≤ C * (q : ℝ)) :
+    ∃ α : ℝ, 0 < α ∧
+      ∀ q : ℕ, α * (q : ℝ) ≤ squarefreeCount q := by
+  obtain ⟨C, hC_nn, hC_lt, hbound⟩ := h
+  refine ⟨1 - C, by linarith, ?_⟩
+  intro q
+  have hsum := squarefreeCount_add_badSquareCount q
+  have hb := hbound q
+  linarith
+
+/-- `squarefreeCount_linear_global` fermé à partir du verrou
+`badSquareCount_union_bound`. -/
+theorem squarefreeCount_linear_global :
+    ∃ α : ℝ, 0 < α ∧
+      ∀ q : ℕ, α * (q : ℝ) ≤ squarefreeCount q :=
+  squarefreeCount_linear_global_from_union_bound badSquareCount_union_bound
+
+-- ═══════════════════════════════════════════════════════════
 -- §4. Décomposition structurelle de l'erreur
 -- ═══════════════════════════════════════════════════════════
 
@@ -118,13 +187,6 @@ theorem errorTerm_decomposition (q : ℕ) :
 theorem S1_lower_from_squarefree :
     ∃ β : ℝ, 0 < β ∧
       ∀ q : ℕ, β * squarefreeCount q ≤ S1 q := by
-  sorry
-
-/-- **Verrou analytique global** — densité linéaire des squarefree.
-    Corresponds to the classical density `6/π²`; any explicit `α > 0` suffices. -/
-theorem squarefreeCount_linear_global :
-    ∃ α : ℝ, 0 < α ∧
-      ∀ q : ℕ, α * (q : ℝ) ≤ squarefreeCount q := by
   sorry
 
 /-- **Verrou analytique Route C** — contrôle `θ < 1`. -/
