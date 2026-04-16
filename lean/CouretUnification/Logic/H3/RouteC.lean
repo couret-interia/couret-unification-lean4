@@ -1,4 +1,6 @@
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Squarefree
+import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Order.Filter.AtTopBot.Basic
@@ -6,15 +8,18 @@ import Mathlib.Tactic
 import CouretUnification.Logic.H3.Arithmetic
 
 /-!
-# Route C raffinée — Infrastructure formelle v32.38
+# Route C raffinée — Infrastructure formelle v32.39
 
-Third refactor : `S1_linear_on_primorial` est déplacé vers deux sous-verrous
-combinatoires / de densité, reliés par un recollement algébrique fermé.
+Fourth refactor :
+- `squarefreeCount` utilise maintenant la vraie définition Mathlib `Squarefree`
+  (et non plus l'approximation via `mu ≠ 0`).
+- Le verrou `squarefreeCount_linear_on_primorial` est poussé vers son vrai
+  niveau minimal : `squarefreeCount_linear_global` (densité squarefree globale).
 
 Sorry restants :
-- `S1_lower_from_squarefree`               (combinatoire arithmétique)
-- `squarefreeCount_linear_on_primorial`    (densité des squarefree)
-- `routeC_error_control`                   (contrôle θ < 1)
+- `S1_lower_from_squarefree`      (combinatoire discret)
+- `squarefreeCount_linear_global` (densité squarefree, ~6/π²)
+- `routeC_error_control`          (contrôle θ < 1)
 
 `RHClaimed = false.`
 Dédié à Bernard Couret (1928–1999).
@@ -58,7 +63,6 @@ theorem phi_primorial_nonneg (n : ℕ) : 0 ≤ phi (primorial n) :=
 -- §2. Décomposition analytique
 -- ═══════════════════════════════════════════════════════════
 
-/-- `S1(q) = Σ_{1 ≤ n ≤ q} M(n)^2`. -/
 noncomputable def S1 (q : ℕ) : ℝ :=
   Finset.sum (Finset.range (q + 1))
     (fun n => if 0 < n then ((Arithmetic.mertens n : ℤ) : ℝ) ^ 2 else 0)
@@ -81,18 +85,17 @@ theorem K_decomposition (q : ℕ) : K q = MainTerm q + ErrorTerm q := by
   unfold ErrorTerm; ring
 
 -- ═══════════════════════════════════════════════════════════
--- §3. Squarefree count
+-- §3. Squarefree count (via la vraie définition Mathlib)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Count of squarefree integers in {1, ..., q}, as a real.
-    We use `μ(n) ≠ 0` as the squarefree predicate (they agree for n ≥ 1). -/
+/-- Number of squarefree integers in `{1, …, q}`.
+    Uses Mathlib's `Squarefree` predicate. -/
 noncomputable def squarefreeCount (q : ℕ) : ℝ :=
-  ((Finset.range (q + 1)).filter
-    (fun n => 0 < n ∧ Arithmetic.mu n ≠ 0)).card
+  (((Finset.Icc 1 q).filter (fun n => Squarefree n)).card : ℕ)
 
 theorem squarefreeCount_nonneg (q : ℕ) : 0 ≤ squarefreeCount q := by
   unfold squarefreeCount
-  exact_mod_cast Nat.zero_le _
+  positivity
 
 -- ═══════════════════════════════════════════════════════════
 -- §4. Décomposition structurelle de l'erreur
@@ -111,21 +114,20 @@ theorem errorTerm_decomposition (q : ℕ) :
 -- ═══════════════════════════════════════════════════════════
 
 /-- **Verrou combinatoire** — une fraction positive des squarefree
-    contribue à `S1`. Constante `β > 0` abstraite, pas figée. -/
+    contribue à `S1`. -/
 theorem S1_lower_from_squarefree :
     ∃ β : ℝ, 0 < β ∧
       ∀ q : ℕ, β * squarefreeCount q ≤ S1 q := by
   sorry
 
-/-- **Verrou de densité** — les squarefree sont linéairement nombreux
-    le long de la tour primorielle. -/
-theorem squarefreeCount_linear_on_primorial :
-    ∃ n₀ : ℕ, ∃ α : ℝ, 0 < α ∧
-      ∀ n : ℕ, n₀ ≤ n →
-        α * (primorial n : ℝ) ≤ squarefreeCount (primorial n) := by
+/-- **Verrou analytique global** — densité linéaire des squarefree.
+    Corresponds to the classical density `6/π²`; any explicit `α > 0` suffices. -/
+theorem squarefreeCount_linear_global :
+    ∃ α : ℝ, 0 < α ∧
+      ∀ q : ℕ, α * (q : ℝ) ≤ squarefreeCount q := by
   sorry
 
-/-- **Verrou analytique Route C** — contrôle `θ < 1` sur les pièces. -/
+/-- **Verrou analytique Route C** — contrôle `θ < 1`. -/
 theorem routeC_error_control :
     ∃ n₀ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
       ∀ n : ℕ, n₀ ≤ n →
@@ -137,6 +139,14 @@ theorem routeC_error_control :
 -- ═══════════════════════════════════════════════════════════
 -- §6. Recollements algébriques (fermés)
 -- ═══════════════════════════════════════════════════════════
+
+/-- Spécialisation triviale de la borne globale à la tour primorielle. -/
+theorem squarefreeCount_linear_on_primorial :
+    ∃ n₀ : ℕ, ∃ α : ℝ, 0 < α ∧
+      ∀ n : ℕ, n₀ ≤ n →
+        α * (primorial n : ℝ) ≤ squarefreeCount (primorial n) := by
+  obtain ⟨α, hα, hsq⟩ := squarefreeCount_linear_global
+  exact ⟨0, α, hα, fun n _ => hsq (primorial n)⟩
 
 /-- Recollement Front 1 : des deux sous-verrous squarefree vers `S1 ≫ q`. -/
 theorem S1_linear_on_primorial_from_squarefree
@@ -155,7 +165,6 @@ theorem S1_linear_on_primorial_from_squarefree
   have hS := hβq (primorial n)
   nlinarith [mul_le_mul_of_nonneg_left hsq (le_of_lt hβ)]
 
-/-- `S1_linear_on_primorial` — closed via the two squarefree sub-locks. -/
 theorem S1_linear_on_primorial :
     ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
       ∀ n : ℕ, n₀ ≤ n → A * (primorial n : ℝ) ≤ S1 (primorial n) :=
@@ -164,7 +173,7 @@ theorem S1_linear_on_primorial :
     squarefreeCount_linear_on_primorial
 
 -- ═══════════════════════════════════════════════════════════
--- §7. Verrous Route C classiques, désormais fermés
+-- §7. Verrous Route C classiques, fermés
 -- ═══════════════════════════════════════════════════════════
 
 theorem routeC_main_lower :
