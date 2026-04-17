@@ -8,7 +8,7 @@ import Mathlib.Tactic
 import CouretUnification.Logic.H3.Arithmetic
 
 /-!
-# Route C raffinée — Infrastructure formelle v32.42
+# Route C raffinée — Infrastructure formelle v32.43
 
 ## Programme Couret-Unification
 
@@ -30,9 +30,8 @@ Les verrous analytiques sont décomposés au niveau minimal :
 
 Tous les recollements algébriques entre ces verrous sont fermés.
 
-### Sorry dans ce fichier : 2
+### Sorry dans ce fichier : 1
 
-- `S1_lower_from_squarefree`
 - `routeC_error_control`
 
 `RHClaimed = false.`
@@ -514,12 +513,254 @@ theorem errorTerm_decomposition (q : ℕ) :
 -- §5. Verrous analytiques minimaux
 -- ═══════════════════════════════════════════════════════════
 
-/-- **Combinatorial lock** — a positive fraction of squarefree integers
-contributes to `S1`. -/
+private lemma step_indicator_le_sqsum_pair
+    (A : ℕ → ℤ) (n : ℕ) :
+    (if A (n + 1) ≠ A n then (1 : ℝ) else 0)
+      ≤
+    ((A (n + 1) : ℤ) : ℝ) ^ 2 + ((A n : ℤ) : ℝ) ^ 2 := by
+  by_cases h : A (n + 1) = A n
+  · simp [h]; positivity
+  · have hnonzero : A (n + 1) ≠ 0 ∨ A n ≠ 0 := by
+      by_contra h0
+      push Not at h0
+      exact h (by simp [h0.1, h0.2])
+    have hsq :
+        (1 : ℝ) ≤ ((A (n + 1) : ℤ) : ℝ) ^ 2 + ((A n : ℤ) : ℝ) ^ 2 := by
+      cases hnonzero with
+          | inl h1 =>
+            have hzsq : (1 : ℤ) ≤ (A (n + 1)) ^ 2 := by
+              have := abs_pos.mpr h1
+              nlinarith [sq_abs (A (n + 1))]
+            have : (1 : ℝ) ≤ ((A (n + 1) : ℤ) : ℝ) ^ 2 := by exact_mod_cast hzsq
+            linarith [sq_nonneg ((A n : ℤ) : ℝ)]
+          | inr h0 =>
+            have hzsq : (1 : ℤ) ≤ (A n) ^ 2 := by
+              have := abs_pos.mpr h0
+              nlinarith [sq_abs (A n)]
+            have : (1 : ℝ) ≤ ((A n : ℤ) : ℝ) ^ 2 := by exact_mod_cast hzsq
+            linarith [sq_nonneg ((A (n + 1) : ℤ) : ℝ)]
+    simpa [h] using hsq
+
+/-- Réécriture du cardinal d’un filtre comme somme d’indicatrices. -/
+private lemma sum_indicators_eq_card_filter
+    (A : ℕ → ℤ) (q : ℕ) :
+    Finset.sum (Finset.range q)
+        (fun n => if A (n + 1) ≠ A n then (1 : ℝ) else 0)
+      =
+    (((Finset.range q).filter (fun n => A (n + 1) ≠ A n)).card : ℝ) := by
+  calc
+    Finset.sum (Finset.range q)
+        (fun n => if A (n + 1) ≠ A n then (1 : ℝ) else 0)
+      =
+    Finset.sum ((Finset.range q).filter (fun n => A (n + 1) ≠ A n))
+        (fun _ => (1 : ℝ)) := by
+          rw [Finset.sum_filter]
+    _ = (((Finset.range q).filter (fun n => A (n + 1) ≠ A n)).card : ℝ) := by
+          simp
+
+/-- Somme décalée :
+`Σ_{n<q} A(n+1)² = Σ_{n=1}^{q} A(n)²`. -/
+private lemma sum_shift_sq_eq
+    (A : ℕ → ℤ) (q : ℕ) :
+    Finset.sum (Finset.range q)
+        (fun n => (((A (n + 1) : ℤ) : ℝ) ^ 2))
+      =
+    Finset.sum (Finset.Icc 1 q)
+        (fun n => (((A n : ℤ) : ℝ) ^ 2)) := by
+  induction q with
+  | zero =>
+      simp
+  | succ q ih =>
+      rw [Finset.sum_range_succ, ih]
+      rw [Finset.sum_Icc_succ_top (show 1 ≤ q + 1 by omega)]
+
+/-- Somme non décalée :
+`Σ_{n<q} A(n)² ≤ Σ_{n=1}^{q} A(n)²` si `A(0)=0`. -/
+private lemma sum_unshift_sq_le
+    (A : ℕ → ℤ) (hA0 : A 0 = 0) (q : ℕ) :
+    Finset.sum (Finset.range q)
+        (fun n => (((A n : ℤ) : ℝ) ^ 2))
+      ≤
+    Finset.sum (Finset.Icc 1 q)
+        (fun n => (((A n : ℤ) : ℝ) ^ 2)) := by
+  cases q with
+  | zero =>
+      simp
+  | succ q =>
+      have hsplit : Finset.range (q + 1) = insert 0 (Finset.Icc 1 q) := by
+        ext n
+        simp [Finset.mem_range, Finset.mem_Icc]
+        omega
+      rw [hsplit, Finset.sum_insert]
+      · have hA0sq : (((A 0 : ℤ) : ℝ) ^ 2) = 0 := by
+          simp [hA0]
+        rw [hA0sq]
+        rw [Finset.sum_Icc_succ_top (show 1 ≤ q + 1 by omega)]
+        have hnonneg : 0 ≤ (((A (q + 1) : ℤ) : ℝ) ^ 2) := by
+          positivity
+        linarith
+      · simp
+
+/-- Front combinatoire :
+le nombre de pas non nuls d’une marche est majoré par
+`2 ×` la somme des carrés des positions. -/
+private lemma walk_stepCount_le_two_sqsum
+    (A : ℕ → ℤ) (hA0 : A 0 = 0) (q : ℕ) :
+    (((Finset.range q).filter (fun n => A (n + 1) ≠ A n)).card : ℝ)
+      ≤
+    2 * Finset.sum (Finset.Icc 1 q)
+        (fun n => (((A n : ℤ) : ℝ) ^ 2)) := by
+  let g : ℕ → ℝ := fun n => (((A n : ℤ) : ℝ) ^ 2)
+
+  have hpointwise :
+      Finset.sum (Finset.range q)
+          (fun n => if A (n + 1) ≠ A n then (1 : ℝ) else 0)
+        ≤
+      Finset.sum (Finset.range q) (fun n => g (n + 1) + g n) := by
+    apply Finset.sum_le_sum
+    intro n hn
+    simpa [g] using step_indicator_le_sqsum_pair A n
+
+  have hshift :
+      Finset.sum (Finset.range q) (fun n => g (n + 1))
+        =
+      Finset.sum (Finset.Icc 1 q) g := by
+    simpa [g] using sum_shift_sq_eq A q
+
+  have hcurr :
+      Finset.sum (Finset.range q) g
+        ≤
+      Finset.sum (Finset.Icc 1 q) g := by
+    simpa [g] using sum_unshift_sq_le A hA0 q
+
+  calc
+    (((Finset.range q).filter (fun n => A (n + 1) ≠ A n)).card : ℝ)
+        =
+      Finset.sum (Finset.range q)
+        (fun n => if A (n + 1) ≠ A n then (1 : ℝ) else 0) := by
+          symm
+          exact sum_indicators_eq_card_filter A q
+    _ ≤ Finset.sum (Finset.range q) (fun n => g (n + 1) + g n) := hpointwise
+    _ = Finset.sum (Finset.range q) (fun n => g (n + 1))
+          + Finset.sum (Finset.range q) g := by
+          rw [Finset.sum_add_distrib]
+    _ ≤ Finset.sum (Finset.Icc 1 q) g + Finset.sum (Finset.Icc 1 q) g := by
+          rw [hshift]
+          exact add_le_add (le_refl _) hcurr
+    _ = 2 * Finset.sum (Finset.Icc 1 q) g := by
+          ring
+
+private lemma walk_sqsum_lower_half
+    (A : ℕ → ℤ) (hA0 : A 0 = 0) (q : ℕ) :
+    (1 / 2 : ℝ) *
+      (((Finset.range q).filter (fun n => A (n + 1) ≠ A n)).card : ℝ)
+      ≤
+    Finset.sum (Finset.Icc 1 q) (fun n => ((A n : ℤ) : ℝ) ^ 2) := by
+  have h := walk_stepCount_le_two_sqsum A hA0 q
+  linarith
+
+/-- Le pas de la marche de Mertens est non nul exactement aux indices squarefree. -/
+private lemma mertens_step_ne_iff_squarefree (n : ℕ) :
+    Arithmetic.mertens (n + 1) ≠ Arithmetic.mertens n
+      ↔ Squarefree (n + 1) := by
+  have hstep := CouretUnification.Arithmetic.mertens_succ_sub n
+  have hmu :
+      CouretUnification.Arithmetic.mu (n + 1) ≠ 0
+        ↔ Squarefree (n + 1) :=
+    CouretUnification.Arithmetic.mu_ne_zero_iff_squarefree (by omega)
+  constructor
+  · intro hneq
+    have hmu_ne : CouretUnification.Arithmetic.mu (n + 1) ≠ 0 := by
+      intro h0
+      have : Arithmetic.mertens (n + 1) - Arithmetic.mertens n = 0 := by
+        simpa [h0] using hstep
+      exact hneq (sub_eq_zero.mp this)
+    exact hmu.mp hmu_ne
+  · intro hsq
+    have hmu_ne : CouretUnification.Arithmetic.mu (n + 1) ≠ 0 := hmu.mpr hsq
+    intro heq
+    have : Arithmetic.mertens (n + 1) - Arithmetic.mertens n = 0 := sub_eq_zero.mpr heq
+    have hmu0 : CouretUnification.Arithmetic.mu (n + 1) = 0 := by
+      simpa [hstep] using this
+    exact hmu_ne hmu0
+
+/-- Le nombre de pas non nuls de la marche de Mertens sur `range q`
+coïncide avec `squarefreeCount q`. -/
+private lemma stepCount_eq_squarefreeCount (q : ℕ) :
+    (((Finset.range q).filter
+        (fun n => Arithmetic.mertens (n + 1) ≠ Arithmetic.mertens n)).card : ℝ)
+      = squarefreeCount q := by
+  unfold squarefreeCount
+  let s :=
+    (Finset.range q).filter
+      (fun n => Arithmetic.mertens (n + 1) ≠ Arithmetic.mertens n)
+  let t :=
+    (Finset.Icc 1 q).filter (fun n => Squarefree n)
+
+  have hcard : s.card = t.card := by
+    classical
+    refine Finset.card_nbij (fun n => n + 1) ?_ ?_ ?_
+    · intro n hn
+      rcases Finset.mem_filter.mp hn with ⟨hn_range, hn_step⟩
+      refine Finset.mem_filter.mpr ?_
+      constructor
+      · refine Finset.mem_Icc.mpr ?_
+        constructor
+        · exact Nat.succ_le_succ (Nat.zero_le n)
+        · exact Nat.succ_le_of_lt (Finset.mem_range.mp hn_range)
+      · exact (mertens_step_ne_iff_squarefree n).mp hn_step
+    · intro n₁ hn₁ n₂ hn₂ hEq
+      exact Nat.succ.inj hEq
+    · intro m hm
+      rcases Finset.mem_filter.mp hm with ⟨hm_iq, hm_sqf⟩
+      refine ⟨m - 1, ?_, ?_⟩
+      · refine Finset.mem_filter.mpr ?_
+        constructor
+        · have hm1 : 1 ≤ m := (Finset.mem_Icc.mp hm_iq).1
+          have hmq : m ≤ q := (Finset.mem_Icc.mp hm_iq).2
+          have hm_pos : 0 < m := by
+            exact Nat.lt_of_lt_of_le Nat.zero_lt_one hm1
+          have hpred : m - 1 < m := Nat.pred_lt (Nat.ne_of_gt hm_pos)
+          simpa [Finset.mem_range] using (lt_of_lt_of_le hpred hmq)
+        · have hm1 : 1 ≤ m := (Finset.mem_Icc.mp hm_iq).1
+          have hsq' : Squarefree ((m - 1) + 1) := by
+            simpa [Nat.sub_add_cancel hm1] using hm_sqf
+          exact (mertens_step_ne_iff_squarefree (m - 1)).mpr hsq'
+      · exact Nat.sub_add_cancel ((Finset.mem_Icc.mp hm_iq).1)
+
+  exact_mod_cast hcard
+
+/-- Réécriture de `S1 q` comme somme des carrés de `mertens`
+sur l’intervalle `Icc 1 q`. -/
+private lemma S1_eq_sum_Icc (q : ℕ) :
+    S1 q =
+      Finset.sum (Finset.Icc 1 q)
+        (fun n => (((Arithmetic.mertens n : ℤ) : ℝ) ^ 2)) := by
+  unfold S1
+  have hsplit : Finset.range (q + 1) = insert 0 (Finset.Icc 1 q) := by
+    ext n
+    simp [Finset.mem_range, Finset.mem_Icc]
+    omega
+  rw [hsplit, Finset.sum_insert]
+  · simp
+    apply Finset.sum_congr rfl
+    intro n hn
+    have hn_pos : 0 < n := by
+      exact lt_of_lt_of_le Nat.zero_lt_one (Finset.mem_Icc.mp hn).1
+    simp [hn_pos]
+  · simp
+
+/-- Une fraction positive des indices squarefree contribue à `S1`. -/
 theorem S1_lower_from_squarefree :
     ∃ β : ℝ, 0 < β ∧
       ∀ q : ℕ, β * squarefreeCount q ≤ S1 q := by
-  sorry
+  refine ⟨1 / 2, by norm_num, ?_⟩
+  intro q
+  have hwalk := walk_sqsum_lower_half Arithmetic.mertens
+    (by simpa using CouretUnification.Arithmetic.mertens_zero) q
+  rw [stepCount_eq_squarefreeCount q] at hwalk
+  rw [← S1_eq_sum_Icc q] at hwalk
+  exact hwalk
 
 /-- **Analytical lock (Route C)** — `θ < 1` control on the error pieces. -/
 theorem routeC_error_control :
