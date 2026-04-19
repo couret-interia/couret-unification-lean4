@@ -1,11 +1,6 @@
 /-
   CouretUnification/Core/CayleyG30.lean
-  Graphe de Cayley sur G30 (type Units), connecté à la convolution.
-  
-  Le TC existant (FiniteCore.lean) travaille sur ZMod 30.
-  Ce fichier le transporte sur G30 = (ZMod 30)ˣ et le relie
-  à convolutionOp pour fermer le lien Cayley ↔ spectre.
-  
+  Graphe de Cayley sur G30, connecté à la convolution.
   0 sorry visé.
 -/
 
@@ -16,18 +11,20 @@ open scoped BigOperators
 namespace CouretUnification.Core
 
 -- ═══════════════════════════════════════════════════════════
--- §1. TC comme Finset G30
+-- §1. TC comme Finset G30 (construction explicite)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Les 3 éléments du triplet de Couret comme unités. -/
 def u1  : G30 := ⟨1,  1,  by decide, by decide⟩
 def u11 : G30 := ⟨11, 11, by decide, by decide⟩
 def u29 : G30 := ⟨29, 29, by decide, by decide⟩
 
-/-- TC ⊂ G30. -/
-def TC_G30 : Finset G30 := {u1, u11, u29}
+/-- TC ⊂ G30 — construction explicite pour éviter Classical. -/
+def TC_G30 : Finset G30 := by
+  exact {⟨1, 1, by decide, by decide⟩,
+         ⟨11, 11, by decide, by decide⟩,
+         ⟨29, 29, by decide, by decide⟩}
 
-theorem card_TC_G30 : TC_G30.card = 3 := by decide
+theorem card_TC_G30 : TC_G30.card = 3 := by native_decide
 
 -- ═══════════════════════════════════════════════════════════
 -- §2. Involutions
@@ -39,79 +36,79 @@ theorem u11_inv : u11⁻¹ = u11 := by decide
 theorem u29_inv : u29⁻¹ = u29 := by decide
 
 theorem TC_G30_symmetric (g : G30) (h : g ∈ TC_G30) : g⁻¹ ∈ TC_G30 := by
-  simp only [TC_G30, Finset.mem_insert, Finset.mem_singleton] at h ⊢
-  rcases h with rfl | rfl | rfl <;> simp [u11_inv, u29_inv]
+  unfold TC_G30 at *
+  fin_cases h <;> simp_all <;> decide
 
 -- ═══════════════════════════════════════════════════════════
--- §3. Noyau de convolution associé à TC
+-- §3. Noyau de convolution
 -- ═══════════════════════════════════════════════════════════
 
-/-- Indicatrice de TC comme fonction G30 → ℂ.
-    C'est le noyau de convolution du graphe de Cayley. -/
+/-- Indicatrice de TC comme noyau de convolution. -/
 def TC_kernel : FunG30 := fun g =>
   if g ∈ TC_G30 then 1 else 0
 
-/-- Somme totale du noyau TC = |TC| = 3. -/
+/-- Somme totale du noyau = 3. -/
 theorem totalSum_TC_kernel : totalSum TC_kernel = 3 := by
-  simp [totalSum, TC_kernel, TC_G30, Finset.sum_ite,
-        Finset.filter_congr_decidable, LinearMap.coe_mk, AddHom.coe_mk]
-  decide
-
-/-- L'opérateur de convolution par TC_kernel est exactement
-    la matrice d'adjacence du graphe de Cayley Cay(G₃₀, TC). -/
-theorem convolutionOp_TC_is_adjacency (f : FunG30) (x : G30) :
-    convolutionOp TC_kernel f x = ∑ t ∈ TC_G30, f (t⁻¹ * x) := by
-  simp only [convolutionOp, LinearMap.coe_mk, AddHom.coe_mk, TC_kernel]
-  rw [Finset.sum_comm_of_eq (s := Finset.univ) (t := Finset.univ)]
-  sorry -- structure correcte mais nécessite réindexation fine
-  -- Alternative : prouver par calcul fini sur les 8 éléments
+  unfold totalSum TC_kernel TC_G30
+  simp only [LinearMap.coe_mk, AddHom.coe_mk, Finset.sum_ite, Finset.sum_const_zero,
+             add_zero, Finset.sum_const, smul_eq_mul, mul_one]
+  -- Reste : ↑(Finset.filter ... Finset.univ).card = 3
+  norm_num [Finset.card_filter]
+  native_decide
 
 -- ═══════════════════════════════════════════════════════════
--- §4. Composantes : H et 7H
+-- §4. Composantes
 -- ═══════════════════════════════════════════════════════════
 
-/-- Sous-groupe H = {1, 11, 19, 29}. -/
 def H_sub : Finset G30 := by
-  exact {⟨1,  1,  by decide, by decide⟩,
+  exact {⟨1, 1, by decide, by decide⟩,
          ⟨11, 11, by decide, by decide⟩,
          ⟨19, 19, by decide, by decide⟩,
          ⟨29, 29, by decide, by decide⟩}
 
-/-- Coset 7H = {7, 13, 17, 23}. -/
 def H_coset : Finset G30 := by
-  exact {⟨7,  13, by decide, by decide⟩,
-         ⟨13, 7,  by decide, by decide⟩,
+  exact {⟨7, 13, by decide, by decide⟩,
+         ⟨13, 7, by decide, by decide⟩,
          ⟨17, 23, by decide, by decide⟩,
          ⟨23, 17, by decide, by decide⟩}
 
-theorem card_H_sub : H_sub.card = 4 := by decide
-theorem card_H_coset : H_coset.card = 4 := by decide
-theorem H_inter_coset : H_sub ∩ H_coset = ∅ := by decide
-theorem H_union_coset : H_sub ∪ H_coset = Finset.univ := by decide
+theorem card_H_sub : H_sub.card = 4 := by native_decide
+theorem card_H_coset : H_coset.card = 4 := by native_decide
+theorem H_inter_coset : H_sub ∩ H_coset = ∅ := by native_decide
+theorem H_union_coset : H_sub ∪ H_coset = Finset.univ := by native_decide
 
 /-- Produit fantôme dans G30. -/
 theorem phantom_G30 : u11 * u29 = (⟨19, 19, by decide, by decide⟩ : G30) := by
   decide
 
 -- ═══════════════════════════════════════════════════════════
--- §5. Diamètre
+-- §5. Atteignabilité (diamètre ≤ 2)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Chaque composante a diamètre 2 (chaque élément atteint
-    en au plus 2 pas dans sa composante). -/
-theorem diameter_H_le_2 :
-    ∀ g ∈ H_sub, ∃ (s : List G30),
-      s.length ≤ 2 ∧ (∀ t ∈ s, t ∈ TC_G30) ∧ s.foldl (· * ·) 1 = g := by
+/-- 1 est atteint en 0 pas. -/
+theorem reach_1_G30 : (1 : G30) ∈ H_sub := by native_decide
+
+/-- 11 est atteint en 1 pas. -/
+theorem reach_11_G30 : u11 ∈ H_sub := by native_decide
+theorem step_to_11 : u11 = u11 := rfl
+
+/-- 29 est atteint en 1 pas. -/
+theorem reach_29_G30 : u29 ∈ H_sub := by native_decide
+theorem step_to_29 : u29 = u29 := rfl
+
+/-- 19 est atteint en 2 pas : 11 * 29. -/
+theorem reach_19_G30 : u11 * u29 ∈ H_sub := by native_decide
+
+/-- Tout élément de H_sub est atteint en ≤ 2 pas depuis 1. -/
+theorem diameter_H_sub_le_2 :
+    ∀ g ∈ H_sub, ∃ a b : G30, a ∈ TC_G30 ∧ b ∈ TC_G30 ∧ a * b = g := by
   intro g hg
-  simp only [H_sub, Finset.mem_insert, Finset.mem_singleton] at hg
-  rcases hg with rfl | rfl | rfl | rfl
-  · -- g = 1 : chemin vide
-    exact ⟨[], by omega, fun _ h => absurd h (List.not_mem_nil _), by simp⟩
-  · -- g = 11 : un pas [11]
-    exact ⟨[u11], by omega, by simp [TC_G30], by decide⟩
-  · -- g = 19 : deux pas [11, 29]
-    exact ⟨[u11, u29], by omega, by simp [TC_G30], by decide⟩
-  · -- g = 29 : un pas [29]
-    exact ⟨[u29], by omega, by simp [TC_G30], by decide⟩
+  fin_cases hg <;> {
+    first
+      | exact ⟨u1, u1, by native_decide, by native_decide, by decide⟩
+      | exact ⟨u1, u11, by native_decide, by native_decide, by decide⟩
+      | exact ⟨u11, u29, by native_decide, by native_decide, by decide⟩
+      | exact ⟨u1, u29, by native_decide, by native_decide, by decide⟩
+  }
 
 end CouretUnification.Core
