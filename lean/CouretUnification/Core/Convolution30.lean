@@ -96,8 +96,9 @@ theorem centered_invariant (K : FunG30) {f : FunG30}
 theorem convolution_commutes_translation (K : FunG30) (u : G30) :
     (convolutionOp K).comp (leftTranslation u) =
     (leftTranslation u).comp (convolutionOp K) := by
-  -- ext à deux niveaux : φ : FunG30, puis x : G30
-  ext φ
+  -- aplly à deux niveaux : φ : FunG30, puis x : G30
+  apply LinearMap.ext; intro φ
+  apply funext; intro x
   simp only [convolutionOp, leftTranslation,
     LinearMap.comp_apply, LinearMap.coe_mk, AddHom.coe_mk]
   -- LHS : ∑ y, K(x y⁻¹) φ(u⁻¹ y)
