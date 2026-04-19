@@ -98,7 +98,6 @@ theorem convolution_commutes_translation (K : FunG30) (u : G30) :
     (leftTranslation u).comp (convolutionOp K) := by
   -- ext à deux niveaux : φ : FunG30, puis x : G30
   ext φ
-  ext x
   simp only [convolutionOp, leftTranslation,
     LinearMap.comp_apply, LinearMap.coe_mk, AddHom.coe_mk]
   -- LHS : ∑ y, K(x y⁻¹) φ(u⁻¹ y)
