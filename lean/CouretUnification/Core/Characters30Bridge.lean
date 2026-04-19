@@ -62,7 +62,6 @@ theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
 theorem charOnG30_trivial (g : G30) :
     charOnG30 ⟨0, by omega⟩ g = 1 := by
   simp [charOnG30, g30ToIdx, characterEval, charCoord, residueCoord, c2Phase, c4Phase]
-  fin_cases g <;> simp [g30ToIdx] <;> norm_num [c2Phase, c4Phase]
 
 /-- Un caractère non trivial a pour somme 0 sur G₃₀.
     Sorry : conséquence de la multiplicativité + orthogonalité standard. -/
@@ -74,25 +73,13 @@ theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩)
 theorem charOnG30_ne_zero (χ : CharIdx) :
     charOnG30 χ ≠ 0 := by
   intro h
-  have : charOnG30 χ (1 : G30) = 0 := by rw [h]; rfl
-  simp [charOnG30, g30ToIdx, characterEval, charCoord, residueCoord, c2Phase, c4Phase] at this
+  have h1 : charOnG30 χ (1 : G30) = 0 := congr_fun h _
+  fin_cases χ <;>
+    simp [charOnG30, g30ToIdx, characterEval, charCoord, residueCoord, c2Phase, c4Phase] at h1
 
 -- ═══════════════════════════════════════════════════════════
 -- §4. Diagonalisation
 -- ═══════════════════════════════════════════════════════════
-
-/-- Les caractères sont vecteurs propres de la convolution.
-    Preuve : changement de variable + multiplicativité. -/
-theorem convolution_diagonalizes_character (K : FunG30) (χ : CharIdx) :
-    convolutionOp K (charOnG30 χ) = eigenvalue K χ • charOnG30 χ := by
-  apply LinearMap.ext; intro φ -- φ : G30, pas FunG30 ici
-  sorry
-  -- La preuve complète utilise :
-  -- 1. sum_reindex_mul_inv pour le changement de variable
-  -- 2. charOnG30_mul pour factoriser χ(x)
-  -- 3. Finset.mul_sum pour extraire le scalaire
-  -- Laissé en sorry car l'ext sur LinearMap donne le mauvais niveau.
-  -- Alternative : prouver pointwise via funext.
 
 /-- Version pointwise plus directe. -/
 theorem convolution_diag_pointwise (K : FunG30) (χ : CharIdx) (x : G30) :
@@ -105,5 +92,12 @@ theorem convolution_diag_pointwise (K : FunG30) (χ : CharIdx) (x : G30) :
   -- rw [← sum_reindex_mul_inv x]
   -- puis charOnG30_mul pour χ(g⁻¹ * x) = χ(g⁻¹) * χ(x)
   -- puis Finset.mul_sum pour sortir χ(x)
+
+/-- Les caractères sont vecteurs propres de la convolution.
+    Preuve : changement de variable + multiplicativité. -/
+theorem convolution_diagonalizes_character (K : FunG30) (χ : CharIdx) :
+    convolutionOp K (charOnG30 χ) = eigenvalue K χ • charOnG30 χ := by
+  funext x
+  exact convolution_diag_pointwise K χ x
 
 end CouretUnification.Core
