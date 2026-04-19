@@ -1,9 +1,7 @@
 /-
   CouretUnification/Core/Convolution30.lean
   Convolution sur G₃₀ : branche A (masse) + branche B (équivariance).
-  
-  N'utilise PAS Characters30 — seulement UnitsBridge + CenteredSpace30.
-  0 sorry visé.
+  Adapté Mathlib v4.29.
 -/
 
 import CouretUnification.Core.CenteredSpace30
@@ -29,19 +27,21 @@ noncomputable def leftTranslation (u : G30) : FunG30 →ₗ[ℂ] FunG30 where
 private lemma sum_reindex_mul_left (u : G30) (F : G30 → ℂ) :
     (∑ y : G30, F (u * y)) = ∑ g : G30, F g := by
   apply Finset.sum_nbij (fun y => u * y)
-  · intro _ _; exact Finset.mem_univ _
-  · intro a _ b _ h; exact mul_left_cancel h
-  · intro g _; exact ⟨u⁻¹ * g, Finset.mem_univ _, by group⟩
+    (fun _ _ => Finset.mem_univ _)
+    (fun a _ b _ h => mul_left_cancel h)
+    (fun g _ => ⟨u⁻¹ * g, Finset.mem_univ _, by group⟩)
+    (fun _ _ => rfl)
 
 /-- Réindexation par y ↦ x * y⁻¹. -/
 private lemma sum_reindex_mul_inv (x : G30) (F : G30 → ℂ) :
     (∑ y : G30, F (x * y⁻¹)) = ∑ g : G30, F g := by
   apply Finset.sum_nbij (fun y => x * y⁻¹)
-  · intro _ _; exact Finset.mem_univ _
-  · intro a _ b _ h
-    have := mul_left_cancel h
-    exact inv_injective this
-  · intro g _; exact ⟨g⁻¹ * x, Finset.mem_univ _, by group⟩
+    (fun _ _ => Finset.mem_univ _)
+    (fun a _ b _ h => by
+      have := mul_left_cancel h
+      exact inv_injective this)
+    (fun g _ => ⟨g⁻¹ * x, Finset.mem_univ _, by group⟩)
+    (fun _ _ => rfl)
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Opérateur de convolution
@@ -75,7 +75,10 @@ lemma totalSum_convolution (K f : FunG30) :
           rw [← Finset.sum_mul]
     _ = ∑ y : G30, (∑ g : G30, K g) * f y := by
           apply Finset.sum_congr rfl; intro y _
-          congr 1; exact sum_reindex_mul_inv y K
+          congr 1
+          -- ∑ x, K(x * y⁻¹) = ∑ g, K g par commutativité + réindexation
+          simp_rw [mul_comm _ y⁻¹]
+          exact sum_reindex_mul_left y⁻¹ K
     _ = (∑ g : G30, K g) * ∑ y : G30, f y := by
           rw [Finset.mul_sum]
 
@@ -93,21 +96,21 @@ theorem centered_invariant (K : FunG30) {f : FunG30}
 theorem convolution_commutes_translation (K : FunG30) (u : G30) :
     (convolutionOp K).comp (leftTranslation u) =
     (leftTranslation u).comp (convolutionOp K) := by
-  ext f x
+  -- ext à deux niveaux : φ : FunG30, puis x : G30
+  ext φ
+  ext x
   simp only [convolutionOp, leftTranslation,
     LinearMap.comp_apply, LinearMap.coe_mk, AddHom.coe_mk]
-  -- LHS : ∑ y, K(x y⁻¹) f(u⁻¹ y)
-  -- Changement de variable y = u * g
-  calc ∑ y : G30, K (x * y⁻¹) * f (u⁻¹ * y)
-      = ∑ g : G30, K (x * (u * g)⁻¹) * f (u⁻¹ * (u * g)) := by
+  -- LHS : ∑ y, K(x y⁻¹) φ(u⁻¹ y)
+  -- Changement y = u * g, puis algèbre de groupe
+  calc ∑ y : G30, K (x * y⁻¹) * φ (u⁻¹ * y)
+      = ∑ g : G30, K (x * (u * g)⁻¹) * φ (u⁻¹ * (u * g)) := by
           rw [← sum_reindex_mul_left u]
-    _ = ∑ g : G30, K (u⁻¹ * x * g⁻¹) * f g := by
+    _ = ∑ g : G30, K (u⁻¹ * x * g⁻¹) * φ g := by
           apply Finset.sum_congr rfl; intro g _
-          congr 1
-          · -- x * (u * g)⁻¹ = u⁻¹ * x * g⁻¹ (par commutativité de G30)
-            group
-          · -- u⁻¹ * (u * g) = g
-            group
-    _ = ∑ y : G30, K (u⁻¹ * x * y⁻¹) * f y := rfl
+          have h1 : x * (u * g)⁻¹ = u⁻¹ * x * g⁻¹ := by group
+          have h2 : u⁻¹ * (u * g) = g := by group
+          rw [h1, h2]
+    _ = ∑ y : G30, K (u⁻¹ * x * y⁻¹) * φ y := rfl
 
 end CouretUnification.Core
