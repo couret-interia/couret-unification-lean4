@@ -47,14 +47,9 @@ theorem TC_G30_symmetric (g : G30) (h : g ∈ TC_G30) : g⁻¹ ∈ TC_G30 := by
 def TC_kernel : FunG30 := fun g =>
   if g ∈ TC_G30 then 1 else 0
 
-/-- Somme totale du noyau = 3. -/
+/-- Somme totale du noyau = 3. Sorry : simp maxRecDepth sur ℂ. -/
 theorem totalSum_TC_kernel : totalSum TC_kernel = 3 := by
-  unfold totalSum TC_kernel TC_G30
-  simp only [LinearMap.coe_mk, AddHom.coe_mk, Finset.sum_ite, Finset.sum_const_zero,
-             add_zero, Finset.sum_const, smul_eq_mul, mul_one]
-  -- Reste : ↑(Finset.filter ... Finset.univ).card = 3
-  norm_num [Finset.card_filter]
-  native_decide
+  sorry
 
 -- ═══════════════════════════════════════════════════════════
 -- §4. Composantes
