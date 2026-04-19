@@ -68,9 +68,6 @@ noncomputable def range_totalSum_top : LinearMap.range totalSum = ⊤ := by
   intro c
   refine ⟨(c / 8) • trivialMode, ?_⟩
   simp [totalSum, trivialMode, Finset.sum_const, Finset.card_univ]
-  -- Goal : c * (↑(Nat.totient 30) * (1/8)) = c  ou similaire
-  -- nat_totient_30 simplifie, puis ring_nf ferme
-  ring_nf
 
 theorem dim_H_centered : Module.finrank ℂ H_centered = 7 := by
   have rank_thm := LinearMap.finrank_range_add_finrank_ker totalSum
@@ -125,11 +122,11 @@ theorem decomposition :
       exact (mul_eq_zero.mp h8c).resolve_left (by norm_num)
     simp [hc]
   -- 2. Sup = ⊤ par dimension
-  have h_sup_fin :
-      Module.finrank ℂ (trivialLine ⊔ H_centered) =
-      Module.finrank ℂ FunG30 := by
+  let S : Submodule ℂ FunG30 := trivialLine ⊔ H_centered
+  have h_sup_fin : Module.finrank ℂ S = Module.finrank ℂ FunG30 := by
     have hdim := Submodule.finrank_sup_add_finrank_inf_eq
       trivialLine H_centered
+    change Module.finrank ℂ S + _ = _ at hdim
     rw [h_inf, finrank_trivialLine, dim_H_centered] at hdim
     simp at hdim
     simpa [finrank_FunG30] using hdim
