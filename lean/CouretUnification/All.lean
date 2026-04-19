@@ -351,3 +351,4 @@ import CouretUnification.Criterion.RouteDContradiction
 -- v32.44
 import CouretUnification.Core.UnitsBridge
 import CouretUnification.Core.CenteredSpace30
+import CouretUnification.Core.Convolution30
