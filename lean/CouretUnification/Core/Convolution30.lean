@@ -108,7 +108,8 @@ theorem convolution_commutes_translation (K : FunG30) (u : G30) :
           rw [← sum_reindex_mul_left u]
     _ = ∑ g : G30, K (u⁻¹ * x * g⁻¹) * φ g := by
           apply Finset.sum_congr rfl; intro g _
-          have h1 : x * (u * g)⁻¹ = u⁻¹ * x * g⁻¹ := by group
+          have h1 : x * (u * g)⁻¹ = u⁻¹ * x * g⁻¹ := by
+            simp [mul_inv_rev, mul_assoc, mul_comm, mul_left_comm]
           have h2 : u⁻¹ * (u * g) = g := by group
           rw [h1, h2]
     _ = ∑ y : G30, K (u⁻¹ * x * y⁻¹) * φ y := rfl
