@@ -348,3 +348,5 @@ import CouretUnification.Criterion.L6_Absorption
 -- ─── route D : Contradiction formelle avec kappa ───────────
 import CouretUnification.Criterion.RouteDContradiction
 
+-- v32.44
+import CouretUnification.Core.UnitsBridge
