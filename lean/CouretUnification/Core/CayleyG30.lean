@@ -37,7 +37,7 @@ theorem u29_inv : u29⁻¹ = u29 := by decide
 
 theorem TC_G30_symmetric (g : G30) (h : g ∈ TC_G30) : g⁻¹ ∈ TC_G30 := by
   unfold TC_G30 at *
-  fin_cases h <;> simp_all <;> decide
+  fin_cases h <;> simp_all
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Noyau de convolution

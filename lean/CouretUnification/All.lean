@@ -353,3 +353,4 @@ import CouretUnification.Core.UnitsBridge
 import CouretUnification.Core.CenteredSpace30
 import CouretUnification.Core.Convolution30
 import CouretUnification.Core.Characters30Bridge
+import CouretUnification.Core.CayleyG30
