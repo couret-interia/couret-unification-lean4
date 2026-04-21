@@ -40,15 +40,16 @@ lemma sum_left_mul_eq_sum (f : G → ℂ) (a : G) :
   apply Fintype.sum_equiv (Equiv.mulLeft a)
   intro g; simp [Equiv.mulLeft]
 
+omit [CommGroup G] [Fintype G] in
 /-- c * ∑ f = ∑ c * f.  Prouvé par induction (Finset.mul_sum absent). -/
 private lemma mul_finset_sum (c : ℂ) (s : Finset G) (f : G → ℂ) :
     c * s.sum f = s.sum (fun g => c * f g) := by
   induction s using Finset.induction with
   | empty => simp
-  | insert h_not_mem ih =>
-    rw [Finset.sum_insert h_not_mem, mul_add, ih,
-        Finset.sum_insert h_not_mem]
+  | insert x t hx ih =>
+    rw [Finset.sum_insert hx, mul_add, ih, Finset.sum_insert hx]
 
+omit [CommGroup G] in
 private lemma mul_fintype_sum (c : ℂ) (f : G → ℂ) :
     c * (∑ g : G, f g) = ∑ g : G, c * f g :=
   mul_finset_sum c Finset.univ f
