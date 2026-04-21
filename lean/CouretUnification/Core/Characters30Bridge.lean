@@ -98,10 +98,9 @@ theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     simp only [c4Phase, fin4_add_eval] <;> try ring_nf <;>
     -- remaining goals: A = I^k where k ≥ 4; rewrite RHS down
     (try rw [Ip18]) <;> (try rw [Ip15]) <;> (try rw [Ip12]) <;>
-    (try rw [Ip10]) <;> (try rw [Ip9])  <;> (try rw [Ip8])  <;>
+    (try rw [Ip10]) <;> (try rw [Ip8])  <;>
     (try rw [Ip6])  <;> (try rw [Ip5])  <;> (try rw [Ip4])  <;>
-    (try rw [Ip3])  <;> (try rw [Complex.I_sq]) <;>
-    try ring
+    (try rw [Ip3])  <;> (try rw [Complex.I_sq])
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
     charOnG30 χ (a * b) = charOnG30 χ a * charOnG30 χ b := by
