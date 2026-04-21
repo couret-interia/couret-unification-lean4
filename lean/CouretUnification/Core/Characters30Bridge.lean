@@ -89,26 +89,10 @@ set_option maxHeartbeats 1600000 in
 theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
-    -- Pass 1: unfold c4Phase + Fin arithmetic + Nat arithmetic
-    simp only [c4Phase, fin4_add_eval,
-               show (0+0)%4=0 from rfl, show (0+1)%4=1 from rfl,
-               show (0+2)%4=2 from rfl, show (0+3)%4=3 from rfl,
-               show (1+0)%4=1 from rfl, show (1+1)%4=2 from rfl,
-               show (1+2)%4=3 from rfl, show (1+3)%4=0 from rfl,
-               show (2+0)%4=2 from rfl, show (2+1)%4=3 from rfl,
-               show (2+2)%4=0 from rfl, show (2+3)%4=1 from rfl,
-               show (3+0)%4=3 from rfl, show (3+1)%4=0 from rfl,
-               show (3+2)%4=1 from rfl, show (3+3)%4=2 from rfl,
-               show 1*0=0 from rfl, show 1*1=1 from rfl,
-               show 1*2=2 from rfl, show 1*3=3 from rfl,
-               show 2*0=0 from rfl, show 2*1=2 from rfl,
-               show 2*2=4 from rfl, show 2*3=6 from rfl,
-               show 3*0=0 from rfl, show 3*1=3 from rfl,
-               show 3*2=6 from rfl, show 3*3=9 from rfl] <;>
-    -- Pass 2: normalize I-powers
-    simp only [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip6, Ip9, Ip10, Ip12, Ip18,
-               pow_zero, pow_one, neg_neg, neg_mul, mul_neg, one_mul, mul_one] <;>
-    try rfl <;> ring
+    simp only [c4Phase, fin4_add_eval] <;>
+    first | ring | (simp only [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip6, Ip9,
+                               neg_neg, neg_mul, mul_neg, one_mul, mul_one,
+                               pow_zero, pow_one]; ring)
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
     charOnG30 χ (a * b) = charOnG30 χ a * charOnG30 χ b := by
@@ -134,11 +118,22 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
   all_goals (
     exfalso
     have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
-    -- Unfold the MonoidHom coercion
     simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h7
-    -- Fully evaluate the character value (norm_num handles ZMod arithmetic)
-    norm_num [charOnG30, g30ToIdx, characterEval, charCoord, residueCoord,
-             c2Phase, c4Phase, Complex.I_sq, I_mul_I, Ip3] at h7
+    -- Precompute g30ToIdx 7 = ⟨1,_⟩ (ZMod needs decide)
+    have hidx : g30ToIdx (⟨7, 13, by decide, by decide⟩ : G30) = ⟨1, by omega⟩ := by
+      simp [g30ToIdx]; decide
+    -- Evaluate character at index 1
+    simp only [charOnG30, hidx, characterEval, charCoord, residueCoord,
+               c2Phase, c4Phase] at h7
+    -- Normalize I-powers
+    simp only [Complex.I_sq, I_mul_I, Ip3, pow_zero, pow_one,
+               one_mul, mul_one, neg_neg] at h7
+    -- h7 is now I = 1, -I = 1, or -1 = 1
+    first
+      | exact absurd h7 I_ne_one | exact absurd h7 neg_I_ne_one
+      | exact absurd h7 neg_one_ne_one_C
+      | exact absurd h7.symm I_ne_one | exact absurd h7.symm neg_I_ne_one
+      | exact absurd h7.symm neg_one_ne_one_C
   )
 
 theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
