@@ -126,17 +126,14 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
   · rfl
   all_goals (
     exfalso
-    -- Extract: charOnG30 χ g = 1 for all g
     have hidx7 : g30ToIdx (⟨7, 13, by decide, by decide⟩ : G30) = ⟨1, by omega⟩ := by
       simp [g30ToIdx]; decide
     have hidx11 : g30ToIdx (⟨11, 11, by decide, by decide⟩ : G30) = ⟨2, by omega⟩ := by
       simp [g30ToIdx]; decide
-    have h7 : charOnG30 _ (⟨7, 13, by decide, by decide⟩ : G30) = 1 := by
-      have := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
-      simpa [charOnG30AsHom] using this
-    have h11 : charOnG30 _ (⟨11, 11, by decide, by decide⟩ : G30) = 1 := by
-      have := DFunLike.congr_fun h (⟨11, 11, by decide, by decide⟩ : G30)
-      simpa [charOnG30AsHom] using this
+    -- Extract charOnG30 χ g = 1 from h
+    have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
+    have h11 := DFunLike.congr_fun h (⟨11, 11, by decide, by decide⟩ : G30)
+    simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h7 h11
     -- Evaluate character values at both witnesses; at least one gives ⊥
     simp [charOnG30, hidx7, hidx11, characterEval, charCoord, residueCoord,
           c2Phase, c4Phase] at h7 h11
