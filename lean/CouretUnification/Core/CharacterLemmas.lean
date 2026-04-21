@@ -2,8 +2,8 @@
    Helpers génériques finis pour les caractères (v35/A)
    0 sorry.
 
-   NOTE: On évite Finset.mul_sum (absent de certaines configs Mathlib).
-   On passe par smul_eq_mul + Finset.smul_sum à la place.
+   NOTE: Finset.mul_sum et Finset.smul_sum absents de Mathlib v4.29.
+   On prouve mul_fintype_sum par induction directe.
 -/
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Complex.Basic
@@ -40,18 +40,25 @@ lemma sum_left_mul_eq_sum (f : G → ℂ) (a : G) :
   apply Fintype.sum_equiv (Equiv.mulLeft a)
   intro g; simp [Equiv.mulLeft]
 
-/-- c * ∑ f = ∑ c * f.  Contourne l'absence de Finset.mul_sum
-    en passant par smul_eq_mul + Finset.smul_sum. -/
+/-- c * ∑_{g ∈ s} f g = ∑_{g ∈ s} c * f g.
+    Prouvé par induction directe (Finset.mul_sum absent). -/
+private lemma mul_finset_sum (c : ℂ) (s : Finset G) (f : G → ℂ) :
+    c * (∑ g in s, f g) = ∑ g in s, c * f g := by
+  induction s using Finset.induction with
+  | empty => simp
+  | insert h_not_mem ih =>
+    rw [Finset.sum_insert h_not_mem, mul_add, ih,
+        Finset.sum_insert h_not_mem]
+
 private lemma mul_fintype_sum (c : ℂ) (f : G → ℂ) :
-    c * (∑ g : G, f g) = ∑ g : G, c * f g := by
-  simp only [← smul_eq_mul, Finset.smul_sum]
+    c * (∑ g : G, f g) = ∑ g : G, c * f g :=
+  mul_finset_sum c Finset.univ f
 
 lemma sum_char_eq_zero_of_ne_one (χ : Char G) (hχ : χ ≠ 1) :
     ∑ g : G, χ g = 0 := by
   by_cases htriv : ∀ g : G, χ g = 1
   · exfalso; apply hχ; exact char_eq_one_of_forall_eq_one χ htriv
-  · push_neg at htriv
-    obtain ⟨a, ha⟩ := htriv
+  · obtain ⟨a, ha⟩ := not_forall.mp htriv
     -- χ(a) * ∑ χ(g) = ∑ χ(g)  par réindexation
     have hshift : χ a * (∑ g : G, χ g) = ∑ g : G, χ g := by
       rw [mul_fintype_sum]
