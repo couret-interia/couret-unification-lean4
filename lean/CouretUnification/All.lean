@@ -354,3 +354,7 @@ import CouretUnification.Core.CenteredSpace30
 import CouretUnification.Core.Convolution30
 import CouretUnification.Core.Characters30Bridge
 import CouretUnification.Core.CayleyG30
+
+-- v33
+import CouretUnification.Core.CharParity30
+import CouretUnification.Core.CRTEquiv
