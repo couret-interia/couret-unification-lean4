@@ -26,13 +26,18 @@ def g30Coord (g : G30) : Fin 2 × Fin 4 := residueCoord (g30ToIdx g)
 def addCoord (p q : Fin 2 × Fin 4) : Fin 2 × Fin 4 := (p.1 + q.1, p.2 + q.2)
 
 -- Force l'évaluation de l'addition dans Fin n (simp/norm_num ne le font pas)
-@[simp] private lemma fin_add_eval {n : ℕ} (a b : Fin n) :
-    (a + b : Fin n) = ⟨(a.val + b.val) % n, by omega⟩ := by ext; rfl
+@[simp] private lemma fin4_add_eval (a b : Fin 4) :
+    (a + b : Fin 4) = ⟨(a.val + b.val) % 4, Nat.mod_lt _ (by omega)⟩ := by ext; rfl
+@[simp] private lemma fin2_add_eval (a b : Fin 2) :
+    (a + b : Fin 2) = ⟨(a.val + b.val) % 2, Nat.mod_lt _ (by omega)⟩ := by ext; rfl
 
 -- Puissances de I (ring ne sait pas I² = -1)
 private lemma Ip3  : Complex.I ^ (3:ℕ)  = -Complex.I := by
   have : Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
   rw [this, Complex.I_sq]; ring
+private lemma Ip4  : Complex.I ^ (4:ℕ)  = 1 := by
+  have : Complex.I ^ 4 = (Complex.I ^ 2) ^ 2 := by ring
+  rw [this, Complex.I_sq]; norm_num
 private lemma Ip6  : Complex.I ^ (6:ℕ)  = -1 := by
   have : Complex.I ^ 6 = (Complex.I ^ 2) ^ 3 := by ring
   rw [this, Complex.I_sq]; norm_num
@@ -82,9 +87,24 @@ set_option maxHeartbeats 1600000 in
 theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
-    simp only [c4Phase, fin_add_eval] <;> try ring <;>
-    simp only [Complex.I_sq, Ip3, Ip6, Ip7, Ip9, Ip10, Ip12, Ip15, Ip18,
-               pow_zero, pow_one, neg_neg, neg_mul, mul_neg, one_mul, mul_one] <;>
+    simp only [c4Phase, fin4_add_eval, Fin.val,
+               show (0+0)%4=0 from rfl, show (0+1)%4=1 from rfl,
+               show (0+2)%4=2 from rfl, show (0+3)%4=3 from rfl,
+               show (1+0)%4=1 from rfl, show (1+1)%4=2 from rfl,
+               show (1+2)%4=3 from rfl, show (1+3)%4=0 from rfl,
+               show (2+0)%4=2 from rfl, show (2+1)%4=3 from rfl,
+               show (2+2)%4=0 from rfl, show (2+3)%4=1 from rfl,
+               show (3+0)%4=3 from rfl, show (3+1)%4=0 from rfl,
+               show (3+2)%4=1 from rfl, show (3+3)%4=2 from rfl,
+               show 1*0=0 from rfl, show 1*1=1 from rfl,
+               show 1*2=2 from rfl, show 1*3=3 from rfl,
+               show 2*0=0 from rfl, show 2*1=2 from rfl,
+               show 2*2=4 from rfl, show 2*3=6 from rfl,
+               show 3*0=0 from rfl, show 3*1=3 from rfl,
+               show 3*2=6 from rfl, show 3*3=9 from rfl,
+               Complex.I_sq, Ip3, Ip4, Ip6, Ip9, Ip10, Ip12, Ip18,
+               pow_zero, pow_one,
+               neg_neg, neg_mul, mul_neg, one_mul, mul_one] <;>
     ring
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
@@ -110,7 +130,7 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
   · rfl
   all_goals (
     exfalso
-    have h7 := congr_fun (MonoidHom.ext_iff.mp h) ⟨7, 13, by decide, by decide⟩
+    have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
     simp [charOnG30AsHom, charOnG30, g30ToIdx, characterEval, charCoord,
           residueCoord, c2Phase, c4Phase, MonoidHom.one_apply] at h7
     first
