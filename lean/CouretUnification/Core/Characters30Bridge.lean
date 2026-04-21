@@ -96,8 +96,7 @@ theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
     simp only [c4Phase, fin4_add_eval] <;>
-    first | ring | (simp [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip5, Ip6,
-                          Ip8, Ip9, Ip10, Ip12, Ip15, Ip18])
+    simp [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip5, Ip6, Ip8, Ip9, Ip10, Ip12, Ip15, Ip18]
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
     charOnG30 χ (a * b) = charOnG30 χ a * charOnG30 χ b := by
@@ -122,20 +121,28 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
   · rfl
   all_goals (
     exfalso
-    have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
-    simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h7
-    -- Precompute g30ToIdx 7 = ⟨1,_⟩ (ZMod needs decide)
-    have hidx : g30ToIdx (⟨7, 13, by decide, by decide⟩ : G30) = ⟨1, by omega⟩ := by
+    have hidx7 : g30ToIdx (⟨7, 13, by decide, by decide⟩ : G30) = ⟨1, by omega⟩ := by
       simp [g30ToIdx]; decide
-    -- Evaluate character at index 1 (simp, not simp only, for Fin.val reduction)
-    simp [charOnG30, hidx, characterEval, charCoord, residueCoord,
-          c2Phase, c4Phase, Complex.I_sq, I_mul_I, Ip3, Ip4] at h7
-    -- h7 is now a concrete false equation; close with absurd
+    have hidx11 : g30ToIdx (⟨11, 11, by decide, by decide⟩ : G30) = ⟨2, by omega⟩ := by
+      simp [g30ToIdx]; decide
+    -- Try g=7 (index 1), fallback to g=11 (index 2)
     first
-      | exact absurd h7 I_ne_one | exact absurd h7 neg_I_ne_one
-      | exact absurd h7 neg_one_ne_one_C
-      | exact absurd h7.symm I_ne_one | exact absurd h7.symm neg_I_ne_one
-      | exact absurd h7.symm neg_one_ne_one_C
+      | (have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
+         simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h7
+         simp [charOnG30, hidx7, characterEval, charCoord, residueCoord,
+               c2Phase, c4Phase, Complex.I_sq] at h7
+         first | exact absurd h7 I_ne_one | exact absurd h7 neg_I_ne_one
+               | exact absurd h7 neg_one_ne_one_C
+               | exact absurd h7.symm I_ne_one | exact absurd h7.symm neg_I_ne_one
+               | exact absurd h7.symm neg_one_ne_one_C)
+      | (have h11 := DFunLike.congr_fun h (⟨11, 11, by decide, by decide⟩ : G30)
+         simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h11
+         simp [charOnG30, hidx11, characterEval, charCoord, residueCoord,
+               c2Phase, c4Phase, Complex.I_sq] at h11
+         first | exact absurd h11 I_ne_one | exact absurd h11 neg_I_ne_one
+               | exact absurd h11 neg_one_ne_one_C
+               | exact absurd h11.symm I_ne_one | exact absurd h11.symm neg_I_ne_one
+               | exact absurd h11.symm neg_one_ne_one_C)
   )
 
 theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
