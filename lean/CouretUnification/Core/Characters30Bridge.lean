@@ -1,23 +1,15 @@
 /-
   CouretUnification/Core/Characters30Bridge.lean
   Version v35.1 — Fermeture complète du bridge caractères.
-
-  Architecture en 4 lemmes :
-    1. g30Coord_mul       — compatibilité de loi (64 cas, decide)
-    2. charOnG30_factor   — dépliage tautologique (simp)
-    3. charOnG30_mul      — multiplicativité de χ (composition)
-    4. sum_charOnG30_ne_trivial — orthogonalité (structurel)
-
-  Sorry visés : 0.
-  RHClaimed = false.
+  Sorry visés : 0.  RHClaimed = false.
 
   NOTE : ce fichier ne doit PAS importer CRTEquiv (cycle).
-  g30Coord et addCoord sont définis localement ici.
-  CRTEquiv les réutilise via import de ce fichier.
+  NOTE : CharacterLemmas fournit sum_char_eq_zero_of_ne_one.
 -/
 
 import CouretUnification.Core.Convolution30
 import CouretUnification.Core.Characters30
+import CouretUnification.Core.CharacterLemmas
 
 open scoped BigOperators
 
@@ -48,19 +40,49 @@ noncomputable def eigenvalue (K : FunG30) (χ : CharIdx) : ℂ :=
   ∑ g : G30, K g * charOnG30 χ g⁻¹
 
 -- ═══════════════════════════════════════════════════════════
--- §3. Coordonnées CRT (définies localement — pas d'import CRTEquiv)
+-- §3. Coordonnées CRT (définies localement)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Coordonnées CRT sur G30 : composition g30ToIdx puis residueCoord. -/
 def g30Coord (g : G30) : Fin 2 × Fin 4 :=
   residueCoord (g30ToIdx g)
 
-/-- Addition composante par composante dans Fin 2 × Fin 4. -/
 def addCoord (p q : Fin 2 × Fin 4) : Fin 2 × Fin 4 :=
   (p.1 + q.1, p.2 + q.2)
 
 -- ═══════════════════════════════════════════════════════════
--- §4. LEMME PIVOT : g30Coord est un morphisme de groupe
+-- §4. Puissances de I (ring ne gère pas I² = -1)
+-- ═══════════════════════════════════════════════════════════
+
+-- Pairs
+private lemma Ip6  : Complex.I ^ (6:ℕ)  = -1 := by
+  have : Complex.I ^ 6 = (Complex.I ^ 2) ^ 3 := by ring
+  rw [this, Complex.I_sq]; norm_num
+private lemma Ip10 : Complex.I ^ (10:ℕ) = -1 := by
+  have : Complex.I ^ 10 = (Complex.I ^ 2) ^ 5 := by ring
+  rw [this, Complex.I_sq]; norm_num
+private lemma Ip12 : Complex.I ^ (12:ℕ) = 1  := by
+  have : Complex.I ^ 12 = (Complex.I ^ 2) ^ 6 := by ring
+  rw [this, Complex.I_sq]; norm_num
+private lemma Ip18 : Complex.I ^ (18:ℕ) = -1 := by
+  have : Complex.I ^ 18 = (Complex.I ^ 2) ^ 9 := by ring
+  rw [this, Complex.I_sq]; norm_num
+
+-- Impairs
+private lemma Ip3  : Complex.I ^ (3:ℕ)  = -Complex.I := by
+  have : Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
+  rw [this, Complex.I_sq]; ring
+private lemma Ip7  : Complex.I ^ (7:ℕ)  = -Complex.I := by
+  have : Complex.I ^ 7 = (Complex.I ^ 2) ^ 3 * Complex.I := by ring
+  rw [this, Complex.I_sq]; norm_num; ring
+private lemma Ip9  : Complex.I ^ (9:ℕ)  = Complex.I := by
+  have : Complex.I ^ 9 = (Complex.I ^ 2) ^ 4 * Complex.I := by ring
+  rw [this, Complex.I_sq]; norm_num; ring
+private lemma Ip15 : Complex.I ^ (15:ℕ) = -Complex.I := by
+  have : Complex.I ^ 15 = (Complex.I ^ 2) ^ 7 * Complex.I := by ring
+  rw [this, Complex.I_sq]; norm_num; ring
+
+-- ═══════════════════════════════════════════════════════════
+-- §5. g30Coord est un morphisme de groupe
 -- ═══════════════════════════════════════════════════════════
 
 set_option maxHeartbeats 800000 in
@@ -71,7 +93,7 @@ theorem g30Coord_mul (a b : G30) :
     decide
 
 -- ═══════════════════════════════════════════════════════════
--- §5. DÉPLIAGE TAUTOLOGIQUE
+-- §6. Dépliage tautologique
 -- ═══════════════════════════════════════════════════════════
 
 theorem charOnG30_factor (χ : CharIdx) (g : G30) :
@@ -82,7 +104,7 @@ theorem charOnG30_factor (χ : CharIdx) (g : G30) :
   simp only [charOnG30, g30Coord, characterEval]
 
 -- ═══════════════════════════════════════════════════════════
--- §6. MULTIPLICATIVITÉ DES PHASES
+-- §7. Multiplicativité des phases
 -- ═══════════════════════════════════════════════════════════
 
 theorem c2Phase_mul_right (m : Fin 2) (e₁ e₂ : Fin 2) :
@@ -90,13 +112,16 @@ theorem c2Phase_mul_right (m : Fin 2) (e₁ e₂ : Fin 2) :
   fin_cases m <;> fin_cases e₁ <;> fin_cases e₂ <;>
     simp [c2Phase] <;> ring
 
+set_option maxHeartbeats 400000 in
 theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
-    simp [c4Phase] <;> ring
+    simp only [c4Phase, Complex.I_sq, Ip3, Ip6, Ip7, Ip9, Ip10, Ip12, Ip15, Ip18,
+               pow_zero, pow_one, neg_neg, one_mul, mul_one, neg_mul, mul_neg] <;>
+    ring
 
 -- ═══════════════════════════════════════════════════════════
--- §7. MULTIPLICATIVITÉ DU CARACTÈRE
+-- §8. Multiplicativité du caractère
 -- ═══════════════════════════════════════════════════════════
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
@@ -105,41 +130,42 @@ theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
   rw [g30Coord_mul]
   simp only [addCoord]
   rw [c2Phase_mul_right, c4Phase_mul_right]
-  ring
 
 -- ═══════════════════════════════════════════════════════════
--- §8. ÉLÉVATION EN MONOIDHOM
+-- §9. Élévation en MonoidHom
 -- ═══════════════════════════════════════════════════════════
 
 def charOnG30AsHom (χ : CharIdx) : G30 →* ℂ where
   toFun := charOnG30 χ
   map_one' := by
-    simp only [charOnG30_factor]
-    have h1 : g30Coord (1 : G30) = ((0 : Fin 2), (0 : Fin 4)) := by
-      simp [g30Coord, g30ToIdx, residueCoord]; decide
-    rw [h1]; simp [c2Phase, c4Phase]
+    fin_cases χ <;>
+      simp [charOnG30, g30ToIdx, characterEval, charCoord, residueCoord,
+            c2Phase, c4Phase]
   map_mul' := charOnG30_mul χ
 
 -- ═══════════════════════════════════════════════════════════
--- §9. SOMME NULLE DES CARACTÈRES NON TRIVIAUX
+-- §10. Somme nulle des caractères non triviaux
 -- ═══════════════════════════════════════════════════════════
-
-theorem charOnG30AsHom_trivial_eq_one :
-    charOnG30AsHom ⟨0, by omega⟩ = 1 := by
-  ext g
-  simp [charOnG30AsHom, charOnG30_factor, charCoord, c2Phase, c4Phase]
 
 theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
     charOnG30AsHom χ ≠ 1 := by
-  intro h
-  apply hχ
-  fin_cases χ <;> simp_all [charOnG30AsHom, MonoidHom.ext_iff] <;>
-    (try { exfalso; apply hχ; rfl }) <;>
-    (try {
-      have := congr_fun (MonoidHom.ext_iff.mp h) ⟨7, 13, by decide, by decide⟩
-      simp [charOnG30, g30ToIdx, characterEval, charCoord, residueCoord,
-            c2Phase, c4Phase] at this
-    })
+  fin_cases χ
+  · exact absurd rfl hχ
+  all_goals (
+    intro h
+    have h7 := MonoidHom.ext_iff.mp h ⟨7, 13, by decide, by decide⟩
+    simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk,
+               MonoidHom.one_apply,
+               charOnG30, g30ToIdx, characterEval, charCoord,
+               residueCoord, c2Phase, c4Phase,
+               Complex.I_sq, Ip3, pow_zero, pow_one] at h7
+    -- h7 is now a false equation; split into re/im to close
+    have := h7
+    rw [Complex.ext_iff] at this
+    simp [Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im,
+          Complex.one_re, Complex.one_im, Complex.ofReal_re, Complex.ofReal_im,
+          Complex.zero_re, Complex.zero_im] at this
+  )
 
 theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
     ∑ g : G30, charOnG30 χ g = 0 := by
@@ -147,11 +173,10 @@ theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩)
   have key := sum_char_eq_zero_of_ne_one (charOnG30AsHom χ) hne
   convert key using 1
   apply Finset.sum_congr rfl
-  intro g _
-  rfl
+  intro g _; rfl
 
 -- ═══════════════════════════════════════════════════════════
--- §10. EXPORT (compatibilité v32)
+-- §11. Export (compatibilité v32)
 -- ═══════════════════════════════════════════════════════════
 
 theorem charOnG30_trivial (g : G30) :
@@ -168,7 +193,7 @@ theorem charOnG30_ne_zero (χ : CharIdx) :
           c2Phase, c4Phase] at h1
 
 -- ═══════════════════════════════════════════════════════════
--- §11. Réindexation (copie locale, car private dans Convolution30)
+-- §12. Réindexation (copie locale)
 -- ═══════════════════════════════════════════════════════════
 
 private lemma sum_reindex_mul_inv' (x : G30) (F : G30 → ℂ) :
@@ -182,7 +207,7 @@ private lemma sum_reindex_mul_inv' (x : G30) (F : G30 → ℂ) :
     (fun _ _ => rfl)
 
 -- ═══════════════════════════════════════════════════════════
--- §12. DIAGONALISATION (conservée de v32)
+-- §13. Diagonalisation (conservée de v32)
 -- ═══════════════════════════════════════════════════════════
 
 theorem convolution_diag_pointwise (K : FunG30) (χ : CharIdx) (x : G30) :
