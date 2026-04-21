@@ -3,7 +3,7 @@
    0 sorry.
 
    NOTE: Finset.mul_sum et Finset.smul_sum absents de Mathlib v4.29.
-   On prouve mul_fintype_sum par induction directe.
+   On prouve mul_finset_sum par induction directe.
 -/
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Complex.Basic
@@ -40,10 +40,9 @@ lemma sum_left_mul_eq_sum (f : G → ℂ) (a : G) :
   apply Fintype.sum_equiv (Equiv.mulLeft a)
   intro g; simp [Equiv.mulLeft]
 
-/-- c * ∑_{g ∈ s} f g = ∑_{g ∈ s} c * f g.
-    Prouvé par induction directe (Finset.mul_sum absent). -/
+/-- c * ∑ f = ∑ c * f.  Prouvé par induction (Finset.mul_sum absent). -/
 private lemma mul_finset_sum (c : ℂ) (s : Finset G) (f : G → ℂ) :
-    c * (∑ g in s, f g) = ∑ g in s, c * f g := by
+    c * s.sum f = s.sum (fun g => c * f g) := by
   induction s using Finset.induction with
   | empty => simp
   | insert h_not_mem ih =>
