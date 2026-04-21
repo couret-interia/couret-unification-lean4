@@ -95,7 +95,7 @@ set_option maxHeartbeats 1600000 in
 theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
-    simp only [c4Phase, fin4_add_eval] <;> try ring <;>
+    simp only [c4Phase, fin4_add_eval] <;> try ring_nf <;>
     -- remaining goals: A = I^k where k ≥ 4; rewrite RHS down
     (try rw [Ip18]) <;> (try rw [Ip15]) <;> (try rw [Ip12]) <;>
     (try rw [Ip10]) <;> (try rw [Ip9])  <;> (try rw [Ip8])  <;>
@@ -134,9 +134,15 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
     have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
     have h11 := DFunLike.congr_fun h (⟨11, 11, by decide, by decide⟩ : G30)
     simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h7 h11
-    -- Evaluate character values at both witnesses; at least one gives ⊥
+    -- Evaluate character values + normalize I-powers
     simp [charOnG30, hidx7, hidx11, characterEval, charCoord, residueCoord,
-          c2Phase, c4Phase] at h7 h11
+          c2Phase, c4Phase, Complex.I_sq, Ip6] at h7 h11
+    -- h7/h11 are now: I=1, -I=1, -1=1, or True; close with contradiction
+    first
+      | exact absurd h7 I_ne_one | exact absurd h7 neg_I_ne_one
+      | exact absurd h7 neg_one_ne_one_C
+      | exact absurd h11 I_ne_one | exact absurd h11 neg_I_ne_one
+      | exact absurd h11 neg_one_ne_one_C
   )
 
 theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :

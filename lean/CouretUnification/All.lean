@@ -355,6 +355,9 @@ import CouretUnification.Core.Convolution30
 import CouretUnification.Core.Characters30Bridge
 import CouretUnification.Core.CayleyG30
 
+-- v35.1
+import CouretUnification.Core.CharacterLemmas
+
 -- v33
 import CouretUnification.Core.CharParity30
 import CouretUnification.Core.CRTEquiv
