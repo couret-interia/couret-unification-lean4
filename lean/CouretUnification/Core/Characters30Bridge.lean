@@ -38,6 +38,12 @@ private lemma Ip3  : Complex.I ^ (3:ℕ)  = -Complex.I := by
 private lemma Ip4  : Complex.I ^ (4:ℕ)  = 1 := by
   have : Complex.I ^ 4 = (Complex.I ^ 2) ^ 2 := by ring
   rw [this, Complex.I_sq]; norm_num
+private lemma Ip5  : Complex.I ^ (5:ℕ)  = Complex.I := by
+  have : Complex.I ^ 5 = (Complex.I ^ 2) ^ 2 * Complex.I := by ring
+  rw [this, Complex.I_sq]; norm_num
+private lemma Ip8  : Complex.I ^ (8:ℕ)  = 1 := by
+  have : Complex.I ^ 8 = (Complex.I ^ 2) ^ 4 := by ring
+  rw [this, Complex.I_sq]; norm_num
 private lemma Ip6  : Complex.I ^ (6:ℕ)  = -1 := by
   have : Complex.I ^ 6 = (Complex.I ^ 2) ^ 3 := by ring
   rw [this, Complex.I_sq]; norm_num
@@ -90,9 +96,8 @@ theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
     simp only [c4Phase, fin4_add_eval] <;>
-    first | ring | (simp only [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip6, Ip9,
-                               neg_neg, neg_mul, mul_neg, one_mul, mul_one,
-                               pow_zero, pow_one]; ring)
+    first | ring | (simp [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip5, Ip6,
+                          Ip8, Ip9, Ip10, Ip12, Ip15, Ip18])
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
     charOnG30 χ (a * b) = charOnG30 χ a * charOnG30 χ b := by
@@ -122,13 +127,10 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
     -- Precompute g30ToIdx 7 = ⟨1,_⟩ (ZMod needs decide)
     have hidx : g30ToIdx (⟨7, 13, by decide, by decide⟩ : G30) = ⟨1, by omega⟩ := by
       simp [g30ToIdx]; decide
-    -- Evaluate character at index 1
-    simp only [charOnG30, hidx, characterEval, charCoord, residueCoord,
-               c2Phase, c4Phase] at h7
-    -- Normalize I-powers
-    simp only [Complex.I_sq, I_mul_I, Ip3, pow_zero, pow_one,
-               one_mul, mul_one, neg_neg] at h7
-    -- h7 is now I = 1, -I = 1, or -1 = 1
+    -- Evaluate character at index 1 (simp, not simp only, for Fin.val reduction)
+    simp [charOnG30, hidx, characterEval, charCoord, residueCoord,
+          c2Phase, c4Phase, Complex.I_sq, I_mul_I, Ip3, Ip4] at h7
+    -- h7 is now a concrete false equation; close with absurd
     first
       | exact absurd h7 I_ne_one | exact absurd h7 neg_I_ne_one
       | exact absurd h7 neg_one_ne_one_C
