@@ -87,7 +87,7 @@ theorem charOnG30_factor (χ : CharIdx) (g : G30) :
 
 theorem c2Phase_mul_right (m : Fin 2) (e₁ e₂ : Fin 2) :
     c2Phase m (e₁ + e₂) = c2Phase m e₁ * c2Phase m e₂ := by
-  fin_cases m <;> fin_cases e₁ <;> fin_cases e₂ <;> simp [c2Phase] <;> ring
+  fin_cases m <;> fin_cases e₁ <;> fin_cases e₂ <;> simp [c2Phase]
 
 private lemma I_mul_I : Complex.I * Complex.I = -1 := by rw [← sq, Complex.I_sq]
 
@@ -95,8 +95,13 @@ set_option maxHeartbeats 1600000 in
 theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
     c4Phase n (k₁ + k₂) = c4Phase n k₁ * c4Phase n k₂ := by
   fin_cases n <;> fin_cases k₁ <;> fin_cases k₂ <;>
-    simp only [c4Phase, fin4_add_eval] <;>
-    simp [Complex.I_sq, I_mul_I, Ip3, Ip4, Ip5, Ip6, Ip8, Ip9, Ip10, Ip12, Ip15, Ip18]
+    simp only [c4Phase, fin4_add_eval] <;> try ring <;>
+    -- remaining goals: A = I^k where k ≥ 4; rewrite RHS down
+    (try rw [Ip18]) <;> (try rw [Ip15]) <;> (try rw [Ip12]) <;>
+    (try rw [Ip10]) <;> (try rw [Ip9])  <;> (try rw [Ip8])  <;>
+    (try rw [Ip6])  <;> (try rw [Ip5])  <;> (try rw [Ip4])  <;>
+    (try rw [Ip3])  <;> (try rw [Complex.I_sq]) <;>
+    try ring
 
 theorem charOnG30_mul (χ : CharIdx) (a b : G30) :
     charOnG30 χ (a * b) = charOnG30 χ a * charOnG30 χ b := by
@@ -125,31 +130,29 @@ theorem charOnG30AsHom_ne_one (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
       simp [g30ToIdx]; decide
     have hidx11 : g30ToIdx (⟨11, 11, by decide, by decide⟩ : G30) = ⟨2, by omega⟩ := by
       simp [g30ToIdx]; decide
-    -- Try g=7 (index 1), fallback to g=11 (index 2)
     first
       | (have h7 := DFunLike.congr_fun h (⟨7, 13, by decide, by decide⟩ : G30)
          simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h7
          simp [charOnG30, hidx7, characterEval, charCoord, residueCoord,
                c2Phase, c4Phase, Complex.I_sq] at h7
-         first | exact absurd h7 I_ne_one | exact absurd h7 neg_I_ne_one
-               | exact absurd h7 neg_one_ne_one_C
-               | exact absurd h7.symm I_ne_one | exact absurd h7.symm neg_I_ne_one
-               | exact absurd h7.symm neg_one_ne_one_C)
+         -- simp may already close goal; if not, h7 is a false equation
+         try exact absurd h7 I_ne_one
+         try exact absurd h7 neg_I_ne_one
+         try exact absurd h7 neg_one_ne_one_C)
       | (have h11 := DFunLike.congr_fun h (⟨11, 11, by decide, by decide⟩ : G30)
          simp only [charOnG30AsHom, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.one_apply] at h11
          simp [charOnG30, hidx11, characterEval, charCoord, residueCoord,
                c2Phase, c4Phase, Complex.I_sq] at h11
-         first | exact absurd h11 I_ne_one | exact absurd h11 neg_I_ne_one
-               | exact absurd h11 neg_one_ne_one_C
-               | exact absurd h11.symm I_ne_one | exact absurd h11.symm neg_I_ne_one
-               | exact absurd h11.symm neg_one_ne_one_C)
+         try exact absurd h11 I_ne_one
+         try exact absurd h11 neg_I_ne_one
+         try exact absurd h11 neg_one_ne_one_C)
   )
 
 theorem sum_charOnG30_ne_trivial (χ : CharIdx) (hχ : χ ≠ ⟨0, by omega⟩) :
     ∑ g : G30, charOnG30 χ g = 0 := by
   have hne := charOnG30AsHom_ne_one χ hχ
   have key := sum_char_eq_zero_of_ne_one (charOnG30AsHom χ) hne
-  convert key using 1; apply Finset.sum_congr rfl; intro g _; rfl
+  convert key using 1
 
 theorem charOnG30_trivial (g : G30) :
     charOnG30 ⟨0, by omega⟩ g = 1 := by
