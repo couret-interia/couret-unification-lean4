@@ -45,10 +45,10 @@ open CouretUnification.Core
 -- §1. Compatibilité avec l'API v35.1 stricte (inchangée)
 -- ═══════════════════════════════════════════════════════════════════
 
-noncomputable constant E_sigma : ℝ → H3TestFunction → ℂ
-noncomputable constant M_sigma :
+opaque E_sigma : ℝ → H3TestFunction → ℂ
+opaque M_sigma :
   (ℂ → ℂ) → (CharIdx → ℂ → ℂ) → Finset CharIdx → ℝ → H3TestFunction → ℂ
-noncomputable constant R_sigma :
+opaque R_sigma :
   (ℂ → ℂ) → (CharIdx → ℂ → ℂ) → Finset CharIdx → ℝ → H3TestFunction → ℂ
 
 def RestrictedExplicitFormulaOld
