@@ -361,4 +361,5 @@ import CouretUnification.Core.CharParity30
 import CouretUnification.Core.CRTEquiv
 
 import CouretUnification.Logic.H3.FiniteSpectralAPI
+import CouretUnification.Logic.H3.ParityGamma30
 
