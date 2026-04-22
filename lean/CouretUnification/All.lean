@@ -364,3 +364,4 @@ import CouretUnification.Logic.H3.FiniteSpectralAPI
 import CouretUnification.Logic.H3.ParityGamma30
 import CouretUnification.Logic.H3.H3TestSpace
 import CouretUnification.Logic.H3.RigidityParams
+import CouretUnification.Logic.H3.C2Restricted
