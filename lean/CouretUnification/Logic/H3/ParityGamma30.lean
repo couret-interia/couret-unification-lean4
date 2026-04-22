@@ -41,6 +41,6 @@ noncomputable def GammaFactor30 (χ : CharIdx) (s : ℂ) : ℂ :=
 noncomputable def LambdaLocal
     (D : ℂ → ℂ) (L : CharIdx → ℂ → ℂ)
     (chars : Finset CharIdx) (s : ℂ) : ℂ :=
-  D s * (∏ χ in chars, (GammaFactor30 χ s * L χ s))
+  D s * chars.prod (fun χ => GammaFactor30 χ s * L χ s)
 
 end CouretUnification.Logic.H3
