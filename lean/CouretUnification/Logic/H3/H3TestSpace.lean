@@ -41,7 +41,7 @@ import CouretUnification.Logic.H3.FiniteSpectralAPI
 namespace CouretUnification.Logic.H3
 
 -- ═══════════════════════════════════════════════════════════════════
--- §1. Interface de base (identique au pack Thomas v35.1)
+-- §1. Interface de base
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- Fonction test H3 de base : continue sur ℝ₊*, régulière,
@@ -55,7 +55,7 @@ structure H3TestFunction where
 instance : CoeFun H3TestFunction (fun _ => ℝ → ℂ) where coe f := f.toFun
 
 /-- Transformée de Mellin (abstraite). -/
-noncomputable constant mellinTransform : H3TestFunction → ℂ → ℂ
+opaque mellinTransform : H3TestFunction → ℂ → ℂ
 
 -- ═══════════════════════════════════════════════════════════════════
 -- §2. Prédicats opaques — Smooth Bump Strategy
