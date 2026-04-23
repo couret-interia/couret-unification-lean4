@@ -6,18 +6,16 @@
   Référence mathématique : AlgebraTC_v35_v1_final.md
   (fusion T2+T4, patch TC3 v1 canonique).
 
-  Dépendances :
-    - Core/Characters30.lean (CharIdx, charCoord, charOnG30)
-    - Core/CharParity30.lean (negOneG30, charOnG30_negOne_pm)
-    - Core/CayleyG30.lean (spectre A_TC)
-    - H3/H3TestSpace.lean (H3TestFunction, OperativeTestPacket)
-
-  RHClaimed = false.
+  Ce fichier ne contient plus de `sorry`.
+  Les objets analytiques abstraits (convolution de Mellin, etc.) restent
+  encodés via `opaque` / `axiom` là où la couche analytique complète
+  n’est pas encore internalisée dans Lean.
 -/
 
 import Mathlib.Tactic
 import CouretUnification.Core.Characters30
 import CouretUnification.Core.CharParity30
+import CouretUnification.Core.Characters30Bridge
 import CouretUnification.Logic.H3.H3TestSpace
 
 open scoped BigOperators
@@ -211,12 +209,174 @@ theorem AlgebraTC.convolveC_closed (a b : AlgebraTC) :
 -- §8. Non-stabilité sous *_T (contre-exemple T4b)
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- Contre-exemple concret de non-stabilité sous *_T. -/
-axiom tensor_product_escapes_E_one :
+/-- Petit lemme d'emballage : une fois les trois témoins fermés,
+    le théorème T4b se déduit sans bruit. -/
+lemma tensor_product_escapes_E_one_of_witnesses
+    (χ₁ χ₂ χ₃ : CharIdx)
+    (hσ1 : sigmaChiTC χ₁ = 1)
+    (hσ2 : sigmaChiTC χ₂ = 1)
+    (hσ3 : sigmaChiTC χ₃ = 3)
+    (hmul : ∀ g : G30, charOnG30 χ₃ g = charOnG30 χ₁ g * charOnG30 χ₂ g) :
     ∃ χ₁ χ₂ : CharIdx,
       sigmaChiTC χ₁ = 1 ∧ sigmaChiTC χ₂ = 1 ∧
       ∃ χ₃ : CharIdx, sigmaChiTC χ₃ = 3 ∧
-      (∀ g : G30, charOnG30 χ₃ g = charOnG30 χ₁ g * charOnG30 χ₂ g)
+      (∀ g : G30, charOnG30 χ₃ g = charOnG30 χ₁ g * charOnG30 χ₂ g) := by
+  exact ⟨χ₁, χ₂, hσ1, hσ2, χ₃, hσ3, hmul⟩
+
+lemma g30ToIdx_eleven :
+    g30ToIdx elevenG30 = ⟨2, by omega⟩ := by
+  decide
+
+lemma g30ToIdx_negOne :
+    g30ToIdx negOneG30 = ⟨7, by omega⟩ := by
+  decide
+
+lemma sigmaChiTC_eq_one_of_vals_pos_neg
+    (χ : CharIdx)
+    (h11 : charOnG30 χ elevenG30 = 1)
+    (hm1 : charOnG30 χ negOneG30 = -1) :
+    sigmaChiTC χ = 1 := by
+  unfold sigmaChiTC charSignEleven charSign
+  have hm1_core : charOnG30 χ Core.negOneG30 = -1 := by
+    simpa using hm1
+  have hm1_ne : charOnG30 χ Core.negOneG30 ≠ 1 := by
+    rw [hm1_core]
+    norm_num
+  rw [if_pos h11]
+  rw [if_neg hm1_ne]
+  norm_num
+
+lemma sigmaChiTC_eq_one_of_vals_neg_pos
+    (χ : CharIdx)
+    (h11 : charOnG30 χ elevenG30 = -1)
+    (hm1 : charOnG30 χ negOneG30 = 1) :
+    sigmaChiTC χ = 1 := by
+  unfold sigmaChiTC charSignEleven charSign
+  have h11_ne : charOnG30 χ elevenG30 ≠ 1 := by
+    rw [h11]
+    norm_num
+  have hm1_core : charOnG30 χ Core.negOneG30 = 1 := by
+    simpa using hm1
+  rw [if_neg h11_ne]
+  rw [if_pos hm1_core]
+  norm_num
+
+lemma sigmaChiTC_eq_three_of_vals
+    (χ : CharIdx)
+    (h11 : charOnG30 χ elevenG30 = 1)
+    (hm1 : charOnG30 χ negOneG30 = 1) :
+    sigmaChiTC χ = 3 := by
+  unfold sigmaChiTC charSignEleven charSign
+  have hm1_core : charOnG30 χ Core.negOneG30 = 1 := by
+    simpa using hm1
+  rw [if_pos h11]
+  rw [if_pos hm1_core]
+  norm_num
+
+section T4bConcrete
+
+open CouretUnification.Core
+
+/--
+Témoins effectifs du contre-exemple T4b.
+
+Ils vérifient :
+- σ(χ₁) = 1
+- σ(χ₂) = 1
+- σ(χ₃) = 3
+- χ₃(g) = χ₁(g) * χ₂(g) pour tout g : G30
+
+Ici :
+- χ₁ = ⟨3, _⟩
+- χ₂ = ⟨5, _⟩
+- χ₃ = ⟨0, _⟩ (caractère trivial)
+-/
+private def chi₁_T4b : CharIdx := ⟨3, by decide⟩
+private def chi₂_T4b : CharIdx := ⟨5, by decide⟩
+private def chi₃_T4b : CharIdx := ⟨0, by decide⟩
+
+private lemma neg_Ip6_eq_one : -(Complex.I ^ (6 : ℕ)) = (1 : ℂ) := by
+  rw [Ip6]
+  norm_num
+
+private lemma chi₁_T4b_at_eleven :
+    charOnG30 chi₁_T4b elevenG30 = 1 := by
+  have hidx : g30ToIdx elevenG30 = ⟨2, by omega⟩ := g30ToIdx_eleven
+  simp (config := { decide := true }) [chi₁_T4b, charOnG30, hidx,
+    characterEval, charCoord, residueCoord, c2Phase, c4Phase]
+
+private lemma chi₁_T4b_at_negOne :
+    charOnG30 chi₁_T4b negOneG30 = -1 := by
+  have hidx : g30ToIdx negOneG30 = ⟨7, by omega⟩ := g30ToIdx_negOne
+  simp (config := { decide := true }) [chi₁_T4b, charOnG30, hidx,
+    characterEval, charCoord, residueCoord, c2Phase, c4Phase]
+
+private lemma chi₂_T4b_at_eleven :
+    charOnG30 chi₂_T4b elevenG30 = 1 := by
+  have hidx : g30ToIdx elevenG30 = ⟨2, by omega⟩ := g30ToIdx_eleven
+  simp (config := { decide := true }) [chi₂_T4b, charOnG30, hidx,
+    characterEval, charCoord, residueCoord, c2Phase, c4Phase]
+  exact neg_Ip6_eq_one
+
+private lemma chi₂_T4b_at_negOne :
+    charOnG30 chi₂_T4b negOneG30 = -1 := by
+  have hidx : g30ToIdx negOneG30 = ⟨7, by omega⟩ := g30ToIdx_negOne
+  simp (config := { decide := true }) [chi₂_T4b, charOnG30, hidx,
+    characterEval, charCoord, residueCoord, c2Phase, c4Phase]
+
+private lemma chi₃_T4b_at_eleven :
+    charOnG30 chi₃_T4b elevenG30 = 1 := by
+  have hidx : g30ToIdx elevenG30 = ⟨2, by omega⟩ := g30ToIdx_eleven
+  simp (config := { decide := true }) [chi₃_T4b, charOnG30, hidx,
+    characterEval, charCoord, residueCoord, c2Phase, c4Phase]
+
+private lemma chi₃_T4b_at_negOne :
+    charOnG30 chi₃_T4b negOneG30 = 1 := by
+  have hidx : g30ToIdx negOneG30 = ⟨7, by omega⟩ := g30ToIdx_negOne
+  simp (config := { decide := true }) [chi₃_T4b, charOnG30, hidx,
+    characterEval, charCoord, residueCoord, c2Phase, c4Phase]
+
+private lemma chi₁_T4b_sigma :
+    sigmaChiTC chi₁_T4b = 1 := by
+  apply sigmaChiTC_eq_one_of_vals_pos_neg
+  · exact chi₁_T4b_at_eleven
+  · exact chi₁_T4b_at_negOne
+
+private lemma chi₂_T4b_sigma :
+    sigmaChiTC chi₂_T4b = 1 := by
+  apply sigmaChiTC_eq_one_of_vals_pos_neg
+  · exact chi₂_T4b_at_eleven
+  · exact chi₂_T4b_at_negOne
+
+private lemma chi₃_T4b_sigma :
+    sigmaChiTC chi₃_T4b = 3 := by
+  apply sigmaChiTC_eq_three_of_vals
+  · exact chi₃_T4b_at_eleven
+  · exact chi₃_T4b_at_negOne
+
+set_option maxHeartbeats 1600000 in
+private lemma chi_T4b_mul_pointwise :
+    ∀ g : G30,
+      charOnG30 chi₃_T4b g =
+        charOnG30 chi₁_T4b g * charOnG30 chi₂_T4b g := by
+  intro g
+  fin_cases g <;>
+    simp (config := { decide := true }) [chi₁_T4b, chi₂_T4b, chi₃_T4b,
+      charOnG30, g30ToIdx, characterEval, charCoord, residueCoord,
+      c2Phase, c4Phase, Complex.I_sq, Ip6, Ip9]
+
+end T4bConcrete
+
+/-- Contre-exemple T4b : fermeture finale une fois les trois témoins validés. -/
+theorem tensor_product_escapes_E_one :
+    ∃ χ₁ χ₂ : CharIdx,
+      sigmaChiTC χ₁ = 1 ∧ sigmaChiTC χ₂ = 1 ∧
+      ∃ χ₃ : CharIdx, sigmaChiTC χ₃ = 3 ∧
+      (∀ g : G30, charOnG30 χ₃ g = charOnG30 χ₁ g * charOnG30 χ₂ g) := by
+  exact tensor_product_escapes_E_one_of_witnesses
+    chi₁_T4b chi₂_T4b chi₃_T4b
+    chi₁_T4b_sigma chi₂_T4b_sigma chi₃_T4b_sigma
+    chi_T4b_mul_pointwise
 
 -- ═══════════════════════════════════════════════════════════════════
 -- §9. Propriétés de non-trivialité

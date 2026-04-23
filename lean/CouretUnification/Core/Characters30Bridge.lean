@@ -26,51 +26,51 @@ def g30Coord (g : G30) : Fin 2 × Fin 4 := residueCoord (g30ToIdx g)
 def addCoord (p q : Fin 2 × Fin 4) : Fin 2 × Fin 4 := (p.1 + q.1, p.2 + q.2)
 
 -- Force l'évaluation de l'addition dans Fin n (simp/norm_num ne le font pas)
-@[simp] private lemma fin4_add_eval (a b : Fin 4) :
+@[simp] lemma fin4_add_eval (a b : Fin 4) :
     (a + b : Fin 4) = ⟨(a.val + b.val) % 4, Nat.mod_lt _ (by decide)⟩ := by ext; rfl
-@[simp] private lemma fin2_add_eval (a b : Fin 2) :
+@[simp] lemma fin2_add_eval (a b : Fin 2) :
     (a + b : Fin 2) = ⟨(a.val + b.val) % 2, Nat.mod_lt _ (by decide)⟩ := by ext; rfl
 
 -- Puissances de I (ring ne sait pas I² = -1)
-private lemma Ip3  : Complex.I ^ (3:ℕ)  = -Complex.I := by
+lemma Ip3  : Complex.I ^ (3:ℕ)  = -Complex.I := by
   have : Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
   rw [this, Complex.I_sq]; ring
-private lemma Ip4  : Complex.I ^ (4:ℕ)  = 1 := by
+lemma Ip4  : Complex.I ^ (4:ℕ)  = 1 := by
   have : Complex.I ^ 4 = (Complex.I ^ 2) ^ 2 := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip5  : Complex.I ^ (5:ℕ)  = Complex.I := by
+lemma Ip5  : Complex.I ^ (5:ℕ)  = Complex.I := by
   have : Complex.I ^ 5 = (Complex.I ^ 2) ^ 2 * Complex.I := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip8  : Complex.I ^ (8:ℕ)  = 1 := by
+lemma Ip8  : Complex.I ^ (8:ℕ)  = 1 := by
   have : Complex.I ^ 8 = (Complex.I ^ 2) ^ 4 := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip6  : Complex.I ^ (6:ℕ)  = -1 := by
+lemma Ip6  : Complex.I ^ (6:ℕ)  = -1 := by
   have : Complex.I ^ 6 = (Complex.I ^ 2) ^ 3 := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip7  : Complex.I ^ (7:ℕ)  = -Complex.I := by
+lemma Ip7  : Complex.I ^ (7:ℕ)  = -Complex.I := by
   have : Complex.I ^ 7 = (Complex.I ^ 2) ^ 3 * Complex.I := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip9  : Complex.I ^ (9:ℕ)  = Complex.I := by
+lemma Ip9  : Complex.I ^ (9:ℕ)  = Complex.I := by
   have : Complex.I ^ 9 = (Complex.I ^ 2) ^ 4 * Complex.I := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip10 : Complex.I ^ (10:ℕ) = -1 := by
+lemma Ip10 : Complex.I ^ (10:ℕ) = -1 := by
   have : Complex.I ^ 10 = (Complex.I ^ 2) ^ 5 := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip12 : Complex.I ^ (12:ℕ) = 1  := by
+lemma Ip12 : Complex.I ^ (12:ℕ) = 1  := by
   have : Complex.I ^ 12 = (Complex.I ^ 2) ^ 6 := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip15 : Complex.I ^ (15:ℕ) = -Complex.I := by
+lemma Ip15 : Complex.I ^ (15:ℕ) = -Complex.I := by
   have : Complex.I ^ 15 = (Complex.I ^ 2) ^ 7 * Complex.I := by ring
   rw [this, Complex.I_sq]; norm_num
-private lemma Ip18 : Complex.I ^ (18:ℕ) = -1 := by
+lemma Ip18 : Complex.I ^ (18:ℕ) = -1 := by
   have : Complex.I ^ 18 = (Complex.I ^ 2) ^ 9 := by ring
   rw [this, Complex.I_sq]; norm_num
 -- Inégalités concrètes dans ℂ
-private lemma I_ne_one : Complex.I ≠ 1 := by
+lemma I_ne_one : Complex.I ≠ 1 := by
   intro h; have := congr_arg Complex.im h; simp at this
-private lemma neg_I_ne_one : -Complex.I ≠ 1 := by
+lemma neg_I_ne_one : -Complex.I ≠ 1 := by
   intro h; have := congr_arg Complex.im h; simp at this
-private lemma neg_one_ne_one_C : (-1 : ℂ) ≠ 1 := by norm_num
+lemma neg_one_ne_one_C : (-1 : ℂ) ≠ 1 := by norm_num
 
 set_option maxHeartbeats 800000 in
 theorem g30Coord_mul (a b : G30) :
@@ -89,7 +89,7 @@ theorem c2Phase_mul_right (m : Fin 2) (e₁ e₂ : Fin 2) :
     c2Phase m (e₁ + e₂) = c2Phase m e₁ * c2Phase m e₂ := by
   fin_cases m <;> fin_cases e₁ <;> fin_cases e₂ <;> simp [c2Phase]
 
-private lemma I_mul_I : Complex.I * Complex.I = -1 := by rw [← sq, Complex.I_sq]
+lemma I_mul_I : Complex.I * Complex.I = -1 := by rw [← sq, Complex.I_sq]
 
 set_option maxHeartbeats 1600000 in
 theorem c4Phase_mul_right (n : Fin 4) (k₁ k₂ : Fin 4) :
