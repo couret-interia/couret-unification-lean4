@@ -366,3 +366,4 @@ import CouretUnification.Logic.H3.H3TestSpace
 import CouretUnification.Logic.H3.RigidityParams
 import CouretUnification.Logic.H3.C2Restricted
 import CouretUnification.Logic.H3.C3Weak
+import CouretUnification.Logic.H3.AlgebraTC
