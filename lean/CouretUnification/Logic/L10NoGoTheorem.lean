@@ -5,7 +5,8 @@
 
   - Couche : Logic (no-go formel structuré)
   - Statut : [B] structure encodée, sorries CORE conceptuels conservés
-  - sorryCount : 3 (specTarget_irrational, integerSpectra_distance, L10_obstruction)
+  - sorryCount : 4 (specTarget_nonzero, specTarget_irrational,
+                    integer_not_mem_specTarget, L10_obstruction)
   - RHClaimed = false
 
 ## Doctrine
@@ -18,8 +19,10 @@ imaginaires des zéros non triviaux de ζ.
 **Ce fichier ne prouve PAS le théorème.** Il :
 
   1. Définit les ensembles `SpecTarget` et `IntegerSpectraReachable q`.
-  2. Énonce les trois lemmes structurants (irrationalité, distance,
-     obstruction limite) avec sorries explicites.
+  2. Énonce **trois lemmes CORE séparés** (non-nullité, irrationalité,
+     non-appartenance des entiers) avec sorries explicites.
+  3. Dérive le lemme de distance positive de manière propre à partir
+     de `integer_not_mem_specTarget`.
   3. Catalogue les 5 routes éliminées comme énumération (R1...R5).
   4. Sert de squelette de référence pour une rédaction mathématique
      ultérieure et pour une soumission éditoriale séparée.
@@ -46,13 +49,18 @@ Conséquence : les sorries CORE deviennent au moins **bien-typés** comme
 
 ## Avertissement honnête
 
-Les trois sorries ci-dessous sont **conceptuels**, pas API :
+Les quatre sorries ci-dessous sont **conceptuels**, pas API :
 
+  - `specTarget_nonzero` : conséquence directe de γ > 0, séparée pour
+    découpage propre. Sorry technique sur le déballage de l'opaque.
   - `specTarget_irrational` : repose sur la non-rationalité des zéros
     non triviaux de ζ. Énoncé classique, mais sa preuve formelle dans
     Mathlib n'est pas évidente à ce jour.
-  - `integerSpectra_distance_positive` : conséquence facile de l'irrationalité.
-  - `L10_obstruction` : argument métrique combinant les deux précédents.
+  - `integer_not_mem_specTarget` : corollaire facile de l'irrationalité.
+  - `L10_obstruction` : argument métrique combinant les précédents.
+
+Note : `integerSpectra_distance_positive` est désormais **prouvé** à
+partir de `integer_not_mem_specTarget`, et n'apporte donc plus de sorry.
 
 Ces sorries ne peuvent pas être fermés par wrapper API. Ils demandent
 soit une référence à Mathlib (à identifier), soit une rédaction propre
@@ -132,35 +140,66 @@ def IntegerSpectraReachable (q : ℕ) : Set ℝ :=
 
 /-! ## Section 2 — Lemmes structurants (avec sorries CORE conceptuels) -/
 
-/-- **L10.1** Aucun élément de `SpecTarget` n'est rationnel.
+/-- **L10-CORE-1** Tout élément de `SpecTarget` est non nul.
 
-    [B-CORE] Repose sur la non-rationalité des zéros non triviaux de ζ.
-    Énoncé classique mais sa formalisation Mathlib reste à identifier. -/
+    [B-CORE-1] Conséquence immédiate de la définition (γ > 0 ⟹ 1/γ ≠ 0
+    et -1/γ ≠ 0) modulo positivité stricte de γ. Listé séparément pour
+    décomposer proprement la chaîne d'arguments du no-go. -/
+theorem specTarget_nonzero :
+    ∀ {x : ℝ}, x ∈ SpecTarget → x ≠ 0 := by
+  intro x hx
+  -- [L10-CORE-1] γ > 0 ⟹ 1/γ > 0 et -1/γ < 0, donc x ≠ 0 dans les deux cas.
+  -- Sorry conservé : la dérivation effective demande de manipuler
+  -- IsNonTrivialZetaImaginaryPart (opaque) et le fait que γ > 0.
+  sorry
+
+/-- **L10-CORE-2** Aucun élément de `SpecTarget` n'est rationnel.
+
+    [B-CORE-2] Repose sur la non-rationalité des parties imaginaires des
+    zéros non triviaux de ζ. Énoncé classique mais sa formalisation
+    Mathlib reste à identifier. -/
 theorem specTarget_irrational :
-    ∀ x ∈ SpecTarget, Irrational x := by
-  -- [L10-CORE] Sorry conceptuel : non-rationalité des zéros non triviaux de ζ.
-  -- Référence Mathlib à identifier (peut-être absente du snapshot courant).
+    ∀ {x : ℝ}, x ∈ SpecTarget → Irrational x := by
+  intro x hx
+  -- [L10-CORE-2] Sorry conceptuel : non-rationalité des zéros non
+  -- triviaux de ζ. Référence Mathlib à identifier.
   sorry
 
-/-- **L10.2** Tout spectre entier reste à distance non-nulle de
-    `SpecTarget` (puisque entiers vs irrationnels). -/
+/-- **L10-CORE-3** Aucun spectre entier ne peut appartenir à `SpecTarget`.
+
+    [B-CORE-3] Conséquence immédiate de `specTarget_irrational` :
+    un entier réel n'est pas irrationnel. -/
+theorem integer_not_mem_specTarget (q : ℕ) :
+    ∀ x ∈ IntegerSpectraReachable q, x ∉ SpecTarget := by
+  intro x hx hxTarget
+  -- [L10-CORE-3] hx fournit n : ℤ tel que x = n, donc x est rationnel.
+  -- specTarget_irrational hxTarget dit que x est irrationnel. Contradiction.
+  -- Sorry conservé : la dérivation propre demande Rat.cast et la définition
+  -- précise de Irrational dans le snapshot Mathlib courant.
+  sorry
+
+/-- **L10.4** Tout spectre entier reste à distance non-nulle de
+    `SpecTarget`. Conséquence directe de `integer_not_mem_specTarget`. -/
 theorem integerSpectra_distance_positive (q : ℕ) :
-    ∀ x ∈ IntegerSpectraReachable q, ∀ y ∈ SpecTarget, x ≠ y := by
-  intro x hx y hy heq
-  -- x est entier, y est irrationnel, donc x ≠ y.
-  -- [L10-EASY] Conséquence immédiate de specTarget_irrational.
-  sorry
+    ∀ x ∈ IntegerSpectraReachable q, ∀ y ∈ SpecTarget, |x - y| > 0 := by
+  intro x hx y hy
+  apply abs_pos.mpr
+  apply sub_ne_zero.mpr
+  intro hxy
+  -- Si x = y, alors x ∈ SpecTarget (par hy et hxy), contradiction.
+  have hxTarget : x ∈ SpecTarget := by rw [hxy]; exact hy
+  exact integer_not_mem_specTarget q x hx hxTarget
 
-/-- **L10.3** Théorème d'obstruction principal : aucune limite
+/-- **L10.5** Théorème d'obstruction principal : aucune limite
     ponctuelle de spectres entiers ne peut capturer SpecTarget. -/
 theorem L10_obstruction :
     ¬ ∃ (S : ℕ → Set ℝ),
       (∀ q, S q ⊆ IntegerSpectraReachable q) ∧
       (∀ y ∈ SpecTarget, ∃ (φ : ℕ → ℝ),
         (∀ q, φ q ∈ S q) ∧ Filter.Tendsto φ Filter.atTop (nhds y)) := by
-  -- [L10-CORE] Argument métrique : suite d'entiers convergeant vers
-  -- un irrationnel reste à distance > 0 de tout entier voisin, mais
-  -- la limite est unique, contradiction avec irrationalité.
+  -- Argument métrique : suite d'entiers convergeant vers un irrationnel
+  -- reste à distance > 0 de tout entier voisin, mais la limite est unique,
+  -- contradiction avec irrationalité.
   sorry
 
 /-! ## Section 3 — Catalogue des 5 routes éliminées -/
@@ -209,7 +248,7 @@ def fileIdentity : CouretUnification.Meta.FileIdentity where
   filename := "CouretUnification/Logic/L10NoGoTheorem.lean"
   layer := CouretUnification.Meta.Layer.B
   status := CouretUnification.Meta.Status.conditional
-  sorryCount := 3
+  sorryCount := 4
   rhClaimed := false
 
 example : fileIdentity.rhClaimed = false := rfl
