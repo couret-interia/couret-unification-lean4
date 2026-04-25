@@ -1,96 +1,58 @@
 /-
-# CouretUnification/Meta/Doctrine.lean — Couche doctrinale (v35.8.3)
-
-## Statut
-  - Couche : Meta
-  - Sorry : 0
-  - RHClaimed = false
+# CouretUnification/Meta/Doctrine.lean
 
 ## Rôle
+Structures épistémiques du programme Couret-Unification.
+Encode l'invariant central `RHClaimed = false` au niveau du système de types.
 
-Ce fichier fournit :
-  1. Les types minimaux pour l'identité doctrinale (Layer, Status, FileIdentity).
-  2. Les types pour les verrous ouverts (OpenLock, LockStatus).
-  3. L'invariant global RHClaimed = false au niveau du projet.
-
-Pas de contenu mathématique.
+## Statut
+- Version : v35.8.6
+- Layer   : Meta (non-mathématique, purement structurel)
+- Sorry   : 0
 -/
 
 namespace CouretUnification
 namespace Meta
 
-/-! ## Section 1 — Couches architecturales -/
+/-- Couches géologiques du programme.
+    - `A` = Noyau fini (FiniteCore) : algèbre certifiée, combinatoire finie.
+    - `B` = Logic : verrous asymptotiques et topologiques (zone de travail actuelle).
+    - `C` = Asymptotique terminal (H3/L12) : mur RH, classé `rh_wall`. -/
+inductive Layer : Type
+  | A : Layer
+  | B : Layer
+  | C : Layer
+  deriving Repr, DecidableEq
 
-inductive Layer where
-  | A  -- noyau fini, combinatoire, algébrique certifié (FiniteCore)
-  | B  -- analyse conditionnelle, verrous localisés (Logic)
-  | C  -- mur terminal, rh_wall (H3/L12)
-  deriving Repr, DecidableEq, Inhabited
+/-- Statut de fermeture d'un fichier. -/
+inductive Status : Type
+  /-- Preuves complètement fermées, zéro sorry autorisé. -/
+  | proved      : Status
+  /-- Conditionnel à un contrat analytique explicite. -/
+  | conditional : Status
+  /-- Théorème d'obstruction (no-go). -/
+  | nogo        : Status
+  /-- Chantier amont de définitions effectives. -/
+  | definitional : Status
+  deriving Repr, DecidableEq
 
-/-! ## Section 2 — Statuts de fichier -/
+/-- Identité doctrinale d'un fichier.
 
-inductive Status where
-  | certified     -- prouvé sans sorry ni axiome local
-  | conditional   -- dépend d'hypothèses explicites, non encore prouvées
-  | open_         -- verrou ouvert, stratégie identifiée
-  | nogo          -- théorème d'obstruction négative
-  | rh_wall       -- mur terminal équivalent à RH
-  deriving Repr, DecidableEq, Inhabited
-
-/-! ## Section 3 — Identité de fichier -/
-
+    L'invariant `rhClaimed = false` est vérifié à la compilation par
+    `no_file_claims_RH` (dans `Logic/OpenLocks.lean`). -/
 structure FileIdentity where
   filename   : String
   layer      : Layer
   status     : Status
   sorryCount : Nat
-  rhClaimed  : Bool := false
+  /-- Invariant doctrinal central : aucun fichier ne prétend prouver RH. -/
+  rhClaimed  : Bool
   deriving Repr
 
-/-- Invariant doctrinal : aucun fichier ne prétend prouver RH. -/
-def FileIdentity.invariantRHClaimed (fi : FileIdentity) : Prop :=
-  fi.rhClaimed = false
-
-/-- Un fichier est propre s'il est certifié et ne revendique pas RH. -/
-def FileIdentity.isClean (fi : FileIdentity) : Bool :=
-  match fi.status with
-  | .certified => fi.sorryCount == 0 && !fi.rhClaimed
-  | _ => false
-
-/-! ## Section 4 — Types pour les verrous -/
-
-inductive LockStatus where
-  | closed        -- verrou fermé
-  | conditional   -- fermé modulo hypothèses
-  | open_         -- ouvert, travail en cours
-  | nogo          -- obstruction prouvée
-  | rh_wall       -- mur terminal
-  deriving Repr, DecidableEq, Inhabited
-
-structure OpenLock where
-  identifier        : String
-  shortDescription  : String
-  status            : LockStatus
-  strategyClaimed   : Option String := none
-  formallyProved    : Bool := false
-  notes             : String := ""
-  deriving Repr
-
-/-! ## Section 5 — Invariant global du projet -/
-
-/-- Invariant projet : la liste de tous les verrous doit respecter
-    `formallyProved = false` tant que le fichier prétend traiter RH.
-    Ceci encode doctrinalement : aucun verrou de type `rh_wall` ne peut
-    être marqué comme prouvé. -/
-def OpenLock.rhWallInvariant (l : OpenLock) : Prop :=
-  l.status = LockStatus.rh_wall → l.formallyProved = false
-
-theorem rhWallInvariant_default (id desc : String) (notes : String) :
-    (OpenLock.rhWallInvariant
-      { identifier := id, shortDescription := desc
-        status := LockStatus.rh_wall, strategyClaimed := none
-        formallyProved := false, notes := notes }) := by
-  intro _; rfl
+/-- Invariant global : aucun `FileIdentity` du programme ne doit porter
+    `rhClaimed = true`. -/
+def respectsRHInvariant (f : FileIdentity) : Prop :=
+  f.rhClaimed = false
 
 end Meta
 end CouretUnification

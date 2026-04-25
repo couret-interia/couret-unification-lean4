@@ -1,19 +1,16 @@
 /-
-# CouretUnification/Logic/OpenLocks.lean (v35.8.3)
-
-## Statut
-  - Couche : Meta (registre doctrinal)
-  - Sorry : 0
-  - RHClaimed = false
+# CouretUnification/Logic/OpenLocks.lean
 
 ## Rôle
+Registre central des verrous ouverts / fermés du programme. Ce fichier
+porte l'invariant GLOBAL `no_rh_wall_lock_proved` qui garantit à la
+compilation qu'aucune entrée `rh_wall` ne passe à `formallyProved = true`.
 
-Registre central de tous les verrous du programme Couret-Unification.
-Permet de vérifier doctrinalement :
-  - aucun verrou `rh_wall` n'est marqué `formallyProved = true` ;
-  - chaque verrou ouvert a une stratégie nommée ou est explicitement
-    marqué comme sans stratégie (pour `rh_wall`) ;
-  - l'invariant global du projet est préservé.
+## Statut (v35.8.6, inchangé sur le fond depuis v35.8.4)
+- Layer   : Logic / Meta-doctrinal
+- Status  : proved (invariant compilé)
+- Sorry   : 0
+- RHClaimed : false
 -/
 
 import CouretUnification.Meta.Doctrine
@@ -24,101 +21,131 @@ namespace OpenLocks
 
 open CouretUnification.Meta
 
-/-! ## Section 1 — Définitions des verrous principaux -/
+/-! ## Section 1 — Statut épistémique des verrous -/
 
-/-- **L6** : estimation du ratio asymptotique via Stirling + Riemann–von Mangoldt. -/
-def L6 : OpenLock :=
-  { identifier := "L6"
-    shortDescription := "L6RatioEstimate: Aarch = (1/2 + ε) · Ztot avec |ε| ≤ C/log T"
-    status := LockStatus.open_
-    strategyClaimed := some "Stirling + Riemann–von Mangoldt asymptotic"
-    formallyProved := false
-    notes := "L6Bridge.lean exprime L6_eta_lt_one_eventual_positivity conditionnellement. "
-          ++ "Aucune preuve non conditionnelle encore. "
-          ++ "Note analytique : docs/L6_ratio_estimate_note.md." }
+/-- Statut épistémique d'un verrou. -/
+inductive LockStatus : Type
+  /-- Résidu conceptuel mathématique (mais pas RH). -/
+  | conceptual_residual : LockStatus
+  /-- Dette upstream dans Mathlib ou dépendance externe. -/
+  | upstream            : LockStatus
+  /-- Blocage définitionnel (nécessite refactor amont). -/
+  | definitional        : LockStatus
+  /-- Verrou conditionnel (axiome-pont documenté). -/
+  | conditional         : LockStatus
+  /-- Verrou NOGO (obstruction à prouver). -/
+  | nogo_open           : LockStatus
+  /-- Mur terminal équivalent à RH. CE STATUT EST ABSOLU. -/
+  | rh_wall             : LockStatus
+  deriving Repr, DecidableEq
 
-/-- **L10** : obstruction no-go pour les spectres entiers atteignant les zéros de ζ. -/
-def L10 : OpenLock :=
-  { identifier := "L10"
-    shortDescription := "Spectres entiers vs cible irrationnelle non-triviale"
-    status := LockStatus.nogo
-    strategyClaimed := some "Irrationalité des zéros non-triviaux + discrétion des entiers"
-    formallyProved := false
-    notes := "2 sorries CORE résiduels : specTarget_irrational (CONCEPTUAL), "
-          ++ "et la branche globale de L10_obstruction (UPSTREAM). "
-          ++ "Note : integerSpectra_uniform_separation (TOPOLOGIE) a été FERMÉ "
-          ++ "mécaniquement en v35.8.3, tout comme L10_obstruction_explicit. "
-          ++ "Wrapper L10_obstruction_at_point ajouté en v35.8.4." }
-
-/-- **L12 / H3** : mur terminal. Équivalent à RH. -/
-def L12_H3 : OpenLock :=
-  { identifier := "L12/H3"
-    shortDescription := "lock3_operator_exists ≡ RH. Mur terminal du programme."
-    status := LockStatus.rh_wall
-    strategyClaimed := none
-    formallyProved := false
-    notes := "Aucun mouvement attendu sans percée conceptuelle nouvelle "
-          ++ "sur la formule de trace. Ne pas encoder, ne pas masquer. "
-          ++ "Carte cartographique : docs/H3_boundary_map.md." }
-
-/-- **target_bound** : reliquat analytique local du pont eulérien. -/
-def target_bound_lock : OpenLock :=
-  { identifier := "target_bound"
-    shortDescription := "Sommabilité via majorant p-série décalé (n+1)^σ"
-    status := LockStatus.closed
-    strategyClaimed := some "Shifted majorant + summable_domination_nonneg"
-    formallyProved := true
-    notes := "Fermé en v35.8.2 via shifted_rpow_majorant. "
-          ++ "Structurellement complet, branche n=0 éliminée." }
-
-/-- **gram_semidef_of_rigid** : positivité structurelle de Gram. -/
-def gram_semidef_lock : OpenLock :=
-  { identifier := "gram_semidef_of_rigid"
-    shortDescription := "S = A*∘A ⟹ ⟨Sv_i, v_j⟩ forme PSD"
-    status := LockStatus.closed
-    strategyClaimed := some "Factorisation A*A + lifting bilinéaire vers ‖·‖²"
-    formallyProved := true
-    notes := "Fermé en v35.8.2 dans Logic/H3/C3Weak_Gram.lean. "
-          ++ "Preuve purement algébrique, 0 sorry." }
+/-- Un verrou individuel du programme. -/
+structure OpenLock where
+  /-- Nom court du verrou (ex : "L10-CORE", "Lock3"). -/
+  name           : String
+  /-- Statut épistémique. -/
+  status         : LockStatus
+  /-- Description textuelle. -/
+  description    : String
+  /-- Indique si le verrou a été formellement prouvé. INVARIANT :
+      doit rester `false` si `status = rh_wall`. -/
+  formallyProved : Bool
+  /-- Stratégie de résolution déclarée (none si aucune). -/
+  strategyClaimed : Option String
+  deriving Repr
 
 /-! ## Section 2 — Registre complet -/
 
-def allLocks : List OpenLock :=
-  [target_bound_lock, gram_semidef_lock, L6, L10, L12_H3]
+/-- Liste complète des verrous encore ouverts dans le programme. -/
+def allLocks : List OpenLock := [
+  ⟨ "L10-CORE",
+    LockStatus.conceptual_residual,
+    "Irrationalité des parties imaginaires des zéros non triviaux de ζ. " ++
+    "2 sorries CORE résiduels + wrapper L10_obstruction_at_point (v35.8.4).",
+    false,
+    none ⟩,
+  ⟨ "L6-Analytic",
+    LockStatus.definitional,
+    "Définitions effectives de Aarch et Ztot via Digamma + Riemann–von Mangoldt. " ++
+    "stirling_ratio_asymptotic fermé en v35.8.5. " ++
+    "Vrai front actif : création de L6Analytic.lean (v35.8.6).",
+    false,
+    some "Refactor amont L6Bridge → L6Analytic (v36)" ⟩,
+  ⟨ "C2-Residual",
+    LockStatus.conditional,
+    "Borne uniforme sur le résidu R_σ(f) dans la décomposition E = M + R. " ++
+    "Requiert substitution de l'axiome-pont mainTermPositive_of_positiveBias " ++
+    "par une formule de Parseval locale.",
+    false,
+    some "v36 — Parseval local sur A_TC" ⟩,
+  ⟨ "C3-Weak",
+    LockStatus.conditional,
+    "Rigidité faible de la formule explicite restreinte. " ++
+    "C3Weak_Gram.lean fournit la positivité algébrique ; la conditionnalité " ++
+    "porte sur la continuité de l'estimation.",
+    false,
+    none ⟩,
+  ⟨ "C4",
+    LockStatus.nogo_open,
+    "Rigidité faible du résidu : -M < R uniformément sur A_TC, σ ∈ [1/2, 1]. " ++
+    "Horizon v36+.",
+    false,
+    none ⟩,
+  ⟨ "C5",
+    LockStatus.nogo_open,
+    "Matching faible global : survie du secteur E(-1) dans la tour primorielle. " ++
+    "Aucun fichier Lean dédié à ce stade.",
+    false,
+    none ⟩,
+  ⟨ "Lock3",
+    LockStatus.rh_wall,
+    "Verrou terminal lock3_operator_exists ↔ RH. MUR TERMINAL ABSOLU. " ++
+    "Aucune stratégie de résolution active (invariant doctrinal).",
+    false,  -- INVARIANT : DOIT RESTER FALSE
+    none ⟩  -- INVARIANT : DOIT RESTER NONE
+]
 
-/-! ## Section 3 — Invariants doctrinaux -/
+/-! ## Section 3 — Invariants vérifiés à la compilation -/
 
-/-- **Invariant 1** : aucun verrou `rh_wall` n'est marqué prouvé. -/
-theorem rh_wall_not_proved_invariant (l : OpenLock) (h : l ∈ allLocks)
-    (hrh : l.status = LockStatus.rh_wall) :
-    l.formallyProved = false := by
-  -- On pourrait faire un fin_cases sur allLocks, mais Mathlib rend cela lourd.
-  -- Version déclarative : on vérifie pour chaque verrou individuellement.
-  simp [allLocks, List.mem_cons] at h
-  rcases h with h | h | h | h | h
-  all_goals (subst h; simp [target_bound_lock, gram_semidef_lock, L6, L10, L12_H3,
-                             LockStatus.rh_wall] at hrh ⊢)
+/-- Prédicat : un verrou respecte l'invariant RH-wall. -/
+def respectsRHWallInvariant (lock : OpenLock) : Bool :=
+  match lock.status with
+  | LockStatus.rh_wall =>
+      lock.formallyProved = false && lock.strategyClaimed.isNone
+  | _ => true
 
-/-- **Invariant 2** : le verrou L12/H3 est bien marqué `rh_wall`. -/
-theorem L12_H3_is_rh_wall : L12_H3.status = LockStatus.rh_wall := rfl
+/-- INVARIANT DOCTRINAL CENTRAL : aucun verrou `rh_wall` ne peut porter
+    `formallyProved = true` ni proposer de `strategyClaimed`.
 
-/-- **Invariant 3** : le verrou L12/H3 n'a pas de stratégie revendiquée. -/
-theorem L12_H3_no_strategy : L12_H3.strategyClaimed = none := rfl
+    Cette vérification échoue à la compilation si un contributeur tente
+    d'injecter une preuve de RH dans le registre. -/
+theorem no_rh_wall_lock_proved :
+    ∀ lock ∈ allLocks, respectsRHWallInvariant lock = true := by
+  intro lock h_mem
+  -- Énumération exhaustive des éléments de allLocks.
+  -- Chaque élément est vérifié soit par `status ≠ rh_wall` (vacuously),
+  -- soit par `formallyProved = false ∧ strategyClaimed = none`.
+  fin_cases h_mem <;> rfl
 
-/-! ## Section 4 — Compteurs et métriques -/
+/-- Lemme de cohérence : l'entrée `Lock3` est bien classée `rh_wall`
+    et ne propose aucune stratégie. Vérifié par `rfl`. -/
+theorem L12_H3_no_strategy :
+    ∃ lock ∈ allLocks,
+      lock.name = "Lock3"
+      ∧ lock.status = LockStatus.rh_wall
+      ∧ lock.strategyClaimed = none := by
+  refine ⟨⟨"Lock3", LockStatus.rh_wall, _, false, none⟩, ?_, rfl, rfl, rfl⟩
+  simp [allLocks]
 
-def countByStatus (s : LockStatus) : Nat :=
-  (allLocks.filter (fun l => l.status == s)).length
+/-! ## Section 4 — Identité doctrinale -/
 
-example : countByStatus LockStatus.closed = 2 := by decide
-example : countByStatus LockStatus.open_ = 1 := by decide
-example : countByStatus LockStatus.nogo = 1 := by decide
-example : countByStatus LockStatus.rh_wall = 1 := by decide
-
-/-- Un verrou est "actif" s'il est ouvert ou conditionnel. -/
-def activeLocks : List OpenLock :=
-  allLocks.filter (fun l =>
-    l.status == LockStatus.open_ || l.status == LockStatus.conditional)
+/-- Identité du fichier OpenLocks. -/
+def fileIdentity : FileIdentity where
+  filename   := "CouretUnification/Logic/OpenLocks.lean"
+  layer      := Layer.B
+  status     := Status.proved
+  sorryCount := 0
+  rhClaimed  := false
 
 end OpenLocks
 end Logic

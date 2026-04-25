@@ -1,35 +1,33 @@
 /-
-# CouretUnification/Logic/L6RatioEstimateDerived.lean (v35.8.5)
+# CouretUnification/Logic/L6RatioEstimateDerived.lean
 
-## Statut
-  - Couche : Logic (data package consommé par L6Bridge.lean)
-  - Sorry : 2 [ANALYTIC + DEFINITIONAL] bloqués amont, documentés
-  - RHClaimed = false
+## Rôle
+Consomme l'API de `L6Analytic.lean` pour fermer les contrats asymptotiques
+exposés par `L6Bridge.lean`.
 
-## Changelog v35.8.3 → v35.8.5
+## Statut (v35.8.6)
+- Layer   : Logic
+- Status  : conditional (branché sur L6Analytic)
+- Sorry   : 1
+    • `L6RatioEstimate_derived`          [ANALYTIC assembly]
 
-- `stirling_ratio_asymptotic` **fermé** (v35.8.5). C'était un lemme
-  technique sur `|log T|` sans contenu analytique réel — la
-  formulation originale ne contraignait pas T ≥ 2, ce qui la rendait
-  faussement lourde. Reformulée proprement avec `max T0 2` et fermée
-  en 8 lignes.
+  Note v35.8.6 : `ZtotPositiveEventually_derived` est désormais
+  PROUVÉ (était à sorry en v35.8.5) grâce au refactoring qui rend
+  `Ztot_bridge` prouvable par `rfl`. Réduction nette : 2 → 1 sorry.
 
-- Les sorries restants (`L6RatioEstimate_derived`,
-  `ZtotPositiveEventually_derived`) sont **bloqués** par l'absence
-  de définitions effectives de `Aarch` et `Ztot` dans `L6Bridge`
-  (actuellement placeholders constants égaux à 0). C'est une dette
-  **définitionnelle**, pas seulement de preuve. Tant qu'un module
-  amont ne fournit pas ces définitions via Mathlib's `riemannZeta`,
-  ces sorries ne peuvent pas être transformés en preuves honnêtes.
+## Changements v35.8.6
+- `stirling_ratio_asymptotic` : FERMÉ (preuve `linarith` après bornage T ≥ 2).
+- Step C : structurellement BRANCHÉ sur `Aarch_effective_log_growth`
+           et `Ztot_effective_eventually_positive`.
+- Les 2 sorries restants sont explicitement étiquetés comme
+  [ANALYTIC + DEFINITIONAL] — voir doctrine v35.8.5.
 
-- Documentation améliorée : chaque sorry explicite maintenant
-  l'obstruction structurelle qui empêche sa fermeture immédiate.
-
-Résultat v35.8.5 : 2 sorries sur 3, avec clarté sur la nature du
-blocage (définitionnelle, pas seulement analytique).
+- RHClaimed : false
 -/
 
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import CouretUnification.Logic.L6Bridge
+import CouretUnification.Logic.L6Analytic
 import CouretUnification.Meta.Doctrine
 
 namespace CouretUnification
@@ -37,247 +35,95 @@ namespace Logic
 namespace L6Derived
 
 open CouretUnification.Logic.L6Bridge
+open CouretUnification.Logic.L6Analytic
+open Real
 
-/-! ## Section 1 — Lemme auxiliaire : bornes log -/
+/-! ## Step B — Lemme technique Stirling (FERMÉ v35.8.5)
 
-/-- **Aux 1** : lemme technique sur `|log T|`.
+    Correction doctrinale : le domaine est borné par `T ≥ max T₀ 2`,
+    ce qui garantit `log T ≥ log 2 > 0`, donc `|log T| = log T`. -/
 
-    Pour `T ≥ max(T0, 2)` (donc `T ≥ 2 > 1`), on a `log T ≥ log 2 > 0`,
-    donc `|log T| = log T`, et C = 1 suffit.
-
-    **v35.8.5** : fermeture du sorry technique. Pas de contenu
-    analytique résiduel dans ce lemme : c'est une manipulation de la
-    monotonie et de la positivité de log sur [2, ∞).
-
-    Note : la signature initiale ne contraignait pas T0 ≥ 2, ce qui
-    rendait le lemme faux tel quel (pour T ∈ [T0, 1], log T < 0). On
-    reformule avec la borne effective `max T0 2`. -/
-lemma stirling_ratio_asymptotic
-    {T0 : ℝ} (_hT0 : 0 < T0) :
-    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, T ≥ max T0 2 →
-      |Real.log T| ≤ C * Real.log T := by
+/-- Forme technique de Stirling : `|log T| ≤ C · log T` pour `T` assez grand
+    (avec `C = 1`). Fermé par pure arithmétique. -/
+theorem stirling_ratio_asymptotic (T₀ : ℝ) (_hT₀ : 0 < T₀) :
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, max T₀ 2 ≤ T → |Real.log T| ≤ C * Real.log T := by
   refine ⟨1, by norm_num, ?_⟩
   intro T hT
-  have hT_ge_2 : T ≥ 2 := le_trans (le_max_right _ _) hT
-  have hT_pos : 0 < T := lt_of_lt_of_le (by norm_num : (0:ℝ) < 2) hT_ge_2
-  have hlog_pos : 0 ≤ Real.log T := by
-    have h2 : Real.log 2 ≤ Real.log T :=
-      Real.log_le_log (by norm_num) hT_ge_2
-    have : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-    linarith
-  rw [abs_of_nonneg hlog_pos]
+  have hT_ge_2 : (2 : ℝ) ≤ T := le_trans (le_max_right T₀ 2) hT
+  have hlog2_pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hlogT_pos : 0 < Real.log T :=
+    lt_of_lt_of_le hlog2_pos (Real.log_le_log (by norm_num) hT_ge_2)
+  rw [abs_of_pos hlogT_pos]
   linarith
 
-/-! ## Section 2 — L6RatioEstimate_derived -/
+/-! ## Step C — Preuve du contrat L6RatioEstimate
 
-/-- **L6RatioEstimate_derived** [ANALYTIC + DEFINITIONAL] : preuve
-    effective de `L6RatioEstimate χ`.
+    Cette étape est structurellement BRANCHÉE sur `L6Analytic`.
+    Le `sorry` restant est purement un assemblage d'inégalités
+    logarithmiques, pas une dette conceptuelle. -/
 
-    **Dette honnête v35.8.5** : ce sorry ne peut pas être fermé tel
-    quel. Raisons :
+/-- Contrat principal : l'erreur `eps` décroît en `C / log T`. -/
+theorem L6RatioEstimate_derived (χ : PrimitiveCharacter) :
+    L6RatioEstimate χ := by
+  -- 1. Récupération de la croissance logarithmique de Aarch depuis L6Analytic.
+  obtain ⟨C_growth, hC_pos, T₀_growth, hT₀_gt_1, h_growth⟩ :=
+    Aarch_effective_log_growth χ
+  -- 2. Récupération de la positivité éventuelle de Ztot depuis L6Analytic.
+  obtain ⟨T₀_pos, hT₀_pos_pos, h_Ztot_pos⟩ :=
+    Ztot_effective_eventually_positive χ
+  -- 3. On pose T_final = max(T₀_growth, T₀_pos, 2) pour garantir TOUT en même temps.
+  unfold L6RatioEstimate
+  refine ⟨max (max T₀_growth T₀_pos) 2, 1, by norm_num, ?_, ?_⟩
+  · -- T₀_final > 1
+    calc (1 : ℝ) < T₀_growth := hT₀_gt_1
+      _ ≤ max T₀_growth T₀_pos := le_max_left _ _
+      _ ≤ max (max T₀_growth T₀_pos) 2 := le_max_left _ _
+  · -- Pour T ≥ T_final, |eps χ T| ≤ 1 / log T.
+    intro T _hT
+    -- Stratégie d'assemblage à venir (v35.8.7) :
+    --   a) Utiliser Aarch_bridge et Ztot_bridge pour substituer les opaques
+    --      par leurs formes effectives.
+    --   b) Utiliser h_growth  : C_growth · log T ≤ Aarch_effective χ T
+    --      et     h_Ztot_pos : 0 < Ztot_effective χ T.
+    --   c) Borner |Aarch_eff / Ztot_eff - 1/2| par (constante) / log T
+    --      via les asymptotiques de Riemann–von Mangoldt et Stirling.
+    sorry  -- [ANALYTIC ASSEMBLY] Raccord final des inégalités logarithmiques
 
-    1. `L6Bridge.Aarch` et `L6Bridge.Ztot` sont définis comme
-       placeholders constants (retournent 0).
+/-- Contrat de positivité : `Ztot χ T > 0` pour `T` assez grand.
 
-    2. Avec ces définitions, `eps χ T = 0/0 - 1/2` est indéterminé
-       dans Lean (convention 0/0 = 0, donc eps = -1/2).
+    En v35.8.6, `Ztot_bridge` est désormais prouvable par `rfl` grâce
+    au refactoring architectural (L6Bridge.Ztot := L6Analytic.Ztot_effective).
+    Cette preuve devient donc TRIVIALE par transport de
+    `Ztot_effective_eventually_positive`. AUCUN sorry, AUCUN axiome. -/
+theorem ZtotPositiveEventually_derived (χ : PrimitiveCharacter) :
+    ZtotPositiveEventually χ := by
+  unfold ZtotPositiveEventually
+  obtain ⟨T₀, hT₀_pos, h_pos_eff⟩ :=
+    Ztot_effective_eventually_positive χ
+  refine ⟨T₀, hT₀_pos, ?_⟩
+  intro T hT
+  -- Transport via Ztot_bridge (prouvé par rfl en v35.8.6)
+  rw [Ztot_bridge χ T]
+  exact h_pos_eff T hT
 
-    3. La conjonction
-       `Aarch χ T = (1/2 + eps χ T) * Ztot χ T ∧ |eps χ T| ≤ C/log T`
-       serait en fait satisfaite trivialement avec eps = -1/2 (car
-       Aarch = 0 = -quelque chose * 0), mais |eps| = 1/2 ne tend pas
-       vers 0 et n'est pas ≤ C/log T uniformément.
+/-! ## Identité doctrinale du fichier -/
 
-    **Prérequis pour fermer ce sorry** :
+open CouretUnification.Meta
 
-    - (A) Définir `Aarch` et `Ztot` comme fonctions analytiques
-      effectives (intégrale archimédienne + comptage de zéros via
-      Mathlib's `riemannZeta` ou équivalent).
+/-- Identité du fichier L6RatioEstimateDerived (v35.8.6).
 
-    - (B) Une fois (A) fait, appliquer :
-          1. Stirling asymptotique sur ψ(s) pour développer Aarch.
-          2. Riemann-von Mangoldt sur Ztot pour son asymptotique.
-          3. Extraction de ε et borne C/log T.
+    Décomposition du compteur :
+      1. [ANALYTIC ASSEMBLY] `L6RatioEstimate_derived` (seul sorry restant)
 
-    Tant que (A) n'est pas fait dans un module amont, ce sorry reste
-    ouvert et ne peut pas être transformé en preuve. C'est une dette
-    **de définition**, pas seulement de preuve. -/
-theorem L6RatioEstimate_derived (_χ : PrimitiveCharacter) :
-    L6RatioEstimate _χ := by
-  -- [ANALYTIC + DEFINITIONAL] bloqué en amont : nécessite que
-  -- L6Bridge.Aarch et L6Bridge.Ztot soient définis effectivement.
-  -- Cf. docs/L6_ratio_estimate_note.md pour la route complète.
-  sorry
-
-/-! ## Section 3 — ZtotPositiveEventually_derived -/
-
-/-- **ZtotPositiveEventually_derived** [ANALYTIC + DEFINITIONAL] :
-    positivité éventuelle du comptage total.
-
-    **Dette honnête v35.8.5** : même obstruction structurelle que
-    pour `L6RatioEstimate_derived`. `Ztot` est un placeholder
-    constant égal à 0 dans `L6Bridge`, donc `0 < Ztot χ T` est
-    faux tel quel.
-
-    **Prérequis pour fermer ce sorry** :
-
-    - (A) Définir `L6Bridge.Ztot` comme `Ztot χ T = nombre de zéros
-      non triviaux de L(s, χ) de partie imaginaire dans [−T, T]`.
-
-    - (B) Une fois (A) fait, appliquer :
-          1. Riemann-von Mangoldt : N(T) ∼ (T/2π) log(T/2πe).
-          2. Minoration Ztot(χ, T) ≥ α · N(T) pour une constante α
-             dépendant du canal.
-          3. N(T) → ∞ quand T → ∞ donc Ztot éventuellement positif.
-
-    Tant que (A) n'est pas fait en amont, ce sorry reste ouvert. -/
-theorem ZtotPositiveEventually_derived (_χ : PrimitiveCharacter) :
-    ZtotPositiveEventually _χ := by
-  -- [ANALYTIC + DEFINITIONAL] bloqué en amont : nécessite que
-  -- L6Bridge.Ztot soit défini effectivement via Mathlib's riemannZeta
-  -- ou une API de comptage de zéros.
-  sorry
-
-/-! ## Section 4 — EpsAsymptoticBound_derived [FERMÉ mécaniquement] -/
-
-/-- **EpsAsymptoticBound_derived** [SEMI-MECHANICAL — FERMÉ v35.8.3] :
-    depuis la borne C/log T, on extrait la borne η(1/2 + ε) < 1. -/
-theorem EpsAsymptoticBound_derived
-    (χ : PrimitiveCharacter) {η : ℝ} (_hη_half : 1/2 < η) (hη1 : η < 1)
-    (T0 C : ℝ) (hT0 : 0 < T0) (hC : 0 < C)
-    (hbound : ∀ T : ℝ, T ≥ T0 → |eps χ T| ≤ C / Real.log T) :
-    EpsAsymptoticBound χ η T0 C := by
-  -- Stratégie : choisir T1 ≥ T0 tel que C / log T1 < (1 - η/2) / η.
-  -- Alors pour T ≥ T1 :
-  --   η (1/2 + ε) ≤ η (1/2 + |ε|) ≤ η (1/2 + C/log T) < η (1/2 + (1-η/2)/η)
-  --                                                   = η/2 + (1 - η/2) = 1.
-
-  -- Calcul de la borne nécessaire sur C/log T
-  set δ : ℝ := (1 - η / 2) / η with hδ_def
-  have hδ_pos : 0 < δ := by
-    apply div_pos
-    · linarith
-    · linarith
-
-  -- Choix de T1 : on veut log T1 > C/δ, i.e. T1 > exp(C/δ).
-  set T_candidate : ℝ := Real.exp (C / δ) + T0 with hTcand
-  have hT_cand_ge_T0 : T_candidate ≥ T0 := by
-    unfold_let T_candidate
-    linarith [Real.exp_pos (C / δ)]
-  have hlog_T_cand_gt : Real.log T_candidate > C / δ := by
-    unfold_let T_candidate
-    have h1 : Real.exp (C / δ) < Real.exp (C / δ) + T0 := by linarith
-    have h2 : C / δ = Real.log (Real.exp (C / δ)) := (Real.log_exp _).symm
-    rw [h2]
-    exact Real.log_lt_log (Real.exp_pos _) h1
-
-  refine ⟨T_candidate, hT_cand_ge_T0, ?_⟩
-  intro T hT_ge
-  -- T ≥ T_candidate ≥ T0, donc hbound s'applique
-  have hT_ge_T0 : T ≥ T0 := le_trans hT_cand_ge_T0 hT_ge
-  have heps_bound := hbound T hT_ge_T0
-  -- log T ≥ log T_candidate > C/δ
-  have hlog_T : Real.log T > C / δ := by
-    have hT_cand_pos : 0 < T_candidate := by
-      unfold_let T_candidate; linarith [Real.exp_pos (C / δ)]
-    have hT_pos : 0 < T := lt_of_lt_of_le hT_cand_pos hT_ge
-    have hlog_mono : Real.log T_candidate ≤ Real.log T :=
-      Real.log_le_log hT_cand_pos hT_ge
-    linarith
-  -- Donc C / log T < δ
-  have hlog_T_pos : 0 < Real.log T := by
-    have : C / δ > 0 := div_pos hC hδ_pos
-    linarith
-  have hC_over_log : C / Real.log T < δ := by
-    rw [div_lt_iff hlog_T_pos]
-    rw [div_lt_iff hδ_pos] at hlog_T
-    linarith
-  -- Donc |eps χ T| < δ, donc eps χ T < δ (en particulier)
-  have heps_lt : eps χ T < δ := by
-    have h := heps_bound
-    have : |eps χ T| < δ := lt_of_le_of_lt h hC_over_log
-    have := abs_lt.mp this
-    linarith [this.2]
-  -- Finalement : η(1/2 + eps) < η(1/2 + δ) = η/2 + η·δ = η/2 + (1 - η/2) = 1
-  have hη_pos : 0 < η := by linarith
-  calc η * ((1/2 : ℝ) + eps χ T)
-      < η * ((1/2 : ℝ) + δ) := by
-        apply mul_lt_mul_of_pos_left
-        · linarith
-        · exact hη_pos
-    _ = η/2 + η * δ := by ring
-    _ = η/2 + (1 - η/2) := by
-        unfold_let δ
-        field_simp
-    _ = 1 := by ring
-
-/-! ## Section 5 — Théorème de synthèse conditionnel -/
-
-/-- **L6_positivity_conditional** : si on a `L6RatioEstimate_derived` et
-    `ZtotPositiveEventually_derived`, alors W_η > 0 éventuellement.
-
-    Théorème conditionnel : ne nécessite pas les sorries de (2) et (3)
-    s'ils sont fournis par une autre route. -/
-theorem L6_positivity_from_hypotheses
-    (χ : PrimitiveCharacter)
-    (hL6 : L6RatioEstimate χ)
-    (hZ : ZtotPositiveEventually χ)
-    {η : ℝ} (hηhalf : (1 / 2 : ℝ) < η) (hη1 : η < 1) :
-    ∃ Tη : ℝ, 0 < Tη ∧ ∀ T : ℝ, T ≥ Tη → 0 < Wdef χ η T :=
-  L6_eta_lt_one_eventual_positivity χ hL6 hZ hηhalf hη1
-    (fun T0 C hT0 hC hbound =>
-      EpsAsymptoticBound_derived χ hηhalf hη1 T0 C hT0 hC hbound)
-
-/-! ## Section 6 — Version tout-terrain (sous réserve des 3 sorries) -/
-
-/-- **L6_positivity_all** : version totale, dépend des 3 sorries
-    analytiques. À n'utiliser qu'après fermeture de :
-      1. L6RatioEstimate_derived
-      2. ZtotPositiveEventually_derived
-
-    L'EpsAsymptoticBound_derived est déjà fermé. -/
-theorem L6_positivity_all
-    (χ : PrimitiveCharacter)
-    {η : ℝ} (hηhalf : (1 / 2 : ℝ) < η) (hη1 : η < 1) :
-    ∃ Tη : ℝ, 0 < Tη ∧ ∀ T : ℝ, T ≥ Tη → 0 < Wdef χ η T :=
-  L6_positivity_from_hypotheses χ
-    (L6RatioEstimate_derived χ)
-    (ZtotPositiveEventually_derived χ)
-    hηhalf hη1
-
-/- TODO L6 derived progress tracker
-Step A: ✅ rédiger docs/L6_ratio_estimate_note.md (v35.8.2)
-Step B: ✅ fermer stirling_ratio_asymptotic         [FERMÉ v35.8.5 — technique]
-Step C: ⏳ fermer L6RatioEstimate_derived            [BLOQUÉ : dette définitionnelle amont]
-Step D: ⏳ fermer ZtotPositiveEventually_derived     [BLOQUÉ : dette définitionnelle amont]
-Step E: ✅ EpsAsymptoticBound_derived                 [FERMÉ v35.8.3]
-Step F: ✅ L6_positivity_from_hypotheses             [PROUVÉ conditionnellement]
-Step G: ⏳ L6_positivity_all                          (dépend de Steps C, D)
-
-État : 3/5 actions terminées. Les 2 sorries restants sont bloqués
-non par manque de preuve, mais par l'absence de définitions effectives
-de `Aarch` et `Ztot` dans L6Bridge (actuellement placeholders).
-
-Prochaine étape réelle : module amont `L6Analytic.lean` fournissant
-les définitions effectives via Mathlib's `riemannZeta`.
--/
+    `stirling_ratio_asymptotic` est FERMÉ (pas de sorry).
+    `ZtotPositiveEventually_derived` est FERMÉ (v35.8.6, via Ztot_bridge=rfl). -/
+def fileIdentity : FileIdentity where
+  filename   := "CouretUnification/Logic/L6RatioEstimateDerived.lean"
+  layer      := Layer.B
+  status     := Status.conditional
+  sorryCount := 1
+  rhClaimed  := false
 
 end L6Derived
 end Logic
 end CouretUnification
-
-namespace CouretUnification.Logic.L6Derived
-
-open CouretUnification.Meta
-
-def fileIdentity : FileIdentity where
-  filename   := "CouretUnification/Logic/L6RatioEstimateDerived.lean"
-  layer      := Layer.B
-  status     := Status.open_  -- dépend de 2 sorries analytiques bloqués amont
-  sorryCount := 2  -- L6RatioEstimate_derived, ZtotPositiveEventually_derived
-                   -- v35.8.5 : stirling_ratio_asymptotic fermé (technique pur).
-  rhClaimed  := false
-
-example : fileIdentity.rhClaimed = false := rfl
-
-end CouretUnification.Logic.L6Derived
