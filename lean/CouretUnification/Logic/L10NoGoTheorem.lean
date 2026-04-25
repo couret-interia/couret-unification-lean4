@@ -1,5 +1,5 @@
 /-
-# Logic/L10NoGoTheorem.lean — Théorème d'obstruction L10 (v35.8)
+# Logic/L10NoGoTheorem.lean — Théorème d'obstruction L10 (v35.8.1)
 
 ## Statut épistémique
 
@@ -23,6 +23,26 @@ imaginaires des zéros non triviaux de ζ.
   3. Catalogue les 5 routes éliminées comme énumération (R1...R5).
   4. Sert de squelette de référence pour une rédaction mathématique
      ultérieure et pour une soumission éditoriale séparée.
+
+## Correction v35.8.1 — bien-typage de SpecTarget
+
+La définition antérieure de `SpecTarget` était :
+```
+{ x : ℝ | ∃ γ : ℝ, γ > 0 ∧ x ≠ 0 ∧ (x = 1/γ ∨ x = -1/γ) ∧ True }
+```
+Cet ensemble contenait des rationnels triviaux (ex: γ = 1/2, x = 2).
+Le théorème `specTarget_irrational` aurait donc été **faux comme énoncé**,
+pas seulement non prouvé.
+
+La nouvelle définition encode la restriction « γ partie imaginaire d'un
+zéro non trivial de ζ » via le prédicat **opaque**
+`IsNonTrivialZetaImaginaryPart`. Ce prédicat opaque ne postule rien
+(c'est une déclaration `opaque`, pas un `axiom`) : sa définition
+effective viendra d'un module amont qui le branchera sur Mathlib's
+`riemannZeta`.
+
+Conséquence : les sorries CORE deviennent au moins **bien-typés** comme
+énoncés mathématiques. Leur fermeture reste un travail conceptuel ouvert.
 
 ## Avertissement honnête
 
@@ -73,18 +93,37 @@ namespace L10NoGoTheorem
 
 open CouretUnification.Meta
 
-/-! ## Section 1 — Définition de `SpecTarget` -/
+/-! ## Section 1 — Définition de `SpecTarget` (avec restriction explicite) -/
+
+/-- **Prédicat caractérisant les parties imaginaires γ pour la cible.**
+
+    Une valeur γ : ℝ est une « partie imaginaire de zéro non trivial de ζ »
+    au sens de cette structure si γ > 0 et si elle satisfait un prédicat
+    abstrait `IsNonTrivialZetaImaginaryPart γ` que les modules amont
+    devront définir explicitement à partir de Mathlib's `riemannZeta`.
+
+    **Choix doctrinal important** : on n'inscrit PAS la définition exacte
+    de ce prédicat dans ce fichier. Sa formalisation rigoureuse via
+    `Mathlib.NumberTheory.LSeries.RiemannZeta` requiert un travail
+    spécifique non encore disponible dans ce snapshot. Le prédicat reste
+    abstrait et hypothétique.
+
+    Cette abstraction protège contre l'erreur consistant à définir
+    `SpecTarget` trop largement (par exemple, sans la restriction
+    aux zéros, on obtiendrait des éléments rationnels comme 1/(1/2) = 2,
+    et `specTarget_irrational` serait faux comme énoncé). -/
+opaque IsNonTrivialZetaImaginaryPart : ℝ → Prop
 
 /-- L'ensemble cible : inverses (positifs et négatifs) des parties
     imaginaires des zéros non triviaux de la fonction ζ.
 
-    Note : on définit ici l'ensemble abstraitement par sa propriété
-    caractéristique. La construction effective demande l'API Mathlib
-    sur `riemannZeta` qui peut varier selon snapshot. -/
+    Encode explicitement la restriction `IsNonTrivialZetaImaginaryPart γ`
+    dans la définition. Sans cette restriction, l'ensemble contiendrait
+    des rationnels (ex: γ = 1/2, x = 2) et le théorème
+    `specTarget_irrational` deviendrait faux. -/
 def SpecTarget : Set ℝ :=
-  { x : ℝ | ∃ γ : ℝ, γ > 0 ∧ x ≠ 0 ∧ (x = 1/γ ∨ x = -1/γ) ∧
-            -- Placeholder pour : γ partie imaginaire d'un zéro non trivial de ζ
-            True }
+  { x : ℝ | ∃ γ : ℝ, γ > 0 ∧ IsNonTrivialZetaImaginaryPart γ ∧
+            x ≠ 0 ∧ (x = 1/γ ∨ x = -1/γ) }
 
 /-- L'ensemble des spectres entiers atteignables par construction
     canonique sur `(ℤ/qℤ)×`. -/
