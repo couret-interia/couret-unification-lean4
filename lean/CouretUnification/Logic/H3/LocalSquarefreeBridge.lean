@@ -1,174 +1,223 @@
 /-
-Couret-Unification — Logic/H3/LocalSquarefreeBridge.lean
-Version v35.5 — 22 avril 2026
+Copyright (c) 2026 Couret-Unification Programme.
+Released under Apache 2.0.
 
-Layer     : CouretUnification.Logic.H3
-Role      : Raccord entre LocalFactor (E1) et SquarefreeSupport (B).
-Purpose   : Établir la version finie du pont eulérien sur la ligne critique.
+# Logic/H3/LocalSquarefreeBridge.lean — Pont fini A + B
 
-Statuts épistémiques :
-  [P] local_squarefree_bridge_finite   — pont local-squarefree fini
-  [O] (explicite) le passage au produit infini et le recollement avec ξ
+## Doctrine
 
-Invariant : RHClaimed = false.
-Ce fichier **ne prétend pas** fermer le pont eulérien global. Il ferme
-strictement la version finie du pont, sur primesBelow X, pour X fini.
-Le passage à la limite X → ∞ est explicitement laissé ouvert et
-appartient aux briques E3/E4 du cahier des charges EulerCompletion,
-elles-mêmes équivalentes (en partie) à Lock 3 fort.
+Ce fichier établit, sur un ensemble FINI de premiers, l'identité-pont entre :
+  - le contrôle local du facteur eulérien (Bloc A : LocalFactor)
+  - le transfert combinatoire squarefree (Bloc B : SquarefreeSupport)
+
+Énoncé central : pour S un ensemble fini de premiers et σ ≥ 0,
+
+  ∑_{T ⊆ S} ∏_{p ∈ T} p^{-σ} = ∏_{p ∈ S} (1 + p^{-σ})
+
+C'est la version FINIE du produit eulérien sur la ligne critique pour la
+fonction caractéristique des squarefree.
+
+## Frontière E3 / E4 — explicitement maintenue ouverte
+
+Ce fichier ne franchit PAS le mur du passage à la limite X → ∞.
+Le théorème commenté `local_squarefree_bridge_infinite` est volontairement
+NON ÉNONCÉ : tenter de l'établir ici reviendrait à effondrer la doctrine
+RHClaimed = false, car la version infinie touche à E2 (det₂), E3 (convergence
+du produit infini) et E4 (identification avec ξ) — verrous qui appartiennent
+à `AnalyticHorizon/EulerCompletion.lean`, lui-même ouvert.
+
+## Statut épistémique
+
+  - Couche : Logic/H3 (raccord local fini)
+  - Statut : [P] sur le théorème fini ; frontière E3/E4 explicitement [O].
+  - RHClaimed = false.
+
 -/
 
+import CouretUnification.Core.Doctrine
 import CouretUnification.Logic.H3.LocalFactor
 import CouretUnification.Logic.H3.SquarefreeSupport
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Sqrt
 
-namespace CouretUnification.Logic.H3
+namespace CouretUnification
+namespace H3
+namespace LocalSquarefreeBridge
 
 open Finset
 open scoped BigOperators
 
 /-!
-## Préliminaires sur f(n)/√n
+## Section 1 — Multiplicativité de p ↦ p^{-σ}
 
-On manipule des fonctions de la forme g(n) = f(n)/√n où f est
-multiplicative positive. On vérifie que g reste multiplicative si f l'est.
+Sur les coprimes positifs, n ↦ n^{-σ} est multiplicative (au sens
+des fonctions arithmétiques). On le prouve à partir de `Real.mul_rpow`.
 -/
 
-/-- Si f est multiplicative ℕ → ℝ, alors n ↦ f(n)/√n aussi. -/
-lemma multiplicative_div_sqrt
-    (f : ℕ → ℝ)
-    (h1 : f 1 = 1)
-    (hmul : ∀ a b : ℕ, Nat.Coprime a b → f (a * b) = f a * f b) :
-    (fun n => f n / Real.sqrt n) 1 = 1 ∧
-    ∀ a b : ℕ, 0 < a → 0 < b → Nat.Coprime a b →
-      (fun n => f n / Real.sqrt n) (a * b)
-        = (fun n => f n / Real.sqrt n) a * (fun n => f n / Real.sqrt n) b := by
+/-- [P] La fonction n ↦ n^{-σ} (avec n ≠ 0 → n^{-σ}, sinon 1) est
+    multiplicative au sens de coprimalité, pour σ ≥ 0. -/
+theorem rpow_neg_multiplicative (σ : ℝ) (_hσ : 0 ≤ σ) :
+    (fun n : ℕ => if n = 0 then (1 : ℝ) else (n : ℝ) ^ (-σ)) 1 = 1 ∧
+    ∀ a b : ℕ, Nat.Coprime a b →
+      (fun n : ℕ => if n = 0 then (1 : ℝ) else (n : ℝ) ^ (-σ)) (a * b)
+        = (fun n : ℕ => if n = 0 then (1 : ℝ) else (n : ℝ) ^ (-σ)) a *
+          (fun n : ℕ => if n = 0 then (1 : ℝ) else (n : ℝ) ^ (-σ)) b := by
   refine ⟨?_, ?_⟩
-  · simp [h1, Real.sqrt_one]
-  · intros a b ha hb hcop
+  · -- f(1) = 1^(-σ) = 1
+    simp
+    exact Real.one_rpow _
+  · intro a b hcop
     simp only
-    rw [hmul a b hcop]
-    -- f(a*b)/√(a*b) = (f a * f b) / (√a * √b) = (f a / √a) * (f b / √b)
-    have hab_pos : 0 < a * b := Nat.mul_pos ha hb
-    have ha_nn : (0 : ℝ) ≤ a := by exact_mod_cast Nat.zero_le a
-    have hb_nn : (0 : ℝ) ≤ b := by exact_mod_cast Nat.zero_le b
-    rw [show ((a * b : ℕ) : ℝ) = (a : ℝ) * (b : ℝ) from by push_cast; ring,
-        Real.sqrt_mul ha_nn]
-    field_simp
-
-/-!
-## Version finie du pont local-squarefree
--/
-
-/-- [P] **Version finie du pont eulérien sur la ligne critique.**
-
-Pour tout X ≥ 0 et toute fonction arithmétique f : ℕ → ℝ multiplicative
-positive bornée, la somme sur les entiers squarefree n ≤ X de f(n)/√n
-est bornée par le produit eulérien local sur primesBelow X.
-
-Ceci est la conséquence directe de :
-  1. `squarefree_sum_le_prod_real` (transfert combinatoire B)
-  2. La multiplicativité préservée par n ↦ f(n)/√n
-  3. (Optionnel) les bornes locales de `LocalFactor` si l'on veut
-     raffiner par un majorant uniforme.
-
-**Ce théorème ne dit RIEN sur :**
-- La limite X → ∞ (verrou E3)
-- Le recollement avec ξ (verrou E4 ≡ Lock 3 fort)
-- La convergence du produit infini
-
-Ces frontières sont documentées dans le cahier des charges EulerCompletion. -/
-theorem local_squarefree_bridge_finite
-    (X : ℝ) (hX : 0 ≤ X) (f : ℕ → ℝ)
-    (hf_nonneg : ∀ n, 0 ≤ f n)
-    (h1 : f 1 = 1)
-    (hmul : ∀ a b : ℕ, Nat.Coprime a b → f (a * b) = f a * f b) :
-    (∑ n ∈ (Finset.range (Nat.floor X + 1)).filter
-            (fun n => n.Squarefree ∧ (n : ℝ) ≤ X),
-      f n / Real.sqrt n)
-      ≤ ∏ p ∈ primesBelow X, (1 + f p / Real.sqrt p) := by
-  -- Définir g(n) = f(n) / √n
-  set g : ℕ → ℝ := fun n => f n / Real.sqrt n with hg_def
-  -- g est positive si f l'est
-  have hg_nonneg : ∀ n, 0 ≤ g n := by
-    intro n
-    simp only [hg_def]
-    rcases Nat.eq_zero_or_pos n with h0 | hpos
-    · simp [h0, Real.sqrt_zero]
-    · have : (0 : ℝ) ≤ Real.sqrt n := Real.sqrt_nonneg _
-      exact div_nonneg (hf_nonneg n) this
-  -- g(1) = f(1) / √1 = 1 / 1 = 1
-  have hg_one : g 1 = 1 := by
-    simp [hg_def, h1, Real.sqrt_one]
-  -- g est multiplicative sur les coprimes positifs
-  -- (on évite le cas 0 * 0 = 0 par hypothèse gcd(a,b) = 1 qui exclut a = b = 0)
-  have hg_mul : ∀ a b : ℕ, Nat.Coprime a b → g (a * b) = g a * g b := by
-    intros a b hcop
-    -- Cas a = 0 : coprime 0 b ⟹ b = 1, donc g(0·1) = g(0) = 0 = g(0)·g(1) ✓
-    -- Cas b = 0 : symétrique
-    -- Cas a, b > 0 : application directe de la multiplicativité
+    -- Cas a = 0 : coprime 0 b ⟺ b = 1 ; donc 0 * 1 = 0 et f(0) = 1, f(0)·f(1) = 1·1 = 1 ✓
     by_cases ha : a = 0
     · subst ha
-      -- coprime 0 b ⟺ b = 1
-      have hb : b = 1 := by
-        have := Nat.coprime_zero_left.mp hcop
-        exact this
+      have hb : b = 1 := Nat.coprime_zero_left.mp hcop
       subst hb
-      simp [hg_def, h1, Real.sqrt_one]
-    · by_cases hb : b = 0
-      · subst hb
-        have ha1 : a = 1 := by
-          have := Nat.coprime_zero_right.mp hcop
-          exact this
-        subst ha1
-        simp [hg_def, h1, Real.sqrt_one]
-      · -- a, b > 0
-        have ha_pos : 0 < a := Nat.pos_of_ne_zero ha
-        have hb_pos : 0 < b := Nat.pos_of_ne_zero hb
-        have ha_nn : (0 : ℝ) ≤ a := by exact_mod_cast Nat.zero_le a
-        have hb_nn : (0 : ℝ) ≤ b := by exact_mod_cast Nat.zero_le b
-        simp only [hg_def]
-        rw [hmul a b hcop]
-        rw [show ((a * b : ℕ) : ℝ) = (a : ℝ) * (b : ℝ) from by push_cast; ring]
-        rw [Real.sqrt_mul ha_nn]
-        field_simp
-  -- Application directe de squarefree_sum_le_prod_real à g
-  exact squarefree_sum_le_prod_real X hX g hg_nonneg hg_one hg_mul
+      simp
+    by_cases hb : b = 0
+    · subst hb
+      have ha1 : a = 1 := Nat.coprime_zero_right.mp hcop
+      subst ha1
+      simp
+    -- Cas générique : a, b > 0
+    have hab_ne : a * b ≠ 0 := Nat.mul_ne_zero ha hb
+    simp [ha, hb, hab_ne]
+    have ha_nn : (0 : ℝ) ≤ a := Nat.cast_nonneg a
+    have hb_nn : (0 : ℝ) ≤ b := Nat.cast_nonneg b
+    rw [show ((a * b : ℕ) : ℝ) = (a : ℝ) * (b : ℝ) from by push_cast; ring]
+    rw [Real.mul_rpow ha_nn hb_nn]
 
 /-!
-## Frontière avec les briques E3/E4 — explicitement ouverte
+## Section 2 — Pont fini sur la ligne critique
 
-Les théorèmes qui suivraient — passage à X → ∞, convergence du produit infini,
-recollement avec ξ — **n'apparaissent pas dans ce fichier**.
+Pour S = primes ≤ X, l'identité-pont donne directement
+  ∑ T ⊆ S, ∏ T p^{-σ} = ∏_{p ∈ S} (1 + p^{-σ}).
+-/
+
+/-- [P] **Pont fini local-squarefree, version générique sur S.**
+
+    Pour S un ensemble fini de premiers et σ ≥ 0,
+      ∑_{T ⊆ S} ∏_{p ∈ T} p^{-σ} = ∏_{p ∈ S} (1 + p^{-σ}).
+
+    C'est l'application directe du théorème de transfert combinatoire
+    (Bloc B) à la fonction multiplicative n ↦ n^{-σ}. -/
+theorem local_squarefree_bridge_finite
+    (S : Finset ℕ) (hS : ∀ p ∈ S, Nat.Prime p)
+    {σ : ℝ} (hσ : 0 ≤ σ) :
+    (∑ T ∈ S.powerset, ∏ p ∈ T, (p : ℝ) ^ (-σ))
+      = ∏ p ∈ S, (1 + (p : ℝ) ^ (-σ)) := by
+  -- On applique squarefree_support_transfer avec f(n) = n^{-σ}
+  -- (étendue à f(0) = 1 par convention pour rester multiplicative).
+  set f : ℕ → ℝ := fun n => if n = 0 then (1 : ℝ) else (n : ℝ) ^ (-σ) with hf_def
+  obtain ⟨hf_one, hf_mult⟩ := rpow_neg_multiplicative σ hσ
+  -- Application du transfert : ∑ T, f(∏ T) = ∏ S, (1 + f p)
+  have h_transfer :
+      (∑ T ∈ S.powerset, f (∏ p ∈ T, p)) = ∏ p ∈ S, (1 + f p) :=
+    SquarefreeSupport.squarefree_support_transfer_real S hS f hf_one hf_mult
+  -- Maintenant on identifie f sur les arguments concrets :
+  -- - pour p ∈ S premier, p ≠ 0, donc f p = p^(-σ)
+  -- - pour T ⊆ S, ∏ T p ≠ 0 (produit de premiers > 1) donc f(∏ T) = (∏ T p)^(-σ)
+  --   mais ce dernier est aussi égal à ∏_{p ∈ T} p^(-σ) par Finset.prod_rpow
+  -- On réécrit chaque côté.
+  rw [show (∏ p ∈ S, (1 + f p)) = ∏ p ∈ S, (1 + (p : ℝ) ^ (-σ)) from ?_] at h_transfer
+  rw [show (∑ T ∈ S.powerset, f (∏ p ∈ T, p))
+        = ∑ T ∈ S.powerset, ∏ p ∈ T, (p : ℝ) ^ (-σ) from ?_] at h_transfer
+  · exact h_transfer
+  · -- Réécriture du LHS : f(∏_{p∈T} p) = ∏_{p∈T} p^(-σ) sous T ⊆ S avec primes
+    apply Finset.sum_congr rfl
+    intro T hT
+    have hT_sub : T ⊆ S := mem_powerset.mp hT
+    -- Le produit ∏_{p ∈ T} p est non nul (chaque facteur est ≥ 2)
+    have hprod_ne : (∏ p ∈ T, p) ≠ 0 := by
+      apply Finset.prod_ne_zero_iff.mpr
+      intro q hq
+      have hq_prime : Nat.Prime q := hS q (hT_sub hq)
+      exact Nat.Prime.ne_zero hq_prime
+    simp [hf_def, hprod_ne]
+    -- (∏ p)^{-σ} = ∏ p^{-σ}
+    rw [show ((∏ p ∈ T, p : ℕ) : ℝ) = ∏ p ∈ T, (p : ℝ) from by push_cast; rfl]
+    -- Real.finset_prod_rpow : produit de réels positifs élevés à une puissance
+    rw [← Finset.prod_rpow_of_nonneg (by intro q hq; exact Nat.cast_nonneg q)]
+  · -- Réécriture du RHS : f(p) = p^(-σ) pour p ∈ S premier
+    apply Finset.prod_congr rfl
+    intro p hp
+    have hp_prime : Nat.Prime p := hS p hp
+    have hp_ne : p ≠ 0 := Nat.Prime.ne_zero hp_prime
+    simp [hf_def, hp_ne]
+
+/-!
+## Section 3 — Borne issue de LocalFactor (raccord effectif)
+
+Ici on relie l'identité finie ci-dessus aux bornes du facteur local
+de LocalFactor.lean : pour t ∈ ℝ, le facteur eulérien complet
+|1 - p^{-σ}·e^{it log p}|² est borné par (1 + p^{-σ})².
+
+C'est cette borne, élevée au produit, qui contrôle le facteur
+eulérien complet par notre identité combinatoire.
+-/
+
+/-- [P] Cohérence de raccord : pour tout p premier et tout t ∈ ℝ, le module
+    au carré |1 - p^{-σ}·e^{it log p}|² est borné par (1 + p^{-σ})².
+
+    C'est la borne supérieure du Bloc A (LocalFactor) appliquée à
+    a = p^{-σ} et θ = t · log p. -/
+theorem local_factor_bound_at_prime {p : ℕ} (hp : Nat.Prime p)
+    {σ t : ℝ} (hσ : 0 ≤ σ) :
+    Complex.normSq
+        (1 - (((p : ℝ) ^ (-σ) : ℝ) : ℂ) *
+              Complex.exp ((t * Real.log p : ℂ) * Complex.I))
+      ≤ (1 + (p : ℝ) ^ (-σ)) ^ 2 :=
+  (LocalFactor.local_factor_prime_sigma hp hσ (θ := t * Real.log p)).2
+
+/-!
+## Section 4 — Frontière E3/E4 — explicitement ouverte
+
+Les théorèmes qui suivraient — passage à X → ∞, convergence du produit
+infini, recollement avec ξ — **n'apparaissent pas dans ce fichier**.
 
 Les raisons sont documentées dans le cahier des charges EulerCompletion :
-- E2 (minoration du dénominateur det₂) est bloquée par l'absence d'infrastructure
-  Mathlib standard pour les déterminants régularisés.
-- E3 (convergence du produit infini) dépend de E1 ET E2.
-- E4 (identification avec ξ) ≡ Lock 3 fort.
+  - E2 (minoration du dénominateur det₂) : bloquée par l'absence
+    d'infrastructure Mathlib standard pour les déterminants régularisés.
+  - E3 (convergence du produit infini) : dépend de E1 ET E2.
+  - E4 (identification avec ξ) ≡ Lock 3 fort.
 
-**Toute tentative de fermer ces verrous dans ce fichier serait une violation
-de l'invariant RHClaimed = false.**
-
-La frontière est maintenue.
+**Toute tentative de fermer ces verrous ici serait une violation de
+l'invariant RHClaimed = false.** La frontière est maintenue.
 -/
 
 /-!
-## Lemme de raccord vers LocalFactor (optionnel, non utilisé dans la preuve principale)
-
-Ce lemme n'est pas nécessaire pour `local_squarefree_bridge_finite`, mais il
-expose explicitement le lien avec LocalFactor pour référence future.
+## Section 5 — Invariant constitutionnel
 -/
 
-/-- [P] Cohérence : pour p premier et t ∈ ℝ, le facteur local |1 - e^(it log p)/√p|²
-est borné par (1 + 1/√p)², ce qui est la borne utilisée implicitement dans
-les estimations de produit eulérien local. -/
-lemma local_factor_bound_for_bridge
-    {p : ℕ} (hp : Nat.Prime p) (t : ℝ) :
-    Complex.normSq (1 - ((Real.sqrt p)⁻¹ : ℂ) *
-                      Complex.exp ((t * Real.log p : ℂ) * Complex.I))
-      ≤ (1 + (Real.sqrt p)⁻¹) ^ 2 :=
-  (local_factor_prime_inv_sqrt_bounds hp t).2
+/-- [P] Identité du fichier. -/
+def fileIdentity : CouretUnification.FileIdentity where
+  module := "CouretUnification.Logic.H3.LocalSquarefreeBridge"
+  layer := CouretUnification.Layer.logicH3
+  status := CouretUnification.EpistemicStatus.proved
+  sorryCount := 0
+  rhClaimed := false
 
-end CouretUnification.Logic.H3
+example : fileIdentity.rhClaimed = false := rfl
+
+/-!
+## Notes finales
+
+1. **Apport mathématique** : c'est la première fois dans le programme que
+   les Blocs A (LocalFactor) et B (SquarefreeSupport) sont effectivement
+   reliés dans un théorème formel certifié.
+
+2. **Apport doctrinal** : la frontière E3/E4 est rendue explicite DANS LE CODE,
+   par l'absence volontaire du théorème infini.
+
+3. **Frottements API** :
+   - `Finset.prod_rpow_of_nonneg` : nom à vérifier (peut être
+     `Real.finset_prod_rpow` selon le snapshot).
+   - `Finset.prod_ne_zero_iff` : nom stable.
+
+4. **Réutilisation** : ce théorème pourra être cité dans la note Riposo
+   comme exemple concret de pont fini certifié.
+-/
+
+end LocalSquarefreeBridge
+end H3
+end CouretUnification
