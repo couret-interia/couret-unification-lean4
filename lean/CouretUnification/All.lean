@@ -70,6 +70,7 @@ import CouretUnification.Spectral.T2Gap
 
 -- v32.4
 import CouretUnification.Core.Classification63
+import CouretUnification.Core.SpectralMoments
 
 -- v32.5
 import CouretUnification.Core.CayleySpectrum
@@ -139,6 +140,7 @@ import CouretUnification.FunctionalFoundation.DiscretePaths
 import CouretUnification.Core.U30
 -- T3 : Spectre {3²,1⁴,(−1)²}, Fourier, Parseval, matrice
 import CouretUnification.Finite.Foundations
+import CouretUnification.Finite.Defect
 -- T4-T7 : Projecteurs P₃/P₁/P₋, Pythagore, L_k, kurtosis
 import CouretUnification.FiniteDefect.T1_to_T7
 
