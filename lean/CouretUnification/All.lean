@@ -173,3 +173,9 @@ import CouretUnification.Logic.H3.RigidityParams
 import CouretUnification.Logic.H3.C2Restricted
 import CouretUnification.Logic.H3.C3Weak
 import CouretUnification.Logic.H3.AlgebraTC
+
+-- v35.4 — composition Phase B (recompose/spring-2026-pyramid-v0)
+-- Éventail à 5 branches agrégeant les résultats substantiels de Logic.H3.
+-- Tire transitivement les 14 modules Logic.H3 dans la fermeture.
+-- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
+import CouretUnification.Logic.H3.PhaseBComposition
