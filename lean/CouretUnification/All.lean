@@ -64,58 +64,9 @@ import CouretUnification.Core.TripletExceptionalLocalCriterion
 import CouretUnification.Core.TripletExceptionalCanonicalWitness
 import CouretUnification.Core.TripletExceptionalCanonicalBridge
 
-import CouretUnification.Bridge.Status
-import CouretUnification.Bridge.Claims
-import CouretUnification.Bridge.AnalyticChain
-import CouretUnification.Bridge.ContinuousModel
-import CouretUnification.Bridge.CharacterTower
-import CouretUnification.Bridge.Unification
-import CouretUnification.Bridge.VoroninInterface
-
-import CouretUnification.Meta.Empirical
-import CouretUnification.Meta.Manifest
-import CouretUnification.Meta.Audit
-import CouretUnification.Meta.Reproducibility
-
 -- v32.1
 import CouretUnification.Spectral.FiniteCore
 import CouretUnification.Spectral.T2Gap
-import CouretUnification.Spectral.H1Bridge
-import CouretUnification.Spectral.H2Transfer
-
--- v32.2
-import CouretUnification.Spectral.H3Trace
-import CouretUnification.Spectral.H3ArithmeticBridge
-import CouretUnification.Spectral.H3Status
-import CouretUnification.Tower.PrimorialCharacterTower
-import CouretUnification.Tower.ConcreteUnits30
-import CouretUnification.Tower.ConcreteUnits210
-import CouretUnification.Tower.ConcreteTransition30To210
-import CouretUnification.Tower.ConcreteKernel210
-
--- v32.3
-import CouretUnification.Spectral.H4WeakHP
-import CouretUnification.Spectral.H5Analytic
-import CouretUnification.Spectral.H6GlobalHP
-import CouretUnification.Spectral.H6Microlocal
-import CouretUnification.Spectral.H6NoGo
-import CouretUnification.Tower.ConcreteCharacters210
-import CouretUnification.Tower.ConcreteCharacters210Family
-import CouretUnification.Tower.ConcreteCharacters210Generators
-import CouretUnification.Tower.ConcreteCharacters210Lift
-import CouretUnification.Tower.ConcreteCharacters210Sign
-import CouretUnification.Tower.ConcreteCharacters210SignExplicit
-import CouretUnification.Tower.ConcreteCharacters210SignReal
-import CouretUnification.Tower.ConcreteFiber30To210
-import CouretUnification.Tower.ConcreteFiberCard30To210
-import CouretUnification.Tower.ConcreteFiberClosure30To210
-import CouretUnification.Tower.ConcreteFiberComparison30To210
-import CouretUnification.Tower.ConcreteFiberCompletion30To210
-import CouretUnification.Tower.ConcreteFiberOrbit30To210
-import CouretUnification.Tower.ConcreteKernel210Card
-import CouretUnification.Tower.ConcreteKernelAction210
-import CouretUnification.Tower.ConcreteKernelLiftAction210
-import CouretUnification.Tower.ConcreteKernelOrbit210
 
 -- v32.4
 import CouretUnification.Core.Classification63
@@ -177,16 +128,11 @@ import CouretUnification.Analytic.AbelTailCore
 import CouretUnification.Analytic.Integration
 import CouretUnification.Analytic.VerifiedIntervals
 import CouretUnification.Analytic.ZeroDensityAxioms
-import CouretUnification.Bridge.GlobalBridge
 import CouretUnification.Core.FiniteCore
 import CouretUnification.Core.SymplecticObstruction
 
 import CouretUnification.FunctionalFoundation.DiscreteConnection
 import CouretUnification.FunctionalFoundation.DiscretePaths
-import CouretUnification.Geometry.CouretDesics
-import CouretUnification.Geometry.CouretDesicsCayleyG30
-import CouretUnification.Geometry.CouretDesicsExistence
-import CouretUnification.Geometry.CouretDesicsSpectral
 
 -- ─── COUCHE 1 : Noyau fini exact (0 sorry, 0 axiom) ────────
 -- T1/T2 : G₃₀, TC, fantôme, CRT, Cayley, image quadratique
@@ -196,17 +142,8 @@ import CouretUnification.Finite.Foundations
 -- T4-T7 : Projecteurs P₃/P₁/P₋, Pythagore, L_k, kurtosis
 import CouretUnification.FiniteDefect.T1_to_T7
 
--- ─── COUCHE 2 : Critère Couret-Défaut (0 sorry, 0 axiom) ───
--- Fonctionnelle I(φ), classe admissible, direction HRG
-import CouretUnification.Criterion.CouretDefect
-
--- ─── COUCHE 3 : Absorption (0 sorry, 0 axiom) ──────────────
--- Carte ℜ(L,T), Ω_good, lemme hybride, résonances
-import CouretUnification.Absorption.AbsorptionMap
-
 -- ─── COUCHE 4 : Pont H3 (1 sorry = lock3) ──────────────────
 -- Structure du passage local → global
-import CouretUnification.Bridge.GlobalBridge
 import CouretUnification.Logic.H3.FunctionalFoundation
 import CouretUnification.Logic.H3.ArithmeticBridge
 import CouretUnification.Logic.H3.AbelWeightedBound
@@ -221,15 +158,6 @@ import CouretUnification.Logic.H3.SpectralSpatial
 -- Route C raffinée (Σ|E_d| ≤ θ · (φ/q) · S₁)
 import CouretUnification.Logic.H3.RouteC
 import CouretUnification.Logic.H3.Arithmetic
-
--- ─── COUCHE 5 : Couronne doctrinale (1 axiom lock3) ────────
--- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
-import CouretUnification.Crown
--- L6 : Absorption archimédienne par canal (quasi-fermé)
-import CouretUnification.Criterion.L6_Absorption
-
--- ─── route D : Contradiction formelle avec kappa ───────────
-import CouretUnification.Criterion.RouteDContradiction
 
 -- v32.44
 import CouretUnification.Core.UnitsBridge
