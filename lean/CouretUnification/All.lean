@@ -36,33 +36,16 @@ import CouretUnification.Core.InvariantE
 import CouretUnification.Core.SophieGermainMod30
 import CouretUnification.Core.HarmonicCertificate
 import CouretUnification.Core.TripletDocumentaryCertificate
-import CouretUnification.Core.CouretCertificate
 import CouretUnification.Core.CouretDocumentaryCertificate
 import CouretUnification.Core.CouretPowerCertificate
 import CouretUnification.Core.CouretMinimalPackage
-import CouretUnification.Core.TripletDocumentaryPowerInterface
-import CouretUnification.Core.TripletDocumentaryIntegralPowerPackage
-import CouretUnification.Core.CouretReferencePackage
 import CouretUnification.Core.TripletCandidateInterface
-import CouretUnification.Core.TripletIntegralCandidateInterface
-import CouretUnification.Core.CouretIntegralReferencePackage
 import CouretUnification.Core.TripletQuadraticCandidateCertificate
 import CouretUnification.Core.TripletQuadraticIntegralCandidateInterface
-import CouretUnification.Core.CouretQuadraticIntegralReferencePackage
 import CouretUnification.Core.TripletRawIntegralCriterion
-import CouretUnification.Core.TripletRawIntegralCandidateBridge
 import CouretUnification.Core.TripletRawQuadraticConsistency
-import CouretUnification.Core.TripletRawIntegralFiniteBridge
 import CouretUnification.Core.TripletLocalExceptionalCandidate
 import CouretUnification.Core.TripletExceptionalPredicate
-import CouretUnification.Core.TripletExceptionalDecidableShell
-import CouretUnification.Core.TripletExceptionalWitness
-import CouretUnification.Core.TripletExceptionalLocalPackage
-import CouretUnification.Core.TripletExceptionalCoreView
-import CouretUnification.Core.TripletExceptionalLocalSummary
-import CouretUnification.Core.TripletExceptionalLocalCriterion
-import CouretUnification.Core.TripletExceptionalCanonicalWitness
-import CouretUnification.Core.TripletExceptionalCanonicalBridge
 
 -- v32.1
 import CouretUnification.Spectral.FiniteCore
@@ -167,6 +150,16 @@ import CouretUnification.Core.CenteredSpace30
 import CouretUnification.Core.Convolution30
 import CouretUnification.Core.Characters30Bridge
 import CouretUnification.Core.CayleyG30
+
+-- v32.45 — pile B recâblée (vague 2B)
+import CouretUnification.Core.TripletSpectrum
+import CouretUnification.Core.TripletHarmonicSpectrum
+import CouretUnification.Core.TripletToFiniteSpectrum
+import CouretUnification.Core.TripletPowerSpectrum
+import CouretUnification.Core.TripletExceptionalPredicate
+import CouretUnification.Core.CouretDocumentaryCertificate
+import CouretUnification.Core.CouretPowerCertificate
+import CouretUnification.Core.CouretMinimalPackage
 
 -- v35.1
 import CouretUnification.Core.CharacterLemmas
