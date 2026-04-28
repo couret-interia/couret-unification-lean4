@@ -23,7 +23,7 @@ Factorisation exacte :
 Usage : python couret_spatial_scan.py
 
 RHClaimed = false
-Dédié à Bernard Couret (1928–2010)
+Dédié à Bernard Couret (1928–1999)
 """
 
 import math
@@ -287,7 +287,7 @@ def main():
     print("  A_q = K_Q ⊗ A_TC,  Ã_q = K_Q ⊗ D")
     print("  Coupure spectrale : M_RS = 0 exactement")
     print("  Coupure spatiale  : B_21 = K_21 ⊗ D (l'objet mesuré)")
-    print("  Dédié à Bernard Couret (1928–2010)")
+    print("  Dédié à Bernard Couret (1928–1999)")
     print("=" * 80)
 
     for k_primorial in [4, 5, 6]:

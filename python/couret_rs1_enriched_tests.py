@@ -6,7 +6,7 @@ Programme Couret-Unification — Condition G1 pour gel de L10
 Fix v2 : F₀ = 1 ajouté à la base → centrage exact, ratio ~66%
 
 RHClaimed = false
-Dédié à Bernard Couret (1928–2010)
+Dédié à Bernard Couret (1928–1999)
 """
 
 import numpy as np
@@ -198,7 +198,7 @@ def project_enriched(q, primes, P_horizon, N_max=2_000_000):
 def main():
     print("=" * 76)
     print("  RS1 ENRICHED TESTS v2 — F₀ inclus — Condition G1")
-    print("  Dédié à Bernard Couret (1928–2010)")
+    print("  Dédié à Bernard Couret (1928–1999)")
     print("=" * 76)
 
     tests = [

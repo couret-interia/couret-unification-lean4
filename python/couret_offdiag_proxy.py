@@ -14,7 +14,7 @@ Si la fuite reste < 2% de la masse diagonale, T9 est numériquement verrouillé.
 Usage : python couret_offdiag_proxy.py
 
 RHClaimed = false
-Dédié à Bernard Couret (1928–2010)
+Dédié à Bernard Couret (1928–1999)
 """
 
 import numpy as np
@@ -245,7 +245,7 @@ def main():
     print("=" * 76)
     print("  MESURE DE LA FUITE HORS-DIAGONALE M₂₁^off")
     print("  Condition G2 pour gel de L10")
-    print("  Dédié à Bernard Couret (1928–2010)")
+    print("  Dédié à Bernard Couret (1928–1999)")
     print("=" * 76)
 
     N_max = 2_000_000

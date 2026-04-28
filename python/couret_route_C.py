@@ -19,7 +19,7 @@ Ce script :
 Usage : python couret_route_C.py
 
 RHClaimed = false
-Dédié à Bernard Couret (1928–2010)
+Dédié à Bernard Couret (1928–1999)
 """
 
 import numpy as np
@@ -214,7 +214,7 @@ def main():
     print("  ROUTE C — DÉCOMPOSITION DE TITCHMARSH DU VERROU κ")
     print("  κ(q)² = (1/φ(q)) Σ_{d|q} μ(d) S_d(q)")
     print("  Terme principal : S₁(q) ~ q²/(2π²)")
-    print("  Dédié à Bernard Couret (1928–2010)")
+    print("  Dédié à Bernard Couret (1928–1999)")
     print("=" * 76)
 
     results = []

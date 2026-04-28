@@ -20,7 +20,7 @@ Pour l’entrée publique minimale et doctrinale, utiliser :
 -- ══════════════════════════════════════════════════════════════
 -- COURET-UNIFICATION — Démonstration unifiée la plus poussée
 -- Programme Couret-Unification • Alexandre Couret • Avril 2026
--- Dédié à Bernard Couret (1928–2010)
+-- Dédié à Bernard Couret (1928–1999)
 -- RHClaimed = false
 -- ══════════════════════════════════════════════════════════════
 
@@ -36,206 +36,24 @@ import CouretUnification.Core.InvariantE
 import CouretUnification.Core.SophieGermainMod30
 import CouretUnification.Core.HarmonicCertificate
 import CouretUnification.Core.TripletDocumentaryCertificate
-import CouretUnification.Core.CouretCertificate
 import CouretUnification.Core.CouretDocumentaryCertificate
 import CouretUnification.Core.CouretPowerCertificate
 import CouretUnification.Core.CouretMinimalPackage
-import CouretUnification.Core.TripletDocumentaryPowerInterface
-import CouretUnification.Core.TripletDocumentaryIntegralPowerPackage
-import CouretUnification.Core.CouretReferencePackage
 import CouretUnification.Core.TripletCandidateInterface
-import CouretUnification.Core.TripletIntegralCandidateInterface
-import CouretUnification.Core.CouretIntegralReferencePackage
 import CouretUnification.Core.TripletQuadraticCandidateCertificate
 import CouretUnification.Core.TripletQuadraticIntegralCandidateInterface
-import CouretUnification.Core.CouretQuadraticIntegralReferencePackage
 import CouretUnification.Core.TripletRawIntegralCriterion
-import CouretUnification.Core.TripletRawIntegralCandidateBridge
 import CouretUnification.Core.TripletRawQuadraticConsistency
-import CouretUnification.Core.TripletRawIntegralFiniteBridge
 import CouretUnification.Core.TripletLocalExceptionalCandidate
 import CouretUnification.Core.TripletExceptionalPredicate
-import CouretUnification.Core.TripletExceptionalDecidableShell
-import CouretUnification.Core.TripletExceptionalWitness
-import CouretUnification.Core.TripletExceptionalLocalPackage
-import CouretUnification.Core.TripletExceptionalCoreView
-import CouretUnification.Core.TripletExceptionalLocalSummary
-import CouretUnification.Core.TripletExceptionalLocalCriterion
-import CouretUnification.Core.TripletExceptionalCanonicalWitness
-import CouretUnification.Core.TripletExceptionalCanonicalBridge
-import CouretUnification.Core.ExceptionalCandidatesOnIdentityTriplets
-import CouretUnification.Core.ExceptionalCandidateWitnessesOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalPredicateOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionWitnessTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionCoreViewOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewExportOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewExportPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalViewOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalExportOnIdentityTriplets
-import CouretUnification.Core.ExceptionalLocalCriterionPreviewFinalExportPackageOnIdentityTriplets
-
-import CouretUnification.Core.ExceptionalFilterOnIdentityTriplets
-import CouretUnification.Core.ExceptionalClassificationOnIdentityTriplets
-import CouretUnification.Core.ExceptionalPartitionOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalBooleanPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalPackageOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalSummaryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalShellOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalDecidableTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalBooleanTableOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionFinalViewFinalFinalBooleanPackageOnIdentityTriplets
-
-import CouretUnification.Core.ExceptionalDecisionTerminalOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionNormalizationOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCompatibilityOnIdentityTriplets
-
-import CouretUnification.Core.ExceptionalDecisionCanonicalAPIOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionMigrationLemmasOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionRefactorGuideOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionDeprecationMapOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalExamplesOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalConsumerOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalQueryOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalQueryExamplesOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalFactsOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalBridgeOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalResolverOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalResolverExamplesOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalWorkflowOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalServiceOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalClientOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalClientExamplesOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalClientFactsOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalClientBridgeOnIdentityTriplets
-import CouretUnification.Core.ExceptionalDecisionCanonicalFacadeOnIdentityTriplets
-
-import CouretUnification.Bridge.Status
-import CouretUnification.Bridge.Claims
-import CouretUnification.Bridge.AnalyticChain
-import CouretUnification.Bridge.ContinuousModel
-import CouretUnification.Bridge.CharacterTower
-import CouretUnification.Bridge.Unification
-import CouretUnification.Bridge.VoroninInterface
-
-import CouretUnification.Meta.Empirical
-import CouretUnification.Meta.Manifest
-import CouretUnification.Meta.Audit
-import CouretUnification.Meta.Reproducibility
 
 -- v32.1
 import CouretUnification.Spectral.FiniteCore
 import CouretUnification.Spectral.T2Gap
-import CouretUnification.Spectral.H1Bridge
-import CouretUnification.Spectral.H2Transfer
-
--- v32.2
-import CouretUnification.Spectral.H3Trace
-import CouretUnification.Spectral.H3ArithmeticBridge
-import CouretUnification.Spectral.H3Status
-import CouretUnification.Tower.PrimorialCharacterTower
-import CouretUnification.Tower.ConcreteUnits30
-import CouretUnification.Tower.ConcreteUnits210
-import CouretUnification.Tower.ConcreteTransition30To210
-import CouretUnification.Tower.ConcreteKernel210
-
--- v32.3
-import CouretUnification.Spectral.H4WeakHP
-import CouretUnification.Spectral.H5Analytic
-import CouretUnification.Spectral.H6GlobalHP
-import CouretUnification.Spectral.H6Microlocal
-import CouretUnification.Spectral.H6NoGo
-import CouretUnification.Spectral.H7BridgeProgram
-import CouretUnification.Spectral.H7PriorityProgram
-import CouretUnification.Spectral.H7MilestoneProgram
-import CouretUnification.Spectral.H7DependencyProgram
-import CouretUnification.Spectral.H7RiskProgram
-import CouretUnification.Spectral.H7TimelineProgram
-import CouretUnification.Spectral.H7WorkPackageProgram
-import CouretUnification.Spectral.H7DeliverableProgram
-import CouretUnification.Spectral.H7AcceptanceProgram
-import CouretUnification.Spectral.H7EvidenceProgram
-import CouretUnification.Spectral.H7AuditProgram
-import CouretUnification.Spectral.H7SignoffProgram
-import CouretUnification.Spectral.H7ReleaseProgram
-import CouretUnification.Spectral.H7RegistryProgram
-import CouretUnification.Spectral.H7PublicationProgram
-import CouretUnification.Spectral.H7DisseminationProgram
-import CouretUnification.Spectral.H7IndexingProgram
-import CouretUnification.Spectral.H7CitationProgram
-import CouretUnification.Spectral.H7AdoptionProgram
-import CouretUnification.Spectral.H7InstitutionalProgram
-import CouretUnification.Spectral.H7StandardizationProgram
-import CouretUnification.Spectral.H7NormalizationProgram
-import CouretUnification.Spectral.H7CertificationProgram
-import CouretUnification.Tower.ConcreteCharacters210
-import CouretUnification.Tower.ConcreteCharacters210Family
-import CouretUnification.Tower.ConcreteCharacters210Generators
-import CouretUnification.Tower.ConcreteCharacters210Lift
-import CouretUnification.Tower.ConcreteCharacters210Sign
-import CouretUnification.Tower.ConcreteCharacters210SignExplicit
-import CouretUnification.Tower.ConcreteCharacters210SignReal
-import CouretUnification.Tower.ConcreteFiber30To210
-import CouretUnification.Tower.ConcreteFiberCard30To210
-import CouretUnification.Tower.ConcreteFiberClosure30To210
-import CouretUnification.Tower.ConcreteFiberComparison30To210
-import CouretUnification.Tower.ConcreteFiberCompletion30To210
-import CouretUnification.Tower.ConcreteFiberOrbit30To210
-import CouretUnification.Tower.ConcreteKernel210Card
-import CouretUnification.Tower.ConcreteKernelAction210
-import CouretUnification.Tower.ConcreteKernelLiftAction210
-import CouretUnification.Tower.ConcreteKernelOrbit210
 
 -- v32.4
 import CouretUnification.Core.Classification63
+import CouretUnification.Core.SpectralMoments
 
 -- v32.5
 import CouretUnification.Core.CayleySpectrum
@@ -294,36 +112,23 @@ import CouretUnification.Analytic.AbelTailCore
 import CouretUnification.Analytic.Integration
 import CouretUnification.Analytic.VerifiedIntervals
 import CouretUnification.Analytic.ZeroDensityAxioms
-import CouretUnification.Bridge.GlobalBridge
 import CouretUnification.Core.FiniteCore
 import CouretUnification.Core.SymplecticObstruction
 
 import CouretUnification.FunctionalFoundation.DiscreteConnection
 import CouretUnification.FunctionalFoundation.DiscretePaths
-import CouretUnification.Geometry.CouretDesics
-import CouretUnification.Geometry.CouretDesicsCayleyG30
-import CouretUnification.Geometry.CouretDesicsExistence
-import CouretUnification.Geometry.CouretDesicsSpectral
 
 -- ─── COUCHE 1 : Noyau fini exact (0 sorry, 0 axiom) ────────
 -- T1/T2 : G₃₀, TC, fantôme, CRT, Cayley, image quadratique
 import CouretUnification.Core.U30
 -- T3 : Spectre {3²,1⁴,(−1)²}, Fourier, Parseval, matrice
 import CouretUnification.Finite.Foundations
+import CouretUnification.Finite.Defect
 -- T4-T7 : Projecteurs P₃/P₁/P₋, Pythagore, L_k, kurtosis
 import CouretUnification.FiniteDefect.T1_to_T7
 
--- ─── COUCHE 2 : Critère Couret-Défaut (0 sorry, 0 axiom) ───
--- Fonctionnelle I(φ), classe admissible, direction HRG
-import CouretUnification.Criterion.CouretDefect
-
--- ─── COUCHE 3 : Absorption (0 sorry, 0 axiom) ──────────────
--- Carte ℜ(L,T), Ω_good, lemme hybride, résonances
-import CouretUnification.Absorption.AbsorptionMap
-
 -- ─── COUCHE 4 : Pont H3 (1 sorry = lock3) ──────────────────
 -- Structure du passage local → global
-import CouretUnification.Bridge.GlobalBridge
 import CouretUnification.Logic.H3.FunctionalFoundation
 import CouretUnification.Logic.H3.ArithmeticBridge
 import CouretUnification.Logic.H3.AbelWeightedBound
@@ -337,16 +142,7 @@ import CouretUnification.Logic.H3.L10Bridge
 import CouretUnification.Logic.H3.SpectralSpatial
 -- Route C raffinée (Σ|E_d| ≤ θ · (φ/q) · S₁)
 import CouretUnification.Logic.H3.RouteC
-import CouretUnification.Logic.H3.Arithmetic
-
--- ─── COUCHE 5 : Couronne doctrinale (1 axiom lock3) ────────
--- Chaîne complète : H1→H3.A→Hadamard→Lock2→Lock3→RH
-import CouretUnification.Crown
--- L6 : Absorption archimédienne par canal (quasi-fermé)
-import CouretUnification.Criterion.L6_Absorption
-
--- ─── route D : Contradiction formelle avec kappa ───────────
-import CouretUnification.Criterion.RouteDContradiction
+import CouretUnification.Core.Arithmetic
 
 -- v32.44
 import CouretUnification.Core.UnitsBridge
@@ -354,6 +150,16 @@ import CouretUnification.Core.CenteredSpace30
 import CouretUnification.Core.Convolution30
 import CouretUnification.Core.Characters30Bridge
 import CouretUnification.Core.CayleyG30
+
+-- v32.45 — pile B recâblée (vague 2B)
+import CouretUnification.Core.TripletSpectrum
+import CouretUnification.Core.TripletHarmonicSpectrum
+import CouretUnification.Core.TripletToFiniteSpectrum
+import CouretUnification.Core.TripletPowerSpectrum
+import CouretUnification.Core.TripletExceptionalPredicate
+import CouretUnification.Core.CouretDocumentaryCertificate
+import CouretUnification.Core.CouretPowerCertificate
+import CouretUnification.Core.CouretMinimalPackage
 
 -- v35.1
 import CouretUnification.Core.CharacterLemmas
@@ -367,3 +173,9 @@ import CouretUnification.Logic.H3.RigidityParams
 import CouretUnification.Logic.H3.C2Restricted
 import CouretUnification.Logic.H3.C3Weak
 import CouretUnification.Logic.H3.AlgebraTC
+
+-- v35.4 — composition Phase B (recompose/spring-2026-pyramid-v0)
+-- Éventail à 5 branches agrégeant les résultats substantiels de Logic.H3.
+-- Tire transitivement les 14 modules Logic.H3 dans la fermeture.
+-- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
+import CouretUnification.Logic.H3.PhaseBComposition
