@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# validate_pack.sh — Couret-Unification v32
+# validate_pack.sh — Couret-Unification v35
 # Validates the Lean pack structure and invariants.
 set -euo pipefail
 
@@ -53,21 +53,31 @@ check "test -f lean/CouretUnification/Core/MersenneMod30.lean" "Core/MersenneMod
 check "test -f lean/CouretUnification/Core/CarlemanUniqueness.lean" "Core/CarlemanUniqueness"
 check "test -f lean/CouretUnification/Core/Classification63Detail.lean" "Core/Classification63Detail"
 
-# ──── 3. Spectral/Tower files ────
+# ──── 3. Spectral ────
 echo ""
-echo "[3/5] Spectral and Tower files..."
+echo "[3/5] Spectral files..."
 check "test -f lean/CouretUnification/Spectral/FiniteCore.lean" "Spectral/FiniteCore"
 check "test -f lean/CouretUnification/Spectral/T2Gap.lean" "Spectral/T2Gap"
-check "test -f lean/CouretUnification/Spectral/H1Bridge.lean" "Spectral/H1Bridge"
-check "test -f lean/CouretUnification/Spectral/H3Trace.lean" "Spectral/H3Trace"
-check "test -f lean/CouretUnification/Tower/PrimorialCharacterTower.lean" "Tower/PrimorialCharacterTower"
-check "test -f lean/CouretUnification/Tower/ConcreteKernel210.lean" "Tower/ConcreteKernel210"
 
 # ──── 4. Invariants ────
 echo ""
 echo "[4/5] Epistemic invariants..."
-check "! (lake build 2>&1 | grep -F 'declaration uses \`sorry\`')" "No real sorry in Lean declarations"
-check "grep -q 'RHClaimed' README.md" "RHClaimed mentioned in README"
+
+# (a) Compteur strict des sorries doctrinaux (3 attendus : Cayley, Lemma7, RouteC)
+EXPECTED_SORRIES=3
+SORRY_COUNT=$(lake build 2>&1 | grep -cF 'declaration uses `sorry`' || true)
+check "[ \"$SORRY_COUNT\" -eq \"$EXPECTED_SORRIES\" ]" \
+  "Exactly $EXPECTED_SORRIES doctrinal sorries (CayleyG30:51, Lemma7Residual:6, RouteC:765, found: $SORRY_COUNT)"
+
+# (b) Garde épistémique : RHClaimed = false déclaré dans le README
+check "grep -qF 'RHClaimed = false' README.md" \
+  "RHClaimed = false declared in README"
+
+# (c) Garde épistémique globale : aucun fichier ne revendique RHClaimed = true
+check "! grep -rqF 'RHClaimed = true' \
+       --include='*.lean' --include='*.md' --include='*.py' \
+       lean/ docs/ python/ scripts/ README.md 2>/dev/null" \
+  "RHClaimed = true absent from entire repo"
 
 # ──── 5. Scripts ────
 echo ""

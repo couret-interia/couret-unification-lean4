@@ -11,7 +11,7 @@ import CouretUnification.Spectral.FiniteCore
 /-!
 # CouretUnification.Crown — État Maximal de la Démonstration
 # Programme Couret-Unification — Alexandre Couret — Avril 2026
-# Dédié à Bernard Couret (1928–2010)
+# Dédié à Bernard Couret (1928–1999)
 
 ## Rôle de ce fichier
 Ce fichier est une **couche de synthèse** :

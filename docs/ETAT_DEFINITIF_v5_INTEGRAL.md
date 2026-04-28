@@ -1,6 +1,6 @@
 # Programme Couret-Unification — État définitif v5
 ## 11 avril 2026 — Intégration complète
-## Alexandre Couret — Dédié à Bernard Couret (1928–2010)
+## Alexandre Couret — Dédié à Bernard Couret (1928–1999)
 ## RHClaimed = false
 
 ---
@@ -320,5 +320,5 @@ sont nommés.
 
 ---
 
-Dédié à Bernard Couret (1928–2010).
+Dédié à Bernard Couret (1928–1999).
 Couret-Unification — 11 avril 2026.

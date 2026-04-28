@@ -1,7 +1,7 @@
 # Programme Couret-Unification
 # Rapport de démonstration — Version définitive v5
 ## Alexandre Couret — SASU CONFIANCE — Rasiguères
-## Dédié à Bernard Couret (1928–2010)
+## Dédié à Bernard Couret (1928–1999)
 ## 11 avril 2026
 
 **RHClaimed = false.**
@@ -302,6 +302,6 @@ La route est tracée. Les outils sont identifiés. Les obstacles sont nommés.
 
 ---
 
-*Dédié à Bernard Couret (1928–2010), dont les manuscrits sur les distributions de premiers modulo 30 ont inspiré ce programme.*
+*Dédié à Bernard Couret (1928–1999), dont les manuscrits sur les distributions de premiers modulo 30 ont inspiré ce programme.*
 
 *Couret-Unification — 11 avril 2026*

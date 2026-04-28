@@ -20,7 +20,7 @@ Pour l’entrée publique minimale et doctrinale, utiliser :
 -- ══════════════════════════════════════════════════════════════
 -- COURET-UNIFICATION — Démonstration unifiée la plus poussée
 -- Programme Couret-Unification • Alexandre Couret • Avril 2026
--- Dédié à Bernard Couret (1928–2010)
+-- Dédié à Bernard Couret (1928–1999)
 -- RHClaimed = false
 -- ══════════════════════════════════════════════════════════════
 
