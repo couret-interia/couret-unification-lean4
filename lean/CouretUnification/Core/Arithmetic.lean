@@ -12,8 +12,7 @@ RHClaimed = false. Dédié à Bernard Couret (1928–1999).
 
 open scoped BigOperators
 
-namespace CouretUnification
-namespace Arithmetic
+namespace CouretUnification.Arithmetic
 
 -- ═══════════════════════════════════════════════════════════
 -- §1. Fonction de Möbius par division récursive
@@ -208,5 +207,4 @@ theorem kappaSq_nonneg (q : ℕ) : 0 ≤ kappaSq q := by
 def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
 
-end Arithmetic
-end CouretUnification
+end CouretUnification.Arithmetic

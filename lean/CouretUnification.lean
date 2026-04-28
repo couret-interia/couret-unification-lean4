@@ -35,4 +35,4 @@ import CouretUnification.Logic.H3.PhaseBComposition
 -- Route C raffinée (Σ|E_d| ≤ θ · (φ/q) · S₁)
 import CouretUnification.Logic.H3.RouteC
 -- Arithmétique fondamentale (μ, M(n), κ(q), squarefree)
-import CouretUnification.Logic.H3.Arithmetic
+import CouretUnification.Core.Arithmetic

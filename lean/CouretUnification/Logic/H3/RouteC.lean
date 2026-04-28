@@ -5,7 +5,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Tactic
-import CouretUnification.Logic.H3.Arithmetic
+import CouretUnification.Core.Arithmetic
 
 /-!
 # Route C raffinée — Infrastructure formelle v32.43
@@ -41,8 +41,7 @@ Dédié à Bernard Couret (1928–1999).
 open Filter
 open scoped Topology
 
-namespace CouretUnification
-namespace RouteC
+namespace CouretUnification.Logic.H3.RouteC
 
 -- ═══════════════════════════════════════════════════════════
 -- §1. Recollement avec l'arithmétique réelle
@@ -910,5 +909,4 @@ theorem kappa_pos_from_routeC :
 def RHClaimed : Bool := false
 theorem rh_not_claimed : RHClaimed = false := rfl
 
-end RouteC
-end CouretUnification
+end CouretUnification.Logic.H3.RouteC

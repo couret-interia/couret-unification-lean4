@@ -142,7 +142,7 @@ import CouretUnification.Logic.H3.L10Bridge
 import CouretUnification.Logic.H3.SpectralSpatial
 -- Route C raffinée (Σ|E_d| ≤ θ · (φ/q) · S₁)
 import CouretUnification.Logic.H3.RouteC
-import CouretUnification.Logic.H3.Arithmetic
+import CouretUnification.Core.Arithmetic
 
 -- v32.44
 import CouretUnification.Core.UnitsBridge
