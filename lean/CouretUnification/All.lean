@@ -186,3 +186,11 @@ import CouretUnification.Logic.H3.PhaseBComposition
 -- à la chaîne H3.
 -- RHClaimed = false. Aucun sorry consommé.
 import CouretUnification.Logic.H3.PhaseBCompositionCouret
+
+-- v35.4.1 — branche C-ζ pile B retenue (spring-2026/couret-cabling)
+-- Cinq sous-branches Couret-ζ (ζ.1 à ζ.5) câblant les spectres harmoniques
+-- explicites du triplet de Couret depuis la pile B retenue (TripletSpectrum,
+-- TripletToFiniteSpectrum, TripletPowerSpectrum, TripletExceptionalPredicate,
+-- CouretMinimalPackage). Tire transitivement les 16 fichiers de pile B retenue.
+-- RHClaimed = false. Aucun sorry consommé.
+import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
