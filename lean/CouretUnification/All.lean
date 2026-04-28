@@ -194,3 +194,15 @@ import CouretUnification.Logic.H3.PhaseBCompositionCouret
 -- CouretMinimalPackage). Tire transitivement les 16 fichiers de pile B retenue.
 -- RHClaimed = false. Aucun sorry consommé.
 import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
+
+-- v35.4.2 — branche C-η combinatoire spectrale (spring-2026/couret-cabling)
+-- Six sous-branches Couret-η (η.1 à η.6) câblant le noyau combinatoire
+-- spectral fini T1-T7 : spectre certifié (CayleySpectrum), polynôme
+-- caractéristique (CharPoly), unicité multiplicités (MultiplicityUniqueness),
+-- déconnexion Cayley (CayleyConnected, ComponentSpectrum), classification
+-- 63/255 (Classification63, Classification63Detail), récurrence des traces
+-- (TraceRecurrence, FormuleLk). Tire transitivement les 13 fichiers
+-- de la pile combinatoire (incluant Kurtosis, SpectralMoments, SpectralGap,
+-- CenteredEigenspace par dépendance/cascade).
+-- RHClaimed = false. Aucun sorry consommé.
+import CouretUnification.Logic.H3.PhaseBCompositionCouretEta
