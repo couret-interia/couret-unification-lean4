@@ -174,8 +174,15 @@ import CouretUnification.Logic.H3.C2Restricted
 import CouretUnification.Logic.H3.C3Weak
 import CouretUnification.Logic.H3.AlgebraTC
 
--- v35.4 — composition Phase B (recompose/spring-2026-pyramid-v0)
+-- v35.3 — composition Phase B (recompose/spring-2026-pyramid-v0)
 -- Éventail à 5 branches agrégeant les résultats substantiels de Logic.H3.
 -- Tire transitivement les 14 modules Logic.H3 dans la fermeture.
 -- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
 import CouretUnification.Logic.H3.PhaseBComposition
+
+-- v35.4 — composition Phase B spécialisée Couret (spring-2026/couret-cabling)
+-- Cinq branches (C-α, C-β, C-γ, C-δ, C-ε) câblant les pierres angulaires
+-- arithmético-spectrales (Lambda, Parseval, ParsevalL5, T1_to_T7, FiniteCore)
+-- à la chaîne H3.
+-- RHClaimed = false. Aucun sorry consommé.
+import CouretUnification.Logic.H3.PhaseBCompositionCouret
