@@ -206,3 +206,21 @@ import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
 -- CenteredEigenspace par dépendance/cascade).
 -- RHClaimed = false. Aucun sorry consommé.
 import CouretUnification.Logic.H3.PhaseBCompositionCouretEta
+
+-- v35.4.3 — intégration v35.4 SquarefreeDensity (spring-2026/v35.5-integration)
+-- Premier pas de l'intégration des packs Alexandre v35.4 → v35.8.7.1.
+-- Apporte le fichier Logic/H3/SquarefreeDensity.lean (543 lignes) qui
+-- formalise la moitié (ii) de RouteC::main_lower : Q(n) ≥ n/2 pour n ≥ 176.
+-- 7 sorries du scaffold v35.4 originel sont fermés via :
+--   - Nat.squarefree_iff_prime_squarefree (SORRY-1)
+--   - inclusion ensembliste (SORRY-2)
+--   - Nat.Ioc_filter_dvd_card_eq_div (SORRY-3)
+--   - Finset.card_biUnion_le (SORRY-4)
+--   - télescopage discret (SORRY-5)
+--   - micro-lemmes de cast (SORRY-6)
+--   - conversion finale ℕ → ℚ (SORRY-7)
+-- Patches Mathlib v4.29 appliqués : imports renommés, Squarefree dé-namespacé,
+-- div_le_div_iff → div_le_div_iff₀, push_neg → push Not, restructuration
+-- de squarefreeCount_ge_half pour éviter Int.subNatNat.
+-- RHClaimed = false. Aucun nouveau sorry consommé.
+import CouretUnification.Logic.H3.SquarefreeDensity
