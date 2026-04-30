@@ -283,3 +283,12 @@ CouretUnification.Logic.ExplicitFormula.ArithmeticWeight
 CouretUnification.Logic.ExplicitFormula.PrimeSide
 CouretUnification.Logic.ExplicitFormula.ZeroCounting
 
+-- v35.9.1
+CouretUnification.Active
+CouretUnification.FCI.ModThirtyChecker
+CouretUnification.Frozen
+CouretUnification.Logic.ExplicitFormula.TestPair
+CouretUnification.Logic.ExplicitFormula.TraceObject
+CouretUnification.Logic.TimeBridge.B2Calibration
+CouretUnification.Logic.TimeBridge.ModularFlowSpec
+CouretUnification.Meta.SnapshotSentinel

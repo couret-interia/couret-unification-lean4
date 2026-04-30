@@ -1,121 +1,95 @@
 /-
-  Couret-Unification — v35.9.0
+  Couret-Unification — v35.9.1
   Logic/ExplicitFormula/ExplicitFormulaBridge.lean
 
-  Objet : LE MIROIR ARITHMÉTICO-SPECTRAL.
+  Objet : LE MIROIR ARITHMÉTICO-SPECTRAL — voûte commutative 4 sides.
 
-  Statut     : Frozen-eligible (0 sorry, 0 axiome local, structures + théorèmes triviaux)
+  Statut     : Frozen-eligible (0 sorry, 0 axiome local, 0 constante analytique)
   Layer      : Logic.ExplicitFormula
-  Doctrine   : NO RH HYPOTHESIS allowed in this file.
   RHClaimed              : false
   HilbertPolyaClaimed    : false
   PhysicalClaimed        : false
   sorryCount             : 0
   axiomCount             : 0
 
-  Voûte commutative cible :
-
-      PrimeSide(f) + ArchimedeanSide(f) = TraceObject(f)
-      ZeroSide(f)                       = TraceObject(f)
-      Det2Side(f)                       = TraceObject(f)
-
-  Changement v35.9-pre → v35.9.0 :
-    • Float → ℂ via Mathlib.
+  Changement v35.9.0 → v35.9.1 :
+    La voûte utilise désormais uniformément les `FormulaSide` du
+    module `TraceObject`, et les certificats d'égalité sont des
+    `SideEqualsTrace` réifiables.
 
   Pour Bernard.
 -/
 
-import Mathlib.Data.Complex.Basic
-import CouretUnification.Logic.ExplicitFormula.TestFunctions
+import CouretUnification.Logic.ExplicitFormula.TestPair
+import CouretUnification.Logic.ExplicitFormula.TraceObject
 
 namespace CouretUnification.Logic.ExplicitFormula
 
-/- ═══════════════════════════════════════════════════════════════════════════
-   LES QUATRE SIDES + L'OBJET TRACE
-   ═══════════════════════════════════════════════════════════════════════════ -/
+/-- Certificat de la formule explicite.
 
-structure TraceObject where
-  value : TestPairAdmissible → ℂ
+    La voûte demande :
+      PrimeSide + ArchimedeanSide = TraceObject
+      ZeroSide                    = TraceObject
+      Det2Side                    = TraceObject
 
-structure PrimeSideOfBridge where
-  value : TestPairAdmissible → ℂ
-
-structure ZeroSide where
-  value : TestPairAdmissible → ℂ
-
-structure ArchimedeanSide where
-  value : TestPairAdmissible → ℂ
-
-structure Det2Side where
-  value : TestPairAdmissible → ℂ
-
-/- ═══════════════════════════════════════════════════════════════════════════
-   LE CERTIFICAT DE MIROIR (4 SIDES = 1 TRACE)
-   ═══════════════════════════════════════════════════════════════════════════ -/
-
-/-- Le certificat de la formule explicite, pierre angulaire du programme. -/
-structure ExplicitFormulaCertificate where
-  traceSide        : TraceObject
-  primeSide        : PrimeSideOfBridge
-  zeroSide         : ZeroSide
-  archimedeanSide  : ArchimedeanSide
-  det2Side         : Det2Side
-  /-- Égalité 1 : prime + arch = trace (forme canonique de Weil). -/
+    Ces égalités sont des champs explicites — toute preuve de RH qui
+    emprunte ce chemin doit les avoir toutes quatre instanciées sans
+    sorry. -/
+structure ExplicitFormulaBridge where
+  primeSide       : FormulaSide
+  archimedeanSide : FormulaSide
+  zeroSide        : FormulaSide
+  det2Side        : FormulaSide
+  trace           : TraceObject
+  /-- Égalité 1 : PrimeSide + ArchimedeanSide = Trace. -/
   arith_plus_arch_eq_trace :
-    ∀ φ : TestPairAdmissible, Admissible φ →
-      primeSide.value φ + archimedeanSide.value φ = traceSide.value φ
-  /-- Égalité 2 : la somme spectrale = la trace. -/
-  spec_eq_trace :
-    ∀ φ : TestPairAdmissible, Admissible φ →
-      zeroSide.value φ = traceSide.value φ
-  /-- Égalité 3 : la lecture déterminantielle = la trace. -/
+    ∀ φ : TestPair,
+      primeSide.value φ + archimedeanSide.value φ = trace.value φ
+  /-- Égalité 2 : ZeroSide = Trace. -/
+  zero_eq_trace :
+    ∀ φ : TestPair, zeroSide.value φ = trace.value φ
+  /-- Égalité 3 : Det2Side = Trace. -/
   det2_eq_trace :
-    ∀ φ : TestPairAdmissible, Admissible φ →
-      det2Side.value φ = traceSide.value φ
+    ∀ φ : TestPair, det2Side.value φ = trace.value φ
 
-def ExplicitFormulaAdmissible (c : ExplicitFormulaCertificate) : Prop :=
-  (∀ φ : TestPairAdmissible, Admissible φ →
-      c.primeSide.value φ + c.archimedeanSide.value φ = c.traceSide.value φ)
-  ∧ (∀ φ : TestPairAdmissible, Admissible φ →
-      c.zeroSide.value φ = c.traceSide.value φ)
-  ∧ (∀ φ : TestPairAdmissible, Admissible φ →
-      c.det2Side.value φ = c.traceSide.value φ)
+/-- Admissibilité globale du bridge. -/
+def ExplicitFormulaAdmissible (B : ExplicitFormulaBridge) : Prop :=
+  (∀ φ : TestPair,
+      B.primeSide.value φ + B.archimedeanSide.value φ = B.trace.value φ)
+  ∧ (∀ φ : TestPair, B.zeroSide.value φ = B.trace.value φ)
+  ∧ (∀ φ : TestPair, B.det2Side.value φ = B.trace.value φ)
 
-theorem certificate_is_admissible (c : ExplicitFormulaCertificate) :
-    ExplicitFormulaAdmissible c :=
-  ⟨c.arith_plus_arch_eq_trace, c.spec_eq_trace, c.det2_eq_trace⟩
+theorem certificate_is_admissible (B : ExplicitFormulaBridge) :
+    ExplicitFormulaAdmissible B :=
+  ⟨B.arith_plus_arch_eq_trace, B.zero_eq_trace, B.det2_eq_trace⟩
 
-/-- Conséquence-pivot : prime + arch = zero. -/
+/-- Conséquence-pivot : PrimeSide + ArchSide = ZeroSide. -/
 theorem prime_plus_arch_eq_spec
-    (c : ExplicitFormulaCertificate)
-    (φ : TestPairAdmissible) (h : Admissible φ) :
-    c.primeSide.value φ + c.archimedeanSide.value φ = c.zeroSide.value φ := by
-  rw [c.arith_plus_arch_eq_trace φ h, ← c.spec_eq_trace φ h]
+    (B : ExplicitFormulaBridge) (φ : TestPair) :
+    B.primeSide.value φ + B.archimedeanSide.value φ = B.zeroSide.value φ := by
+  rw [B.arith_plus_arch_eq_trace φ, ← B.zero_eq_trace φ]
 
-/-- Conséquence-pivot : prime + arch = det2. -/
+/-- Conséquence-pivot : PrimeSide + ArchSide = Det2Side. -/
 theorem prime_plus_arch_eq_det2
-    (c : ExplicitFormulaCertificate)
-    (φ : TestPairAdmissible) (h : Admissible φ) :
-    c.primeSide.value φ + c.archimedeanSide.value φ = c.det2Side.value φ := by
-  rw [c.arith_plus_arch_eq_trace φ h, ← c.det2_eq_trace φ h]
+    (B : ExplicitFormulaBridge) (φ : TestPair) :
+    B.primeSide.value φ + B.archimedeanSide.value φ = B.det2Side.value φ := by
+  rw [B.arith_plus_arch_eq_trace φ, ← B.det2_eq_trace φ]
 
-/-- Conséquence-pivot : zero = det2. -/
+/-- Conséquence-pivot : ZeroSide = Det2Side. -/
 theorem spec_eq_det2
-    (c : ExplicitFormulaCertificate)
-    (φ : TestPairAdmissible) (h : Admissible φ) :
-    c.zeroSide.value φ = c.det2Side.value φ := by
-  rw [c.spec_eq_trace φ h, ← c.det2_eq_trace φ h]
+    (B : ExplicitFormulaBridge) (φ : TestPair) :
+    B.zeroSide.value φ = B.det2Side.value φ := by
+  rw [B.zero_eq_trace φ, ← B.det2_eq_trace φ]
 
-/- ═══════════════════════════════════════════════════════════════════════════
-   GATE FCI : NO CERTIFICATE ⇒ NO CLAIM
-   ═══════════════════════════════════════════════════════════════════════════ -/
+/- ═══════════════════════════════════════════════════════════════════
+   GATE FCI — No Certificate ⇒ No Claim
+   ═══════════════════════════════════════════════════════════════════ -/
 
-def ExplicitFormulaClaimAllowed (c : ExplicitFormulaCertificate) : Prop :=
-  ExplicitFormulaAdmissible c
+def ExplicitFormulaClaimAllowed (B : ExplicitFormulaBridge) : Prop :=
+  ExplicitFormulaAdmissible B
 
 theorem no_explicit_formula_claim_without_certificate
-    (c : ExplicitFormulaCertificate)
-    (h : ¬ ExplicitFormulaAdmissible c) :
-    ¬ ExplicitFormulaClaimAllowed c := h
+    (B : ExplicitFormulaBridge) (h : ¬ ExplicitFormulaAdmissible B) :
+    ¬ ExplicitFormulaClaimAllowed B := h
 
 end CouretUnification.Logic.ExplicitFormula

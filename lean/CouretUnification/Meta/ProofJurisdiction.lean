@@ -1,39 +1,22 @@
 /-
-  Couret-Unification — v35.9.0
+  Couret-Unification — v35.9.1
   Meta/ProofJurisdiction.lean
 
-  Objet : juridiction de preuve. Formalise la règle FCI :
+  Objet : juridiction de preuve. No Certificate ⇒ No Claim.
 
-           No Certificate  ⇒  No Claim.
-
-  Statut     : Frozen-eligible (0 sorry, 0 axiome local, structures pures)
-  Layer      : Meta (aucune dépendance amont dans CouretUnification)
-  Doctrine   : carte de promotion Active → Frozen
+  Statut     : Frozen-eligible (identique à v35.9.0)
   RHClaimed              : false (vérifié par frozen_no_rh_claim)
-  HilbertPolyaClaimed    : false (vérifié par frozen_no_hp_claim)
-  PhysicalClaimed        : false (vérifié par frozen_no_physical_claim)
+  HilbertPolyaClaimed    : false
+  PhysicalClaimed        : false
   sorryCount             : 0
   axiomCount             : 0
-
-  Règle architecturale stricte :
-    Frozen = 0 sorry + 0 axiome local non autorisé + 0 RH/HP/Physical claim.
-
-    La rupture d'un seul de ces invariants suffit à inhiber la promotion.
-
-  Historique des versions :
-    v35.9-pre : première rédaction (Float comme placeholder pour ℂ).
-    v35.9.0   : aucune modification — ce module était déjà robuste.
+  localConstants         : 0
 
   Pour Bernard.
 -/
 
 namespace CouretUnification.Meta
 
-/- ═══════════════════════════════════════════════════════════════════════════
-   STATUT D'UN CLAIM
-   ═══════════════════════════════════════════════════════════════════════════ -/
-
-/-- Statut épistémique d'un claim dans le programme. -/
 inductive ClaimStatus where
   | proved
   | definitionalClosed
@@ -44,10 +27,6 @@ inductive ClaimStatus where
   | retiredArtifact
 deriving DecidableEq, Repr
 
-/- ═══════════════════════════════════════════════════════════════════════════
-   CLAIMGATE : LE PORTAIL DE PROMOTION
-   ═══════════════════════════════════════════════════════════════════════════ -/
-
 structure ClaimGate where
   name             : String
   status           : ClaimStatus
@@ -55,10 +34,6 @@ structure ClaimGate where
   rhClaimed        : Bool
   hpClaimed        : Bool
   physicalClaimed  : Bool
-
-/- ═══════════════════════════════════════════════════════════════════════════
-   ADMISSIBILITÉ DE PROMOTION
-   ═══════════════════════════════════════════════════════════════════════════ -/
 
 def admissibleToFrozen (c : ClaimGate) : Prop :=
   (c.status = ClaimStatus.proved ∨ c.status = ClaimStatus.definitionalClosed)
@@ -75,10 +50,6 @@ def activeButNotClaimed (c : ClaimGate) : Prop :=
 def inhibited (c : ClaimGate) : Prop :=
   c.status = ClaimStatus.falsified
   ∨ c.status = ClaimStatus.retiredArtifact
-
-/- ═══════════════════════════════════════════════════════════════════════════
-   THÉORÈMES DE JURIDICTION
-   ═══════════════════════════════════════════════════════════════════════════ -/
 
 theorem frozen_no_rh_claim
     (c : ClaimGate) (h : admissibleToFrozen c) :
