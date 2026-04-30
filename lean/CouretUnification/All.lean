@@ -226,69 +226,88 @@ import CouretUnification.Logic.H3.AlgebraTC
 -- import CouretUnification.Logic.H3.SquarefreeDensity
 
 -- v35.7
-CouretUnification.Meta.Layer
-CouretUnification.Empirical.SophieGermainTransitions
-CouretUnification.Logic.C3Weak
-CouretUnification.Logic.CriticalLineTransferSpec
-CouretUnification.Logic.Doctrine
-CouretUnification.Logic.EulerBridgeInfinite
-CouretUnification.Logic.FEnriched30
-CouretUnification.Logic.FEnrichedSpec
-CouretUnification.Logic.LocalFactor
-CouretUnification.Logic.LocalSquarefreeBridge
-CouretUnification.Logic.SophieGermainMatrix
-CouretUnification.Logic.SquarefreeSupport
-CouretUnification.Speculative.AnalogyMTF
-CouretUnification.Speculative.Ontology
+import CouretUnification.Meta.Layer
+import CouretUnification.Empirical.SophieGermainTransitions
+import CouretUnification.Logic.C3Weak
+import CouretUnification.Logic.CriticalLineTransferSpec
+import CouretUnification.Logic.Doctrine
+import CouretUnification.Logic.EulerBridgeInfinite
+import CouretUnification.Logic.FEnriched30
+import CouretUnification.Logic.FEnrichedSpec
+import CouretUnification.Logic.LocalFactor
+import CouretUnification.Logic.LocalSquarefreeBridge
+import CouretUnification.Logic.SophieGermainMatrix
+import CouretUnification.Logic.SquarefreeSupport
+import CouretUnification.Speculative.AnalogyMTF
+import CouretUnification.Speculative.Ontology
 
 -- v35.8
-CouretUnification.Empirical.SophieGermainExpected
-CouretUnification.Logic.EulerBridgeInfiniteCompat
-CouretUnification.Logic.EulerBridgeInfiniteReal
-CouretUnification.Logic.L10NoGoTheorem
-CouretUnification.Logic.OpenLocks
+import CouretUnification.Empirical.SophieGermainExpected
+import CouretUnification.Logic.EulerBridgeInfiniteCompat
+import CouretUnification.Logic.EulerBridgeInfiniteReal
+import CouretUnification.Logic.L10NoGoTheorem
+import CouretUnification.Logic.OpenLocks
 
 -- v35.8.1
-CouretUnification.Logic.L6Bridge
+import CouretUnification.Logic.L6Bridge
 
 -- v35.8.1-bis
-CouretUnification.Meta.AuditHints
+import CouretUnification.Meta.AuditHints
 
 -- v35.8.5
-CouretUnification.Logic.H3.C3Weak_Gram
-CouretUnification.Logic.L6RatioEstimateDerived
-CouretUnification.Meta.Doctrine
+import CouretUnification.Logic.H3.C3Weak_Gram
+import CouretUnification.Logic.L6RatioEstimateDerived
+import CouretUnification.Meta.Doctrine
 
 -- v35.8.6
-CouretUnification.Analytic.GammaFactor
-CouretUnification.Logic.C3Weak_Gram
-CouretUnification.Logic.L6Analytic
-CouretUnification.Logic.L6Interface
+import CouretUnification.Analytic.GammaFactor
+import CouretUnification.Logic.C3Weak_Gram
+import CouretUnification.Logic.L6Analytic
+import CouretUnification.Logic.L6Interface
 
 -- v35.8.7
-CouretUnification.Logic.ChiralityFinite
-CouretUnification.Logic.ChiralityLinear
+import CouretUnification.Logic.ChiralityFinite
+import CouretUnification.Logic.ChiralityLinear
+
+-- v35.8.8
+import CouretUnification.AnalyticHorizon.Det2Transport
+import CouretUnification.Logic.C3Weak_Gram
+import CouretUnification.Logic.ChiralityFinite
+import CouretUnification.Logic.ChiralityLinear
+import CouretUnification.Logic.EulerBridgeInfiniteCompat
+import CouretUnification.Logic.H3.CriticalLineTransferSpec
+import CouretUnification.Logic.H3.LocalFactor
+import CouretUnification.Logic.H3.MoebiusBridge
+import CouretUnification.Logic.H3.SquarefreeDensity
+import CouretUnification.Logic.H3.SquarefreeSupport
+import CouretUnification.Logic.L10NoGoTheorem
+import CouretUnification.Logic.L6Analytic
+import CouretUnification.Logic.L6Bridge
+import CouretUnification.Logic.L6Interface
+import CouretUnification.Logic.L6RatioEstimateDerived
+import CouretUnification.Logic.OpenLocks
+import CouretUnification.Meta.Doctrine
 
 -- v35.9-pre
-CouretUnification.AnalyticHorizon.Det2Obligations
-CouretUnification.AnalyticHorizon.Det2Transport
-CouretUnification.ExplicitFormula.ExplicitFormulaBridge
-CouretUnification.Logic.ExplicitFormula.TestFunctions
-CouretUnification.CouretUnification.Logic.H3.HPCertificate
-CouretUnification.CouretUnification.Meta.ProofJurisdiction
+import CouretUnification.AnalyticHorizon.Det2Obligations
+import CouretUnification.AnalyticHorizon.Det2Transport
+import CouretUnification.ExplicitFormula.ExplicitFormulaBridge
+import CouretUnification.Logic.ExplicitFormula.TestFunctions
+import CouretUnification.CouretUnification.Logic.H3.HPCertificate
+import CouretUnification.CouretUnification.Meta.ProofJurisdiction
 
 -- v35.9.0
-CouretUnification.Logic.ExplicitFormula.ArchimedeanSide
-CouretUnification.Logic.ExplicitFormula.ArithmeticWeight
-CouretUnification.Logic.ExplicitFormula.PrimeSide
-CouretUnification.Logic.ExplicitFormula.ZeroCounting
+import CouretUnification.Logic.ExplicitFormula.ArchimedeanSide
+import CouretUnification.Logic.ExplicitFormula.ArithmeticWeight
+import CouretUnification.Logic.ExplicitFormula.PrimeSide
+import CouretUnification.Logic.ExplicitFormula.ZeroCounting
 
 -- v35.9.1
-CouretUnification.Active
-CouretUnification.FCI.ModThirtyChecker
-CouretUnification.Frozen
-CouretUnification.Logic.ExplicitFormula.TestPair
-CouretUnification.Logic.ExplicitFormula.TraceObject
-CouretUnification.Logic.TimeBridge.B2Calibration
-CouretUnification.Logic.TimeBridge.ModularFlowSpec
-CouretUnification.Meta.SnapshotSentinel
+import CouretUnification.Active
+import CouretUnification.FCI.ModThirtyChecker
+import CouretUnification.Frozen
+import CouretUnification.Logic.ExplicitFormula.TestPair
+import CouretUnification.Logic.ExplicitFormula.TraceObject
+import CouretUnification.Logic.TimeBridge.B2Calibration
+import CouretUnification.Logic.TimeBridge.ModularFlowSpec
+import CouretUnification.Meta.SnapshotSentinel
