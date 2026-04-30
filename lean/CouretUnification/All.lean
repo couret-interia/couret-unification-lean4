@@ -250,3 +250,17 @@ CouretUnification.Logic.OpenLocks
 
 -- v35.8.1
 CouretUnification.Logic.L6Bridge
+
+-- v35.8.1-bis
+CouretUnification.Meta.AuditHints
+
+-- v35.8.5
+CouretUnification.Logic.H3.C3Weak_Gram
+CouretUnification.Logic.L6RatioEstimateDerived
+CouretUnification.Meta.Doctrine
+
+-- v35.8.6
+CouretUnification.Analytic.GammaFactor
+CouretUnification.Logic.C3Weak_Gram
+CouretUnification.Logic.L6Analytic
+CouretUnification.Logic.L6Interface
