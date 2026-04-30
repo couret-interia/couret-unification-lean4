@@ -240,3 +240,11 @@ CouretUnification.Logic.SophieGermainMatrix
 CouretUnification.Logic.SquarefreeSupport
 CouretUnification.Speculative.AnalogyMTF
 CouretUnification.Speculative.Ontology
+
+-- v35.8
+CouretUnification.Empirical.SophieGermainExpected
+CouretUnification.Logic.EulerBridgeInfiniteCompat
+CouretUnification.Logic.EulerBridgeInfiniteReal
+CouretUnification.Logic.L10NoGoTheorem
+CouretUnification.Logic.OpenLocks
+
