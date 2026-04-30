@@ -268,3 +268,22 @@ CouretUnification.Logic.L6Interface
 -- v35.8.7
 CouretUnification.Logic.ChiralityFinite
 CouretUnification.Logic.ChiralityLinear
+
+-- v35.8.8
+CouretUnification.AnalyticHorizon.Det2Transport
+CouretUnification.Logic.C3Weak_Gram
+CouretUnification.Logic.ChiralityFinite
+CouretUnification.Logic.ChiralityLinear
+CouretUnification.Logic.EulerBridgeInfiniteCompat
+CouretUnification.Logic.H3.CriticalLineTransferSpec
+CouretUnification.Logic.H3.LocalFactor
+CouretUnification.Logic.H3.MoebiusBridge
+CouretUnification.Logic.H3.SquarefreeDensity
+CouretUnification.Logic.H3.SquarefreeSupport
+CouretUnification.Logic.L10NoGoTheorem
+CouretUnification.Logic.L6Analytic
+CouretUnification.Logic.L6Bridge
+CouretUnification.Logic.L6Interface
+CouretUnification.Logic.L6RatioEstimateDerived
+CouretUnification.Logic.OpenLocks
+CouretUnification.Meta.Doctrine
