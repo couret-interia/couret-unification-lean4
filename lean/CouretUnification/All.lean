@@ -268,3 +268,11 @@ CouretUnification.Logic.L6Interface
 -- v35.8.7
 CouretUnification.Logic.ChiralityFinite
 CouretUnification.Logic.ChiralityLinear
+
+-- v35.9-pre
+CouretUnification.AnalyticHorizon.Det2Obligations
+CouretUnification.AnalyticHorizon.Det2Transport
+CouretUnification.ExplicitFormula.ExplicitFormulaBridge
+CouretUnification.Logic.ExplicitFormula.TestFunctions
+CouretUnification.CouretUnification.Logic.H3.HPCertificate
+CouretUnification.CouretUnification.Meta.ProofJurisdiction
