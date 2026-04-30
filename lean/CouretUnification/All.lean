@@ -248,3 +248,5 @@ CouretUnification.Logic.EulerBridgeInfiniteReal
 CouretUnification.Logic.L10NoGoTheorem
 CouretUnification.Logic.OpenLocks
 
+-- v35.8.1
+CouretUnification.Logic.L6Bridge
