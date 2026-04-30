@@ -328,4 +328,5 @@ import CouretUnification.CouretUnification.Active.TraceObjectEnriched
 
 -- v37.0
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
+import CouretUnification.Residue.ClosureTC
 
