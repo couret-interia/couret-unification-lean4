@@ -311,3 +311,6 @@ import CouretUnification.Logic.ExplicitFormula.TraceObject
 import CouretUnification.Logic.TimeBridge.B2Calibration
 import CouretUnification.Logic.TimeBridge.ModularFlowSpec
 import CouretUnification.Meta.SnapshotSentinel
+
+-- v35.9.2-prospective
+import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec
