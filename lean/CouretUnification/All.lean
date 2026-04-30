@@ -209,7 +209,7 @@ import CouretUnification.Logic.H3.AlgebraTC
 
 -- v35.4.3 — intégration v35.4 SquarefreeDensity (spring-2026/v35.5-integration)
 -- Premier pas de l'intégration des packs Alexandre v35.4 → v35.8.7.1.
--- Apporte le fichier Logic/H3/SquarefreeDensity.lean (543 lignes) qui
+-- Apporte le fichier Logic/H3/SquarefreeDensity (543 lignes) qui
 -- formalise la moitié (ii) de RouteC::main_lower : Q(n) ≥ n/2 pour n ≥ 176.
 -- 7 sorries du scaffold v35.4 originel sont fermés via :
 --   - Nat.squarefree_iff_prime_squarefree (SORRY-1)
@@ -314,3 +314,10 @@ import CouretUnification.Meta.SnapshotSentinel
 
 -- v35.9.2-prospective
 import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec
+
+-- v36.0 Frozen-ExplicitFormula-Core-bundle
+import CouretUnification.AnalyticHorizon.A8ArchimedeanAbsorption
+import CouretUnification.Logic.ExplicitFormula.ArchimedeanKernelBound
+import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport
+import CouretUnification.Logic.ExplicitFormula.StatusFlags
+import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation

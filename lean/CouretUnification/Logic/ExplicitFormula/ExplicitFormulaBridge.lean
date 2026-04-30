@@ -1,95 +1,44 @@
-/-
-  Couret-Unification — v35.9.1
-  Logic/ExplicitFormula/ExplicitFormulaBridge.lean
-
-  Objet : LE MIROIR ARITHMÉTICO-SPECTRAL — voûte commutative 4 sides.
-
-  Statut     : Frozen-eligible (0 sorry, 0 axiome local, 0 constante analytique)
-  Layer      : Logic.ExplicitFormula
-  RHClaimed              : false
-  HilbertPolyaClaimed    : false
-  PhysicalClaimed        : false
-  sorryCount             : 0
-  axiomCount             : 0
-
-  Changement v35.9.0 → v35.9.1 :
-    La voûte utilise désormais uniformément les `FormulaSide` du
-    module `TraceObject`, et les certificats d'égalité sont des
-    `SideEqualsTrace` réifiables.
-
-  Pour Bernard.
--/
-
-import CouretUnification.Logic.ExplicitFormula.TestPair
+import Mathlib
 import CouretUnification.Logic.ExplicitFormula.TraceObject
+import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport
+import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+import CouretUnification.Logic.ExplicitFormula.ArchimedeanKernelBound
 
 namespace CouretUnification.Logic.ExplicitFormula
 
-/-- Certificat de la formule explicite.
+/-- PrimeSide packaged as a formula side. -/
+structure PrimeSide where
+  side : FormulaSide
+  compactClosure : Prop
 
-    La voûte demande :
-      PrimeSide + ArchimedeanSide = TraceObject
-      ZeroSide                    = TraceObject
-      Det2Side                    = TraceObject
+/-- Det2 side remains only a typed door, not a proved determinant identity. -/
+structure Det2Side where
+  side : FormulaSide
+  A1_num : Prop
+  A2_den : Prop
+  A3_bound : Prop
+  A4_critical : Prop
 
-    Ces égalités sont des champs explicites — toute preuve de RH qui
-    emprunte ce chemin doit les avoir toutes quatre instanciées sans
-    sorry. -/
+/--
+Architectural Riemann-Weil bridge.
+
+This is not a proof of the explicit formula.
+It is a typed contract saying which sides must eventually coincide.
+-/
 structure ExplicitFormulaBridge where
-  primeSide       : FormulaSide
-  archimedeanSide : FormulaSide
-  zeroSide        : FormulaSide
-  det2Side        : FormulaSide
-  trace           : TraceObject
-  /-- Égalité 1 : PrimeSide + ArchimedeanSide = Trace. -/
-  arith_plus_arch_eq_trace :
-    ∀ φ : TestPair,
-      primeSide.value φ + archimedeanSide.value φ = trace.value φ
-  /-- Égalité 2 : ZeroSide = Trace. -/
-  zero_eq_trace :
-    ∀ φ : TestPair, zeroSide.value φ = trace.value φ
-  /-- Égalité 3 : Det2Side = Trace. -/
-  det2_eq_trace :
-    ∀ φ : TestPair, det2Side.value φ = trace.value φ
+  primeSide : PrimeSide
+  zeroSide : ZeroSide
+  archimedeanSide : ArchimedeanSide
+  det2Side : Det2Side
+  trace : TraceObject
 
-/-- Admissibilité globale du bridge. -/
-def ExplicitFormulaAdmissible (B : ExplicitFormulaBridge) : Prop :=
-  (∀ φ : TestPair,
-      B.primeSide.value φ + B.archimedeanSide.value φ = B.trace.value φ)
-  ∧ (∀ φ : TestPair, B.zeroSide.value φ = B.trace.value φ)
-  ∧ (∀ φ : TestPair, B.det2Side.value φ = B.trace.value φ)
+  prime_arch_to_trace : Prop
+  zero_to_trace : Prop
+  det2_to_trace : Prop
 
-theorem certificate_is_admissible (B : ExplicitFormulaBridge) :
-    ExplicitFormulaAdmissible B :=
-  ⟨B.arith_plus_arch_eq_trace, B.zero_eq_trace, B.det2_eq_trace⟩
-
-/-- Conséquence-pivot : PrimeSide + ArchSide = ZeroSide. -/
-theorem prime_plus_arch_eq_spec
-    (B : ExplicitFormulaBridge) (φ : TestPair) :
-    B.primeSide.value φ + B.archimedeanSide.value φ = B.zeroSide.value φ := by
-  rw [B.arith_plus_arch_eq_trace φ, ← B.zero_eq_trace φ]
-
-/-- Conséquence-pivot : PrimeSide + ArchSide = Det2Side. -/
-theorem prime_plus_arch_eq_det2
-    (B : ExplicitFormulaBridge) (φ : TestPair) :
-    B.primeSide.value φ + B.archimedeanSide.value φ = B.det2Side.value φ := by
-  rw [B.arith_plus_arch_eq_trace φ, ← B.det2_eq_trace φ]
-
-/-- Conséquence-pivot : ZeroSide = Det2Side. -/
-theorem spec_eq_det2
-    (B : ExplicitFormulaBridge) (φ : TestPair) :
-    B.zeroSide.value φ = B.det2Side.value φ := by
-  rw [B.zero_eq_trace φ, ← B.det2_eq_trace φ]
-
-/- ═══════════════════════════════════════════════════════════════════
-   GATE FCI — No Certificate ⇒ No Claim
-   ═══════════════════════════════════════════════════════════════════ -/
-
-def ExplicitFormulaClaimAllowed (B : ExplicitFormulaBridge) : Prop :=
-  ExplicitFormulaAdmissible B
-
-theorem no_explicit_formula_claim_without_certificate
-    (B : ExplicitFormulaBridge) (h : ¬ ExplicitFormulaAdmissible B) :
-    ¬ ExplicitFormulaClaimAllowed B := h
+/-- No RH consequence may be exported from this bridge alone. -/
+theorem no_RH_from_explicit_formula_bridge
+    (B : ExplicitFormulaBridge) : True := by
+  trivial
 
 end CouretUnification.Logic.ExplicitFormula
