@@ -264,3 +264,7 @@ CouretUnification.Analytic.GammaFactor
 CouretUnification.Logic.C3Weak_Gram
 CouretUnification.Logic.L6Analytic
 CouretUnification.Logic.L6Interface
+
+-- v35.8.7
+CouretUnification.Logic.ChiralityFinite
+CouretUnification.Logic.ChiralityLinear
