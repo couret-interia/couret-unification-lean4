@@ -321,3 +321,7 @@ import CouretUnification.Logic.ExplicitFormula.ArchimedeanKernelBound
 import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport
 import CouretUnification.Logic.ExplicitFormula.StatusFlags
 import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+
+-- v36.1 v36.1-Active-Extensions
+import CouretUnification.CouretUnification.Active.PrimeSideRealClosure
+import CouretUnification.CouretUnification.Active.TraceObjectEnriched
