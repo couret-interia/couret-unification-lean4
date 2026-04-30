@@ -276,3 +276,10 @@ CouretUnification.ExplicitFormula.ExplicitFormulaBridge
 CouretUnification.Logic.ExplicitFormula.TestFunctions
 CouretUnification.CouretUnification.Logic.H3.HPCertificate
 CouretUnification.CouretUnification.Meta.ProofJurisdiction
+
+-- v35.9.0
+CouretUnification.Logic.ExplicitFormula.ArchimedeanSide
+CouretUnification.Logic.ExplicitFormula.ArithmeticWeight
+CouretUnification.Logic.ExplicitFormula.PrimeSide
+CouretUnification.Logic.ExplicitFormula.ZeroCounting
+

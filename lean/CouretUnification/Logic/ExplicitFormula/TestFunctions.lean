@@ -1,5 +1,5 @@
 /-
-  Couret-Unification — v35.9-pre
+  Couret-Unification — v35.9.0
   Logic/ExplicitFormula/TestFunctions.lean
 
   Objet : fonctions test pour la formule explicite de Riemann–Weil.
@@ -7,17 +7,16 @@
          les obligations analytiques minimales pour que les quatre
          sides (Prime, Zero, Archimedean, Det2) soient bien définis.
 
-  Statut     : Frozen-eligible (0 sorry, structures uniquement)
+  Statut     : Frozen-eligible (0 sorry, 0 axiome local, structures uniquement)
   Layer      : Logic.ExplicitFormula
   Doctrine   : NO RH HYPOTHESIS allowed in this file.
-               In particular, no field may impose `ρ.re = 1/2`.
   RHClaimed              : false
   HilbertPolyaClaimed    : false
   PhysicalClaimed        : false
   sorryCount             : 0
+  axiomCount             : 0
 
-  Stratification (4 niveaux, pour permettre la promotion incrémentale) :
-
+  Stratification (4 niveaux) :
     Niveau 1 — TestPairBasic        : g ∈ C_c^∞, fhat défini, convention figée
     Niveau 2 — TestPairAnalytic     : décroissance rapide de fhat
     Niveau 3 — TestPairAdmissible   : sides Prime/Zero/Arch tous bien définis
@@ -27,12 +26,16 @@
 
       fhat(t) = ∫ f(x) · exp(-i · t · x) dx       (negativeExp)
 
-  Aucun module ne doit silencieusement basculer vers la convention
-  positiveExp. Cette décision est doctrinale et ne se modifie qu'à
-  l'unanimité du dépôt.
+  Changements v35.9-pre → v35.9.0 :
+    • Float → ℝ/ℂ via Mathlib (passage à la représentation réelle).
+    • NontrivialZero : ℝ au lieu de Float pour re, im.
+    • `compactSupport_g` typé avec `ℝ` et `abs` réel.
 
   Pour Bernard.
 -/
+
+import Mathlib.Analysis.Calculus.ContDiff.Basic
+import Mathlib.Data.Complex.Basic
 
 namespace CouretUnification.Logic.ExplicitFormula
 
@@ -46,7 +49,7 @@ inductive FourierConvention where
   | positiveExp   -- fhat(t) = ∫ f(x) · exp( i·t·x) dx
 deriving DecidableEq, Repr
 
-/-- La convention canonique du dépôt (lecture seule). -/
+/-- La convention canonique du dépôt. -/
 def canonicalFourierConvention : FourierConvention := FourierConvention.negativeExp
 
 /- ═══════════════════════════════════════════════════════════════════════════
@@ -57,17 +60,16 @@ def canonicalFourierConvention : FourierConvention := FourierConvention.negative
 
     Important : on suppose seulement `0 < re < 1` (bande critique). On
     n'impose JAMAIS `re = 1/2` ici. Cette hypothèse appartient
-    exclusivement au théorème final `RH_from_HP_certificate` et ne doit
-    pas être injectée silencieusement dans la définition d'admissibilité. -/
+    exclusivement au théorème final `RH_from_HP_certificate`. -/
 structure NontrivialZero where
-  re             : Float
-  im             : Float
-  inCriticalStrip : Prop   -- intended : 0 < re ∧ re < 1
-  isZero          : Prop   -- intended : zeta (re + i·im) = 0
+  re              : ℝ
+  im              : ℝ
+  inCriticalStrip : Prop    -- intended : 0 < re ∧ re < 1
+  isZero          : Prop    -- intended : zeta (re + i·im) = 0
   multiplicity    : Nat
 
 /-- L'ordonnée d'un zéro non trivial. -/
-def gamma (ρ : NontrivialZero) : Float := ρ.im
+def gamma (ρ : NontrivialZero) : ℝ := ρ.im
 
 /- ═══════════════════════════════════════════════════════════════════════════
    NIVEAU 1 — TESTPAIR BASIC
@@ -75,23 +77,22 @@ def gamma (ρ : NontrivialZero) : Float := ρ.im
 
 /-- Couple test (g, ĝ) au niveau 1 : régularité, support compact, convention.
 
-    Tous les champs analytiques (`smooth_g`, `compactSupport_g`,
-    `fourierLinked`) sont laissés en `Prop`. Leur définition concrète
-    est fournie par la couche Active (qui peut importer Mathlib pour
-    `ContDiff`, `HasCompactSupport`, etc.). Ce module ne dépend de rien
-    d'autre que de `Float` pour rester aussi léger que possible. -/
+    Note v35.9.0 : les champs analytiques (`smooth_g`, `fourierLinked`)
+    restent des `Prop` au niveau structurel pour éviter de lier Frozen à
+    des définitions Mathlib complexes. La couche Active leur fournit leur
+    contenu concret via `ContDiff ℝ ⊤ g`, etc. -/
 structure TestPairBasic where
   /-- La fonction test sur la variable logarithmique. -/
-  g                 : Float → Float
-  /-- Sa transformée de Fourier (donnée structurelle pour le moment). -/
-  ghat              : Float → Float
+  g                 : ℝ → ℂ
+  /-- Sa transformée de Fourier (donnée structurelle). -/
+  ghat              : ℝ → ℂ
   /-- g est lisse (intended : ContDiff ℝ ⊤ g). -/
   smooth_g          : Prop
   /-- g a support compact dans [-A, A] pour un certain A > 0. -/
-  compactSupport_g  : ∃ A : Float, A > 0 ∧ ∀ x : Float, x.abs > A → g x = 0
-  /-- La convention Fourier utilisée pour ĝ. Doctrinalement = negativeExp. -/
+  compactSupport_g  : ∃ A : ℝ, 0 < A ∧ ∀ x : ℝ, A < |x| → g x = 0
+  /-- Convention Fourier utilisée. Doctrinalement = negativeExp. -/
   fourierConvention : FourierConvention
-  /-- ĝ est bien la transformée de Fourier de g sous cette convention. -/
+  /-- ĝ est bien la transformée de Fourier de g. -/
   fourierLinked     : Prop
 
 /-- Convention figée : un TestPairBasic admissible utilise negativeExp. -/
@@ -103,31 +104,18 @@ def TestPairBasic.usesCanonicalConvention (φ : TestPairBasic) : Prop :=
    ═══════════════════════════════════════════════════════════════════════════ -/
 
 /-- Niveau 2 : ajoute la décroissance rapide de ĝ et l'intégrabilité du
-    terme archimédien.
-
-    La décroissance rapide est essentielle pour le ZeroSide : combinée à
-    Riemann–von Mangoldt, elle assure la sommabilité absolue
-    `∑_ρ |ĝ(γ_ρ)| < ∞`.
-
-    L'intégrabilité archimédienne couvre le terme `∫ |ĝ(t)| · log(2 + |t|) dt`
-    issu de la dérivée logarithmique de Γ(s/2 + 1/4) dans la formule de Weil. -/
+    terme archimédien. -/
 structure TestPairAnalytic extends TestPairBasic where
-  /-- ĝ décroît plus vite que tout polynôme :
-      ∀ N, ∃ C, ∀ t, |ĝ(t)| ≤ C / (1 + |t|)^N. -/
+  /-- ĝ décroît plus vite que tout polynôme. -/
   rapidDecay_ghat       : Prop
   /-- L'intégrale ∫ |ĝ(t)| · log(2 + |t|) dt est finie. -/
   archimedeanIntegrable : Prop
 
 /- ═══════════════════════════════════════════════════════════════════════════
-   NIVEAU 3 — TESTPAIR ADMISSIBLE (pour le bridge complet)
+   NIVEAU 3 — TESTPAIR ADMISSIBLE
    ═══════════════════════════════════════════════════════════════════════════ -/
 
-/-- Niveau 3 : prêt à être consommé par `ExplicitFormulaCertificate`.
-
-    Les quatre sides sont garantis bien définis : PrimeSide est fini
-    (par support compact), ZeroSide est sommable (par rapidDecay +
-    Riemann–von Mangoldt), ArchimedeanSide est intégrable, Det2Side
-    est défini conditionnellement (cf. AnalyticHorizon/Det2Obligations). -/
+/-- Niveau 3 : prêt à être consommé par `ExplicitFormulaCertificate`. -/
 structure TestPairAdmissible extends TestPairAnalytic where
   primeSideFinite           : Prop
   zeroSideSummable          : Prop
@@ -146,42 +134,14 @@ def Admissible (φ : TestPairAdmissible) : Prop :=
   ∧ φ.archimedeanSideDefined
 
 /- ═══════════════════════════════════════════════════════════════════════════
-   THÉORÈME-PILIER : SUPPORT COMPACT ⇒ PRIMESIDE FINI
-   ═══════════════════════════════════════════════════════════════════════════
-
-   La compression FCI appliquée à la formule explicite. Si supp(g) ⊂ [-A,A],
-   alors pour tout n tel que log n > A, on a g(±log n) = 0, et donc le
-   terme arithmétique correspondant s'annule.
-
-   La démonstration analytique complète (qui transforme le `tsum` infini
-   en `Finset.sum` fini via `Real.exp A`) appartient à
-   `Logic/ExplicitFormula/PrimeSide.lean` (Active). Ce module se contente
-   d'exposer la *spécification* de cette propriété sous forme typée.
--/
-
-/-- Spécification : pour tout TestPair à support compact, il existe un
-    seuil au-delà duquel tous les termes arithmétiques s'annulent. -/
-def PrimeSideHasFiniteSupport (φ : TestPairBasic) : Prop :=
-  ∃ N : Nat, ∀ n : Nat, N < n →
-    -- Le terme primaire à l'indice n s'annule.
-    -- Forme symbolique pour spec ; définition concrète dans PrimeSide.lean.
-    φ.g (Float.log n.toFloat) = 0 ∧ φ.g (-Float.log n.toFloat) = 0
-
-/- ═══════════════════════════════════════════════════════════════════════════
-   PIÈGE DOCTRINAL À ÉVITER (en commentaire, jamais en Lean)
+   PIÈGE DOCTRINAL À ÉVITER
    ═══════════════════════════════════════════════════════════════════════════
 
    Ne JAMAIS introduire dans ce module un champ tel que :
 
        rho_on_critical_line : ∀ ρ : NontrivialZero, ρ.re = 1/2
 
-   Cela injecterait RH dans la définition d'admissibilité, créant une
-   tautologie qui invaliderait toute revendication ultérieure. La position
-   des zéros sur la ligne critique est la *conclusion* du théorème
-   `RH_from_HP_certificate`, jamais une *prémisse* de TestPair.
-
-   La somme spectrale `∑_ρ ĝ(γ_ρ)` doit pouvoir s'écrire sur des zéros
-   `ρ = β + iγ` avec β quelconque dans (0,1).
+   Cela injecterait RH dans la définition d'admissibilité.
 -/
 
 end CouretUnification.Logic.ExplicitFormula
