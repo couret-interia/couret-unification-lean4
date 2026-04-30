@@ -325,3 +325,7 @@ import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
 -- v36.1 v36.1-Active-Extensions
 import CouretUnification.CouretUnification.Active.PrimeSideRealClosure
 import CouretUnification.CouretUnification.Active.TraceObjectEnriched
+
+-- v37.0
+import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
+
