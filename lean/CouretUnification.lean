@@ -1,4 +1,4 @@
-/-!
+/-
 # CouretUnification — façade canonique
 
 Entrée publique officielle du projet Couret–Unification.
