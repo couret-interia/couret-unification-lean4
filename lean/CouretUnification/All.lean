@@ -276,8 +276,8 @@ import CouretUnification.AnalyticHorizon.Det2Obligations
 import CouretUnification.AnalyticHorizon.Det2Transport
 import CouretUnification.ExplicitFormula.ExplicitFormulaBridge
 import CouretUnification.Logic.ExplicitFormula.TestFunctions
-import CouretUnification.CouretUnification.Logic.H3.HPCertificate
-import CouretUnification.CouretUnification.Meta.ProofJurisdiction
+import CouretUnification.Logic.H3.HPCertificate
+import CouretUnification.Meta.ProofJurisdiction
 
 -- v35.9.0
 import CouretUnification.Logic.ExplicitFormula.ArchimedeanSide
@@ -306,8 +306,8 @@ import CouretUnification.Logic.ExplicitFormula.StatusFlags
 import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
 
 -- v36.1 v36.1-Active-Extensions
-import CouretUnification.CouretUnification.Active.PrimeSideRealClosure
-import CouretUnification.CouretUnification.Active.TraceObjectEnriched
+import CouretUnification.Active.PrimeSideRealClosure
+import CouretUnification.Active.TraceObjectEnriched
 
 -- v37.0
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
