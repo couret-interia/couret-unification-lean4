@@ -332,3 +332,5 @@ import CouretUnification.Residue.ClosureTC
 import CouretUnification.Residue.CycleCoset
 import CouretUnification.Residue.TorsionLift210
 
+-- v38
+import CouretUnification.EpistemicDiscipline.BridgeStatus
