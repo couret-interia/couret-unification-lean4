@@ -116,12 +116,47 @@ noncomputable def Ztot_effective (_χ : PrimitiveCharacter) (T : ℝ) : ℝ :=
     Cette borne numérique (≈ 17.08) est largement suffisante : le
     premier zéro non trivial de ζ se situe à γ₁ ≈ 14.13, donc
     tout `T ≥ 18` garantit simultanément `N(T) ≥ 1` et la positivité
-    du terme principal. -/
+    du terme principal.
+
+    **Fermé en v35.8.7.1** : preuve complète via monotonie stricte de log. -/
 theorem Ztot_effective_eventually_positive (χ : PrimitiveCharacter) :
     ∃ T₀ : ℝ, 0 < T₀ ∧ ∀ T : ℝ, T₀ ≤ T → 0 < Ztot_effective χ T := by
-  -- Stratégie : prendre T₀ = 2π·e + 1 > 0.
-  -- Pour T ≥ T₀ : τ = T/(2π) > e, donc log(τ/e) > 0, donc τ · log(τ/e) > 0.
-  sorry  -- [ANALYTIC] Preuve par monotonie de log et positivité de τ
+  -- Stratégie : T₀ := 2π·e + 1. Pour T ≥ T₀ :
+  --   1) T > 2π·e (car T ≥ 2π·e + 1 > 2π·e)
+  --   2) τ := T/(2π) > e > 0
+  --   3) τ/e > 1, donc log(τ/e) > 0
+  --   4) τ · log(τ/e) > 0.
+  refine ⟨2 * Real.pi * Real.exp 1 + 1, ?_, ?_⟩
+  · -- 0 < 2π·e + 1
+    have h_pi_pos : 0 < Real.pi := Real.pi_pos
+    have h_exp_pos : 0 < Real.exp 1 := Real.exp_pos 1
+    have h_prod : 0 < 2 * Real.pi * Real.exp 1 := by positivity
+    linarith
+  · intro T hT
+    -- Déplier Ztot_effective : τ = T/(2π), Ztot = τ · log(τ/e)
+    show 0 < (T / (2 * Real.pi)) *
+            Real.log (T / (2 * Real.pi) / Real.exp 1)
+    have h_pi_pos : 0 < Real.pi := Real.pi_pos
+    have h_2pi_pos : 0 < 2 * Real.pi := by linarith
+    have h_exp_pos : 0 < Real.exp 1 := Real.exp_pos 1
+    -- T > 2π·e (strict)
+    have h_T_gt : 2 * Real.pi * Real.exp 1 < T := by linarith
+    -- τ := T/(2π) satisfait τ > e
+    have h_tau_gt_e : Real.exp 1 < T / (2 * Real.pi) := by
+      rw [lt_div_iff h_2pi_pos]
+      linarith
+    -- Donc τ > 0
+    have h_tau_pos : 0 < T / (2 * Real.pi) := lt_trans h_exp_pos h_tau_gt_e
+    -- τ/e > 1
+    have h_tau_div_e_gt_1 : 1 < T / (2 * Real.pi) / Real.exp 1 := by
+      rw [lt_div_iff h_exp_pos]
+      linarith
+    -- log(τ/e) > 0
+    have h_log_pos :
+        0 < Real.log (T / (2 * Real.pi) / Real.exp 1) :=
+      Real.log_pos h_tau_div_e_gt_1
+    -- Produit de deux positifs
+    exact mul_pos h_tau_pos h_log_pos
 
 /-- Croissance logarithmique de la contribution archimédienne.
 
@@ -131,33 +166,63 @@ theorem Ztot_effective_eventually_positive (χ : PrimitiveCharacter) :
 
     Constante `1/8` : vient du terme `log(1 + T²)/4 ~ (log T)/2` pour
     T grand, moins une marge technique pour absorber les constantes
-    négligeables `log(Γ(...))/4` et `-(log π)/2`. -/
+    négligeables `log(Γ(...))/4` et `-(log π)/2`.
+
+    ## Stratégie de preuve complète (prête pour v35.8.7.2)
+
+    Soit `K := log(Γ((1/2+χ.a)/2))/4 - log(π)/2` le terme constant
+    dépendant de χ (de signe inconnu, car χ.a est opaque).
+
+    **Choix de témoins** :
+    - `C := 1/8`
+    - `T₀ := max 2 (exp((8/3) * max 0 (-K))) + 1`
+
+    **Étapes** :
+
+    1. `T ≥ 2` : immédiat par `le_max_left`.
+    2. `log T > 0` : `Real.log_pos` avec `T > 1`.
+    3. `T ≥ exp((8/3) * max 0 (-K))` : par `le_max_right`.
+    4. `log T ≥ (8/3) * max 0 (-K)` :
+          via `Real.log_exp` et `Real.log_le_log`.
+    5. `log(1 + T²) ≥ 2 log T` pour `T ≥ 1` :
+          puisque `T² ≤ 1 + T²`, `Real.log_le_log` donne
+          `log T² ≤ log(1+T²)` ; puis `log T² = 2 log T` via
+          `Real.log_mul` sur `T · T`.
+    6. `-K ≤ max 0 (-K) ≤ (3/8) log T` (par (4)), donc
+       `K ≥ -(3/8) log T`.
+    7. Aarch_effective χ T = K + log(1+T²)/4
+       ≥ -(3/8) log T + (2 log T)/4
+       = -(3/8) log T + (log T)/2
+       = (1/8) log T ✓
+
+    La preuve formelle fait ~40 lignes. Elle est bornée et ne dépend
+    que de noms stables Mathlib (Real.log_pos, Real.log_exp,
+    Real.log_le_log, Real.log_mul, Real.exp_pos, ne_of_gt). -/
 theorem Aarch_effective_log_growth (χ : PrimitiveCharacter) :
     ∃ C : ℝ, 0 < C ∧ ∃ T₀ : ℝ, 1 < T₀ ∧
       ∀ T : ℝ, T₀ ≤ T → C * Real.log T ≤ Aarch_effective χ T := by
-  -- Stratégie : C = 1/8, T₀ assez grand pour que les termes
-  --   • log(Γ((1/2+a)/2)) / 4   (constant en T)
-  --   • -(log π) / 2             (constant en T)
-  -- soient absorbés par la marge entre log(1+T²)/4 et (log T)/2.
-  sorry  -- [ANALYTIC / STIRLING] Asymptotique réel de log(1+T²)
+  sorry  -- [ANALYTIC / STIRLING] Stratégie complète documentée ci-dessus.
 
 /-! ## Section 3 — Identité doctrinale du fichier -/
 
 open CouretUnification.Meta
 
-/-- Identité doctrinale du fichier L6Analytic (v35.8.6).
+/-- Identité doctrinale du fichier L6Analytic (v35.8.7.1).
 
     Décomposition du compteur :
-      1. [ANALYTIC] `Ztot_effective_eventually_positive` — positivité pour T ≥ 2πe
-      2. [ANALYTIC] `Aarch_effective_log_growth`         — Stirling réel
+      1. [ANALYTIC] `Aarch_effective_log_growth` — Stirling réel (seul restant)
 
-    Aucun des 2 sorries ne touche RH. Aucun sorry de type BRIDGE ou
-    DEFINITIONAL : le refactoring v35.8.6 a éliminé ces deux dettes. -/
+    Fermés en v35.8.7.1 :
+      - `Ztot_effective_eventually_positive` (preuve explicite par monotonie de log)
+
+    Aucun sorry de type BRIDGE ou DEFINITIONAL : le refactoring v35.8.6 a
+    éliminé ces deux dettes. Le dernier sorry restant est purement
+    analytique (borne Stirling). -/
 def fileIdentity : FileIdentity where
   filename   := "CouretUnification/Logic/L6Analytic.lean"
   layer      := Layer.B
   status     := Status.definitional
-  sorryCount := 2
+  sorryCount := 1
   rhClaimed  := false
 
 end L6Analytic
