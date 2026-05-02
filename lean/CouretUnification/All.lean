@@ -165,6 +165,7 @@ import CouretUnification.Core.CouretMinimalPackage
 import CouretUnification.Core.CharacterLemmas
 import CouretUnification.Core.CharParity30
 import CouretUnification.Core.CRTEquiv
+import CouretUnification.Core.LMFDBAlignment
 
 import CouretUnification.Logic.H3.FiniteSpectralAPI
 import CouretUnification.Logic.H3.ParityGamma30
@@ -332,7 +333,7 @@ import CouretUnification.Residue.ClosureTC
 import CouretUnification.Residue.CycleCoset
 import CouretUnification.Residue.TorsionLift210
 
--- v38
+-- v38.0
 import CouretUnification.EpistemicDiscipline.BridgeStatus
 import CouretUnification.Residue.PuncturedKlein30
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
