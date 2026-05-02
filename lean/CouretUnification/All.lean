@@ -172,21 +172,21 @@ import CouretUnification.Logic.H3.ParityGamma30
 import CouretUnification.Logic.H3.H3TestSpace
 import CouretUnification.Logic.H3.RigidityParams
 import CouretUnification.Logic.H3.C2Restricted
--- import CouretUnification.Logic.H3.C3Weak
+import CouretUnification.Logic.H3.C3Weak
 import CouretUnification.Logic.H3.AlgebraTC
 
 -- v35.3 — composition Phase B (recompose/spring-2026-pyramid-v0)
 -- Éventail à 5 branches agrégeant les résultats substantiels de Logic.H3.
 -- Tire transitivement les 14 modules Logic.H3 dans la fermeture.
 -- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
--- import CouretUnification.Logic.H3.PhaseBComposition
+import CouretUnification.Logic.H3.PhaseBComposition
 
 -- v35.4 — composition Phase B spécialisée Couret (spring-2026/couret-cabling)
 -- Cinq branches (C-α, C-β, C-γ, C-δ, C-ε) câblant les pierres angulaires
 -- arithmético-spectrales (Lambda, Parseval, ParsevalL5, T1_to_T7, FiniteCore)
 -- à la chaîne H3.
 -- RHClaimed = false. Aucun sorry consommé.
--- import CouretUnification.Logic.H3.PhaseBCompositionCouret
+import CouretUnification.Logic.H3.PhaseBCompositionCouret
 
 -- v35.4.1 — branche C-ζ pile B retenue (spring-2026/couret-cabling)
 -- Cinq sous-branches Couret-ζ (ζ.1 à ζ.5) câblant les spectres harmoniques
@@ -194,7 +194,7 @@ import CouretUnification.Logic.H3.AlgebraTC
 -- TripletToFiniteSpectrum, TripletPowerSpectrum, TripletExceptionalPredicate,
 -- CouretMinimalPackage). Tire transitivement les 16 fichiers de pile B retenue.
 -- RHClaimed = false. Aucun sorry consommé.
--- import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
+import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
 
 -- v35.4.2 — branche C-η combinatoire spectrale (spring-2026/couret-cabling)
 -- Six sous-branches Couret-η (η.1 à η.6) câblant le noyau combinatoire
@@ -206,25 +206,7 @@ import CouretUnification.Logic.H3.AlgebraTC
 -- de la pile combinatoire (incluant Kurtosis, SpectralMoments, SpectralGap,
 -- CenteredEigenspace par dépendance/cascade).
 -- RHClaimed = false. Aucun sorry consommé.
--- import CouretUnification.Logic.H3.PhaseBCompositionCouretEta
-
--- v35.4.3 — intégration v35.4 SquarefreeDensity (spring-2026/v35.5-integration)
--- Premier pas de l'intégration des packs Alexandre v35.4 → v35.8.7.1.
--- Apporte le fichier Logic/H3/SquarefreeDensity (543 lignes) qui
--- formalise la moitié (ii) de RouteC::main_lower : Q(n) ≥ n/2 pour n ≥ 176.
--- 7 sorries du scaffold v35.4 originel sont fermés via :
---   - Nat.squarefree_iff_prime_squarefree (SORRY-1)
---   - inclusion ensembliste (SORRY-2)
---   - Nat.Ioc_filter_dvd_card_eq_div (SORRY-3)
---   - Finset.card_biUnion_le (SORRY-4)
---   - télescopage discret (SORRY-5)
---   - micro-lemmes de cast (SORRY-6)
---   - conversion finale ℕ → ℚ (SORRY-7)
--- Patches Mathlib v4.29 appliqués : imports renommés, Squarefree dé-namespacé,
--- div_le_div_iff → div_le_div_iff₀, push_neg → push Not, restructuration
--- de squarefreeCount_ge_half pour éviter Int.subNatNat.
--- RHClaimed = false. Aucun nouveau sorry consommé.
--- import CouretUnification.Logic.H3.SquarefreeDensity
+import CouretUnification.Logic.H3.PhaseBCompositionCouretEta
 
 -- v35.7
 import CouretUnification.Meta.Layer

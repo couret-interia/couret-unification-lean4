@@ -29,7 +29,7 @@ import CouretUnification.FiniteDefect.T1_to_T7
 -- agrégeant les résultats substantiels de Logic.H3.
 -- Tire transitivement 13 des 14 modules Logic.H3.
 -- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
--- import CouretUnification.Logic.H3.PhaseBComposition
+import CouretUnification.Logic.H3.PhaseBComposition
 
 -- Racines indépendantes non tirées par PhaseBComposition :
 -- Route C raffinée (Σ|E_d| ≤ θ · (φ/q) · S₁)
