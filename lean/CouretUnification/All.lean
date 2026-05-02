@@ -345,3 +345,4 @@ import CouretUnification.AnalyticHorizon.PhaseStabilityTargets
 import CouretUnification.AnalyticHorizon.DefectOperator30
 import CouretUnification.Logic.Lock3.LocalDebiasing
 import CouretUnification.Logic.Lock3.ProtectedTraceGate
+import CouretUnification.Logic.Lock3.RHGuard
