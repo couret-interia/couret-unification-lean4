@@ -51,7 +51,7 @@ import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
 
 namespace CouretUnification

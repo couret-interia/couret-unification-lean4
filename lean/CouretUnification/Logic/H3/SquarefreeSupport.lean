@@ -31,7 +31,7 @@ Si un nom diverge, remplacer ponctuellement sans toucher à la structure.
 import Mathlib.NumberTheory.ArithmeticFunction.Defs
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Finset.Powerset
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 

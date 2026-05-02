@@ -20,7 +20,7 @@ est automatiquement ≥ 0.
 
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import CouretUnification.Meta.Doctrine
 
 open scoped BigOperators

@@ -28,7 +28,7 @@ remplacer ponctuellement sans toucher à la structure logique.
 -/
 
 import Mathlib.Data.Nat.Squarefree
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.NumberTheory.LSeries.Basic

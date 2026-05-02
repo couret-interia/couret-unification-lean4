@@ -22,7 +22,7 @@ Preuve purement algébrique, insensible aux turbulences Mathlib.
 -/
 
 import Mathlib.Analysis.InnerProductSpace.Adjoint
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import CouretUnification.Meta.Doctrine
 
 open scoped BigOperators
