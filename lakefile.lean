@@ -13,5 +13,6 @@ require mathlib from git
 
 @[default_target]
 lean_lib «CouretUnification» where
-  -- Tous les fichiers sous CouretUnification/ sont inclus
+  srcDir := "lean"
+  -- Tous les fichiers sous lean/CouretUnification/ sont inclus
   roots := #[`CouretUnification]
