@@ -342,3 +342,4 @@ import CouretUnification.AnalyticHorizon.LegendreChannelCalibration
 import CouretUnification.AnalyticHorizon.PerturbedSpectralIsolation
 import CouretUnification.AnalyticHorizon.AdmissibleSigmaBand
 import CouretUnification.AnalyticHorizon.PhaseStabilityTargets
+import CouretUnification.AnalyticHorizon.DefectOperator30
