@@ -40,7 +40,7 @@
 
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Support
+import Mathlib.Topology.ContinuousMap.Compact
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import CouretUnification.Logic.ExplicitFormula.TraceObject
 

@@ -43,7 +43,7 @@ entières de taille 8×8, sans aucune dépendance analytique.
 -/
 
 import Mathlib.Data.Matrix.Basic
-import Mathlib.Data.Matrix.Notation
+import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Trace
 
 namespace CouretUnification

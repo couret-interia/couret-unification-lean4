@@ -35,7 +35,7 @@ La promotion conditionnelle de λ = 1/√7 ne dépend que de (F.2).
 import CouretUnification.Core.Doctrine
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.LinearAlgebra.FiniteDimensional
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 
 namespace CouretUnification

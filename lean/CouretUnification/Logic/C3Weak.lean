@@ -36,7 +36,7 @@ import CouretUnification.Logic.Doctrine
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.MeasureTheory.Function.LpSpace.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
+import Mathlib.Topology.ContinuousMap.Basic
 
 namespace CouretUnification
 namespace Logic

@@ -12,7 +12,7 @@
 
   Statut doctrinal
   ────────────────
-  · Layer         : Active (dépend de Mathlib.Topology.Support)
+  · Layer         : Active (dépend de Mathlib.Topology.ContinuousMap.Compact)
   · indeterminateProofs : 0 (cible : à confirmer par `lake build` dans le dépôt)
   · axiomCount    : 0
   · RHClaimed     : false
@@ -34,7 +34,7 @@
   Pour Bernard.
 -/
 
-import Mathlib.Topology.Support
+import Mathlib.Topology.ContinuousMap.Compact
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
 import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport

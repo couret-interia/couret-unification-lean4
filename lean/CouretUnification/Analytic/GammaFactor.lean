@@ -17,7 +17,7 @@
 
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.Complex.CauchyIntegral
-import Mathlib.NumberTheory.ZetaFunction
+import Mathlib.NumberTheory.ArithmeticFunction.Zeta
 import CouretUnification.Core.Characters30Bridge
 
 open Complex

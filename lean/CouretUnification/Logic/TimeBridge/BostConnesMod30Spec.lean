@@ -38,7 +38,7 @@
 
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.ZetaFunction
+import Mathlib.NumberTheory.ArithmeticFunction.Zeta
 import CouretUnification.Logic.TimeBridge.B2Calibration
 
 namespace CouretUnification.Logic.TimeBridge.BostConnesMod30

@@ -27,7 +27,7 @@ Le CORE-TOPOLOGIE est maintenant fermé.
 -/
 
 import Mathlib.Data.Real.Irrational
-import Mathlib.Algebra.Order.Floor
+import Mathlib.Algebra.Order.Floor.Ring
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Order.Filter.Basic

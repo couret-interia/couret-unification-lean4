@@ -39,7 +39,7 @@ import Mathlib.Tactic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.Complex.Exponential
+import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 import Mathlib.NumberTheory.LSeries.Basic
 import Mathlib.NumberTheory.ArithmeticFunction

@@ -45,7 +45,7 @@
 import Mathlib.MeasureTheory.Measure.MeasureSpace
 import Mathlib.MeasureTheory.MeasurableSpace.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.NormedSpace.Basic
+import Mathlib.Analysis.Normed.Module.Basic
 
 open scoped MeasureTheory
 open MeasureTheory Set

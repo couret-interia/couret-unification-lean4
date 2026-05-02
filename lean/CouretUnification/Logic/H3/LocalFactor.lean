@@ -24,7 +24,7 @@ de Mathlib compilée :
 Si un de ces noms diverge, remplacer ponctuellement sans toucher à la structure.
 -/
 
-import Mathlib.Data.Complex.Exponential
+import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.Complex.Basic
