@@ -31,8 +31,7 @@ inductive BridgeStatus where
 deriving Repr, DecidableEq, Inhabited
 
 end EpistemicDiscipline
-
-/-- Re-export at the top namespace for downstream readability. -/
-export EpistemicDiscipline (BridgeStatus)
-
 end CouretUnification
+
+-- Re-export at the top namespace for downstream readability.
+export CouretUnification.EpistemicDiscipline (BridgeStatus)
