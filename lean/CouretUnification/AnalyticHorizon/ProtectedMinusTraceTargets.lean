@@ -47,7 +47,8 @@ def TrivialSectorTraceLift (Nq : ℚ) : ℚ := 3 * Nq
 /-- Stable normalized defect ratio. -/
 theorem protected_trace_normalized_ratio (Nq : ℚ) (hN : Nq ≠ 0) :
     ProtectedMinusTraceLift Nq / TrivialSectorTraceLift Nq = -4 := by
-  field_simp [ProtectedMinusTraceLift, TrivialSectorTraceLift, hN]
+  unfold ProtectedMinusTraceLift TrivialSectorTraceLift
+  field_simp
   ring
 
 /-- The protected trace is the preferred scalar invariant after Legendre perturbation. -/
