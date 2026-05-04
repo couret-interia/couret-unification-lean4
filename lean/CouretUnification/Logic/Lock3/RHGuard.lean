@@ -24,6 +24,8 @@ import Mathlib
 import CouretUnification.Logic.Lock3.ProtectedTraceGate
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
+open CouretUnification.EpistemicDiscipline
+
 namespace CouretUnification
 namespace Logic
 namespace Lock3
