@@ -70,14 +70,14 @@ theorem normalizedSpectrum_length : normalizedSpectrum.length = 8 := by decide
 def M (k : ℕ) : ℚ :=
   (normalizedSpectrum.map (fun x => x^k)).foldr (· + ·) 0 / 8
 
-/-! ### Closed-form moment values (k = 1..6) — concrete witnesses by `decide` -/
+/-! ### Closed-form moment values (k = 1..6) — concrete witnesses by `native_decide` -/
 
-theorem M1_eq : M 1 = 1 / 3   := by decide
-theorem M2_eq : M 2 = 1 / 3   := by decide
-theorem M3_eq : M 3 = 7 / 27  := by decide
-theorem M4_eq : M 4 = 7 / 27  := by decide
-theorem M5_eq : M 5 = 61 / 243 := by decide
-theorem M6_eq : M 6 = 61 / 243 := by decide
+theorem M1_eq : M 1 = 1 / 3   := by native_decide
+theorem M2_eq : M 2 = 1 / 3   := by native_decide
+theorem M3_eq : M 3 = 7 / 27  := by native_decide
+theorem M4_eq : M 4 = 7 / 27  := by native_decide
+theorem M5_eq : M 5 = 61 / 243 := by native_decide
+theorem M6_eq : M 6 = 61 / 243 := by native_decide
 
 /-! ### Pairwise rigidity at concrete orders -/
 
@@ -100,9 +100,9 @@ theorem moments_paired_first_three :
 
 /-! ## §4 — Closed-form: M_{2k-1} = M_{2k} = (9^k + 3) / (4·9^k), k=1..3 -/
 
-theorem closed_form_k1 : M 2 = (9^1 + 3) / (4 * 9^1) := by decide
-theorem closed_form_k2 : M 4 = (9^2 + 3) / (4 * 9^2) := by decide
-theorem closed_form_k3 : M 6 = (9^3 + 3) / (4 * 9^3) := by decide
+theorem closed_form_k1 : M 2 = (9^1 + 3) / (4 * 9^1) := by native_decide
+theorem closed_form_k2 : M 4 = (9^2 + 3) / (4 * 9^2) := by native_decide
+theorem closed_form_k3 : M 6 = (9^3 + 3) / (4 * 9^3) := by native_decide
 
 /-! ## §5 — UNIVERSAL pair rigidity: ∀n, M(2n+1) = M(2n+2)
 
