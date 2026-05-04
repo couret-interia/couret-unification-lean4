@@ -26,11 +26,14 @@
 
 import Mathlib
 import CouretUnification.Residue.PuncturedKlein30
+import CouretUnification.EpistemicDiscipline.BridgeStatus
+import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
 namespace CouretUnification
 namespace AnalyticHorizon
 
 open CouretUnification.Residue
+open CouretUnification.EpistemicDiscipline   -- ← pour BridgeStatus et RHClaimed
 
 /-! ## §1 — Spectral weight on the punctured Klein structure -/
 
