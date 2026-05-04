@@ -52,25 +52,16 @@ def spectralWeight (x : Z30) : ℤ :=
   else 0
 
 theorem spectralWeight_one : spectralWeight (1 : Z30) = 1 := by
-  unfold spectralWeight
-  have h : (1 : Z30) ∈ TC := by native_decide
-  simp [h]
+  native_decide
 
 theorem spectralWeight_eleven : spectralWeight (11 : Z30) = 1 := by
-  unfold spectralWeight
-  have h : (11 : Z30) ∈ TC := by native_decide
-  simp [h]
+  native_decide
 
 theorem spectralWeight_twentynine : spectralWeight (29 : Z30) = 1 := by
-  unfold spectralWeight
-  have h : (29 : Z30) ∈ TC := by native_decide
-  simp [h]
+  native_decide
 
 theorem spectralWeight_phantom19 : spectralWeight Phantom19 = -1 := by
-  unfold spectralWeight Phantom19
-  have h1 : (19 : Z30) ∉ TC := by native_decide
-  have h2 : (19 : Z30) = Phantom19 := rfl
-  simp [h1, h2]
+  native_decide
 
 /-! ## §2 — Abstract finite representation -/
 
