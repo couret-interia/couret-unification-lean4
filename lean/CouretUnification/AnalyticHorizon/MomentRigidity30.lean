@@ -26,6 +26,9 @@
 
 import Mathlib
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
+import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
+
+open CouretUnification.EpistemicDiscipline
 
 namespace CouretUnification
 namespace AnalyticHorizon
