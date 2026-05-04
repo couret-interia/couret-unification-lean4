@@ -16,6 +16,8 @@ import Mathlib
 import CouretUnification.EpistemicDiscipline.BridgeStatus
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
+open CouretUnification.EpistemicDiscipline
+
 namespace CouretUnification
 namespace AnalyticHorizon
 

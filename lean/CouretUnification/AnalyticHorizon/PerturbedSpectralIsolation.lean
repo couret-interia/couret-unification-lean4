@@ -23,6 +23,8 @@
 import Mathlib
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 
+open CouretUnification.EpistemicDiscipline
+
 namespace CouretUnification
 namespace AnalyticHorizon
 
