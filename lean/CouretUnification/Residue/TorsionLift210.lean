@@ -198,11 +198,11 @@ theorem crt_ghost_19_1 :
 
 /-- Le spectre prédit pour le relevé de torsion : {6⁶, 2¹², (-2)⁶, 0²⁴}. -/
 def PredictedSpectrumTC210 : Multiset Int :=
-  ([6, 6, 6, 6, 6, 6,
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-    -2, -2, -2, -2, -2, -2,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : List Int).toMultiset
+  ((↑[6, 6, 6, 6, 6, 6,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       -2, -2, -2, -2, -2, -2,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : Multiset Int))
 
 /-- La cardinalité totale du spectre prédit vaut φ(210) = 48. -/
 theorem predictedSpectrumTC210_card :
