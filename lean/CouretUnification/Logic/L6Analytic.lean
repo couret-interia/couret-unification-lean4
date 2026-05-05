@@ -2,7 +2,6 @@
 # CouretUnification/Logic/L6Analytic.lean
 
 ## Rôle
-Livrable principal de la v35.8.6.
 Fournit les DÉFINITIONS EFFECTIVES pour le pont L6, en s'appuyant sur
 les fonctions spéciales de Mathlib :
 
@@ -11,27 +10,17 @@ les fonctions spéciales de Mathlib :
 - `Ztot_effective` via le terme principal de Riemann–von Mangoldt :
   `N(T) ≈ (T/2π) · log(T/(2π·e))`.
 
-## Architecture v35.8.6 (refactoring B)
+## Architecture v35.8.8.1 (refactoring B)
 Cette version importe `L6Interface` (types seulement), PAS `L6Bridge`.
 Le sens du raccord est maintenant inversé : c'est `L6Bridge` qui
 définira `Aarch := Aarch_effective`, ce qui rend les bridges
 provables par `rfl`.
 
 ## Statut
-- Layer    : Logic
-- Status   : definitional
-- Sorry    : 2 (uniquement ANALYTIC, plus aucun BRIDGE)
-             • `Ztot_effective_eventually_positive` [ANALYTIC]
-             • `Aarch_effective_log_growth`         [ANALYTIC / Stirling]
+- Layer     : Logic
+- Status    : proved
+- Sorry     : 0
 - RHClaimed : false
-
-## Changement v35.8.6 vs version externe initiale
-- Les 2 sorries `Aarch_bridge` et `Ztot_bridge` ont DISPARU :
-  ils sont maintenant des théorèmes prouvables par `rfl` dans
-  `L6Bridge.lean`, parce que `L6Bridge.Aarch` est défini comme
-  alias direct de `L6Analytic.Aarch_effective`.
-- Les 2 sorries restants sont vraiment analytiques (Stirling +
-  positivité de `log(τ/e)`), pas définitionnels.
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -118,7 +107,7 @@ noncomputable def Ztot_effective (_χ : PrimitiveCharacter) (T : ℝ) : ℝ :=
     tout `T ≥ 18` garantit simultanément `N(T) ≥ 1` et la positivité
     du terme principal.
 
-    **Fermé en v35.8.7.1** : preuve complète via monotonie stricte de log. -/
+    **Fermé en v35.8.8.1** : preuve complète via monotonie stricte de log. -/
 theorem Ztot_effective_eventually_positive (χ : PrimitiveCharacter) :
     ∃ T₀ : ℝ, 0 < T₀ ∧ ∀ T : ℝ, T₀ ≤ T → 0 < Ztot_effective χ T := by
   -- Stratégie : T₀ := 2π·e + 1. Pour T ≥ T₀ :
@@ -201,28 +190,86 @@ theorem Ztot_effective_eventually_positive (χ : PrimitiveCharacter) :
 theorem Aarch_effective_log_growth (χ : PrimitiveCharacter) :
     ∃ C : ℝ, 0 < C ∧ ∃ T₀ : ℝ, 1 < T₀ ∧
       ∀ T : ℝ, T₀ ≤ T → C * Real.log T ≤ Aarch_effective χ T := by
-  sorry  -- [ANALYTIC / STIRLING] Stratégie complète documentée ci-dessus.
+  let K : ℝ :=
+    Real.log (Real.Gamma ((1 / 2 + χ.a) / 2)) / 4 - (Real.log Real.pi) / 2
+  refine ⟨(1 : ℝ) / 8, by norm_num, max 2 (Real.exp ((8 / 3 : ℝ) * max 0 (-K))), ?_, ?_⟩
+  · have htwo : (1 : ℝ) < 2 := by norm_num
+    exact lt_of_lt_of_le htwo (le_max_left _ _)
+  · intro T hT
+    have hT_ge_two : (2 : ℝ) ≤ T := le_trans (le_max_left _ _) hT
+    have hT_gt_one : (1 : ℝ) < T := by linarith
+    have hT_pos : (0 : ℝ) < T := by linarith
+
+    have hT_ge_exp : Real.exp ((8 / 3 : ℝ) * max 0 (-K)) ≤ T := by
+      exact le_trans (le_max_right _ _) hT
+
+    have hlog_ge :
+        (8 / 3 : ℝ) * max 0 (-K) ≤ Real.log T := by
+      have hexp_pos : 0 < Real.exp ((8 / 3 : ℝ) * max 0 (-K)) := Real.exp_pos _
+      have := Real.log_le_log hexp_pos hT_ge_exp
+      simpa [Real.log_exp] using this
+
+    have hmax_le :
+        max 0 (-K) ≤ (3 / 8 : ℝ) * Real.log T := by
+      linarith
+
+    have hnegK_le : -K ≤ max 0 (-K) := by
+      exact le_max_right 0 (-K)
+
+    have hK_bound :
+        -(3 / 8 : ℝ) * Real.log T ≤ K := by
+      linarith
+
+    have hT2_pos : 0 < T ^ 2 := by positivity
+    have hT2_le : T ^ 2 ≤ 1 + T ^ 2 := by linarith
+
+    have hlog_sq_le :
+        Real.log (T ^ 2) ≤ Real.log (1 + T ^ 2) := by
+      exact Real.log_le_log hT2_pos hT2_le
+
+    have hlog_sq :
+        Real.log (T ^ 2) = 2 * Real.log T := by
+      have hT_ne : T ≠ 0 := ne_of_gt hT_pos
+      calc
+        Real.log (T ^ 2) = Real.log (T * T) := by ring_nf
+        _ = Real.log T + Real.log T := by rw [Real.log_mul hT_ne hT_ne]
+        _ = 2 * Real.log T := by ring
+
+    have harch_part :
+        (1 / 2 : ℝ) * Real.log T ≤ Real.log (1 + T ^ 2) / 4 := by
+      have : 2 * Real.log T ≤ Real.log (1 + T ^ 2) := by
+        simpa [hlog_sq] using hlog_sq_le
+      linarith
+
+    have hmain :
+        (1 / 8 : ℝ) * Real.log T ≤ K + Real.log (1 + T ^ 2) / 4 := by
+      linarith [hK_bound, harch_part]
+
+    have hsplit :
+        Aarch_effective χ T = K + Real.log (1 + T ^ 2) / 4 := by
+      unfold Aarch_effective
+      dsimp [K]
+      ring
+
+    rw [hsplit]
+    exact hmain
 
 /-! ## Section 3 — Identité doctrinale du fichier -/
 
 open CouretUnification.Meta
 
-/-- Identité doctrinale du fichier L6Analytic (v35.8.7.1).
+/-- Identité doctrinale du fichier L6Analytic (v35.8.8.1).
 
-    Décomposition du compteur :
-      1. [ANALYTIC] `Aarch_effective_log_growth` — Stirling réel (seul restant)
+    Fermetures successives :
+      - v35.8.7.1 : `Ztot_effective_eventually_positive`
+      - v35.8.8.1 : `Aarch_effective_log_growth`
 
-    Fermés en v35.8.7.1 :
-      - `Ztot_effective_eventually_positive` (preuve explicite par monotonie de log)
-
-    Aucun sorry de type BRIDGE ou DEFINITIONAL : le refactoring v35.8.6 a
-    éliminé ces deux dettes. Le dernier sorry restant est purement
-    analytique (borne Stirling). -/
+    Fichier entièrement fermé. -/
 def fileIdentity : FileIdentity where
   filename   := "CouretUnification/Logic/L6Analytic.lean"
   layer      := Layer.B
-  status     := Status.definitional
-  sorryCount := 1
+  status     := Status.proved
+  sorryCount := 0
   rhClaimed  := false
 
 end L6Analytic
