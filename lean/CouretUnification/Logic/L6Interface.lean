@@ -30,6 +30,8 @@ par rfl**, sans aucun axiome ni sorry de type DEFINITIONAL.
 - RHClaimed : false
 -/
 
+import Mathlib.Data.Real.Basic
+
 namespace CouretUnification
 namespace Logic
 namespace L6Interface
