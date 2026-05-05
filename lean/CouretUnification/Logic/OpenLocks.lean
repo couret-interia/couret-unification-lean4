@@ -122,19 +122,31 @@ def respectsRHWallInvariant (lock : OpenLock) : Bool :=
 theorem no_rh_wall_lock_proved :
     ∀ lock ∈ allLocks, respectsRHWallInvariant lock = true := by
   intro lock h_mem
-  -- Énumération exhaustive des éléments de allLocks.
-  -- Chaque élément est vérifié soit par `status ≠ rh_wall` (vacuously),
-  -- soit par `formallyProved = false ∧ strategyClaimed = none`.
-  fin_cases h_mem <;> rfl
+  simp [allLocks] at h_mem
+  rcases h_mem with rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  all_goals rfl
 
 /-- Lemme de cohérence : l'entrée `Lock3` est bien classée `rh_wall`
-    et ne propose aucune stratégie. Vérifié par `rfl`. -/
+    et ne propose aucune stratégie. -/
 theorem L12_H3_no_strategy :
     ∃ lock ∈ allLocks,
       lock.name = "Lock3"
       ∧ lock.status = LockStatus.rh_wall
       ∧ lock.strategyClaimed = none := by
-  refine ⟨⟨"Lock3", LockStatus.rh_wall, _, false, none⟩, ?_, rfl, rfl, rfl⟩
+  refine ⟨
+    { name := "Lock3"
+    , status := LockStatus.rh_wall
+    , description :=
+        "Verrou terminal lock3_operator_exists ↔ RH. MUR TERMINAL ABSOLU. " ++
+        "Aucune stratégie de résolution active (invariant doctrinal)."
+    , formallyProved := false
+    , strategyClaimed := none
+    },
+    ?_,
+    rfl,
+    rfl,
+    rfl
+  ⟩
   simp [allLocks]
 
 /-! ## Section 4 — Identité doctrinale -/
