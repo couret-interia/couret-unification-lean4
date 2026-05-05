@@ -18,7 +18,7 @@ rejeté.
 - Meta/Doctrine                       [0 sorry ✅]
 - Logic/OpenLocks                     [0 sorry ✅, porte no_rh_wall_lock_proved]
 - Logic/EulerBridgeInfiniteCompat     [0 sorry ✅]
-- Logic/C3Weak_Gram                   [0 sorry ✅]
+- Logic/H3/C3Weak_Gram                [0 sorry ✅]
 - Logic/ChiralityFinite               [0 sorry ✅]
 - Logic/ChiralityLinear               [0 sorry ✅]
 - Logic/L6Interface                   [0 sorry ✅]
@@ -52,7 +52,7 @@ import CouretUnification.Logic.OpenLocks
 
 -- Briques analytiques fermées
 import CouretUnification.Logic.EulerBridgeInfiniteCompat
-import CouretUnification.Logic.C3Weak_Gram
+import CouretUnification.Logic.H3.C3Weak_Gram
 
 -- Chiralité finie mod 30
 import CouretUnification.Logic.ChiralityFinite

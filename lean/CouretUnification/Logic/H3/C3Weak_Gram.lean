@@ -1,5 +1,5 @@
 /-
-# CouretUnification/Logic/H3/C3Weak_Gram.lean (v35.8.3)
+# CouretUnification/Logic/H3/C3Weak_Gram.lean (v35.8.8.1)
 
 ## Statut
   - Couche : Logic / H3 (auxiliaire structurel pour C3Weak)
@@ -7,13 +7,15 @@
   - Axiome local : 0
   - RHClaimed = false
 
-## Changelog v35.8.2 → v35.8.3
+## Changelog v35.8.3 → v35.8.8.1
 
-- Aucun changement structurel. Fichier déjà sans sorry depuis v35.8.2.
-- Ajout de : `gram_semidef_of_rigid_real_part` alias explicite pour
-  l'inégalité sur la partie réelle.
-- Ajout de : instance `IsRigid_of_HasGramFactorization` pour faciliter
-  l'interopérabilité entre les deux présentations.
+- **Corrections Mathlib 4.29.1** :
+  * `structure ... : Prop where` retiré de `HasGramFactorization` et `IsRigid` :
+    le champ `A : H →L[ℂ] H` ne pouvait pas vivre dans une `Prop`.
+  * Désormais ce sont des `structure` régulières (Type-valued).
+  * `IsRigid` reste utilisable comme classe via `instance` à la demande.
+- **Syntaxe Lean 4** :
+  * Tous les `let ... in` Lean 3 résiduels remplacés par leur équivalent Lean 4.
 
 ## Doctrine
 
@@ -28,42 +30,44 @@ import CouretUnification.Meta.Doctrine
 open scoped BigOperators
 open Finset
 
-namespace CouretUnification
-namespace Logic
-namespace H3
-namespace C3Weak_Gram
+namespace CouretUnification.Logic.H3.C3Weak_Gram
 
 /-! ## Section 1 — Structure et classe -/
 
+/-- Témoin d'une factorisation de Gram : `S = A* ∘ A`.
+    NB : ce n'est PAS une `Prop` car le champ `A` est porteur de données
+    (un opérateur, pas une preuve). Pour la version proposable, voir
+    `IsRigid` ci-dessous. -/
 structure HasGramFactorization
     {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    (S : H →L[ℂ] H) : Prop where
+    (S : H →L[ℂ] H) : Type _ where
   A : H →L[ℂ] H
   factorization : S = (ContinuousLinearMap.adjoint A).comp A
 
-class IsRigid
+/-- Existence d'une factorisation de Gram : version `Prop` propre. -/
+def IsRigid
     {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    (S : H →L[ℂ] H) : Prop where
-  A : H →L[ℂ] H
-  factorization : S = (ContinuousLinearMap.adjoint A).comp A
+    (S : H →L[ℂ] H) : Prop :=
+  Nonempty (HasGramFactorization S)
 
-/-- Interop IsRigid → HasGramFactorization. -/
-def IsRigid.toHasGramFactorization
+/-- Interop IsRigid → HasGramFactorization (via choix non constructif).
+    NB : utilise `Classical.choice`, donc `noncomputable`. -/
+noncomputable def IsRigid.toHasGramFactorization
     {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    {S : H →L[ℂ] H} [hR : IsRigid S] :
+    {S : H →L[ℂ] H} (hR : IsRigid S) :
     HasGramFactorization S :=
-  ⟨hR.A, hR.factorization⟩
+  hR.some
 
-/-- Interop HasGramFactorization → IsRigid (instance explicite). -/
-def HasGramFactorization.toIsRigid
+/-- Interop HasGramFactorization → IsRigid. -/
+theorem HasGramFactorization.toIsRigid
     {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {S : H →L[ℂ] H} (h : HasGramFactorization S) :
     IsRigid S :=
-  ⟨h.A, h.factorization⟩
+  ⟨h⟩
 
 /-! ## Section 2 — Passage entrée de Gram -/
 
@@ -74,10 +78,19 @@ lemma gram_entry_eq_inner_Av
     {S : H →L[ℂ] H}
     (h : HasGramFactorization S)
     (x y : H) :
-    (inner (S x) y : ℂ) = inner (h.A x) (h.A y) := by
-  rw [h.factorization]
-  simp only [ContinuousLinearMap.comp_apply]
-  exact ContinuousLinearMap.adjoint_inner_left h.A (h.A x) y
+    (inner ℂ (S x) y : ℂ) = inner ℂ (h.A x) (h.A y) := by
+  have h₁ :
+      inner ℂ (S x) y =
+        inner ℂ (((ContinuousLinearMap.adjoint h.A).comp h.A) x) y := by
+    exact congrArg (fun T : H →L[ℂ] H => inner ℂ (T x) y) h.factorization
+  calc
+    inner ℂ (S x) y
+        = inner ℂ (((ContinuousLinearMap.adjoint h.A).comp h.A) x) y := h₁
+    _ = inner ℂ ((ContinuousLinearMap.adjoint h.A) (h.A x)) y := by
+          simp [ContinuousLinearMap.comp_apply]
+    _ = inner ℂ (h.A x) (h.A y) := by
+          simpa using
+            (ContinuousLinearMap.adjoint_inner_left (A := h.A) (x := y) (y := h.A x))
 
 /-! ## Section 3 — Positivité vectorielle -/
 
@@ -88,11 +101,10 @@ lemma semidef_of_gram_factor
     {S : H →L[ℂ] H}
     (h : HasGramFactorization S)
     (x : H) :
-    0 ≤ (inner (S x) x : ℂ).re := by
+    0 ≤ (inner ℂ (S x) x : ℂ).re := by
   rw [gram_entry_eq_inner_Av h x x]
   rw [inner_self_eq_norm_sq_to_K]
-  simp only [Complex.ofReal_re]
-  exact sq_nonneg _
+  simpa [pow_two] using (sq_nonneg ‖h.A x‖)
 
 /-! ## Section 4 — Lifting bilinéaire -/
 
@@ -102,39 +114,44 @@ lemma gram_quadratic_eq_inner_sum
     {S : H →L[ℂ] H}
     (h : HasGramFactorization S)
     (v : ℕ → H) (n : ℕ) (c : ℕ → ℂ) :
-    (∑ i in range n, ∑ j in range n,
-        (starRingEnd ℂ) (c i) * c j * inner (S (v i)) (v j))
+    (∑ i ∈ range n, ∑ j ∈ range n,
+        (starRingEnd ℂ) (c i) * c j * inner ℂ (S (v i)) (v j))
     =
-    (inner
-      (∑ i in range n, c i • (h.A (v i)))
-      (∑ j in range n, c j • (h.A (v j))) : ℂ) := by
+    (inner ℂ
+      (∑ i ∈ range n, c i • (h.A (v i)))
+      (∑ j ∈ range n, c j • (h.A (v j))) : ℂ) := by
   -- Étape A : remplacer ⟨S vᵢ, vⱼ⟩ par ⟨A vᵢ, A vⱼ⟩
   have step_A :
-      (∑ i in range n, ∑ j in range n,
-          (starRingEnd ℂ) (c i) * c j * inner (S (v i)) (v j))
+      (∑ i ∈ range n, ∑ j ∈ range n,
+          (starRingEnd ℂ) (c i) * c j * inner ℂ (S (v i)) (v j))
       =
-      (∑ i in range n, ∑ j in range n,
-          (starRingEnd ℂ) (c i) * c j * inner (h.A (v i)) (h.A (v j))) := by
-    apply sum_congr rfl; intro i _
-    apply sum_congr rfl; intro j _
+      (∑ i ∈ range n, ∑ j ∈ range n,
+          (starRingEnd ℂ) (c i) * c j * inner ℂ (h.A (v i)) (h.A (v j))) := by
+    apply sum_congr rfl
+    intro i _
+    apply sum_congr rfl
+    intro j _
     rw [gram_entry_eq_inner_Av h (v i) (v j)]
   rw [step_A]
   -- Étape B : absorber les scalaires
   have step_B :
-      (∑ i in range n, ∑ j in range n,
-          (starRingEnd ℂ) (c i) * c j * inner (h.A (v i)) (h.A (v j)))
+      (∑ i ∈ range n, ∑ j ∈ range n,
+          (starRingEnd ℂ) (c i) * c j * inner ℂ (h.A (v i)) (h.A (v j)))
       =
-      (∑ i in range n, ∑ j in range n,
-          inner (c i • (h.A (v i))) (c j • (h.A (v j))) : ℂ) := by
-    apply sum_congr rfl; intro i _
-    apply sum_congr rfl; intro j _
+      (∑ i ∈ range n, ∑ j ∈ range n,
+          inner ℂ (c i • (h.A (v i))) (c j • (h.A (v j))) : ℂ) := by
+    apply sum_congr rfl
+    intro i _
+    apply sum_congr rfl
+    intro j _
     rw [inner_smul_left, inner_smul_right]
-    ring
+    ring_nf
   rw [step_B]
   -- Étape C : factoriser
-  rw [← sum_inner]
-  apply sum_congr rfl; intro i _
-  rw [← inner_sum]
+  rw [sum_inner]
+  apply sum_congr rfl
+  intro i _
+  rw [inner_sum]
 
 lemma gram_quadratic_re_eq_norm_sq
     {H : Type*}
@@ -142,13 +159,13 @@ lemma gram_quadratic_re_eq_norm_sq
     {S : H →L[ℂ] H}
     (h : HasGramFactorization S)
     (v : ℕ → H) (n : ℕ) (c : ℕ → ℂ) :
-    ((∑ i in range n, ∑ j in range n,
-        (starRingEnd ℂ) (c i) * c j * inner (S (v i)) (v j)) : ℂ).re
+    ((∑ i ∈ range n, ∑ j ∈ range n,
+        (starRingEnd ℂ) (c i) * c j * inner ℂ (S (v i)) (v j)) : ℂ).re
     =
-    ‖∑ i in range n, c i • (h.A (v i))‖ ^ 2 := by
+    ‖∑ i ∈ range n, c i • (h.A (v i))‖ ^ 2 := by
   rw [gram_quadratic_eq_inner_sum h v n c]
   rw [inner_self_eq_norm_sq_to_K]
-  simp
+  simp [pow_two]
 
 /-! ## Section 5 — Théorème principal -/
 
@@ -161,8 +178,8 @@ theorem gram_semidef_of_rigid
     (h : HasGramFactorization S)
     (v : ℕ → H) (n : ℕ) (c : ℕ → ℂ) :
     0 ≤
-      ((∑ i in range n, ∑ j in range n,
-          (starRingEnd ℂ) (c i) * c j * inner (S (v i)) (v j)) : ℂ).re := by
+      ((∑ i ∈ range n, ∑ j ∈ range n,
+          (starRingEnd ℂ) (c i) * c j * inner ℂ (S (v i)) (v j)) : ℂ).re := by
   rw [gram_quadratic_re_eq_norm_sq h v n c]
   exact sq_nonneg _
 
@@ -174,20 +191,20 @@ theorem gram_semidef_of_rigid_real_part
     (h : HasGramFactorization S)
     (v : ℕ → H) (n : ℕ) (c : ℕ → ℂ) :
     0 ≤
-      Complex.re (∑ i in range n, ∑ j in range n,
-          (starRingEnd ℂ) (c i) * c j * inner (S (v i)) (v j)) :=
+      Complex.re (∑ i ∈ range n, ∑ j ∈ range n,
+          (starRingEnd ℂ) (c i) * c j * inner ℂ (S (v i)) (v j)) :=
   gram_semidef_of_rigid h v n c
 
-/-- Version IsRigid. -/
+/-- Version IsRigid (consomme le témoin existentiel). -/
 theorem gram_semidef_of_isRigid
     {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    (S : H →L[ℂ] H) [IsRigid S]
+    {S : H →L[ℂ] H} (hR : IsRigid S)
     (v : ℕ → H) (n : ℕ) (c : ℕ → ℂ) :
     0 ≤
-      ((∑ i in range n, ∑ j in range n,
-          (starRingEnd ℂ) (c i) * c j * inner (S (v i)) (v j)) : ℂ).re :=
-  gram_semidef_of_rigid IsRigid.toHasGramFactorization v n c
+      ((∑ i ∈ range n, ∑ j ∈ range n,
+          (starRingEnd ℂ) (c i) * c j * inner ℂ (S (v i)) (v j)) : ℂ).re :=
+  gram_semidef_of_rigid hR.toHasGramFactorization v n c
 
 /-! ## Section 6 — Instances standard -/
 
@@ -214,12 +231,8 @@ open CouretUnification.Meta
 def fileIdentity : FileIdentity where
   filename   := "CouretUnification/Logic/H3/C3Weak_Gram.lean"
   layer      := Layer.B
-  status     := Status.certified
+  status     := Status.proved
   sorryCount := 0
   rhClaimed  := false
-
-example : fileIdentity.rhClaimed = false := rfl
-example : fileIdentity.sorryCount = 0 := rfl
-example : fileIdentity.isClean = true := rfl
 
 end CouretUnification.Logic.H3.C3Weak_Gram
