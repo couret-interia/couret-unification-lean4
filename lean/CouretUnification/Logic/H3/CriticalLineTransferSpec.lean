@@ -24,6 +24,8 @@ respecter. Le bon monde pour la ligne critique est `MeasureTheory.Lp ℂ 2 volum
 qui est la formalisation Mathlib standard du L² complexe.
 -/
 
+import Mathlib.Data.Real.Basic
+import Mathlib.Data.Complex.Basic
 import Mathlib.MeasureTheory.Function.LpSpace.Basic
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.Analysis.MellinTransform
@@ -35,7 +37,8 @@ namespace CouretUnification.Logic.H3
 open MeasureTheory
 
 /-- Le bon monde pour la ligne critique : Lp ℂ 2 volume sur ℝ. -/
-noncomputable abbrev CriticalLineL2 := MeasureTheory.Lp ℂ 2 MeasureTheory.volume
+noncomputable abbrev CriticalLineL2 :=
+  MeasureTheory.Lp ℂ 2 (MeasureTheory.volume : Measure ℝ)
 
 /-- D-00. Fonction issue de la série de Dirichlet sur la ligne verticale σ + it.
 
@@ -53,7 +56,7 @@ noncomputable def lSeriesOnVerticalLine (f : ℕ → ℂ) (σ : ℝ) : ℝ → �
 -/
 structure HasCriticalLineTransfer (f : ℕ → ℂ) (σ : ℝ) where
   F : CriticalLineL2
-  repr : ∀ᵐ t ∂MeasureTheory.volume,
+  repr : ∀ᵐ t ∂(MeasureTheory.volume : Measure ℝ),
     (F : ℝ → ℂ) t = lSeriesOnVerticalLine f σ t
 
 /-- D-02. Contrat de contrôle normique.
