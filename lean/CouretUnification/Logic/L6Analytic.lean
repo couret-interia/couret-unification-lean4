@@ -143,13 +143,13 @@ theorem Ztot_effective_eventually_positive (χ : PrimitiveCharacter) :
     have h_T_gt : 2 * Real.pi * Real.exp 1 < T := by linarith
     -- τ := T/(2π) satisfait τ > e
     have h_tau_gt_e : Real.exp 1 < T / (2 * Real.pi) := by
-      rw [lt_div_iff h_2pi_pos]
+      rw [lt_div_iff₀ h_2pi_pos]
       linarith
     -- Donc τ > 0
     have h_tau_pos : 0 < T / (2 * Real.pi) := lt_trans h_exp_pos h_tau_gt_e
     -- τ/e > 1
     have h_tau_div_e_gt_1 : 1 < T / (2 * Real.pi) / Real.exp 1 := by
-      rw [lt_div_iff h_exp_pos]
+      rw [lt_div_iff₀ h_exp_pos]
       linarith
     -- log(τ/e) > 0
     have h_log_pos :
