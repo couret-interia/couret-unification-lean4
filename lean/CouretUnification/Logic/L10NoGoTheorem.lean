@@ -26,7 +26,8 @@ Résultat : seuls 2 sorries [CONCEPTUEL] subsistent dans tout le projet :
 Le CORE-TOPOLOGIE est maintenant fermé.
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib.NumberTheory.Real.Irrational
+import Mathlib.Data.Real.Sqrt
 import Mathlib.Algebra.Order.Floor.Ring
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Order.Basic
@@ -114,7 +115,6 @@ lemma abs_sub_int_ge_min_fract (y : ℝ) (n : ℤ) :
   -- Cas sur (⌊y⌋ - n) comme entier
   set k : ℤ := ⌊y⌋ - n with hk_def
   have hk_rewrite : y - (n : ℝ) = (k : ℝ) + Int.fract y := by
-    push_cast
     rw [hk_def]
     push_cast
     linarith [hfract_eq]
@@ -183,15 +183,17 @@ lemma not_tendsto_of_uniform_separation
     ¬ Tendsto φ atTop (𝓝 y) := by
   rintro hT
   rcases hsep with ⟨ε, hεpos, hε⟩
+  have hball : Metric.ball y ε ∈ 𝓝 y := Metric.ball_mem_nhds y hεpos
+  -- on passe de la convergence dans 𝓝 y à l’événement sur le préimage de la boule
+  have hpre : ∀ᶠ q in atTop, q ∈ φ ⁻¹' Metric.ball y ε := by
+    simpa using hT hball
   have h_evt : ∀ᶠ q in atTop, |φ q - y| < ε := by
-    have hball : Metric.ball y ε ∈ 𝓝 y := Metric.ball_mem_nhds y hεpos
-    have := hT hball
-    filter_upwards [this] with q hq
-    rw [Metric.mem_ball, Real.dist_eq, abs_sub_comm] at hq
-    exact hq
-  rcases (Filter.eventually_atTop).mp h_evt with ⟨N, hN⟩
-  have hbad := hε N
-  have hsmall := hN N le_rfl
+    filter_upwards [hpre] with q hq
+    rw [Set.mem_preimage, Metric.mem_ball, Real.dist_eq] at hq
+    simpa [abs_sub_comm] using hq
+  rcases (Filter.eventually_atTop.mp h_evt) with ⟨N, hN⟩
+  have hsmall : |φ N - y| < ε := hN N le_rfl
+  have hbad : ε ≤ |φ N - y| := hε N
   linarith
 
 /-! ## Section 7 — Théorème principal : L10_obstruction -/
