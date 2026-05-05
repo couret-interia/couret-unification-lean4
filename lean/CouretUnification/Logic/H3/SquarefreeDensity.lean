@@ -1,30 +1,72 @@
 /-
 Couret-Unification — v35.8.6
-Logic/H3/SquarefreeDensity.lean
+# CouretUnification/Logic/H3/SquarefreeDensity.lean
 
-Front C : Densité squarefree, Fubini arithmétique, erreur de quantification.
+## Rôle
 
-Status     : C-01 [PROVED - sum_bij]       — fragile snapshot
-             C-02 [PROVED - Nat.div_add_mod] — fragile snapshot
-             C-03 [SORRY - ANALYTIC]
-             C-04a [SORRY - ANALYTIC]
-             C-04b [SORRY - ANALYTIC, cible projet 6/π²]
-Layer      : Diamond (Analytic density)
-Doctrine   : C2 (Density & asymptotics)
-RHClaimed  : false
-sorryCount : 3  (C-03, C-04a, C-04b)
+Bloc H3 consacré à la densité des entiers squarefree.
 
-Séparation stricte :
-  - C(ii) = bornes robustes (C-01, C-02) sur le chemin critique
-  - C(i)  = asymptotique complet 6/π² (C-04b) laissé en cible projet
+Le fichier sépare explicitement deux niveaux :
 
-NOTE SNAPSHOT : Les preuves C-01 et C-02 utilisent :
-  - Finset.sum_bij                    (signature peut varier — Mathlib récent)
-  - Nat.div_add_mod                   (confirmé)
-  - Nat.le_div_iff₀ / Nat.le_div_iff  (nom selon snapshot)
-  - div_le_one_of_le₀ / div_le_one_of_le  (nom selon snapshot)
-Ces noms sont testés sur Mathlib récent (2024-2025). Si divergence,
-remplacer ponctuellement sans toucher à la structure logique.
+1. **Partie robuste déjà fermée**
+   - réindexation arithmétique de type Fubini (`sum_squarefree_fubini`)
+   - contrôle local de l’erreur euclidienne (`div_eucl_real_error`)
+
+2. **Partie analytique encore ouverte**
+   - majoration globale de l’erreur en `O(√N)`
+   - minoration uniforme `squarefreeCount_ge_half`
+   - densité asymptotique `6 / π²`
+
+Cette séparation reflète la doctrine du dépôt :
+les identités discrètes exactes sont fermées dès que possible,
+tandis que les coutures asymptotiques restent isolées comme dettes analytiques explicites.
+
+## Statut
+
+- Couche      : Logic / H3 alias Diamond (Analytic density)
+- Front       : C — densité squarefree
+- RHClaimed   : false
+- Sorry count : 3
+
+### Détail des statuts
+
+- C-00 : définition de `squarefreeCount`                              [definitional]
+- C-01 : réindexation Fubini arithmétique (`sum_squarefree_fubini`)   [proved]
+- C-02 : erreur locale division entière / réelle                      [proved]
+- C-03 : terme d’erreur global `O(√N)`                                [analytic sorry]
+- C-04a : minoration robuste `squarefreeCount_ge_half`                [analytic sorry]
+- C-04b : densité asymptotique `squarefree_asymptotic_density`        [analytic sorry]
+
+## Doctrine
+
+Séparation stricte entre :
+
+- **C(ii)** : bornes robustes utilisables sur le chemin critique
+- **C(i)**  : asymptotique complète vers `6 / π²`, laissée comme cible projet
+
+Autrement dit :
+le fichier ferme le squelette discret/combinatoire,
+mais ne prétend pas fermer la couture analytique finale.
+
+## Notes snapshot (Mathlib v4.29.1)
+
+Les points sensibles du snapshot sont les suivants :
+
+- `Finset.sum_sigma'`
+- `Finset.sum_bij` (ordre des sous-buts dépendant du snapshot)
+- `Nat.div_add_mod`
+- `Nat.le_sqrt'`
+- `Nat.le_div_iff_mul_le`
+- `div_le_one`
+- réécritures entre `d^2` et produits commutés (`Nat.mul_comm`)
+
+Si un snapshot futur casse C-01 ou C-02, il faut d’abord suspecter
+une variation de signature des lemmes Finset/Nat avant de toucher à la structure logique.
+
+## Invariant de lecture
+
+Ce fichier est actuellement **mécaniquement propre** sur sa partie discrète :
+les seuls `sorry` restants sont analytiques et explicitement documentés.
 -/
 
 import Mathlib.Data.Nat.Squarefree
@@ -41,7 +83,7 @@ open Asymptotics Filter Finset Real
 
 /-- C-00. Nombre d'entiers squarefree jusqu'à N. -/
 def squarefreeCount (N : ℕ) : ℕ :=
-  ((Finset.Icc 1 N).filter Nat.Squarefree).card
+  ((Finset.Icc 1 N).filter Squarefree).card
 
 /-- C-01. Réindexation Fubini arithmétique par isomorphisme Sigma.
 
@@ -53,91 +95,84 @@ def squarefreeCount (N : ℕ) : ℕ :=
     [SNAPSHOT WARNING] : La signature exacte de `Finset.sum_bij` dépend du snapshot.
     La variante `Finset.sum_nbij'` peut être requise selon version. -/
 lemma sum_squarefree_fubini (N : ℕ) (f : ℕ → ℤ) :
-    (∑ n in Icc 1 N, ∑ d in (Icc 1 n).filter (fun d => d^2 ∣ n), f d) =
-    ∑ d in Icc 1 (Nat.sqrt N), ∑ k in Icc 1 (N / d^2), f d := by
-  -- Inversion de l'objectif pour mapper du domaine le plus simple vers le plus complexe
+    Finset.sum (Icc 1 N) (fun n =>
+      Finset.sum ((Icc 1 n).filter (fun d => d^2 ∣ n)) (fun d => f d)) =
+    Finset.sum (Icc 1 (Nat.sqrt N)) (fun d =>
+      Finset.sum (Icc 1 (N / d^2)) (fun _k => f d)) := by
   apply Eq.symm
-  -- Aplatissement des deux membres via le type de paires dépendantes
-  simp_rw [← Finset.sum_sigma]
-  -- Application de la bijection : (d, k) ↦ (k * d^2, d)
-  apply Finset.sum_bij (fun ⟨d, k⟩ _ ↦ (⟨k * d^2, d⟩ : Σ _ : ℕ, ℕ))
-  · -- hi : Clôture du domaine cible
-    rintro ⟨d, k⟩ h_mem
-    simp only [Finset.mem_sigma, Finset.mem_Icc, Finset.mem_filter] at h_mem ⊢
-    rcases h_mem with ⟨⟨hd1, hd2⟩, ⟨hk1, hk2⟩⟩
-    -- Conditions : n = k*d² ∈ [1,N], d ∈ [1,n] et d² | n
-    refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩
-    · -- 1 ≤ k*d²
-      have : 1 ≤ d^2 := Nat.one_le_pow _ _ (by omega)
+  rw [Finset.sum_sigma', Finset.sum_sigma']
+  refine Finset.sum_bij
+    (fun a _ => match a with
+      | ⟨d, k⟩ => (⟨k * d^2, d⟩ : Σ _ : ℕ, ℕ))
+    ?hi ?hinj ?hsurj ?hval
+  · rintro ⟨d, k⟩ ha
+    have hmem : d ∈ Icc 1 (Nat.sqrt N) ∧ k ∈ Icc 1 (N / d^2) := by
+      simpa [Finset.mem_sigma] using ha
+    rcases hmem with ⟨hd, hk⟩
+    rcases Finset.mem_Icc.mp hd with ⟨hd1, hd2⟩
+    rcases Finset.mem_Icc.mp hk with ⟨hk1, hk2⟩
+    refine Finset.mem_sigma.mpr ?_
+    refine ⟨Finset.mem_Icc.mpr ⟨?_, ?_⟩, ?_⟩
+    · have : 1 ≤ d^2 := Nat.one_le_pow _ _ (by omega)
       nlinarith
-    · -- k*d² ≤ N
-      have hd2_pos : 0 < d^2 := Nat.pos_of_ne_zero (pow_ne_zero 2 (by omega))
-      have : k * d^2 ≤ (N / d^2) * d^2 := Nat.mul_le_mul_right (d^2) hk2
-      calc k * d^2 ≤ (N / d^2) * d^2 := this
+    · calc
+        k * d^2 ≤ (N / d^2) * d^2 := Nat.mul_le_mul_right _ hk2
         _ ≤ N := Nat.div_mul_le_self N (d^2)
-    · -- 1 ≤ d
-      exact hd1
-    · -- d ≤ k*d²
-      have hd_pos : 0 < d := hd1
+    · refine Finset.mem_filter.mpr ?_
+      refine ⟨Finset.mem_Icc.mpr ⟨hd1, ?_⟩, Dvd.intro_left k rfl⟩
       have hk_pos : 0 < k := hk1
       nlinarith [sq_nonneg d]
-    · -- d² | k*d²
-      exact Dvd.intro_left k rfl
-  · -- h : Invariance de la fonction évaluée (f dépend seulement de d)
-    rintro ⟨d, k⟩ _
-    rfl
-  · -- h_inj : Injectivité de la transition
-    rintro ⟨d₁, k₁⟩ ⟨d₂, k₂⟩ h_mem1 h_mem2 h_eq
-    simp only [Finset.mem_sigma, Finset.mem_Icc] at h_mem1 h_mem2
-    simp only [Sigma.mk.injEq] at h_eq
-    obtain ⟨hkd_eq, hd_eq⟩ := h_eq
-    -- Réorganisation : hd_eq : d₁ = d₂  (second composant)
-    -- hkd_eq : k₁ * d₁^2 = k₂ * d₂^2
-    cases hd_eq
-    -- d₁ = d₂, reste : k₁ * d² = k₂ * d² ⟹ k₁ = k₂
-    have hd_pos : 0 < d₁^2 := by
-      have : 0 < d₁ := h_mem1.1.1
+
+  · rintro ⟨d₁, k₁⟩ ha₁ ⟨d₂, k₂⟩ ha₂ hEq
+    have hmem1 : d₁ ∈ Icc 1 (Nat.sqrt N) ∧ k₁ ∈ Icc 1 (N / d₁^2) := by
+      simpa [Finset.mem_sigma] using ha₁
+    simp only [Sigma.mk.injEq] at hEq
+    rcases hEq with ⟨hprod, hdEq⟩
+    cases hdEq
+    have hdpos : 0 < d₁^2 := by
+      rcases Finset.mem_Icc.mp hmem1.1 with ⟨hd1, _⟩
       positivity
-    have hk_eq : k₁ = k₂ := Nat.eq_of_mul_eq_mul_right hd_pos hkd_eq
-    rw [hk_eq]
-  · -- h_surj : Surjectivité (existence de l'antécédent k)
-    rintro ⟨n, d⟩ h_mem
-    simp only [Finset.mem_sigma, Finset.mem_Icc, Finset.mem_filter] at h_mem
-    obtain ⟨⟨hn1, hn2⟩, ⟨hd1, hd2⟩, h_dvd⟩ := h_mem
-    obtain ⟨k, hk_eq⟩ := h_dvd
+    have hkEq : k₁ = k₂ := Nat.eq_of_mul_eq_mul_right hdpos hprod
+    simp [hkEq]
+
+  · rintro ⟨n, d⟩ hb
+    have hmem : n ∈ Icc 1 N ∧ d ∈ (Icc 1 n).filter (fun d => d^2 ∣ n) := by
+      simpa [Finset.mem_sigma] using hb
+    rcases hmem with ⟨hn, hdmem⟩
+    rcases Finset.mem_Icc.mp hn with ⟨hn1, hn2⟩
+    rcases Finset.mem_filter.mp hdmem with ⟨hdIcc, hdiv⟩
+    rcases Finset.mem_Icc.mp hdIcc with ⟨hd1, hd2⟩
+    obtain ⟨k, hk_eq⟩ := hdiv
     refine ⟨⟨d, k⟩, ?_, ?_⟩
-    · -- Preuve que ⟨d, k⟩ appartient bien au domaine source
-      simp only [Finset.mem_sigma, Finset.mem_Icc]
-      have hd2_pos : 0 < d^2 := by
-        have : 0 < d := hd1
-        positivity
-      refine ⟨⟨hd1, ?_⟩, ⟨?_, ?_⟩⟩
-      · -- d ≤ √N
-        have : d^2 ≤ N := by
-          have h1 : d^2 ≤ d^2 * k := Nat.le_mul_of_pos_right _ (by
-            rcases Nat.eq_zero_or_pos k with hk0 | hk_pos
-            · rw [hk0, mul_zero] at hk_eq
-              omega
-            · exact hk_pos)
-          calc d^2 ≤ d^2 * k := h1
-            _ = n := by rw [hk_eq]; ring
-            _ ≤ N := hn2
-        exact Nat.le_sqrt.mpr this
-      · -- 1 ≤ k
-        rcases Nat.eq_zero_or_pos k with hk0 | hk_pos
-        · rw [hk0, mul_zero] at hk_eq
+    · refine Finset.mem_sigma.mpr ?_
+      refine ⟨Finset.mem_Icc.mpr ⟨hd1, ?_⟩, Finset.mem_Icc.mpr ⟨?_, ?_⟩⟩
+      · have hk_pos : 0 < k := by
+          by_contra hk_not
+          have hk0 : k = 0 := Nat.eq_zero_of_not_pos hk_not
+          rw [hk0, mul_zero] at hk_eq
           omega
-        · exact hk_pos
-      · -- k ≤ N / d²
-        have hd2_pos' : 0 < d^2 := hd2_pos
-        rw [Nat.le_div_iff_mul_le hd2_pos']
-        calc k * d^2 = d^2 * k := by ring
-          _ = n := by rw [hk_eq]
+        have hd_sq_le_n : d ^ 2 ≤ n := by
+          calc
+            d ^ 2 ≤ d ^ 2 * k := Nat.le_mul_of_pos_right _ hk_pos
+            _ = n := by
+                  simpa [Nat.mul_comm] using hk_eq.symm
+        exact (Nat.le_sqrt'.2 (le_trans hd_sq_le_n hn2))
+      · have hk_pos : 0 < k := by
+          by_contra hk_not
+          have hk0 : k = 0 := Nat.eq_zero_of_not_pos hk_not
+          rw [hk0, mul_zero] at hk_eq
+          omega
+        exact hk_pos
+      · have hd2_pos : 0 < d^2 := by positivity
+        rw [Nat.le_div_iff_mul_le hd2_pos]
+        calc
+          k * d^2 = d^2 * k := by ring
+          _ = n := by simpa [Nat.mul_comm] using hk_eq.symm
           _ ≤ N := hn2
-    · -- Égalité finale
-      simp only [Sigma.mk.injEq]
-      refine ⟨?_, rfl⟩
-      rw [hk_eq]; ring
+    · simpa [Sigma.mk.injEq, Nat.mul_comm] using hk_eq.symm
+
+  · rintro ⟨d, k⟩ ha
+    simp
 
 /-- C-02. Erreur locale de coercition entre division entière et division réelle.
 
@@ -148,35 +183,46 @@ lemma sum_squarefree_fubini (N : ℕ) (f : ℕ → ℤ) :
 lemma div_eucl_real_error (N d : ℕ) (hd : d ≠ 0) :
     |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2| ≤ 1 := by
   have hd2_pos : 0 < d^2 := Nat.pos_of_ne_zero (pow_ne_zero 2 hd)
-  have hd2R_pos : 0 < (d : ℝ)^2 := by exact_mod_cast hd2_pos
-  -- Injection de la division euclidienne discrète dans les réels
+  have hd2R_pos : 0 < (d : ℝ)^2 := by
+    exact_mod_cast hd2_pos
+
   have h_div_mod : (N : ℝ) = (d^2 : ℝ) * (N / d^2 : ℕ) + (N % d^2 : ℕ) := by
     have := (Nat.div_add_mod N (d^2)).symm
     exact_mod_cast this
-  -- Division de l'équation par d^2 dans ℝ
-  have h_frac : (N : ℝ) / (d : ℝ)^2 =
-      ((N / d^2 : ℕ) : ℝ) + ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2 := by
+
+  have h_frac :
+      (N : ℝ) / (d : ℝ)^2 =
+        ((N / d^2 : ℕ) : ℝ) + ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2 := by
     have hne : ((d : ℝ)^2) ≠ 0 := ne_of_gt hd2R_pos
     rw [h_div_mod]
-    field_simp
-    ring
-  -- Substitution dans la valeur absolue
+    field_simp [hne]
+
   rw [h_frac]
+
   have h_mod_lt : ((N % d^2 : ℕ) : ℝ) < (d : ℝ)^2 := by
     have := Nat.mod_lt N hd2_pos
     exact_mod_cast this
-  have h_mod_nonneg : 0 ≤ ((N % d^2 : ℕ) : ℝ) := by positivity
-  have h_ratio_nonneg : 0 ≤ ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2 :=
-    div_nonneg h_mod_nonneg hd2R_pos.le
-  have h_ratio_le : ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2 ≤ 1 := by
-    rw [div_le_one hd2R_pos]
-    exact h_mod_lt.le
-  -- |a - (a + r)| = |r| ≤ 1
-  have : ((N / d^2 : ℕ) : ℝ) - (((N / d^2 : ℕ) : ℝ) +
-      ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2) = -(((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2) := by
-    ring
-  rw [this, abs_neg, abs_of_nonneg h_ratio_nonneg]
-  exact h_ratio_le
+
+  have h_mod_nonneg : 0 ≤ ((N % d^2 : ℕ) : ℝ) := by
+    positivity
+
+  have h_ratio_nonneg : 0 ≤ ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2 := by
+    exact div_nonneg h_mod_nonneg hd2R_pos.le
+
+  calc
+    |((N / d^2 : ℕ) : ℝ) -
+        (((N / d^2 : ℕ) : ℝ) + ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2)|
+        = |((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2| := by
+            have htmp :
+                ((N / d^2 : ℕ) : ℝ) -
+                    (((N / d^2 : ℕ) : ℝ) + ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2)
+                  = -(((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2) := by
+              ring
+            rw [htmp, abs_neg]
+    _ = ((N % d^2 : ℕ) : ℝ) / (d : ℝ)^2 := by
+          rw [abs_of_nonneg h_ratio_nonneg]
+    _ ≤ 1 := by
+          exact (div_le_one hd2R_pos).2 h_mod_lt.le
 
 /-- C-03. Le terme d'erreur global est O(√N).
 
@@ -185,8 +231,9 @@ lemma div_eucl_real_error (N d : ℕ) (hd : d ≠ 0) :
     conclusion par `Asymptotics.IsBigO.of_bound`. -/
 lemma error_term_isBigO :
     IsBigO atTop
-      (fun N : ℕ => ∑ d in Finset.Icc 1 (Nat.sqrt N),
-        |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2|)
+      (fun N : ℕ =>
+        Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+          |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2|))
       (fun N : ℕ => Real.sqrt (N : ℝ)) := by
   -- [ANALYTIC SORRY — couture de IsBigO.of_bound avec C-02 et card(Icc 1 √N)]
   sorry
@@ -205,7 +252,8 @@ theorem squarefreeCount_ge_half {N : ℕ} (hN : 176 ≤ N) :
     Nécessite la couture complète de C-01, C-03, et la série
     ∑ μ(d)/d² = 1/ζ(2) = 6/π² (via MoebiusBridge). -/
 theorem squarefree_asymptotic_density :
-    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop (𝓝 (6 / (Real.pi^2))) := by
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) := by
   sorry
 
 end CouretUnification.Logic.H3
