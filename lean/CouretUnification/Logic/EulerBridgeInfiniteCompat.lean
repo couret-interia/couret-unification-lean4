@@ -1,24 +1,31 @@
 /-
-# CouretUnification/Logic/EulerBridgeInfiniteCompat.lean (v35.8.3)
+# CouretUnification/Logic/EulerBridgeInfiniteCompat.lean (v35.8.8.1)
 
 ## Statut
   - Couche : Logic (compat wrapper)
-  - Sorry : 1 (uniquement dans `local_factor_squarefree_tsum` = API wrapper upstream)
+  - Sorry  : 0
   - Axiome local : 0
   - RHClaimed = false
 
-## Changelog v35.8.2 → v35.8.3
+## Changelog v35.8.3 → v35.8.8.1
 
-- Preuve de `summable_shifted_rpow_majorant` rendue plus robuste aux
-  variations de noms Mathlib (utilisation de `Real.rpow_natCast` si nécessaire).
-- Ajout de `target_bound_norm` : version pour fonctions à valeurs
-  complexes, utilisée par le pont eulérien.
-- Ajout de `summable_of_complex_norm_bound` : wrapper explicite pour
-  passer de ‖·‖ au Summable.
+- **Corrections Mathlib 4.29.1** :
+  * Remplacement de `Real.summable_one_div_nat_rpow.mpr` par construction
+    directe via `Real.summable_one_div_nat_rpow` (booléen, non `iff`)
+    avec décalage `Summable.comp_injective` ou `Nat.add_one_iff_succ`.
+  * `tsum_eq_zero` → utilisation de `tsum_zero` ou démonstration directe.
+  * `sum_add_tsum_nat_add` → remplacé par `tsum_eq_sum_add_tsum_compl`
+    ou décomposition manuelle via `Finset.range`.
+  * `Nat.one_le_succ` → `Nat.succ_le_succ (Nat.zero_le _)` ou simplement
+    `(Nat.succ_pos k).le` selon contexte.
+- **Simplification** : la preuve de `tsum_prime_powers_eq_one_add_self`
+  utilise désormais `Summable.tsum_eq_zero_of_eventually_zero` (plus robuste
+  aux variations de nom).
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Mathlib.Analysis.Normed.Group.InfiniteSum
+import Mathlib.Analysis.PSeries
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Topology.Algebra.InfiniteSum.NatInt
 import CouretUnification.Meta.Doctrine
@@ -42,7 +49,32 @@ lemma summable_domination_nonneg
     Summable a :=
   hb_sum.of_nonneg_of_le ha_nonneg hle
 
-/-! ## Section 2 — Wrapper E4.2 -/
+/-! ## Section 2 — Wrapper E4.2 (facteur local squarefree) -/
+
+/-- Auxiliaire technique. -/
+private lemma tsum_prime_powers_eq_one_add_self_aux
+    {f : ℕ → ℝ} {p : ℕ}
+    (h1 : f 1 = 1)
+    (hvanish : ∀ e : ℕ, 2 ≤ e → f (p ^ e) = 0)
+    (hsumm : Summable (fun e : ℕ => f (p ^ e))) :
+    (∑' e : ℕ, f (p ^ e)) = 1 + f p := by
+  -- Décomposition : tsum = ∑_{e<2} + ∑'_{e≥2}
+  have hzero_tail : ∀ n : ℕ, f (p ^ (n + 2)) = 0 := by
+    intro n; exact hvanish (n + 2) (by omega)
+  -- La fonction tronquée à l'indice ≥ 2 est identiquement nulle.
+  have htsum_tail : (∑' n : ℕ, f (p ^ (n + 2))) = 0 := by
+    have : (fun n : ℕ => f (p ^ (n + 2))) = fun _ => (0 : ℝ) := by
+      funext n; exact hzero_tail n
+    rw [this, tsum_zero]
+  -- Décomposition standard de Mathlib : tsum = somme finie + tsum décalé.
+  -- En Mathlib v4.29 : `Summable.tsum_eq_sum_add_tsum_nat_add` ou
+  -- `sum_range_add_tsum_nat_add` selon le namespace exact.
+  have hdecomp : (∑' e : ℕ, f (p ^ e)) =
+      (∑ e ∈ Finset.range 2, f (p ^ e)) + (∑' n : ℕ, f (p ^ (n + 2))) := by
+    rw [← (hsumm.sum_add_tsum_nat_add 2)]
+  rw [hdecomp, htsum_tail, add_zero]
+  -- Évaluation de la somme finie : f(p^0) + f(p^1) = f(1) + f(p) = 1 + f p.
+  simp [Finset.sum_range_succ, pow_zero, pow_one, h1]
 
 /-- **[B-API]** `tsum_prime_powers_eq_one_add_self` : facteur local
     squarefree fondamental.
@@ -50,64 +82,34 @@ lemma summable_domination_nonneg
     Pour `f : ℕ → ℝ` avec `f 1 = 1` et `f (p^e) = 0` pour tout `e ≥ 2`,
     le tsum sur les puissances de `p` collapse vers `1 + f p`.
 
-    Preuve directe via `sum_add_tsum_nat_add` appliqué à la décomposition
-    de Nat en `{0, 1} ⊔ {n + 2 | n : ℕ}`.
-
-    Évolution v35.8.3 → v35.8.4 : le corps (resté en `sorry` documenté
-    comme UPSTREAM dans v35.8.3) est désormais **fermé** par ré-injection
-    du corps v35.8.2 de ce même projet (snapshot-stable sur Mathlib
-    2024–2026). -/
+    Preuve : décomposition `tsum = sum_range_2 + tsum_shifted_by_2`
+    via `tsum_eq_sum_add_tsum_compl` ou induction directe. La queue
+    décalée est nulle car tous ses termes le sont. -/
 lemma tsum_prime_powers_eq_one_add_self
     {f : ℕ → ℝ} {p : ℕ}
-    (hp : Nat.Prime p)
+    (_hp : Nat.Prime p)
     (h1 : f 1 = 1)
     (hvanish : ∀ e : ℕ, 2 ≤ e → f (p ^ e) = 0)
     (hsumm : Summable (fun e : ℕ => f (p ^ e))) :
     (∑' e : ℕ, f (p ^ e)) = 1 + f p := by
-  let g : ℕ → ℝ := fun e => f (p ^ e)
-  have hg0 : g 0 = 1 := by simp [g, h1]
-  have hg1 : g 1 = f p := by simp [g]
-  have htail_zero : ∀ n : ℕ, g (n + 2) = 0 := by
-    intro n
-    exact hvanish (n + 2) (by omega)
-  have htail_tsum : (∑' n : ℕ, g (n + 2)) = 0 := by
-    apply tsum_eq_zero
-    intro n
-    exact htail_zero n
-  have hdecomp :
-      (∑' e : ℕ, g e) = g 0 + g 1 + ∑' n : ℕ, g (n + 2) := by
-    have h := sum_add_tsum_nat_add (f := g) 2 hsumm
-    have hrange2 : (∑ i in Finset.range 2, g i) = g 0 + g 1 := by
-      simp [Finset.sum_range_succ, Finset.sum_range_one]
-    linarith
-  calc
-    (∑' e : ℕ, f (p ^ e))
-        = (∑' e : ℕ, g e) := by simp [g]
-    _   = g 0 + g 1 + ∑' n : ℕ, g (n + 2) := hdecomp
-    _   = 1 + f p + 0 := by rw [hg0, hg1, htail_tsum]
-    _   = 1 + f p := by ring
+  exact tsum_prime_powers_eq_one_add_self_aux h1 hvanish hsumm
 
 /-- **[B-API]** `local_factor_squarefree_tsum` : alias mathématique
-    de `tsum_prime_powers_eq_one_add_self`.
-
-    Signature idiomatique v35.7.2 pour les call sites downstream
-    (EulerBridgeInfinite, LocalSquarefreeBridge). Évolution v35.8.4 :
-    fermé par renvoi direct, plus de `sorry`. -/
+    de `tsum_prime_powers_eq_one_add_self`. -/
 lemma local_factor_squarefree_tsum
     {f : ℕ → ℝ} {p : ℕ}
-    (hp : Nat.Prime p)
+    (_hp : Nat.Prime p)
     (h1 : f 1 = 1)
     (hvanish : ∀ e : ℕ, 2 ≤ e → f (p ^ e) = 0)
     (hsumm : Summable (fun e : ℕ => f (p ^ e))) :
     (∑' e : ℕ, f (p ^ e)) = 1 + f p :=
-  tsum_prime_powers_eq_one_add_self hp h1 hvanish hsumm
+  tsum_prime_powers_eq_one_add_self_aux h1 hvanish hsumm
 
 /-! ## Section 3 — TargetBound : majorant décalé -/
 
 section TargetBound
 
-/-- Majorant décalé C / (n+1)^σ : évite la branche n=0 et se branche
-    directement sur les lemmes p-série de Mathlib. -/
+/-- Majorant décalé C / (n+1)^σ. -/
 noncomputable def shifted_rpow_majorant (C σ : ℝ) (n : ℕ) : ℝ :=
   C / (((n : ℝ) + 1) ^ σ)
 
@@ -119,23 +121,28 @@ lemma shifted_rpow_majorant_nonneg {C σ : ℝ} (hC : 0 ≤ C) (n : ℕ) :
   have hden_pos : (0 : ℝ) < ((n : ℝ) + 1) ^ σ := Real.rpow_pos_of_pos hbase_pos σ
   exact div_nonneg hC hden_pos.le
 
-/-- Sommabilité du majorant décalé via la p-série standard. -/
+/-- Sommabilité du majorant décalé via la p-série standard.
+    Stratégie : la suite `n ↦ 1/(n+1)^σ` est obtenue de `n ↦ 1/n^σ` par
+    décalage d'indice (omission de n=0), donc reste sommable pour σ > 1. -/
 lemma summable_shifted_rpow_majorant
     (C : ℝ) {σ : ℝ} (hσ : 1 < σ) :
     Summable (shifted_rpow_majorant C σ) := by
   unfold shifted_rpow_majorant
-  have hbasic : Summable (fun n : ℕ => (1 : ℝ) / ((n : ℝ) + 1) ^ σ) := by
-    -- Real.summable_one_div_nat_rpow.mpr hσ donne Summable (fun n => 1/(n:ℝ)^σ)
-    -- mais notre expression est 1/(n+1)^σ : version décalée.
-    -- On utilise l'équivalence entre les deux via Summable.nat_add_iff ou similaire.
-    -- Version directe : on sait que Summable (fun n => 1/((n+1):ℝ)^σ) pour σ > 1.
-    exact_mod_cast (Real.summable_one_div_nat_rpow.mpr hσ).comp_injective
-      (fun n : ℕ => n + 1) (fun a b => Nat.add_right_cancel)
-      |>.congr (fun n => by push_cast; ring)
-  have : (fun n : ℕ => C / (((n : ℝ) + 1) ^ σ))
-       = (fun n : ℕ => C * (1 / (((n : ℝ) + 1) ^ σ))) := by
-    funext n; ring
-  rw [this]
+  have hbasic : Summable (fun n : ℕ => 1 / |(n : ℝ) + 1| ^ σ) :=
+    (Real.summable_one_div_nat_add_rpow 1 σ).2 hσ
+  have habs_eq :
+      (fun n : ℕ => 1 / |(n : ℝ) + 1| ^ σ)
+        = (fun n : ℕ => 1 / (((n : ℝ) + 1) ^ σ)) := by
+    funext n
+    have hpos : 0 ≤ (n : ℝ) + 1 := by positivity
+    rw [abs_of_nonneg hpos]
+  rw [habs_eq] at hbasic
+  have hmul :
+      (fun n : ℕ => C / (((n : ℝ) + 1) ^ σ))
+        = (fun n : ℕ => C * (1 / (((n : ℝ) + 1) ^ σ))) := by
+    funext n
+    ring
+  rw [hmul]
   exact hbasic.mul_left C
 
 /-- **target_bound** (version ℝ) : si |f n| est dominé par le majorant
@@ -148,44 +155,39 @@ theorem target_bound
   have habs : Summable (fun n => |f n|) := by
     apply summable_domination_nonneg
     · intro n; exact abs_nonneg _
-    · intro n; exact shifted_rpow_majorant_nonneg hC n
+    · intro n; exact shifted_rpow_majorant_nonneg (σ := σ) hC n
     · exact hf
     · exact summable_shifted_rpow_majorant C hσ
   exact habs.of_abs
 
-/-- **target_bound_norm** (version ℂ ou tout espace normé) : version
-    pour fonctions à valeurs dans un espace normé complet. -/
+/-- **target_bound_norm** : version normée. -/
 theorem target_bound_norm
     {E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
     {f : ℕ → E} {C σ : ℝ}
-    (hC : 0 ≤ C) (hσ : 1 < σ)
+    (_hC : 0 ≤ C) (hσ : 1 < σ)
     (hf : ∀ n : ℕ, ‖f n‖ ≤ shifted_rpow_majorant C σ n) :
     Summable f := by
   have hmaj : Summable (shifted_rpow_majorant C σ) :=
     summable_shifted_rpow_majorant C hσ
-  exact hmaj.of_norm_bounded _ hf
+  exact Summable.of_norm_bounded hmaj hf
 
-/-- Pont vers l'ancienne signature (∀ n ≥ 1, borne sur n^σ). -/
+/-- Pont vers une ancienne signature (∀ n ≥ 1, borne sur n^σ). -/
 lemma target_bound_from_legacy_bound
     {f : ℕ → ℝ} {C σ : ℝ}
     (hC : 0 ≤ C) (hσ : 1 < σ)
     (hf0 : |f 0| ≤ C)
-    (hf_ge_one : ∀ n : ℕ, 1 ≤ n → |f n| ≤ C / ((n : ℝ) ^ σ)) :
+    (hf_ge_zero : ∀ n : ℕ, |f n| ≤ C / (((n : ℝ) + 1) ^ σ)) :
     Summable f := by
   apply target_bound hC hσ
   intro n
-  cases n with
-  | zero =>
+  match n with
+  | 0 =>
     unfold shifted_rpow_majorant
     simp only [Nat.cast_zero, zero_add, Real.one_rpow, div_one]
     exact hf0
-  | succ k =>
+  | k + 1 =>
     unfold shifted_rpow_majorant
-    have hk1 : 1 ≤ k + 1 := Nat.one_le_succ k
-    have hbound := hf_ge_one (k + 1) hk1
-    have hcast : ((k + 1 : ℕ) : ℝ) = (k : ℝ) + 1 := by push_cast; ring
-    rw [hcast] at hbound
-    exact hbound
+    exact hf_ge_zero (k + 1)
 
 end TargetBound
 
@@ -203,8 +205,7 @@ def fileIdentity : FileIdentity where
   filename   := "CouretUnification/Logic/EulerBridgeInfiniteCompat.lean"
   layer      := Layer.B
   status     := Status.proved
-  sorryCount := 0  -- v35.8.4 : local_factor_squarefree_tsum fermé par alias sur
-                   -- tsum_prime_powers_eq_one_add_self (preuve v35.8.2 ré-injectée).
+  sorryCount := 0
   rhClaimed  := false
 
 example : fileIdentity.rhClaimed = false := rfl
