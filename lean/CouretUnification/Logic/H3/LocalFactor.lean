@@ -43,22 +43,37 @@ lemma local_factor_normSq (a θ : ℝ) :
   have hexp :
       Complex.exp ((θ : ℂ) * Complex.I) =
         (Real.cos θ : ℂ) + (Real.sin θ : ℂ) * Complex.I := by
-    simpa [Complex.ofReal_mul, mul_comm, mul_left_comm, mul_assoc]
-      using Complex.exp_mul_I (θ : ℂ)
+    rw [Complex.exp_mul_I]
+    push_cast
+    rfl
   rw [hexp]
-  simp [Complex.normSq, mul_add, add_mul, mul_comm, mul_left_comm, mul_assoc]
-  ring
+  rw [Complex.normSq_apply]
+  simp only [Complex.sub_re, Complex.sub_im,
+             Complex.one_re, Complex.one_im,
+             Complex.mul_re, Complex.mul_im,
+             Complex.add_re, Complex.add_im,
+             Complex.ofReal_re, Complex.ofReal_im,
+             Complex.I_re, Complex.I_im,
+             mul_zero, zero_mul, sub_zero, zero_sub, add_zero, mul_one, mul_neg]
+  have hpyth : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
+  ring_nf
+  nlinarith [hpyth,
+             sq_nonneg (Real.sin θ),
+             sq_nonneg (Real.cos θ),
+             sq_nonneg a,
+             sq_nonneg (a * Real.sin θ),
+             sq_nonneg (a * Real.cos θ)]
 
 /-- A-02. Bornes locales uniformes sous 0 ≤ a ≤ 1. -/
-lemma local_factor_normSq_bounds (a θ : ℝ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) :
+lemma local_factor_normSq_bounds (a θ : ℝ) (ha0 : 0 ≤ a) (_ha1 : a ≤ 1) :
     (1 - a)^2 ≤ Complex.normSq (1 - (a : ℂ) * Complex.exp ((θ : ℂ) * Complex.I)) ∧
     Complex.normSq (1 - (a : ℂ) * Complex.exp ((θ : ℂ) * Complex.I)) ≤ (1 + a)^2 := by
   constructor
   · rw [local_factor_normSq]
-    have hcos : -1 ≤ Real.cos θ := Real.neg_one_le_cos θ
+    have hcos : Real.cos θ ≤ 1 := Real.cos_le_one θ
     nlinarith
   · rw [local_factor_normSq]
-    have hcos : Real.cos θ ≤ 1 := Real.cos_le_one θ
+    have hcos : -1 ≤ Real.cos θ := Real.neg_one_le_cos θ
     nlinarith
 
 /-- A-03. Spécialisation arithmétique a = 1 / sqrt p. -/
@@ -74,11 +89,11 @@ lemma local_factor_prime_half (p : ℕ) (hp : Nat.Prime p) (θ : ℝ) :
     positivity
   have hp_ge_one : (1 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hp.pos
   have hsqrt_ge_one : (1 : ℝ) ≤ Real.sqrt (p : ℝ) := by
-    have : (1 : ℝ)^2 ≤ (p : ℝ) := by nlinarith
-    exact Real.one_le_sqrt this
+    exact (Real.one_le_sqrt).2 hp_ge_one
   have ha1 : a ≤ 1 := by
     dsimp [a]
-    nlinarith
+    rw [div_le_one hsqrt_pos]
+    exact hsqrt_ge_one
   simpa [a] using local_factor_normSq_bounds a θ ha0 ha1
 
 /-- A-04. Version sigma ≥ 0 avec a = p^(-σ).
