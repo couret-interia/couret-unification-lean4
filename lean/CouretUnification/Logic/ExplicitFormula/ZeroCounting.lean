@@ -38,32 +38,25 @@ import CouretUnification.Logic.ExplicitFormula.TraceObject
 
 namespace CouretUnification.Logic.ExplicitFormula
 
-/-- Données paramétriques des coquilles de zéros.
+/-- Données paramétriques structurées.
 
-    Frozen ne revendique PAS que `Zero` soit le type des zéros non
-    triviaux de ζ. Frozen reçoit seulement :
-      - un type abstrait de "zéros" candidats,
-      - un opérateur d'ordonnée `gamma : Zero → ℝ`,
-      - une assignation finie par coquille `zerosInShell : ℕ → Finset Zero`.
+    v38 : la `structure ZeroShellData` canonique vit dans
+    `ZeroSideObligation.lean` (bundle Frozen v36.0 scellé) avec un champ
+    `shellBound : Prop` agrégé directement.
 
-    En Active, on instanciera avec le type Mathlib des zéros non
-    triviaux de la fonction ζ et les coquilles [k, k+1). -/
-structure ZeroShellData where
+    Cette version `Structured` externalise la borne dans la structure
+    paramétrée `ZeroCountingBoundStructured` séparée. Elle est conservée
+    pour la présentation par wrapper `ZeroCountingObligations` (pluriel)
+    consommée par `ZeroSideStructured`. -/
+structure ZeroShellDataStructured where
   Zero         : Type
   gamma        : Zero → ℝ
   zerosInShell : ℕ → Finset Zero
 
-/-- Obligation de comptage par coquilles (Riemann–von Mangoldt).
-
-    Énoncé : ∃ C > 0, ∀ k, #(zerosInShell k) ≤ C · log(k + 3).
-
-    C'est le corollaire direct de N(T) = (T/2π) log(T/2π) + O(log T),
-    N(T) comptant les zéros dans la bande critique 0 < Re(s) < 1.
-    On ne suppose PAS RH ; on compte sans placer les zéros sur la
-    ligne critique.
-
-    Frozen expose seulement le TYPE de la borne. Instanciation en Active. -/
-structure ZeroCountingBound (Z : ZeroShellData) : Prop where
+/-- Borne paramétrée pour la version structurée.
+    Variante de `ZeroSideObligation.ZeroShellData.shellBound` (Frozen)
+    avec borne externalisée. -/
+structure ZeroCountingBoundStructured (Z : ZeroShellDataStructured) : Prop where
   shellBound :
     ∃ C : ℝ, 0 < C ∧
       ∀ k : ℕ,
@@ -81,21 +74,32 @@ structure GhatPolynomialDecay (φ : TestPair) where
       ∀ _t : ℝ, True  -- placeholder pour ‖ghat t‖ ≤ C / (1+|t|)^exponent
                       -- (ghat pas encore dans Frozen)
 
-/-- Paquet d'obligations combinées pour le ZeroSide. -/
+/-- Paquet d'obligations combinées pour le ZeroSideStructured.
+    Variante post-Frozen avec présentation séparée. -/
 structure ZeroCountingObligations where
-  zeroShellData : ZeroShellData
-  countingBound : ZeroCountingBound zeroShellData
+  zeroShellData : ZeroShellDataStructured
+  countingBound : ZeroCountingBoundStructured zeroShellData
 
-/-- ZeroSide comme FormulaSide paramétré.
+/-- ZeroSide enrichi avec le wrapper d'obligations groupées.
 
-    Frozen n'identifie PAS `side.value` avec `Σ_ρ ĝ(γ_ρ)`. -/
-structure ZeroSide where
+    v38 : la `structure ZeroSide` canonique vit dans
+    `ZeroSideObligation.lean` (bundle Frozen v36.0 scellé), avec un champ
+    `counting : ZeroCountingObligation` (singulier, témoin direct).
+
+    Cette version utilise le wrapper `ZeroCountingObligations` (pluriel)
+    qui regroupe `zeroShellData + countingBound` séparément. Elle est
+    conservée pour les modules qui consomment cette présentation
+    structurée. Frozen n'identifie PAS `side.value` avec `Σ_ρ ĝ(γ_ρ)`. -/
+structure ZeroSideStructured where
   side        : FormulaSide
   obligations : ZeroCountingObligations
 
-/-- Certificat que ZeroSide = TraceObject. -/
-structure ZeroEqualsTrace
-    (Z : ZeroSide) (T : TraceObject) : Prop where
+/-- Certificat sur la vue structurée.
+
+    Le certificat équivalent sur la `ZeroSide` canonique (Frozen v36.0)
+    est porté côté Active. -/
+structure ZeroStructuredEqualsTrace
+    (Z : ZeroSideStructured) (T : TraceObject) : Prop where
   eq_trace : ∀ φ : TestPair, Z.side.value φ = T.value φ
 
 /- ═══════════════════════════════════════════════════════════════════
