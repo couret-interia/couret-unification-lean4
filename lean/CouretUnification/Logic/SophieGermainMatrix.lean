@@ -1,6 +1,5 @@
 /-
-Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
+Copyright (c) 2026 Couret-Unification Programme..
 
 # Core/SophieGermain.lean — Front 1 : matrice M3 des transitions
 
@@ -35,6 +34,9 @@ table de comptage et ses invariants combinatoires.
 import CouretUnification.Logic.Doctrine
 import Mathlib.Data.Fin.Basic
 import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.GCD.Basic
+import Mathlib.Tactic.FinCases
 
 namespace CouretUnification
 namespace Logic
