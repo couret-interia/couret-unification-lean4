@@ -67,7 +67,6 @@ structure ChiSquareReport where
   degrees_of_freedom : ℕ
   /-- Borne supérieure de la p-value associée à χ²_HL. -/
   p_value_upper_bound : ℝ
-  deriving Repr
 
 /-- Rapport effectivement mesuré sur le crible p ≤ 10⁷. -/
 def transition_report : ChiSquareReport := {
@@ -93,7 +92,6 @@ structure DiagonalResidualsReport where
   resid_29_to_29 : ℝ
   /-- Fraction de χ²_HL provenant de la diagonale. -/
   diagonal_chi2_fraction : ℝ
-  deriving Repr
 
 def diagonal_residuals : DiagonalResidualsReport := {
   resid_11_to_11 := -6.11
