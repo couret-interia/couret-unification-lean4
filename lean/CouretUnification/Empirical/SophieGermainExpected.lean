@@ -62,7 +62,6 @@ structure ExpectedMatrix where
   e_29_11 : ℝ
   e_29_23 : ℝ
   e_29_29 : ℝ
-  deriving Repr
 
 /-- Valeurs attendues sous HL, calculées par Python sur N_total = 30 653. -/
 def expected_HL : ExpectedMatrix := {
@@ -93,19 +92,18 @@ structure StandardizedResiduals where
   r_29_11 : ℝ
   r_29_23 : ℝ
   r_29_29 : ℝ
-  deriving Repr
 
 /-- Résidus calculés par Python. Les résidus diagonaux dominent
     en magnitude négative : signature de répulsion intra-classe. -/
 def residuals_HL : StandardizedResiduals := {
   r_11_11 := -6.1144
-  r_11_23 := +5.3170
-  r_11_29 := +0.7773
-  r_23_11 := +0.0840
+  r_11_23 := 5.3170
+  r_11_29 := 0.7773
+  r_23_11 := 0.0840
   r_23_23 := -6.5098
-  r_23_29 := +6.4687
-  r_29_11 := +6.0452
-  r_29_23 := +1.2223
+  r_23_29 := 6.4687
+  r_29_11 := 6.0452
+  r_29_23 := 1.2223
   r_29_29 := -7.2904
 }
 
@@ -127,7 +125,6 @@ structure ChiSquareCellContribution where
   pct_29_29 : ℝ
   /-- Contribution diagonale totale. -/
   diagonal_total_pct : ℝ
-  deriving Repr
 
 /-- Décomposition par case du χ² total = 241.68. -/
 def chi2_decomposition : ChiSquareCellContribution := {
@@ -159,7 +156,6 @@ structure HLAnalysisReport where
   max_diagonal_residual_abs : ℝ
   /-- Fraction du χ² provenant de la diagonale. -/
   diagonal_chi2_fraction : ℝ
-  deriving Repr
 
 def hl_analysis_report : HLAnalysisReport := {
   N_total := 30653
