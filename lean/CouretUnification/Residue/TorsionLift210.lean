@@ -70,17 +70,17 @@ def ClosureTC210 : Finset Z210 :=
    ══════════════════════════════════════════════════════════════════════ -/
 
 /-- Un pas de fermeture multiplicative sur un sous-ensemble fini de ZMod n. -/
-def stepClosure {n : Nat} [NeZero n] (S : Finset (ZMod n)) : Finset (ZMod n) :=
+def stepClosureGeneric {n : Nat} [NeZero n] (S : Finset (ZMod n)) : Finset (ZMod n) :=
   S ∪ (S.product S).image (fun p : ZMod n × ZMod n => p.1 * p.2)
 
 /-- Un seul pas de clôture atteint déjà la clôture complète déclarée. -/
 theorem stepClosure_TC210_eq :
-    stepClosure TC210_torsion = ClosureTC210 := by
+    stepClosureGeneric TC210_torsion = ClosureTC210 := by
   native_decide
 
 /-- La clôture déclarée est stable sous un nouveau pas de fermeture. -/
 theorem stepClosure_TC210_stable :
-    stepClosure ClosureTC210 = ClosureTC210 := by
+    stepClosureGeneric ClosureTC210 = ClosureTC210 := by
   native_decide
 
 /- ══════════════════════════════════════════════════════════════════════
@@ -110,7 +110,7 @@ theorem closure_residue_TC210 :
 
 /-- Formulation équivalente avec le pas de clôture explicite. -/
 theorem stepClosure_residue_TC210 :
-    stepClosure TC210_torsion \ TC210_torsion = Ghost210 := by
+    stepClosureGeneric TC210_torsion \ TC210_torsion = Ghost210 := by
   native_decide
 
 /- ══════════════════════════════════════════════════════════════════════
