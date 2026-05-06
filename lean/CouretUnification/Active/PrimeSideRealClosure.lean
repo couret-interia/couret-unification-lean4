@@ -52,23 +52,21 @@ en termes de la fonction `g` (et non de `tsupport g`).
 -/
 lemma hasCompactSupport_bound {g : ℝ → ℂ} (hg : HasCompactSupport g) :
     ∃ R : ℝ, 0 ≤ R ∧ ∀ x : ℝ, R < |x| → g x = 0 := by
-  -- Le tsupport de g est compact, donc borné dans ℝ.
   have hbound : Bornology.IsBounded (tsupport g) := hg.isBounded
-  -- Extraire une boule fermée centrée en 0 contenant tsupport g.
   obtain ⟨R₀, hR₀⟩ := hbound.subset_closedBall 0
-  -- Prendre R := max R₀ 0 pour assurer R ≥ 0.
   refine ⟨max R₀ 0, le_max_right _ _, ?_⟩
   intro x hx
-  -- Si |x| > max R₀ 0 ≥ R₀, alors x ∉ closedBall 0 R₀ ⊇ tsupport g.
   have hx_nmem : x ∉ tsupport g := by
     intro hmem
     have hdist := hR₀ hmem
-    rw [Metric.mem_closedBall, dist_zero_right] at hdist
-    -- hdist : |x| ≤ R₀ ; hx : max R₀ 0 < |x|.
+    -- dist_zero_right donne ‖x‖ ; sur ℝ, ‖x‖ = |x| via Real.norm_eq_abs
+    rw [Metric.mem_closedBall, dist_zero_right, Real.norm_eq_abs] at hdist
     have h1 : R₀ ≤ max R₀ 0 := le_max_left _ _
     linarith
-  -- x hors du tsupport ⟹ g x = 0.
-  exact image_eq_zero_of_nmem_tsupport hx_nmem
+  -- x hors du tsupport ⟹ g x = 0
+  -- Voie robuste via la contraposée de subset_tsupport (nom stable Mathlib)
+  by_contra hne
+  exact hx_nmem (subset_tsupport g hne)
 
 /-! ### Étape 2 — Fermeture finie du PrimeSide -/
 

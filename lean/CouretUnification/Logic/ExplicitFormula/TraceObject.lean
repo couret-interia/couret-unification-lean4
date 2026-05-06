@@ -1,13 +1,24 @@
+/-
+  Couret-Unification — v38
+
+  TraceObject.lean
+
+  v35.9.0 → v38 :
+    Anciennement, ce fichier déclarait `structure TestPair { g, ghat,
+    admissible }` en doublon de `TestPair.lean` (v35.9.1, version
+    canonique avec `compactSupport_g`). Conflit `TestPair.ctorIdx`.
+
+    Désormais, on importe la version canonique. Les champs `ghat` et
+    `admissible` ne sont pas réintroduits : ils n'ont aucun
+    consommateur dans la couche Frozen. S'ils deviennent nécessaires
+    plus tard, créer une extension `TestPairFourier extends TestPair`.
+-/
+
 import Mathlib
 import CouretUnification.Logic.ExplicitFormula.StatusFlags
+import CouretUnification.Logic.ExplicitFormula.TestPair
 
 namespace CouretUnification.Logic.ExplicitFormula
-
-/-- Abstract test pair for the Riemann-Weil architecture. -/
-structure TestPair where
-  g : ℝ → ℂ
-  ghat : ℝ → ℂ
-  admissible : Prop
 
 /-- A formal side of an explicit-formula identity. -/
 structure FormulaSide where

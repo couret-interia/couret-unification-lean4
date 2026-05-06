@@ -51,7 +51,7 @@ structure ArchimedeanKernelData where
   kernel           : ℝ → ℂ
   logarithmicBound :
     ∃ C : ℝ, 0 < C ∧
-      ∀ t : ℝ, Complex.abs (kernel t) ≤ C * Real.log ((2 : ℝ) + |t|)
+      ∀ t : ℝ, ‖kernel t‖ ≤ C * Real.log ((2 : ℝ) + |t|)
 
 /-- Obligations du côté archimédien pour un couple test donné.
 

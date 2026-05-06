@@ -19,6 +19,7 @@
 -/
 
 import CouretUnification.Core.Characters30
+import CouretUnification.Logic.H3.ParityGamma30
 
 namespace CouretUnification.Core
 
@@ -124,7 +125,7 @@ theorem parity_coherent (χ : CharIdx) :
     (CouretUnification.Logic.H3.charIsEven χ) ↔ conreyIsEven χ = true := by
   fin_cases χ <;>
     simp [CouretUnification.Logic.H3.charIsEven, CouretUnification.Logic.H3.parityBit,
-          conreyIsEven, charCoord] <;> decide
+          conreyIsEven] <;> decide
 
 -- ═══════════════════════════════════════════════════════════════════
 -- §5. Orbit Galois

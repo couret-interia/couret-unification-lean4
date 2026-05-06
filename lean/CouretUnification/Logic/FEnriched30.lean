@@ -97,7 +97,6 @@ noncomputable def A30 : ArithmeticModularObject where
   R_q := A30_R
   R_q_pos := fun i => by
     simp [A30_R]
-    positivity
 
 /-!
 ## Section 4 — Cible Fisher-Rao Δ^7_{FR}

@@ -46,7 +46,7 @@ rend cette construction inutile :
 -/
 
 import CouretUnification.Logic.Doctrine
-import CouretUnification.Logic.SquarefreeSupport
+import CouretUnification.Logic.H3.SquarefreeSupport
 import Mathlib.NumberTheory.EulerProduct.Basic
 import Mathlib.Analysis.PSeries
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
@@ -144,7 +144,7 @@ lemma e3_2_summable_norm_of_nat_add_rpow_bound
     (f : ℕ → R) (C a σ : ℝ)
     (hC : 0 ≤ C)
     (hσ : 1 < σ)
-    (ha : 0 ≤ a)
+    (_ha : 0 ≤ a)
     (hbound : ∀ n, ‖f n‖ ≤ C / |(n : ℝ) + a| ^ σ) :
     Summable (fun n : ℕ => ‖f n‖) := by
   -- TRY THIS NAME IF SNAPSHOT FAILS sur Real.summable_one_div_nat_add_rpow :
@@ -257,7 +257,7 @@ example : fileIdentity.rhClaimed = false := rfl
    MTF/Lyapunov.
 
 6. **Ordre de build recommandé** :
-       lake build CouretUnification.Logic.SquarefreeSupport
+       lake build CouretUnification.Logic.H3.SquarefreeSupport
        lake build CouretUnification.Logic.EulerBridgeInfinite
        lake build CouretUnification.Logic.C3Weak
        lake build CouretUnification.Logic.CriticalLineTransferSpec

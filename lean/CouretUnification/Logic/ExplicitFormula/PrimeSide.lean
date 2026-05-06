@@ -82,8 +82,8 @@ structure PrimeSideFiniteSupport
 noncomputable def buildPrimeSideFiniteSupport
     (Λ : ArithmeticWeight) (φ : TestPair) :
     PrimeSideFiniteSupport Λ φ :=
-  let ⟨N, hN⟩ := primeSide_finite_of_compactSupport Λ φ
-  { cutoff := N, vanishesBeyond := hN }
+  { cutoff := (primeSide_finite_of_compactSupport Λ φ).choose,
+    vanishesBeyond := (primeSide_finite_of_compactSupport Λ φ).choose_spec }
 
 /-- Évaluation finie de PrimeSide à partir d'un seuil. -/
 noncomputable def evalPrimeSideFinite

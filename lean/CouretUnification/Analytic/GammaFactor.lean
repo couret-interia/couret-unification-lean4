@@ -18,9 +18,10 @@
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.Complex.CauchyIntegral
 import Mathlib.NumberTheory.ArithmeticFunction.Zeta
+import CouretUnification.Core.Characters30
 import CouretUnification.Core.Characters30Bridge
 
-open Complex
+open Complex CouretUnification.Core
 open scoped Real
 
 namespace CouretUnification.Analytic

@@ -29,7 +29,7 @@ tout en fournissant un théorème pleinement fermé pour le cas concret ℝ.
 -/
 
 import CouretUnification.Logic.Doctrine
-import CouretUnification.Logic.SquarefreeSupport
+import CouretUnification.Logic.H3.SquarefreeSupport
 import CouretUnification.Logic.EulerBridgeInfiniteCompat
 import Mathlib.NumberTheory.EulerProduct.Basic
 import Mathlib.Analysis.PSeries

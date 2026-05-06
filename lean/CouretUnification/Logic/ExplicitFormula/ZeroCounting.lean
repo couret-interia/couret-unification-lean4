@@ -78,8 +78,8 @@ structure GhatPolynomialDecay (φ : TestPair) where
   exponentLargeEnough : 3 ≤ exponent
   bound :
     ∃ C : ℝ, 0 < C ∧
-      ∀ t : ℝ, True  -- placeholder pour ‖ghat t‖ ≤ C / (1+|t|)^exponent
-                     -- (ghat pas encore dans Frozen)
+      ∀ _t : ℝ, True  -- placeholder pour ‖ghat t‖ ≤ C / (1+|t|)^exponent
+                      -- (ghat pas encore dans Frozen)
 
 /-- Paquet d'obligations combinées pour le ZeroSide. -/
 structure ZeroCountingObligations where

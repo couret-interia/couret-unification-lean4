@@ -128,6 +128,41 @@ theorem squarefree_support_transfer
       ring
     rw [h_algebra, ih hT]
 
+/-- B-04bis. Variante réelle du théorème somme-produit fini.
+
+    Identique à `squarefree_support_transfer` mais pour f : ℕ → ℝ.
+    Utilisée par `LocalSquarefreeBridge.local_squarefree_bridge_finite`
+    pour transférer une fonction n ↦ n^(-σ) (qui est à valeurs réelles). -/
+theorem squarefree_support_transfer_real
+    {S : Finset ℕ} (hS : ∀ p ∈ S, p.Prime)
+    (f : ℕ → ℝ)
+    (h_one : f 1 = 1)
+    (h_mult : ∀ a b, a.Coprime b → f (a * b) = f a * f b) :
+    Finset.sum S.powerset (fun T => f (Finset.prod T _root_.id)) =
+      Finset.prod S (fun p => (1 + f p)) := by
+  classical
+  revert hS
+  refine Finset.induction_on S ?_ ?_
+  · intro _; simp [h_one]
+  · intro p T hpT ih hS
+    have hp : p.Prime := hS p (Finset.mem_insert_self p T)
+    have hT : ∀ q ∈ T, q.Prime := fun q hq => hS q (Finset.mem_insert_of_mem hq)
+    rw [Finset.prod_insert hpT, Finset.sum_powerset_insert hpT]
+    have h_split : ∀ s ∈ T.powerset,
+        f (Finset.prod (insert p s) _root_.id) = f p * f (Finset.prod s _root_.id) := by
+      intro s hs
+      have hs_sub : s ⊆ T := Finset.mem_powerset.mp hs
+      have hp_not_mem_s : p ∉ s := fun hps => hpT (hs_sub hps)
+      rw [Finset.prod_insert hp_not_mem_s]
+      exact h_mult _ _ (coprime_prime_prod_subset hT hp hpT hs_sub)
+    rw [Finset.sum_congr rfl h_split, ← Finset.mul_sum]
+    have h_algebra :
+        Finset.sum T.powerset (fun s => f (Finset.prod s _root_.id)) +
+          f p * Finset.sum T.powerset (fun s => f (Finset.prod s _root_.id)) =
+        (1 + f p) * Finset.sum T.powerset (fun s => f (Finset.prod s _root_.id)) := by
+      ring
+    rw [h_algebra, ih hT]
+
 /-- B-05. Élévation de la multiplicativité à la norme carrée complexe. -/
 lemma isMultiplicative_norm_sq
     (f : ArithmeticFunction ℂ) (hf : f.IsMultiplicative) :
