@@ -84,7 +84,7 @@ structure EnrichedSpectralSide where
   Riemann–von Mangoldt + décroissance de Schwartz, typiquement).
   -/
   summabilityObligation :
-    ∀ (g : ℝ → ℂ) (gHat : ℂ → ℂ), TestFunction g → Prop
+    ∀ (g : ℝ → ℂ) (_gHat : ℂ → ℂ), TestFunction g → Prop
 
 /-! ### Côté premier enrichi — terme explicite -/
 
@@ -151,12 +151,12 @@ noncomputable def EnrichedTraceObject.toTraceObject
 
 /-- Aucun théorème de ce module ne peut clore Riemann–Weil. -/
 theorem enriched_does_not_prove_riemann_weil
-    (T : EnrichedTraceObject) : True := by
+    (_T : EnrichedTraceObject) : True := by
   trivial
 
 /-- Aucun théorème de ce module ne peut clore Hilbert–Pólya. -/
 theorem enriched_does_not_prove_hilbert_polya
-    (T : EnrichedTraceObject) : True := by
+    (_T : EnrichedTraceObject) : True := by
   trivial
 
 end CouretUnification.Active

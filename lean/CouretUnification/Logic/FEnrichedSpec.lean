@@ -142,8 +142,8 @@ structure FEnrichedCandidate where
     La métrique Fisher-Rao sur Δ^{d-1}_{FR} se déduit, près du centre
     barycentrique, du développement quadratique de l'entropie via
     le calcul Amari-Nagaoka standard. -/
-def MetricCompatibility (F : FEnrichedCandidate) : Prop :=
-  ∀ (X : ArithmeticModularObject),
+def MetricCompatibility (_F : FEnrichedCandidate) : Prop :=
+  ∀ (_X : ArithmeticModularObject),
     -- Près du barycentre, la métrique image est compatible avec
     -- le pull-back de la métrique Fisher-Rao standard.
     True  -- placeholder : à raffiner avec une vraie norme
@@ -154,8 +154,8 @@ def MetricCompatibility (F : FEnrichedCandidate) : Prop :=
     10^{-8} – 10^{-10} sur q = 30 (test channel_balance_v7_2d.gp).
     La promotion à conditional dépend de la formalisation propre
     de cet effondrement. -/
-def SpectralCompatibility (F : FEnrichedCandidate) : Prop :=
-  ∀ (X : ArithmeticModularObject),
+def SpectralCompatibility (_F : FEnrichedCandidate) : Prop :=
+  ∀ (_X : ArithmeticModularObject),
     -- Le commutateur [Δ_FR, T_M*] tend vers 0 dans la limite appropriée
     True  -- placeholder
 

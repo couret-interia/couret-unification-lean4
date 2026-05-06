@@ -86,10 +86,10 @@ Instanciation de ArithmeticModularObject pour q = 30.
 -/
 
 /-- [PROJ] Données de A_30 : le vecteur des résidus actifs (poids uniforme). -/
-def A30_R : Fin 8 → ℝ := fun _ => 1 / 8  -- distribution uniforme initiale
+noncomputable def A30_R : Fin 8 → ℝ := fun _ => 1 / 8  -- distribution uniforme initiale
 
 /-- [PROJ] L'objet canonique A_30 dans 𝒜_Π^{mon}. -/
-def A30 : ArithmeticModularObject where
+noncomputable def A30 : ArithmeticModularObject where
   modulus := 30
   modulus_pos := by norm_num
   dim_active := 8
