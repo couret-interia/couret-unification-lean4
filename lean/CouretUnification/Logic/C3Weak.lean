@@ -1,8 +1,7 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
-# H3/C3Weak.lean — Rigidité faible quadratique du résidu R_σ
+# Logic/C3Weak.lean — Rigidité faible quadratique du résidu R_σ
 
 ## Doctrine
 
@@ -74,7 +73,6 @@ instance : CoeFun H3TestFunction (fun _ => ℝ → ℂ) where
 noncomputable def H3TestFunction.mulConj (f g : H3TestFunction) : H3TestFunction where
   toFun x := f.toFun x * star (g.toFun x)
   symmetric x hx := by
-    simp only
     rw [f.symmetric x hx, g.symmetric x hx]
   hasCompactSupport := trivial
   smooth := trivial
@@ -132,8 +130,8 @@ sur la partie négative de la forme étendue par polarisation.
 
 /-- [PROJ] Conséquence : la matrice de Gram associée à toute famille
     finie de fonctions test est hermitienne semi-définie positive. -/
-def GramSemiDefPos (rigid : ResidualRigidQuadratic) : Prop :=
-  ∀ ⦃σ : ℝ⦄ (hσ : 1 < σ) (n : ℕ) (fs : Fin n → H3TestFunction),
+def GramSemiDefPos (_rigid : ResidualRigidQuadratic) : Prop :=
+  ∀ ⦃σ : ℝ⦄ (_hσ : 1 < σ) (n : ℕ) (fs : Fin n → H3TestFunction),
     ∀ (c : Fin n → ℂ),
       0 ≤ (∑ i, ∑ j, star (c i) * c j *
            R_sigma σ ((fs i).mulConj (fs j))).re
@@ -161,8 +159,8 @@ M_σ (côté zéros) et la forme R_σ (côté résidu).
 /-- [PROJ] Énoncé du matching faible C3w :
     sous C1, C2 et C3Weak.ResidualRigidQuadratic, la forme totale
     E_σ(f · f̄) admet une décomposition avec partie résiduelle ≥ 0. -/
-def WeakMatchingC3w (rigid : ResidualRigidQuadratic) : Prop :=
-  ∀ ⦃σ : ℝ⦄ (hσ : 1 < σ) (f : H3TestFunction),
+def WeakMatchingC3w (_rigid : ResidualRigidQuadratic) : Prop :=
+  ∀ ⦃σ : ℝ⦄ (_hσ : 1 < σ) (f : H3TestFunction),
     -- E_σ(f·f̄) = M_σ(f·f̄) + R_σ(f·f̄), avec R_σ(f·f̄) ≥ 0
     (R_sigma σ (f.mulConj f)).re ≥ 0
 
@@ -172,52 +170,23 @@ theorem weakMatching_of_rigid (rigid : ResidualRigidQuadratic) :
   intro σ hσ f
   exact (rigid hσ f).2
 
-/-!
-## Section 6 — Invariant constitutionnel
+/-! ## Section 6 — Invariant constitutionnel (scope local) -/
 
-On vérifie statiquement que ce fichier ne prétend rien sur RH.
--/
+namespace C3Weak
 
-/-- [API] Constante invariante : ce fichier ne prouve pas RH. -/
 def RHClaimed : Bool := false
-
 example : RHClaimed = false := rfl
 
-/-- [P] Identité du fichier (utilise CouretUnification.Meta.FileIdentity de Core.Doctrine). -/
 def fileIdentity : CouretUnification.Meta.FileIdentity where
   filename := "CouretUnification/Logic/C3Weak.lean"
   layer := CouretUnification.Meta.Layer.B
-  status := CouretUnification.Meta.Status.conditional  -- [B] sorry doctrinal sur gram_semidef_of_rigid
+  status := CouretUnification.Meta.Status.conditional
   sorryCount := 1
   rhClaimed := false
 
 example : fileIdentity.rhClaimed = false := rfl
 
-/-!
-## Notes finales
-
-1. Pré-filtrage numérique (Front 3, avril 2026) :
-   matrice de Gram 6×6 sur paquets log-gaussiens, valeurs propres
-   triées : [+0.024, +0.127, +0.224, +6.631, +10.860, +19.929].
-   Aucune valeur propre négative → invariant (iii) compatible.
-
-2. Falsifiabilité :
-   ce prédicat ResidualRigidQuadratic est falsifiable.
-   Un seul couple (σ, f) avec (R_σ(f·f̄)).im ≠ 0 ou .re < 0
-   suffit à le réfuter.
-
-3. Limites :
-   La preuve gram_semidef_of_rigid contient un sorry conceptuel
-   (polarisation hermitienne + linéarité étendue de R_sigma).
-   Ce sorry est ASSUMÉ explicitement comme charge analytique
-   à porter dans AnalyticHorizon.
-
-4. Statut Mathlib :
-   les imports sont alignés sur la doc publique :
-   - `Analysis.InnerProductSpace.Basic` pour les formes hermitiennes
-   - `Analysis.Complex.Basic` pour ℂ et star
-   - `MeasureTheory.Function.LpSpace.Basic` pour le futur raccord L²
--/
+end C3Weak
 
 end Logic
 end CouretUnification

@@ -1,5 +1,5 @@
 /-
-# Meta/Layer.lean — Taxonomie des régimes de validité (v35.7)
+# Meta/Layer.lean — Taxonomie des régimes de validité (v35.7, étendu v38)
 
 ## Doctrine
 
@@ -17,13 +17,6 @@ compilation ; elle sert de garde-fou lexical et de point d'inspection.
 
 namespace CouretUnification.Meta
 
-/-- Régimes de validité du programme.
-
-    | A | formel prouvé (théorème Lean fermé)
-    | B | analytique conditionnel ou spécifié
-    | C | empirique fort (régularité numérique reproductible)
-    | D | spéculatif, philosophique ou programmatique
--/
 inductive Layer where
   | A
   | B
@@ -31,16 +24,21 @@ inductive Layer where
   | D
   deriving DecidableEq, Repr
 
-/-- Statut détaillé d'un énoncé. -/
+/-- Statut détaillé d'un énoncé.
+
+    v38 : ajout de `nogo` et `definitional` (anciennement dans Meta/Doctrine).
+    `Doctrine.lean` est désormais une façade qui ne déclare plus
+    de doublon `Status` ni `Layer`. -/
 inductive Status where
-  | proved        -- preuve Lean complète, zéro sorry
-  | encoded       -- structure encodée, contenu mathématique trivial ou différé
-  | conditional   -- preuve avec sorry doctrinalement assumé
-  | empirical     -- résultat numérique, non-théorème
-  | speculative   -- analogie, lecture, programmatique
+  | proved
+  | encoded
+  | conditional
+  | empirical
+  | speculative
+  | nogo          -- théorème d'obstruction (no-go)
+  | definitional  -- chantier amont de définitions effectives
   deriving DecidableEq, Repr
 
-/-- Métadonnée d'un énoncé Lean ou d'une affirmation du programme. -/
 structure Statement where
   title   : String
   layer   : Layer
@@ -48,11 +46,6 @@ structure Statement where
   content : String
   deriving Repr
 
-/-- Identité de fichier — utilisée par chaque module pour déclarer son statut.
-
-    L'invariant `rhClaimed = false` est répliqué statiquement via
-    `example : fileIdentity.rhClaimed = false := rfl` dans chaque fichier
-    du noyau démonstratif. -/
 structure FileIdentity where
   filename     : String
   layer        : Layer
@@ -61,7 +54,6 @@ structure FileIdentity where
   rhClaimed    : Bool
   deriving Repr
 
-/-- Thèse centrale du programme — niveau D (schéma unificateur, non démontré). -/
 def central_thesis : Statement := {
   title := "Schéma unificateur proposé"
   layer := .D
