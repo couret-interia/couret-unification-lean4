@@ -40,6 +40,7 @@ mathématique constitue une violation de la stratification A/B/C/D.
 
 import CouretUnification.Meta.Layer
 import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Analysis.SpecialFunctions.Exponential
 
 namespace CouretUnification
 namespace Speculative
@@ -82,7 +83,7 @@ structure LyapunovContractiveMorphism
     (Source Target : Type*)
     [NormedAddCommGroup Source]
     [NormedAddCommGroup Target]
-    (K λ_L : ℝ) where
+    (K lambdaL : ℝ) where
   /-- Application sous-jacente. -/
   toFun : Source → Target
   /-- Préservation de l'élément neutre. -/
@@ -90,9 +91,9 @@ structure LyapunovContractiveMorphism
   /-- Stabilité Lyapunov : la dilatation des perturbations est majorée. -/
   lyapunov_stability :
     ∀ (f ε : Source),
-      ‖toFun (f + ε) - toFun f‖ ≤ K * ‖ε‖ * Real.exp (-λ_L)
+      ‖toFun (f + ε) - toFun f‖ ≤ K * ‖ε‖ * Real.exp (-lambdaL)
   /-- Marge anti-déchirure (manifold tearing). -/
-  no_manifold_tearing : 0 < λ_L
+  no_manifold_tearing : 0 < lambdaL
 
 /-! ## Section 3 — Pourquoi ceci n'est pas dans Logic/ -/
 
