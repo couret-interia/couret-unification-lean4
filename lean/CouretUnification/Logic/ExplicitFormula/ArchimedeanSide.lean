@@ -36,6 +36,7 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import CouretUnification.Logic.ExplicitFormula.TestPair
 import CouretUnification.Logic.ExplicitFormula.TraceObject
+import CouretUnification.Logic.ExplicitFormula.ArchimedeanKernelBound
 
 namespace CouretUnification.Logic.ExplicitFormula
 
@@ -62,18 +63,23 @@ structure ArchimedeanSideObligations (φ : TestPair) where
   kernelData         : ArchimedeanKernelData
   weightedIntegrable : Prop
 
-/-- ArchimedeanSide comme FormulaSide paramétré.
+/-- Vue riche pré-v36 de l'ArchimedeanSide.
+
+    v38 : la `structure ArchimedeanSide` canonique vit désormais dans
+    `ArchimedeanKernelBound.lean` (bundle Frozen v36.0 scellé). Cette
+    version `Rich` est conservée pour l'audit doctrinal et le raccord
+    avec `ArchimedeanSideObligations` (vue par couple test).
 
     Aucune identification concrète. L'instanciation de
     `side.value = ∫ ĝ(t) · K_∞(t) dt` appartient à Active. -/
-structure ArchimedeanSide where
+structure ArchimedeanSideRich where
   side        : FormulaSide
   obligations : ∀ φ : TestPair, ArchimedeanSideObligations φ
 
-/-- Certificat que l'ArchimedeanSide coïncide avec le TraceObject.
-    Il s'agit d'une forme d'égalité, pas d'un théorème prouvé. -/
-structure ArchimedeanEqualsTrace
-    (A : ArchimedeanSide) (T : TraceObject) : Prop where
+/-- Certificat sur la vue riche. La version sur la `ArchimedeanSide`
+    canonique (v36.0) est laissée à un module Active dédié. -/
+structure ArchimedeanRichEqualsTrace
+    (A : ArchimedeanSideRich) (T : TraceObject) : Prop where
   eq_trace : ∀ φ : TestPair, A.side.value φ = T.value φ
 
 /- ═══════════════════════════════════════════════════════════════════
