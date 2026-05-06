@@ -72,7 +72,7 @@ structure SquarefreeFiniteFunction where
   support : List Nat
   /-- Les valeurs complexes attachées à chaque sous-ensemble du support
       (squarefree → un coefficient par sous-ensemble du support). -/
-  coeffs : List Complex.{0}
+  coeffs : List Complex
   /-- Cohérence des longueurs (placeholder). -/
   consistent : coeffs.length ≤ 2 ^ support.length
 
