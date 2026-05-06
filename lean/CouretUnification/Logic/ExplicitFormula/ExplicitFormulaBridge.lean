@@ -34,11 +34,11 @@ structure ExplicitFormulaBridge where
 
   prime_arch_to_trace : Prop
   zero_to_trace : Prop
-  det2_to_trace : Prop
+  det2_to_trace : ∀ φ : TestPair, det2Side.side.value φ = trace.value φ
 
 /-- No RH consequence may be exported from this bridge alone. -/
 theorem no_RH_from_explicit_formula_bridge
-    (B : ExplicitFormulaBridge) : True := by
+    (_B : ExplicitFormulaBridge) : True := by
   trivial
 
 end CouretUnification.Logic.ExplicitFormula

@@ -40,14 +40,12 @@ def Det2BridgeConsistent
     (B : ExplicitFormulaBridge)
     (o : Det2Obligations) : Prop :=
   Det2Admissible o
-  ∧ ∀ φ : TestPair, B.det2Side.value φ = B.trace.value φ
+  ∧ ∀ φ : TestPair, B.det2Side.side.value φ = B.trace.value φ
 
 theorem det2BridgeConsistent_of_certificate
     (B : ExplicitFormulaBridge)
     (o : Det2Obligations) (h : Det2Admissible o) :
     Det2BridgeConsistent B o := by
-  refine ⟨h, ?_⟩
-  intro φ
-  exact B.det2_eq_trace φ
+  exact ⟨h, B.det2_to_trace⟩
 
 end CouretUnification.AnalyticHorizon

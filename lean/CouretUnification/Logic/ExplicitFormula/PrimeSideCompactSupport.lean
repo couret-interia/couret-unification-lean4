@@ -21,7 +21,7 @@ structure LogCompactTest where
       g (Real.log n) = 0 ∧ g (-Real.log n) = 0
 
 /-- Abstract prime-side summand. -/
-def primeTerm (Λ : ArithmeticWeight) (φ : LogCompactTest) (n : ℕ) : ℂ :=
+noncomputable def primeTerm (Λ : ArithmeticWeight) (φ : LogCompactTest) (n : ℕ) : ℂ :=
   Λ.weight n * (φ.g (Real.log n) + φ.g (-Real.log n))
 
 /--
