@@ -10,15 +10,14 @@ Contrairement à Frozen.lean, ce fichier PEUT échouer au build si un
 front casse temporairement. La CI doit traiter cet échec comme un
 warning, pas un blocage.
 
-## Statut (v35.8.8) — 9 sorries total
+## Statut (v35.9.1) — 9 sorries total
 
-- Logic/L6Analytic                    [1 sorry  — ANALYTIC/Stirling]
 - Logic/L6RatioEstimateDerived        [1 sorry  — ANALYTIC ASSEMBLY]
-- Logic/L10NoGoTheorem                [3 sorry  — 1 CONCEPTUEL + 2 UPSTREAM]
+- Logic/L10NoGoTheorem                [2 sorry  — 1 CONCEPTUEL + 1 UPSTREAM]
 - Logic/H3/SquarefreeSupport          [1 sorry  — OBSOLETE, hors chemin]
 - Logic/H3/SquarefreeDensity          [3 sorry  — ANALYTIC]
 - Logic/H3/MoebiusBridge              [1 sorry  — SNAPSHOT API]
-- AnalyticHorizon/Det2Transport       [1 sorry  — DOCTRINAL unique]
+- AnalyticHorizon/Det2Transport       [1 sorry  — INSTANCIATION]
 
 ## Règle d'importation
 
@@ -39,7 +38,7 @@ lake build CouretUnification
 ```
 
 Layer : Meta (aggregator)
-Sorry : 11 (cf. BUILD.md pour inventaire détaillé)
+Sorry : 9
 RHClaimed : false (hérité)
 -/
 
@@ -49,7 +48,6 @@ import CouretUnification.Frozen
 -- Fronts actifs avec sorries documentés
 
 -- L6 analytique
-import CouretUnification.Logic.L6Analytic
 import CouretUnification.Logic.L6RatioEstimateDerived
 
 -- No-go théorème L10
