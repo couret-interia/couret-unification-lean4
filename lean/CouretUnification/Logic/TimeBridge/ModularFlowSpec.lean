@@ -96,7 +96,7 @@ structure HasLambdaMod (cor : ModularCorrelator) where
     théorème. Elle ne peut pas être dérivée de fichiers du dépôt tant
     que l'algèbre de type III concrète du système adélique n'a pas été
     construite en Lean. -/
-def modular_coefficient_equals_one_seventh : openProblem True := {
+def modular_coefficient_equals_one_seventh : OpenProblem True := {
   registry := "R3-Modulaire / B1"
   status := "ouvert — cible du programme, non dérivé en amont"
 }
@@ -106,7 +106,7 @@ def modular_coefficient_equals_one_seventh : openProblem True := {
     calibration B2 dans le sens où les deux pointent vers la même
     constante géométrique. Cette identification est ELLE AUSSI ouverte
     (elle est précisément ce que B1 doit établir). -/
-def modular_B2_consistency : openProblem True := {
+def modular_B2_consistency : OpenProblem True := {
   registry := "R3-Modulaire ↔ R4-DBM / Bridge révisé"
   status := "cohérence algébrique acquise ; dérivation analytique ouverte"
 }
@@ -144,7 +144,7 @@ structure ModularFlowSpec (𝒜 : Type*) where
     elle équivaut essentiellement à Hilbert-Pólya.
 
     `HilbertPolyaClaimed = false` : ce pont reste ouvert. -/
-def modular_to_spectral_bridge : openProblem True := {
+def modular_to_spectral_bridge : OpenProblem True := {
   registry := "R3-Modulaire → R1-Spectral"
   status := "équivalent à Hilbert-Pólya — HilbertPolyaClaimed = false"
 }

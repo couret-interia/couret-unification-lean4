@@ -66,7 +66,10 @@ import CouretUnification.Logic.L6Bridge
 import CouretUnification.Logic.H3.LocalFactor
 import CouretUnification.Logic.H3.CriticalLineTransferSpec
 
--- À activer après livraison LTB-0 (TimeBridge)
--- import CouretUnification.Logic.TimeBridge.Basic
--- import CouretUnification.Logic.TimeBridge.B2Calibration
--- import CouretUnification.Logic.TimeBridge.ModularFlowSpec
+-- v38.0 — TimeBridge LTB-0 (livré 7 mai 2026)
+-- Basic : socle de spec (openProblem, invariants doctrinaux)
+-- B2Calibration : identité algébrique t_* = ½ log(7/6) ⟺ λ² = 1/7
+-- ModularFlowSpec : spec Registre 3, conjecture B1 (openProblem)
+import CouretUnification.Logic.TimeBridge.Basic
+import CouretUnification.Logic.TimeBridge.B2Calibration
+import CouretUnification.Logic.TimeBridge.ModularFlowSpec

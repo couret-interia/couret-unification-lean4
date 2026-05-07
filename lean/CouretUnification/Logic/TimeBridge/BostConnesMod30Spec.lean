@@ -188,7 +188,7 @@ structure Sub7ObservableQuestion where
     Si quelqu'un prouve ¬ ∃ (q : Sub7ObservableQuestion), True, cela
     RÉFUTERAIT le Candidat C dans sa forme actuelle. -/
 def bostConnesMod30SubQuestion_open : Prop :=
-  ∃ (q : Sub7ObservableQuestion), True
+  ∃ (_q : Sub7ObservableQuestion), True
 
 /- ═══════════════════════════════════════════════════════════════════════════
    SECTION 5 — CRITÈRES DE SUCCÈS / FALSIFICATION
@@ -226,7 +226,18 @@ inductive CandidateCResolution
   | success (s : SuccessCriteria)      -- une piste positive a été construite
   | falsified (f : FalsificationCriteria)  -- réfutée à tous égards
   | stillOpen (progress : String)      -- progrès partiels sans conclusion
-  deriving Repr
+
+/-- Représentation textuelle du registre de résolution.
+
+    On n'affiche pas le contenu des branches `success` et `falsified` :
+    elles contiennent des `Prop` (obligations doctrinales) qui n'ont
+    pas de `Repr` canonique. Seul le cas `stillOpen` porte une
+    `String` informative. -/
+instance : Repr CandidateCResolution where
+  reprPrec r _ := match r with
+    | .success _      => "CandidateCResolution.success ⟨…⟩"
+    | .falsified _    => "CandidateCResolution.falsified ⟨…⟩"
+    | .stillOpen msg  => s!"CandidateCResolution.stillOpen \"{msg}\""
 
 /-- Résolution au 24 avril 2026. -/
 def resolutionSnapshot : CandidateCResolution :=

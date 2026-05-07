@@ -285,13 +285,13 @@ import CouretUnification.Frozen
 import CouretUnification.Logic.ExplicitFormula.TestPair
 import CouretUnification.Logic.ExplicitFormula.TraceObject
 import CouretUnification.Meta.SnapshotSentinel
--- À activer après livraison LTB-0 finale (TimeBridge.Basic) (voir Frozen)
--- import CouretUnification.Logic.TimeBridge.Basic  -- Manquant
--- import CouretUnification.Logic.TimeBridge.B2Calibration
--- import CouretUnification.Logic.TimeBridge.ModularFlowSpec
+-- TimeBridge LTB-0 (voir Frozen)
+import CouretUnification.Logic.TimeBridge.Basic
+import CouretUnification.Logic.TimeBridge.B2Calibration
+import CouretUnification.Logic.TimeBridge.ModularFlowSpec
 
 -- v35.9.2-prospective
--- import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec -- TODO (erreur import)
+import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec
 
 -- v36.0 Frozen-ExplicitFormula-Core-bundle
 import CouretUnification.AnalyticHorizon.A8ArchimedeanAbsorption
