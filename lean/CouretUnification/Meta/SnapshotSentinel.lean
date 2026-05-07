@@ -1,5 +1,5 @@
 /-
-  Couret-Unification — v35.8.9
+  Couret-Unification — v35.8.10
   Meta/SnapshotSentinel.lean
 
   Objet : fichier SENTINELLE pour les lemmes Mathlib snapshot-dépendants
@@ -72,10 +72,7 @@ example : 0 ≤ Real.rpow 2 (-1) := by
 #check Real.one_le_sqrt
 
 /-- S-03 FORME.
-    FALLBACK si l’orientation ou le nom dérive :
-      - `Real.sqrt_le_one`
-      - `Real.le_sqrt`
-      - preuve directe via `norm_num`
+    Ici on force explicitement l’usage de la direction `.2` du `↔`.
 -/
 example : (1 : ℝ) ≤ Real.sqrt 4 := by
   exact (Real.one_le_sqrt).2 (by norm_num)
@@ -102,11 +99,13 @@ example (θ : ℝ) : Real.cos θ ≤ 1 := by
 #check Real.log_inv
 
 /-- S-05 FORME.
+    Version plus stricte que `rw [Real.log_inv]` : on force la
+    forme exacte du lemme instancié.
     FALLBACK si rename :
       preuve via `Real.log_div` et `log 1 = 0`.
 -/
 example : Real.log ((7 / 6 : ℝ)⁻¹) = -Real.log (7 / 6) := by
-  rw [Real.log_inv]
+  simpa using (Real.log_inv (7 / 6 : ℝ))
 
 /- S-06 NOM — `exp (log x) = x` pour `0 < x`. -/
 #check Real.exp_log
@@ -130,8 +129,7 @@ example : ArithmeticFunction.moebius 1 = 1 := by
 #check Nat.squarefree_mul
 
 /-- S-08 FORME.
-    Remplace l’ancien `example : Squarefree 6 := by decide`, qui ne testait
-    pas `Nat.squarefree_mul` mais seulement la décidabilité de `Squarefree`.
+    On teste le vrai lemme ciblé, pas une décidabilité annexe.
 -/
 example : Squarefree ((2 : ℕ) * 3) ↔ Squarefree 2 ∧ Squarefree 3 := by
   simpa using
@@ -145,12 +143,7 @@ example : Squarefree ((2 : ℕ) * 3) ↔ Squarefree 2 ∧ Squarefree 3 := by
 #check Complex.norm_add_mul_I
 
 /-- S-09 FORME.
-    On évite volontairement `Complex.abs`, absent dans ta snapshot locale.
-    FALLBACK si besoin :
-      - `Complex.norm_sq`
-      - `Complex.sq_norm`
-      - `Complex.normSq`
-      - ou une autre identité de norme disponible localement
+    On reste volontairement sur la norme, pas sur `Complex.abs`.
 -/
 example : ‖((1 : ℂ) + Complex.I)‖ = Real.sqrt 2 := by
   have h := Complex.norm_add_mul_I (1 : ℝ) 1
