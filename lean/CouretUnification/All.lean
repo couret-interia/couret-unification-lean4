@@ -280,7 +280,7 @@ import CouretUnification.Logic.ExplicitFormula.ZeroCounting
 
 -- v35.9.1
 import CouretUnification.Active
--- import CouretUnification.FCI.ModThirtyChecker -- TODO (TODO-T1, T2)
+import CouretUnification.FCI.ModThirtyChecker
 import CouretUnification.Frozen
 import CouretUnification.Logic.ExplicitFormula.TestPair
 import CouretUnification.Logic.ExplicitFormula.TraceObject
