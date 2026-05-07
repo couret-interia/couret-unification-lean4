@@ -217,10 +217,7 @@ import CouretUnification.Logic.Doctrine
 import CouretUnification.Logic.EulerBridgeInfinite
 import CouretUnification.Logic.FEnriched30
 import CouretUnification.Logic.FEnrichedSpec
-import CouretUnification.Logic.LocalFactor
-import CouretUnification.Logic.LocalSquarefreeBridge
 import CouretUnification.Logic.SophieGermainMatrix
-import CouretUnification.Logic.SquarefreeSupport
 import CouretUnification.Speculative.AnalogyMTF
 import CouretUnification.Speculative.Ontology
 
@@ -244,7 +241,7 @@ import CouretUnification.Meta.Doctrine
 
 -- v35.8.6
 import CouretUnification.Analytic.GammaFactor
-import CouretUnification.Logic.C3Weak_Gram
+import CouretUnification.Logic.C3Weak_Gram  -- Facade vers H3.C3Weak_Gram
 import CouretUnification.Logic.L6Analytic
 import CouretUnification.Logic.L6Interface
 
@@ -254,27 +251,23 @@ import CouretUnification.Logic.ChiralityLinear
 
 -- v35.8.8
 import CouretUnification.AnalyticHorizon.Det2Transport
-import CouretUnification.Logic.C3Weak_Gram
 import CouretUnification.Logic.ChiralityFinite
-import CouretUnification.Logic.ChiralityLinear
-import CouretUnification.Logic.EulerBridgeInfiniteCompat
 import CouretUnification.Logic.H3.CriticalLineTransferSpec
 import CouretUnification.Logic.H3.LocalFactor
 import CouretUnification.Logic.H3.MoebiusBridge
 import CouretUnification.Logic.H3.SquarefreeDensity
 import CouretUnification.Logic.H3.SquarefreeSupport
-import CouretUnification.Logic.L10NoGoTheorem
+import CouretUnification.Logic.H3.LocalSquarefreeBridge
 import CouretUnification.Logic.L6Analytic
 import CouretUnification.Logic.L6Bridge
 import CouretUnification.Logic.L6Interface
 import CouretUnification.Logic.L6RatioEstimateDerived
-import CouretUnification.Logic.OpenLocks
 import CouretUnification.Meta.Doctrine
 
 -- v35.9-pre
 import CouretUnification.AnalyticHorizon.Det2Obligations
 import CouretUnification.AnalyticHorizon.Det2Transport
-import CouretUnification.ExplicitFormula.ExplicitFormulaBridge
+import CouretUnification.Logic.ExplicitFormula.ExplicitFormulaBridge
 import CouretUnification.Logic.ExplicitFormula.TestFunctions
 import CouretUnification.Logic.H3.HPCertificate
 import CouretUnification.Meta.ProofJurisdiction
@@ -287,16 +280,18 @@ import CouretUnification.Logic.ExplicitFormula.ZeroCounting
 
 -- v35.9.1
 import CouretUnification.Active
-import CouretUnification.FCI.ModThirtyChecker
+-- import CouretUnification.FCI.ModThirtyChecker -- TODO (TODO-T1, T2)
 import CouretUnification.Frozen
 import CouretUnification.Logic.ExplicitFormula.TestPair
 import CouretUnification.Logic.ExplicitFormula.TraceObject
-import CouretUnification.Logic.TimeBridge.B2Calibration
-import CouretUnification.Logic.TimeBridge.ModularFlowSpec
 import CouretUnification.Meta.SnapshotSentinel
+-- À activer après livraison LTB-0 finale (TimeBridge.Basic) (voir Frozen)
+-- import CouretUnification.Logic.TimeBridge.Basic  -- Manquant
+-- import CouretUnification.Logic.TimeBridge.B2Calibration
+-- import CouretUnification.Logic.TimeBridge.ModularFlowSpec
 
 -- v35.9.2-prospective
-import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec
+-- import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec -- TODO (erreur import)
 
 -- v36.0 Frozen-ExplicitFormula-Core-bundle
 import CouretUnification.AnalyticHorizon.A8ArchimedeanAbsorption
@@ -329,4 +324,8 @@ import CouretUnification.AnalyticHorizon.DefectOperator30
 import CouretUnification.Logic.Lock3.LocalDebiasing
 import CouretUnification.Logic.Lock3.ProtectedTraceGate
 import CouretUnification.Logic.Lock3.RHGuard
-import CouretUnification.FCI.CausalSupportImmunity
+-- import CouretUnification.FCI.CausalSupportImmunity -- TODO (TODO-T1, T2)
+
+-- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
+-- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
+-- la construction de tout fichier orphelin.
