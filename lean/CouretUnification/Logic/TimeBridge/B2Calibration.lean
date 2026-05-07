@@ -179,7 +179,7 @@ noncomputable def IsFlat (tbl : B2DiagnosticTable) (tol : ℝ) : Prop :=
     N'EST PAS plat à tolérance 5 %. C'est précisément le constat de la
     note de révision B2. Cet énoncé reste une conjecture tant qu'il
     n'est pas instancié par des runs concrets. -/
-def plateau_hypothesis : openProblem True := {
+def plateau_hypothesis : OpenProblem True := {
   registry := "R4-DBM-revised"
   status := "partiel — voir note B2 du 2026-04-24"
 }
