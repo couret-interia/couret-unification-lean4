@@ -280,7 +280,7 @@ import CouretUnification.Logic.ExplicitFormula.ZeroCounting
 
 -- v35.9.1
 import CouretUnification.Active
-import CouretUnification.FCI.ModThirtyChecker
+import CouretUnification.FCI.ModThirtyChecker -- TODO (TODO N1, I1)
 import CouretUnification.Frozen
 import CouretUnification.Logic.ExplicitFormula.TestPair
 import CouretUnification.Logic.ExplicitFormula.TraceObject
@@ -324,7 +324,9 @@ import CouretUnification.AnalyticHorizon.DefectOperator30
 import CouretUnification.Logic.Lock3.LocalDebiasing
 import CouretUnification.Logic.Lock3.ProtectedTraceGate
 import CouretUnification.Logic.Lock3.RHGuard
--- import CouretUnification.FCI.CausalSupportImmunity -- TODO (TODO-T1, T2)
+import CouretUnification.FCI.ModThirtyCheckerBridge     -- TODO (TODO G1 2 3)
+import CouretUnification.FCI.CausalSupportImmunity      -- TODO (TODO-V1, S1, D1)
+import CouretUnification.FCI.CausalSupportMeasureBridge -- TODO (TODO-M1 2 3 4)
 
 -- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer

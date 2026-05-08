@@ -283,8 +283,8 @@ example : projectToG30 31 ≠ none := by decide
 --           FCI_CERT/1.0 §4.3 avec checksum SHA-256 du dataset de calibration.
 -- [TODO-I1] Étudier la signature spectrale empirique κ sur des flux de clés
 --           RSA 2048 générées par OpenSSL vs par un PRNG faible connu.
--- [TODO-P1] Rédiger le théorème de liaison avec `fciDecide` : composition
---           associative `toFCIOutput` → `fciDecide`.
+-- [DONE-P1] Bridge opérationnel vers `fciDecide` porté par :
+--           FCI/ModThirtyCheckerBridge.lean.
 
 end ModThirtyChecker
 end FCI
