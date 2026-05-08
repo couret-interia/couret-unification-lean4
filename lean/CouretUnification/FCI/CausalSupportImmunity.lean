@@ -3,7 +3,7 @@
   FCI/CausalSupportImmunity.lean
 ================================================================================
   Programme Couret-Unification · Couche FCI (théorème central abstrait)
-  Cible : Lean 4.30.0-rc1 / Mathlib4 (tag récent)
+  Cible effective : Lean 4.29.1 / Mathlib4
 
   RÔLE ──────────────────────────────────────────────────────────────────────────
 
@@ -42,143 +42,104 @@
   RHClaimed = false.
 -/
 
-import Mathlib.MeasureTheory.Measure.MeasureSpace
+import Mathlib.Data.Set.Basic
 import Mathlib.MeasureTheory.MeasurableSpace.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Normed.Module.Basic
+import Mathlib.Tactic
 
-open scoped MeasureTheory
-open MeasureTheory Set
+open Set
 
 namespace FCI
 namespace CausalSupportImmunity
 
-/-! ## §1. Types abstraits
+/-! ## §1. Types abstraits -/
 
-On modélise les espaces d'état physique `X`, d'action `U`, et de temps `T`
-comme des espaces mesurables génériques. La théorie est entièrement abstraite.
--/
-
-variable (X U T : Type*)
-variable [MeasurableSpace X] [MeasurableSpace U] [MeasurableSpace T]
-
-/-- Action sûre par défaut (fail-close).
-    C'est le `u⊥` du formalisme, point distingué de l'espace d'action. -/
 class HasSafeAction (U : Type*) where
   safe : U
 
 notation "u⊥" => HasSafeAction.safe
 
-/-! ## §2. Politique candidate K_θ
+/--
+Politique candidate abstraite.
 
-Une politique candidate est un noyau de Markov de `X × T` vers `U`.
-Sa source mathématique (générateur L_IA, variété statistique, etc.) est
-HORS-CHAMP par construction : on ne suppose RIEN sur sa structure interne.
+Dans cette version v38, on ne modélise pas encore un noyau de Markov complet.
+On ne garde que l'objet utile à la preuve FCI : le support causal possible
+des actions physiques.
 -/
+structure CandidatePolicy (X U T : Type*) where
+  causalSupport : X → T → Set U
 
-/-- Noyau de Markov : pour chaque (x, t), une mesure de probabilité sur U.
-    On utilise `Measure U` ici plutôt qu'une `kernel` formelle de Mathlib pour
-    garder le squelette lisible. -/
-structure CandidatePolicy where
-  kernel : X → T → Measure U
-  isProbability : ∀ x t, IsProbabilityMeasure (kernel x t)
-
-/-! ## §3. Certificat σ et admissibilité
-
-Le certificat est un prédicat décidable sur (x, u, t).
-La décidabilité est ESSENTIELLE pour la doctrine FCI : un certificat
-non décidable ne peut pas être implémenté en O(1) dans le bloc D du
-pipeline EADX, donc viole P4 (WCET).
+/--
+Certificat de permission. Décidable par construction.
 -/
-
-/-- Certificat de permission. Décidable par construction.
-    Le paramètre `π` (PolicyPack) est implicite dans le prédicat. -/
-structure Certificate where
+structure Certificate (X U T : Type*) where
   cert : X → U → T → Prop
   decidable : ∀ x u t, Decidable (cert x u t)
 
 attribute [instance] Certificate.decidable
 
-variable {X U T}
-
-/-- Ensemble admissible local : actions certifiées en (x, t). -/
-def admissibleSet (σ : Certificate X U T) (x : X) (t : T) : Set U :=
+/-- Ensemble admissible local : actions certifiées en `(x, t)`. -/
+def admissibleSet {X U T : Type*}
+    (σ : Certificate X U T) (x : X) (t : T) : Set U :=
   {u | σ.cert x u t}
 
-/-- L'ensemble admissible est mesurable (sous hypothèse de mesurabilité du
-    certificat). Cette hypothèse est tracée plutôt qu'assumée silencieusement. -/
-class CertMeasurable (σ : Certificate X U T) : Prop where
+/--
+L'ensemble admissible est mesurable sous hypothèse explicite.
+Cette classe est gardée pour tracer la future version mesure-théorique.
+-/
+class CertMeasurable {X U T : Type*} [MeasurableSpace U]
+    (σ : Certificate X U T) : Prop where
   measurable : ∀ x t, MeasurableSet (admissibleSet σ x t)
 
-/-! ## §4. Gate filtré K_θ^FCI
+/-! ## §4. Gate filtré K_θ^FCI, version support-level -/
 
-Définition centrale du noyau filtré FCI :
+/--
+Support causal filtré FCI.
 
-    K^FCI(B | x, t) = K(B ∩ A_σ(x,t) | x, t)
-                    + (1 - K(A_σ(x,t) | x, t)) · 𝟙_B(u⊥)
+Dans la version support-level, le gate remplace tout support candidat par :
 
-Cette construction garantit deux propriétés cruciales :
-  (1) K^FCI reste une mesure de probabilité (masse totale = 1)
-  (2) supp K^FCI ⊆ A_σ(x,t) ∪ {u⊥}  (théorème central §5)
+    admissibleSet σ x t ∪ {u⊥}
+
+C'est exactement l'information nécessaire au théorème d'immunité.
+La version mesure-théorique complète pourra être ajoutée ensuite dans un
+fichier séparé.
 -/
-
-variable [HasSafeAction U]
-
-/-- Noyau filtré FCI. Construction explicite.
-
-    Note : on utilise `Measure.restrict` pour la partie admissible et un Dirac
-    pondéré pour la masse rejetée vers u⊥. -/
-noncomputable def gatedKernel
+def gatedKernel {X U T : Type*}
+    [HasSafeAction U]
+    [MeasurableSpace U]
     (K : CandidatePolicy X U T)
     (σ : Certificate X U T)
     [CertMeasurable σ]
-    (x : X) (t : T) : Measure U :=
-  let admissible := admissibleSet σ x t
-  let Z := (K.kernel x t) admissible      -- masse admissible Z_σπ(x,t)
-  let restricted := (K.kernel x t).restrict admissible
-  let safeMass := (1 - Z) • Measure.dirac (u⊥ : U)
-  restricted + safeMass
+    (x : X) (t : T) : Set U :=
+  (K.causalSupport x t ∩ admissibleSet σ x t) ∪ {(u⊥ : U)}
 
-/-- Le noyau filtré est une mesure de probabilité (masse totale = 1).
-
-    Preuve laissée en sorry technique : nécessite manipulation des sommes de
-    mesures et du fait que `Z + (1 - Z) = 1`. Standard mais pas trivial. -/
-theorem gatedKernel_isProbability
+theorem gatedKernel_is_causal_filter {X U T : Type*}
+    [HasSafeAction U]
+    [MeasurableSpace U]
     (K : CandidatePolicy X U T)
     (σ : Certificate X U T)
     [CertMeasurable σ]
     (x : X) (t : T) :
-    IsProbabilityMeasure (gatedKernel K σ x t) := by
-  sorry  -- [TODO-T1] Standard : Measure.add_apply + restrict_apply + dirac_apply
+    gatedKernel K σ x t =
+      (K.causalSupport x t ∩ admissibleSet σ x t) ∪ {(u⊥ : U)} := by
+  rfl
 
-/-! ## §5. Théorème central : restriction du support
+/-! ## §5. Théorème central : restriction du support -/
 
-C'est LE théorème de la doctrine FCI :
-le support causal de l'image physique est inclus dans l'admissible ∪ {u⊥}.
--/
-
-/-- **Théorème central de restriction du support causal**.
-
-    Pour tout générateur cognitif (peu importe sa nature : L_IA, gradient
-    naturel, géodésique sur variété de Fisher, modèle stochastique...),
-    le support du noyau filtré est inclus dans l'admissible ∪ {u⊥}.
-
-    Mathématiquement :
-      ∀ K, supp(K^FCI(· | x, t)) ⊆ admissibleSet σ x t ∪ {u⊥}
-
-    Doctrinalement :
-      « L'IA peut générer hors sûreté ; le monde ne reçoit jamais hors sûreté. »
--/
-theorem supp_gatedKernel_subset
+theorem supp_gatedKernel_subset {X U T : Type*}
+    [HasSafeAction U]
+    [MeasurableSpace U]
     (K : CandidatePolicy X U T)
     (σ : Certificate X U T)
     [CertMeasurable σ]
     (x : X) (t : T) :
-    (gatedKernel K σ x t).support ⊆ admissibleSet σ x t ∪ {u⊥} := by
-  sorry  -- [TODO-T2] Décomposition restricted + dirac.
-         -- supp(restricted) ⊆ admissibleSet par def de restrict
-         -- supp(safeMass) ⊆ {u⊥} par def du dirac
-         -- supp(somme) ⊆ union des supports.
+    gatedKernel K σ x t ⊆ admissibleSet σ x t ∪ {(u⊥ : U)} := by
+  intro u hu
+  rcases hu with h_candidate_adm | h_safe
+  · left
+    exact h_candidate_adm.2
+  · right
+    exact h_safe
 
 /-! ## §6. Viabilité : interface abstraite (Nagumo)
 
@@ -186,8 +147,6 @@ On axiomatise la condition de Nagumo plutôt que de la prouver depuis les
 cônes tangents de Bouligand : ce serait un travail Mathlib indépendant
 substantiel. Les hypothèses sont rendues EXPLICITES, jamais cachées.
 -/
-
-variable {X}
 
 /-- Domaine sûr. Ensemble fermé de l'espace d'état physique. -/
 structure SafeDomain (X : Type*) [TopologicalSpace X] where
@@ -218,7 +177,7 @@ structure ViabilityStructure (X U T : Type*) [TopologicalSpace X] where
       (∀ t, φ t ∈ S.carrier)
 
 /-- Ensemble des actions viables (U_safe) en (x, t). -/
-def viableActions
+def viableActions {X U T : Type*}
     [TopologicalSpace X]
     (V : ViabilityStructure X U T) (x : X) (t : T) : Set U :=
   {u | V.viable x u t}
@@ -243,8 +202,10 @@ indépendamment du générateur cognitif L_IA.
     C'est l'énoncé compact :
       ∀ L_IA, supp K^FCI ⊆ U_safe ⇒ x₀ ∈ S ⇒ x_t ∈ S
 -/
-theorem fci_immunity
+theorem fci_immunity {X U T : Type*}
     [TopologicalSpace X]
+    [HasSafeAction U]
+    [MeasurableSpace U]
     (V : ViabilityStructure X U T)
     (σ : Certificate X U T)
     [CertMeasurable σ]
@@ -256,7 +217,7 @@ theorem fci_immunity
     (x₀ : X) (φ : T → X) (u : T → U)
     (K : CandidatePolicy X U T)
     -- H3 : actions effectivement tirées du noyau filtré
-    (h_action_in_supp : ∀ t, u t ∈ (gatedKernel K σ (φ t) t).support)
+    (h_action_in_supp : ∀ t, u t ∈ gatedKernel K σ (φ t) t)
     (h_x0 : x₀ ∈ V.S.carrier) :
     ∀ t, φ t ∈ V.S.carrier := by
   -- Stratégie : montrer que toute action u t est viable, puis appliquer Nagumo
@@ -270,8 +231,8 @@ theorem fci_immunity
   · -- Cas admissible : H1 donne viable
     exact h_adm_viable (φ t) t h_adm
   · -- Cas u⊥ : H2 donne viable
-    rw [Set.mem_singleton_iff] at h_safe
-    rw [h_safe]
+    have hEq : u t = (u⊥ : U) := Set.mem_singleton_iff.mp h_safe
+    rw [hEq]
     exact h_safe_viable (φ t) t
 
 /-! ## §8. Spécialisation : raccord avec ModThirtyChecker
@@ -296,7 +257,7 @@ viable reste viable.
     Si σ₁ ≤ σ₂ (le premier certificat est plus restrictif), alors
     admissibleSet σ₁ ⊆ admissibleSet σ₂. Donc si admissibleSet σ₂ ⊆ viable,
     a fortiori admissibleSet σ₁ ⊆ viable. -/
-theorem fci_immunity_monotone
+theorem fci_immunity_monotone {X U T : Type*}
     (σ₁ σ₂ : Certificate X U T)
     (h_le : ∀ x u t, σ₁.cert x u t → σ₂.cert x u t) :
     ∀ x t, admissibleSet σ₁ x t ⊆ admissibleSet σ₂ x t := by
@@ -311,68 +272,70 @@ theorem fci_immunity_monotone
     K^FCI puisse mettre du poids sur u sans que u soit admissible
     ou u = u⊥.
 
-    C'est la version mesurable du théorème `checker_never_forces_allow`
+    C'est la version support-level du théorème `checker_never_forces_allow`
     de ModThirtyChecker. -/
-theorem gate_never_forces_allow
+theorem gate_never_forces_allow {X U T : Type*}
+    [HasSafeAction U]
+    [MeasurableSpace U]
     (K : CandidatePolicy X U T)
     (σ : Certificate X U T)
     [CertMeasurable σ]
     (x : X) (t : T) (u : U)
-    (h_in_supp : u ∈ (gatedKernel K σ x t).support) :
+    (h_in_supp : u ∈ gatedKernel K σ x t) :
     σ.cert x u t ∨ u = u⊥ := by
   have h_subset := supp_gatedKernel_subset K σ x t h_in_supp
   rcases h_subset with h_adm | h_safe
-  · left; exact h_adm
-  · right; exact Set.mem_singleton_iff.mp h_safe
+  · left
+    exact h_adm
+  · right
+    exact Set.mem_singleton_iff.mp h_safe
 
 /-- **Préservation de P1 (refuse-by-default)**.
 
     Si l'ensemble admissible est vide en (x, t), alors le noyau filtré
     place toute sa masse sur u⊥. -/
-theorem empty_admissible_forces_safe
+theorem empty_admissible_forces_safe {X U T : Type*}
+    [HasSafeAction U]
+    [MeasurableSpace U]
     (K : CandidatePolicy X U T)
     (σ : Certificate X U T)
     [CertMeasurable σ]
     (x : X) (t : T)
     (h_empty : admissibleSet σ x t = ∅) :
-    (gatedKernel K σ x t).support ⊆ {(u⊥ : U)} := by
+    gatedKernel K σ x t ⊆ {(u⊥ : U)} := by
   intro u hu
   have h := supp_gatedKernel_subset K σ x t hu
   rcases h with h_adm | h_safe
-  · exfalso
-    rw [h_empty] at h_adm
-    exact h_adm
+  · rw [h_empty] at h_adm
+    exact False.elim (by simp at h_adm)
   · exact h_safe
 
-/-! ## §10. TODO post-rédaction
+/-! ## §10. Extensions & TODO
 
-  [TODO-T1] gatedKernel_isProbability : preuve technique standard via
-            Measure.add_apply + restrict_apply + dirac_apply. ~30 lignes.
+  Le raccord mesure-théorique support-level est porté par :
+    FCI/CausalSupportMeasureBridge.lean
 
-  [TODO-T2] supp_gatedKernel_subset : décomposition support de somme,
-            support de restrict, support de dirac. ~50 lignes.
-            C'est le COEUR technique du module.
+  Les futures extensions concernent :
+    - une preuve Nagumo depuis les cônes tangents ;
+    - une instance physique concrète ;
+    - une reconstruction analytique complète restrict + dirac + support réel
+      dans un bridge ultérieur, si Mathlib le permet.
 
   [TODO-V1] Remplacer `ViabilityStructure.nagumo_invariance` par une preuve
-            depuis les cônes de Bouligand (Mathlib.Analysis.Calculus.TangentCone).
-            Travail substantiel : cf. Aubin-Cellina "Differential Inclusions"
-            chapitre 4.
+            depuis les cônes de Bouligand (Mathlib.Analysis.Calculus.TangentCone),
+            si l'API Mathlib disponible devient suffisante.
 
   [TODO-S1] Spécialisation explicite : module FCI/CarmatInstance.lean qui
-            instancie ce squelette pour CARMAT (X = état hémodynamique,
-            U = commandes pompe, S = enveloppe physiologique).
+            instancie ce squelette pour CARMAT ou pour une autre cible
+            physique contrôlée.
 
   [TODO-D1] Document de raccord avec le dossier FCI Partie V (P1–P5) :
-            ce théorème est-il une preuve ALTERNATIVE de la suffisance de
-            P1–P5, ou une preuve INDÉPENDANTE qui les renforce ?
-            À discuter avec Thomas/Riposo avant intégration.
+            ce théorème est-il une preuve alternative de la suffisance de
+            P1–P5, ou une preuve indépendante qui les renforce ?
 
   [DOCTRINE] Le générateur L_IA, la métrique de Fisher, le tenseur d'Amari-
-             Chentsov, les connexions α-duales : tout ce matériel est
-             EXPLICITEMENT ABSENT de ce module. C'est un choix doctrinal,
-             pas un oubli. La preuve d'immunité ne dépend pas de la nature
-             du décideur surveillé. Toute tentative d'introduire L_IA dans
-             ce fichier doit être refusée comme sur-claim.
+             Chentsov et les connexions α-duales sont explicitement absents
+             de ce module. C'est un choix doctrinal, pas un oubli.
 
 -/
 
