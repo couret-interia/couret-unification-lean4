@@ -328,6 +328,9 @@ import CouretUnification.FCI.ModThirtyCheckerBridge     -- TODO (TODO G1 2 3)
 import CouretUnification.FCI.CausalSupportImmunity      -- TODO (TODO-V1, S1, D1)
 import CouretUnification.FCI.CausalSupportMeasureBridge -- TODO (TODO-M1 2 3 4)
 
+-- v38.1
+import CouretUnification.AnalyticHorizon.L6Stirling
+
 -- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.
