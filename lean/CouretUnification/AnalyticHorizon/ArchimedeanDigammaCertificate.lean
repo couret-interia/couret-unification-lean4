@@ -38,7 +38,7 @@ structure DigammaKernelCertificate where
   kernel : ℝ → ℂ
   logarithmic_growth :
     ∃ C : ℝ, ∀ t : ℝ,
-      Complex.abs (kernel t) ≤ C * Real.log (2 + |t|)
+      ‖kernel t‖ ≤ C * Real.log (2 + |t|)
 
 /- ══════════════════════════════════════════════════════════════
    Doctrinal flags.
@@ -68,7 +68,7 @@ def ExplicitFormulaClosedFromDigammaCertificate : Bool := false
 theorem digamma_has_log_growth
     (cert : DigammaKernelCertificate) :
     ∃ C : ℝ, ∀ t : ℝ,
-      Complex.abs (cert.kernel t) ≤ C * Real.log (2 + |t|) :=
+      ‖cert.kernel t‖ ≤ C * Real.log (2 + |t|) :=
   cert.logarithmic_growth
 
 end CouretUnification.AnalyticHorizon

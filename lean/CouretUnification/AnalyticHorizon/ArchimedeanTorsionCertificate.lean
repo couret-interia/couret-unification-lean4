@@ -74,11 +74,11 @@ structure ArchimedeanTorsionMap where
       |phi t| ≤ A * (1 + |t|) ^ q
   /-- Amplitude boundedness. -/
   amp_bounded :
-    ∃ A : ℝ, A > 0 ∧ ∀ t : ℝ, Complex.abs (amp t) ≤ A
+    ∃ A : ℝ, A > 0 ∧ ∀ t : ℝ, ‖amp t‖ ≤ A
   /-- Boundary term has at most logarithmic growth. -/
   boundary_log_growth :
     ∃ B : ℝ, ∀ t : ℝ,
-      Complex.abs (boundary t) ≤ B * Real.log (2 + |t|)
+      ‖boundary t‖ ≤ B * Real.log (2 + |t|)
 
 /-- The torsion-deformed Archimedean kernel.
 
@@ -102,7 +102,7 @@ structure ArchimedeanTorsionCertificate where
   torsionMap : ArchimedeanTorsionMap
   torsion_log_growth :
     ∃ C : ℝ, ∀ t : ℝ,
-      Complex.abs (torsionDeformedKernel digammaCert torsionMap t)
+      ‖torsionDeformedKernel digammaCert torsionMap t‖
         ≤ C * Real.log (2 + |t|)
 
 /- ══════════════════════════════════════════════════════════════
@@ -139,9 +139,8 @@ def SpectralCoincidenceFromTorsion : Bool := false
 theorem torsion_has_archimedean_growth
     (cert : ArchimedeanTorsionCertificate) :
     ∃ C : ℝ, ∀ t : ℝ,
-      Complex.abs
-        (torsionDeformedKernel cert.digammaCert cert.torsionMap t)
-          ≤ C * Real.log (2 + |t|) :=
+      ‖torsionDeformedKernel cert.digammaCert cert.torsionMap t‖
+        ≤ C * Real.log (2 + |t|) :=
   cert.torsion_log_growth
 
 /-- Tautological access to the polynomial growth obligation on phi. -/
