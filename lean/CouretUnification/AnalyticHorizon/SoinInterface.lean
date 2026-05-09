@@ -144,7 +144,7 @@ def Det2IdentityFromSoinInterface : Bool := false
 /-- Tautological access to the Soin functor certificate.
 Returns the certificate, not a proof that it is instantiated by
 any concrete categories. -/
-theorem mother_has_soin
+def mother_has_soin
     {C D : Type*} [AsymCategory C] [InvCategory D]
     (cert : MotherTheoremCertificate C D) :
     SoinFunctorCertificate C D :=
@@ -159,7 +159,7 @@ theorem soin_is_faithful
 
 /-- Tautological access to the ν_eff obligation.  This is NOT a
 proof that ν_eff is the fidelity signature of the functor. -/
-theorem mother_has_nuEff_obligation
+def mother_has_nuEff_obligation
     {C D : Type*} [AsymCategory C] [InvCategory D]
     (cert : MotherTheoremCertificate C D) :
     NuEffObligation :=
@@ -167,7 +167,7 @@ theorem mother_has_nuEff_obligation
 
 /-- Tautological access to the seven axis obligations.  This is
 NOT a proof that the axes are instances of the Soin functor. -/
-theorem mother_has_seven_axes_obligations
+def mother_has_seven_axes_obligations
     {C D : Type*} [AsymCategory C] [InvCategory D]
     (cert : MotherTheoremCertificate C D) :
     SevenAxesObligations :=
