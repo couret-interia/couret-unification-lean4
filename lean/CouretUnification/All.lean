@@ -293,14 +293,25 @@ import CouretUnification.Logic.TimeBridge.ModularFlowSpec
 -- v35.9.2-prospective
 import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec
 
--- v36.0 Frozen-ExplicitFormula-Core-bundle
+-- v36 Proof Jurisdiction
+import CouretUnification.AnalyticHorizon.ArchimedeanDigammaCertificate
+import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+import CouretUnification.AnalyticHorizon.ExplicitFormulaBridgeAudit
+import CouretUnification.AnalyticHorizon.Det2TransportCertificate
+import CouretUnification.AnalyticHorizon.SoinInterface
+import CouretUnification.AnalyticHorizon.ArchimedeanTorsionCertificate
+import CouretUnification.AnalyticHorizon.TorsionZeroTransferCertificate
+import CouretUnification.AnalyticHorizon.ActiveLayerFullAudit
 import CouretUnification.AnalyticHorizon.A8ArchimedeanAbsorption
 import CouretUnification.Logic.ExplicitFormula.ArchimedeanKernelBound
+import CouretUnification.Logic.ExplicitFormula.ExplicitFormulaBridge
 import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport
 import CouretUnification.Logic.ExplicitFormula.StatusFlags
+import CouretUnification.Logic.ExplicitFormula.TraceObject
 import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+import CouretUnification.Release.ReleaseManifest
 
--- v36.1 v36.1-Active-Extensions
+-- v36 Active-Extensions
 import CouretUnification.Active.PrimeSideRealClosure
 import CouretUnification.Active.TraceObjectEnriched
 
