@@ -95,7 +95,7 @@ def TorsionZeroClockDoctrinePreserved : Bool := true
 theorem fullAudit_has_archimedean_growth
     (audit : ActiveLayerFullAudit) :
     ∃ C : ℝ, ∀ t : ℝ,
-      Complex.abs (audit.archimedeanCertificate.kernel t)
+      ‖audit.archimedeanCertificate.kernel t‖
         ≤ C * Real.log (2 + |t|) :=
   audit.archimedeanCertificate.logarithmic_growth
 
@@ -112,18 +112,17 @@ theorem fullAudit_has_zero_summability
 theorem fullAudit_has_bridge_contract
     (audit : ActiveLayerFullAudit) :
     audit.explicitFormulaAudit.bridgeContractAvailable :=
-  audit.explicitFormulaAudit.bridgeContractAvailable
+  audit.explicitFormulaAudit.bridgeContractAvailable_proof
 
 /-- Tautological access to the torsion-deformed archimedean growth
     obligation. -/
 theorem fullAudit_has_torsion_growth
     (audit : ActiveLayerFullAudit) :
     ∃ C : ℝ, ∀ t : ℝ,
-      Complex.abs
-        (torsionDeformedKernel
-           audit.torsionCertificate.digammaCert
-           audit.torsionCertificate.torsionMap
-           t)
+      ‖torsionDeformedKernel
+          audit.torsionCertificate.digammaCert
+          audit.torsionCertificate.torsionMap
+          t‖
         ≤ C * Real.log (2 + |t|) :=
   audit.torsionCertificate.torsion_log_growth
 
@@ -172,11 +171,16 @@ theorem fullAudit_has_torsion_zero_counting
         ≤ C * Real.log ((k : ℝ) + 3) :=
   audit.torsionZeroInterface.transfer.torsion_shell_log_bound
 
-/-- Tautological access to the torsion-zero interface admissibility. -/
+/-- Tautological access to the torsion-zero interface admissibility witness.
+
+This theorem only exposes the proof already stored in the active-layer
+audit certificate.  It does not promote torsion-zero admissibility into
+zero matching, spectral coincidence, determinant closure, or any RH/HP
+claim. -/
 theorem fullAudit_has_torsion_zero_interface
     (audit : ActiveLayerFullAudit) :
     audit.torsionZeroInterface.interfaceAdmissible :=
-  audit.torsionZeroInterface.interfaceAdmissible
+  audit.torsionZeroInterface.interfaceAdmissible_proof
 
 /-- Tautological access to the nonlinear gap preservation:
     the empirical discrepancy nu_eff ≠ nuIdeal is preserved. -/

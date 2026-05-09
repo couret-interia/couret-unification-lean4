@@ -132,7 +132,21 @@ structure TorsionZeroInterfaceCertificate where
     transfer.torsionMap = torsion.torsionMap
   same_zero_counting :
     transfer.zeroCounting = zeroSide.zeroCounting
+  /-- Interface admissibility proposition for the torsion-zero transfer.
+
+  This is an explicit obligation carried by the certificate.  It expresses
+  that the torsion-zero interface is admissible as a structural interface;
+  it does not assert any new zero-matching theorem, determinant identity,
+  or RH/HP consequence. -/
   interfaceAdmissible : Prop
+
+  /-- Witness that the torsion-zero interface admissibility obligation is
+  satisfied.
+
+  This proof only discharges the local interface obligation stored in the
+  certificate.  It is not a proof of spectral coincidence, zero matching,
+  or analytic closure. -/
+  interfaceAdmissible_proof : interfaceAdmissible
 
 /- ══════════════════════════════════════════════════════════════
    Doctrinal flags.
@@ -216,7 +230,7 @@ theorem torsionZeroTransfer_has_log_counting
 theorem torsionZeroInterface_admissible
     (cert : TorsionZeroInterfaceCertificate) :
     cert.interfaceAdmissible :=
-  cert.interfaceAdmissible
+  cert.interfaceAdmissible_proof
 
 /-- Tautological access to the clock equation theta = phi ∘ gamma. -/
 theorem torsionClock_theta_eq_phi_gamma

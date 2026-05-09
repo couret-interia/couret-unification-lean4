@@ -32,9 +32,12 @@ The only content is the availability of the underlying bridge
 contract. No analytic equality between the four sides is asserted. -/
 structure ExplicitFormulaBridgeAudit where
   bridge : ExplicitFormulaBridge
-  /-- Structural availability witness for the bridge contract.
-      No analytic equality is proved by holding this. -/
+  /-- Structural availability proposition for the bridge contract. -/
   bridgeContractAvailable : Prop
+
+  /-- Witness that the bridge contract availability obligation is satisfied.
+      This still does not prove any analytic four-side equality. -/
+  bridgeContractAvailable_proof : bridgeContractAvailable
 
 /- ══════════════════════════════════════════════════════════════
    Doctrinal flags.
@@ -61,9 +64,9 @@ def Det2IdentityFromBridgeAudit : Bool := false
 
 /-- Tautological access to the bridge contract availability.
     This does not prove any analytic identity. -/
-theorem bridgeAudit_has_contract
+theorem bridgeAudit_contract_obligation
     (audit : ExplicitFormulaBridgeAudit) :
     audit.bridgeContractAvailable :=
-  audit.bridgeContractAvailable
+  audit.bridgeContractAvailable_proof
 
 end CouretUnification.AnalyticHorizon
