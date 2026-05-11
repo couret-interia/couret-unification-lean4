@@ -28,8 +28,8 @@ Le dépôt prouve exactement ce qu'il dit, et ne dit rien de plus.
 | Sorries doctrinaux | 3 (documentés) |
 | Compilation | `lake build` ✓ |
 | Jobs | 3432 |
-| Lean | 4.29.0 |
-| Mathlib | stable |
+| Lean | 4.29.1 |
+| Mathlib | 4.29.1 |
 | RHClaimed | `false` |
 
 ### Sorries doctrinaux
