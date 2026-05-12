@@ -34,6 +34,8 @@ import CouretUnification.Core.SpectralGap
 import CouretUnification.Core.CRTTransport
 import CouretUnification.Core.InvariantE
 import CouretUnification.Core.SophieGermainMod30
+import CouretUnification.Core.SophieGermainHecke
+import CouretUnification.Core.SophieGermainTowerLift
 import CouretUnification.Core.HarmonicCertificate
 import CouretUnification.Core.TripletDocumentaryCertificate
 import CouretUnification.Core.CouretDocumentaryCertificate
@@ -342,6 +344,9 @@ import CouretUnification.FCI.FCI
 
 -- v38.1
 import CouretUnification.AnalyticHorizon.L6Stirling
+
+-- v38x Sophie Germain (TowerLift)
+import CouretUnification.Residue.SGShiftSqrt2
 
 -- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
