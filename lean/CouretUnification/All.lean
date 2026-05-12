@@ -355,6 +355,9 @@ import CouretUnification.Numerics.UseScanSummary
 import CouretUnification.Experimental.TowerLift.ToyModelSpec
 import CouretUnification.Experimental.TowerLift.ToyModel
 import CouretUnification.Experimental.TowerLift.ToyModelFloat
+-- umbrella
+import CouretUnification.SophieGermainUmbrella
+import CouretUnification.Experimental.TowerLift
 
 -- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
