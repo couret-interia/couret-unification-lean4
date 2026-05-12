@@ -348,6 +348,7 @@ import CouretUnification.AnalyticHorizon.L6Stirling
 -- v38x Sophie Germain (TowerLift)
 import CouretUnification.Residue.SGShiftSqrt2
 import CouretUnification.Numerics.ScanSummary
+import CouretUnification.Numerics.UseScanSummary
 
 -- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
