@@ -35,6 +35,8 @@ table de comptage et ses invariants combinatoires.
 import CouretUnification.Core.Doctrine
 import Mathlib.Data.Fin.Basic
 import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Tactic.FinCases
 
 namespace CouretUnification
 namespace Core

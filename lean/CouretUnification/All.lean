@@ -210,6 +210,9 @@ import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
 -- RHClaimed = false. Aucun sorry consommé.
 import CouretUnification.Logic.H3.PhaseBCompositionCouretEta
 
+-- v35.6
+import CouretUnification.Core.SophieGermain
+
 -- v35.7
 import CouretUnification.Meta.Layer
 import CouretUnification.Empirical.SophieGermainTransitions
