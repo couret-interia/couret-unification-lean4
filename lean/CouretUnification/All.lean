@@ -349,6 +349,9 @@ import CouretUnification.AnalyticHorizon.L6Stirling
 import CouretUnification.Residue.SGShiftSqrt2
 import CouretUnification.Numerics.ScanSummary
 import CouretUnification.Numerics.UseScanSummary
+import CouretUnification.Experimental.TowerLift.ToyModelSpec
+import CouretUnification.Experimental.TowerLift.ToyModel
+import CouretUnification.Experimental.TowerLift.ToyModelFloat
 
 -- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
