@@ -338,6 +338,7 @@ import CouretUnification.Logic.Lock3.RHGuard
 import CouretUnification.FCI.ModThirtyCheckerBridge     -- TODO (TODO G1 2 3)
 import CouretUnification.FCI.CausalSupportImmunity      -- TODO (TODO-V1, S1, D1)
 import CouretUnification.FCI.CausalSupportMeasureBridge -- TODO (TODO-M1 2 3 4)
+import CouretUnification.FCI.FCI
 
 -- v38.1
 import CouretUnification.AnalyticHorizon.L6Stirling
