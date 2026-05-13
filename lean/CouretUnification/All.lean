@@ -350,6 +350,7 @@ import CouretUnification.AnalyticHorizon.L6Stirling
 
 -- v38x Sophie Germain (TowerLift)
 import CouretUnification.Residue.SGShiftSqrt2
+import CouretUnification.Residue.SGShiftSpectrum -- [O] frontière spectrale
 import CouretUnification.Numerics.ScanSummary
 import CouretUnification.Numerics.UseScanSummary
 import CouretUnification.Experimental.TowerLift.ToyModelSpec

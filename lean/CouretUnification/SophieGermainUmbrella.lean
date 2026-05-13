@@ -13,7 +13,8 @@ et de l'invariant algébrique fini du SG-shift.
 Statuts :
   * Core/SophieGermainHecke        [D]
   * Core/SophieGermainTowerLift    [D]
-  * Residue/SGShiftSqrt2           [D]
+  * Residue/SGShiftSqrt2           [D] sceau algébrique fini
+  * Residue/SGShiftSpectrum        [O] frontière spectrale
   * Empirical/*                    [M]
   * Numerics/*                     [M]
 
@@ -23,6 +24,10 @@ Invariants préservés :
   * RHClaimed = false
   * HilbertPolyaClaimed = false
   * L7Established = false
+
+Pour le registre doctrinal complet du sous-programme SG, voir :
+
+  docs/registry/SophieGermain.md
 -/
 
 import CouretUnification.Core.SophieGermain
@@ -39,6 +44,8 @@ import CouretUnification.Numerics.ScanSummary
 import CouretUnification.Numerics.UseScanSummary
 
 import CouretUnification.Residue.SGShiftSqrt2
+
+import CouretUnification.Residue.SGShiftSpectrum
 
 namespace CouretUnification
 namespace SophieGermainUmbrella
@@ -57,6 +64,10 @@ Le noyau démontré `[D]` comprend :
 
 Les couches empiriques et numériques sont importées comme données ou verdicts
 encodés `[M]`, non comme preuves analytiques globales.
+
+La frontière `Residue.SGShiftSpectrum` devra rester séparée du noyau `[D]`
+tant que l'énoncé spectral complet `λ ∈ {0, ±1/√2}` avec multiplicités
+n'est pas formalisé sans `sorry` ni axiome.
 -/
 
 /-- Marqueur de présence de l'ombrelle Sophie Germain. -/
