@@ -345,10 +345,14 @@ import CouretUnification.FCI.CausalSupportImmunity      -- TODO (TODO-V1, S1, D1
 import CouretUnification.FCI.CausalSupportMeasureBridge -- TODO (TODO-M1 2 3 4)
 import CouretUnification.FCI.FCI
 
+-- v38.0.1
+import CouretUnification.Logic.C2.Window
+import CouretUnification.Logic.C2.Umbrella
+
 -- v38.1
 import CouretUnification.AnalyticHorizon.L6Stirling
 
--- v38x Sophie Germain (TowerLift)
+-- v38.2 Sophie Germain (TowerLift)
 import CouretUnification.Residue.SGShiftSqrt2
 import CouretUnification.Residue.SGShiftSpectrum -- [O] frontière spectrale
 import CouretUnification.Numerics.ScanSummary
