@@ -183,9 +183,12 @@ Statut : ce fichier fournit le **sceau algébrique** pour `1/√2` comme invaria
 structurel du graphe SG-shift sur U₃₀.
 
 L'énoncé spectral complet (`λ ∈ {0, ±1/√2}` avec multiplicités `1, 1, 1`)
-requiert Cayley–Hamilton sur un corps, puis la résolution du polynôme
-`2 X² − 1` sur ℝ ou ℂ ; ces deux étapes sont des applications directes de
-Mathlib et sont prévues comme suite dans `SGShiftSpectrum.lean`.
+requiert une formalisation séparée : polynôme caractéristique ou
+Cayley–Hamilton, puis résolution de `2 X² − 1` sur ℝ ou ℂ.
+
+Cette étape est isolée dans la frontière `SGShiftSpectrum.lean`.
+Elle reste `[O]` tant qu'aucun théorème Lean complet, sans `sorry` ni axiome,
+n'a été ajouté.
 -/
 
 end CouretUnification.Residue
