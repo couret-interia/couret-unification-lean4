@@ -183,8 +183,21 @@ structure FEnrichedStatus where
 def RHClaimed : Bool := false
 example : RHClaimed = false := rfl
 
-/-- [API] La promotion conditionnelle de λ = 1/√7 ne dépend que de (F.2). -/
-def LambdaPromotionDependsOnly_F2 : Prop := True
+/-- Dépendance doctrinale déclarée pour la promotion conditionnelle de λ. -/
+inductive LambdaPromotionDependency where
+  | f2_only
+  deriving DecidableEq, Repr
+
+/-- [API] La promotion conditionnelle de λ = 1/√7 est déclarée comme ne
+    dépendant que de (F.2).
+
+    Ceci est une métadonnée d'interface, pas une preuve mathématique. -/
+def lambdaPromotionDependency : LambdaPromotionDependency :=
+  .f2_only
+
+/-- Vérification statique de la dépendance doctrinale déclarée. -/
+theorem lambdaPromotionDependency_is_f2_only :
+    lambdaPromotionDependency = LambdaPromotionDependency.f2_only := rfl
 
 /-- [I] Identité du fichier — statut INTERFACE. -/
 def fileIdentity : CouretUnification.Meta.FileIdentity where

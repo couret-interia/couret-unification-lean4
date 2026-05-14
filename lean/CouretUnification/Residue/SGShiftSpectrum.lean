@@ -63,11 +63,20 @@ Le présent fichier ne rajoute pas encore de théorème spectral.
 Il sert de point d'ancrage propre pour une future formalisation.
 -/
 
-/-- Marqueur de registre : le fichier spectral est présent, mais volontairement
-    non fermé. Le résultat spectral complet reste à formaliser. -/
-def sgShiftSpectrum_frontier : Prop := True
+/-- Statut de frontière du fichier spectral SG-shift. -/
+inductive SGShiftSpectrumStatus where
+  | frontier
+  deriving DecidableEq, Repr
 
-theorem sgShiftSpectrum_frontier_ok : sgShiftSpectrum_frontier := by
-  trivial
+/-- Marqueur de registre : le fichier spectral est présent, mais volontairement
+    non fermé. Le résultat spectral complet reste à formaliser.
+
+    Ce marqueur est une donnée de statut, pas une proposition mathématique. -/
+def sgShiftSpectrum_status : SGShiftSpectrumStatus :=
+  .frontier
+
+/-- Vérification statique du statut de frontière. -/
+theorem sgShiftSpectrum_status_is_frontier :
+    sgShiftSpectrum_status = SGShiftSpectrumStatus.frontier := rfl
 
 end CouretUnification.Residue

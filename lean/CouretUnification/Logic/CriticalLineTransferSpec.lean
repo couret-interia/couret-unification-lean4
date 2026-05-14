@@ -111,20 +111,41 @@ structure BoundedTransferSpec
 
 /-! ## Section 3 — Frontière E3/E4 explicite -/
 
-/-- Énoncé E3 : convergence absolue uniforme du produit eulérien étendu.
+/-- Frontières analytiques ouvertes de la spécification E3/E4.
 
-    Ce prédicat est **non implémenté**. Il est ici pour rendre visible la
-    spécification que la couche AnalyticHorizon devra satisfaire avant
-    que ce fichier puisse être enrichi de constructions concrètes. -/
-def E3_uniform_absolute_convergence_spec : Prop :=
-  ∀ (σ_min σ_max : ℝ), 1/2 < σ_min → σ_min ≤ σ_max → σ_max ≤ 1 →
-    True
-  -- True ici est un placeholder délibéré : on déclare la signature de
-  -- l'énoncé, on ne le prouve ni ne l'utilise. Toute version future
-  -- devra remplacer True par l'énoncé analytique réel et le démontrer.
+    Ces constructeurs sont des marqueurs de registre typés. Ils ne sont pas
+    des propositions mathématiques et ne peuvent donc pas être utilisés comme
+    preuves. -/
+inductive CriticalLineTransferSpecStatus where
+  | e3_uniform_absolute_convergence_open
+  | e4_critical_line_identification_open
+  deriving DecidableEq, Repr
 
-/-- Énoncé E4 : continuation analytique vers σ = 1/2 et identification L². -/
-def E4_critical_line_identification_spec : Prop := True
+/-- Statut E3 : convergence absolue uniforme du produit eulérien étendu.
+
+    L'énoncé analytique réel n'est pas encore implémenté. Ce marqueur indique
+    seulement que la couche AnalyticHorizon devra fournir une formulation
+    substantielle avant toute fermeture. -/
+def E3_uniform_absolute_convergence_status : CriticalLineTransferSpecStatus :=
+  .e3_uniform_absolute_convergence_open
+
+/-- Statut E4 : continuation analytique vers σ = 1/2 et identification L².
+
+    Point sensible : ce marqueur remplace explicitement l'ancien
+    `Prop := True`. L'identification de la ligne critique n'est pas prouvée
+    ici et ne doit jamais être représentée par une proposition triviale. -/
+def E4_critical_line_identification_status : CriticalLineTransferSpecStatus :=
+  .e4_critical_line_identification_open
+
+/-- Vérification statique du statut ouvert E3. -/
+theorem E3_uniform_absolute_convergence_is_open :
+    E3_uniform_absolute_convergence_status =
+      CriticalLineTransferSpecStatus.e3_uniform_absolute_convergence_open := rfl
+
+/-- Vérification statique du statut ouvert E4. -/
+theorem E4_critical_line_identification_is_open :
+    E4_critical_line_identification_status =
+      CriticalLineTransferSpecStatus.e4_critical_line_identification_open := rfl
 
 /-! ## Section 4 — Décisions de build (informationnel) -/
 
