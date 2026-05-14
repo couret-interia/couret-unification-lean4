@@ -72,19 +72,30 @@ open CouretUnification.Meta
 def SquarefreeSupportLike {R : Type*} [Zero R] (f : ℕ → R) : Prop :=
   ∀ {p e : ℕ}, Nat.Prime p → 2 ≤ e → f (p ^ e) = 0
 
-variable {R : Type*} [NormedCommRing R] [CompleteSpace R]
-
 /-! ## Section 2 — Lemmes E4 (couture locale) -/
+
+section E4Local
+
+variable {R : Type*} [Zero R]
 
 /-- **[A] E4.1 : annulation locale sur les puissances premières élevées.**
 
-    Conséquence directe et triviale de `SquarefreeSupportLike`. Pas de sorry. -/
+    Conséquence directe et triviale de `SquarefreeSupportLike`. Pas de sorry.
+
+    Ce lemme est purement algébrique : il ne requiert ni norme, ni complétude.
+-/
 lemma e4_1_prime_pow_eq_zero
     (f : ℕ → R)
     (hsf : SquarefreeSupportLike f)
     {p e : ℕ} (hp : Nat.Prime p) (he : 2 ≤ e) :
     f (p ^ e) = 0 :=
   hsf hp he
+
+end E4Local
+
+section Analytic
+
+variable {R : Type*} [NormedCommRing R] [CompleteSpace R]
 
 /-- **[B] E4.2 : facteur local squarefree.**
 
@@ -221,6 +232,8 @@ def remaining_sorries_catalog : List (String × String) := [
    "[API-LOCAL] Comparaison série positive ≤ série sommable. " ++
    "Candidats : Summable.of_nonneg_of_le, summable_of_nonneg_of_le.")
 ]
+
+end Analytic
 
 /-! ## Section 7 — Identité doctrinale -/
 
