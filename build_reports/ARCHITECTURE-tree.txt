@@ -1,0 +1,483 @@
+.
+├── Attic
+│   ├── docs
+│   │   ├── COMPILATION.md
+│   │   ├── DEPENDENCIES.md
+│   │   └── STATUS-T1-T7.md
+│   ├── Dossier_Couret_Unification_RH_HP_v35.9.1_Integrations.pdf
+│   ├── generate_pdf_v35.9.1.py
+│   ├── H1_H7_STATUS_v32.md
+│   ├── lakefile.toml
+│   ├── lean
+│   │   └── CouretUnification
+│   │       ├── Absorption
+│   │       │   └── AbsorptionMap.lean
+│   │       ├── Bridge
+│   │       │   ├── AnalyticChain.lean
+│   │       │   ├── CharacterTower.lean
+│   │       │   ├── Claims.lean
+│   │       │   ├── ContinuousModel.lean
+│   │       │   ├── GlobalBridge.lean
+│   │       │   ├── README.md
+│   │       │   ├── Status.lean
+│   │       │   ├── Unification.lean
+│   │       │   └── VoroninInterface.lean
+│   │       ├── Core
+│   │       │   ├── CouretCertificate.lean
+│   │       │   ├── CouretIntegralReferencePackage.lean
+│   │       │   ├── CouretQuadraticIntegralReferencePackage.lean
+│   │       │   ├── CouretReferencePackage.lean
+│   │       │   ├── IntegerSpectrumClassification.lean
+│   │       │   ├── TripletDocumentaryIntegralInterface.lean
+│   │       │   ├── TripletDocumentaryIntegralPowerPackage.lean
+│   │       │   ├── TripletExceptionalCanonicalBridge.lean
+│   │       │   ├── TripletExceptionalCanonicalWitness.lean
+│   │       │   ├── TripletExceptionalCoreView.lean
+│   │       │   ├── TripletExceptionalDecidableShell.lean
+│   │       │   ├── TripletExceptionalLocalCriterion.lean
+│   │       │   ├── TripletExceptionalLocalPackage.lean
+│   │       │   ├── TripletExceptionalLocalSummary.lean
+│   │       │   ├── TripletExceptionalWitness.lean
+│   │       │   ├── TripletIntegralCandidateInterface.lean
+│   │       │   ├── TripletRawIntegralCandidateBridge.lean
+│   │       │   └── TripletRawIntegralFiniteBridge.lean
+│   │       ├── Criterion
+│   │       │   ├── CouretDefect.lean
+│   │       │   ├── L6_Absorption.lean
+│   │       │   └── RouteDContradiction.lean
+│   │       ├── Crown
+│   │       │   └── Crown.lean
+│   │       ├── Crown.lean
+│   │       ├── Geometry
+│   │       │   ├── CouretDesicsCayleyG30.lean
+│   │       │   ├── CouretDesicsExistence.lean
+│   │       │   ├── CouretDesics.lean
+│   │       │   └── CouretDesicsSpectral.lean
+│   │       ├── Logic
+│   │       │   ├── H3
+│   │       │   │   ├── LocalFactor.lean
+│   │       │   │   └── SquarefreeSupport.lean
+│   │       │   ├── LocalFactor.lean
+│   │       │   ├── LocalSquarefreeBridge.lean
+│   │       │   └── SquarefreeSupport.lean
+│   │       ├── Meta
+│   │       │   ├── Audit.lean
+│   │       │   ├── Empirical.lean
+│   │       │   ├── Manifest.lean
+│   │       │   ├── README.md
+│   │       │   └── Reproducibility.lean
+│   │       ├── Spectral
+│   │       │   ├── H1Bridge.lean
+│   │       │   ├── H2Transfer.lean
+│   │       │   ├── H3ArithmeticBridge.lean
+│   │       │   ├── H3Status.lean
+│   │       │   ├── H3Trace.lean
+│   │       │   ├── H4WeakHP.lean
+│   │       │   ├── H5Analytic.lean
+│   │       │   ├── H6GlobalHP.lean
+│   │       │   ├── H6Microlocal.lean
+│   │       │   └── H6NoGo.lean
+│   │       └── Tower
+│   │           ├── ConcreteCharacters210Family.lean
+│   │           ├── ConcreteCharacters210Generators.lean
+│   │           ├── ConcreteCharacters210.lean
+│   │           ├── ConcreteCharacters210Lift.lean
+│   │           ├── ConcreteCharacters210SignExplicit.lean
+│   │           ├── ConcreteCharacters210Sign.lean
+│   │           ├── ConcreteCharacters210SignReal.lean
+│   │           ├── ConcreteFiber30To210.lean
+│   │           ├── ConcreteFiberCard30To210.lean
+│   │           ├── ConcreteFiberClosure30To210.lean
+│   │           ├── ConcreteFiberComparison30To210.lean
+│   │           ├── ConcreteFiberCompletion30To210.lean
+│   │           ├── ConcreteFiberOrbit30To210.lean
+│   │           ├── ConcreteKernel210Card.lean
+│   │           ├── ConcreteKernel210.lean
+│   │           ├── ConcreteKernelAction210.lean
+│   │           ├── ConcreteKernelLiftAction210.lean
+│   │           ├── ConcreteKernelOrbit210.lean
+│   │           ├── ConcreteTransition30To210.lean
+│   │           ├── ConcreteUnits210.lean
+│   │           ├── ConcreteUnits30.lean
+│   │           └── PrimorialCharacterTower.lean
+│   ├── README_v36.md
+│   ├── RELEASE_ENV.txt
+│   ├── RELEASE_TRACE.md
+│   ├── scripts
+│   │   └── make_snapshot_thomas_lean_v35_8_1.sh
+│   ├── TAG_MESSAGE_v36.0-proof-jurisdiction.txt
+│   └── tags
+├── build_reports
+│   ├── ARCHITECTURE-tree.txt
+│   ├── axiom_declarations.txt
+│   ├── broken_imports.txt
+│   ├── errors_unique.txt
+│   ├── invariants.txt
+│   ├── snapshots
+│   │   └── 2026-05-14
+│   ├── sorries_declarations.txt
+│   ├── true_statements.txt
+│   ├── warnings_non_sorry.txt
+│   └── warnings_unique.txt
+├── CITATION.cff
+├── CouretUnification.lean
+├── docs
+│   ├── 01_PATCH_CAYLEY.md
+│   ├── 03_CAHIER_CHARGES_EULER.md
+│   ├── Algebre_arithmetique_flux_modulaire_30.docx
+│   ├── Ameliorations_Architecture_Thomas.md
+│   ├── ARCHITECTURE_CIBLE_v36.md
+│   ├── BuildGraph.md
+│   ├── DOCTRINE_PROGRAMME.md
+│   ├── ETAT_DEFINITIF_v5_INTEGRAL.md
+│   ├── FICHE_NIVEAU_5_C2Restricted_H1.md
+│   ├── H3_boundary_map.md
+│   ├── L6_ratio_estimate_note.md
+│   ├── LTB0_README.md
+│   ├── notes-techniques
+│   │   └── z30-vs-units.md
+│   ├── PASSAGE_LOCAL_GLOBAL.md
+│   ├── RAPPORT_DEMONSTRATION_v5_FINAL.md
+│   ├── Rapport_Impasses_CouretUnification.md
+│   ├── registry
+│   │   ├── CHIRALITY_MULTI_Q_PROTOCOL.md
+│   │   ├── DOCTRINE_L7_KRUSKAL_v38.2.md
+│   │   ├── DOCTRINE_L7_KRUSKAL_v38.3_ADDENDUM.md
+│   │   ├── NO_GO_SG_1SQRT7.md
+│   │   └── SophieGermain.md
+│   ├── ROADMAP_FINAL.md
+│   ├── THOMAS_BUILD_PROTOCOL.md
+│   ├── towerlift
+│   │   ├── delta7_sg_results.json
+│   │   ├── delta7_sg_synthese.md
+│   │   ├── delta7_sophie_germain.png
+│   │   ├── dimensional_test_results.json
+│   │   ├── information_analysis.json
+│   │   ├── SGShiftSqrt2_NOTE.md
+│   │   ├── sophie_germain_graph.png
+│   │   ├── sophie_germain_results.json
+│   │   ├── sophie_germain_spectral.png
+│   │   ├── sophie_germain_synthese.md
+│   │   ├── toymodel_scan_complete.json
+│   │   └── v19_dimensional_test.json
+│   └── TOWERLIFT.md
+├── lakefile.lean
+├── lake-manifest.json
+├── lean
+│   ├── CouretUnification
+│   │   ├── Active
+│   │   │   ├── PrimeSideRealClosure.lean
+│   │   │   └── TraceObjectEnriched.lean
+│   │   ├── Active.lean
+│   │   ├── All.lean
+│   │   ├── Analytic
+│   │   │   ├── AbelTailCompare.lean
+│   │   │   ├── AbelTailCore.lean
+│   │   │   ├── GammaFactor.lean
+│   │   │   ├── Integration.lean
+│   │   │   ├── VerifiedIntervals.lean
+│   │   │   └── ZeroDensityAxioms.lean
+│   │   ├── AnalyticHorizon
+│   │   │   ├── A8ArchimedeanAbsorption.lean
+│   │   │   ├── ActiveLayerFullAudit.lean
+│   │   │   ├── AdmissibleSigmaBand.lean
+│   │   │   ├── ArchimedeanDigammaCertificate.lean
+│   │   │   ├── ArchimedeanTorsionCertificate.lean
+│   │   │   ├── DefectOperator30.lean
+│   │   │   ├── Det2Obligations.lean
+│   │   │   ├── Det2TransportCertificate.lean
+│   │   │   ├── Det2Transport.lean
+│   │   │   ├── ExplicitFormulaBridgeAudit.lean
+│   │   │   ├── L6Stirling.lean
+│   │   │   ├── LegendreChannelCalibration.lean
+│   │   │   ├── MomentRigidity30.lean
+│   │   │   ├── PerturbedSpectralIsolation.lean
+│   │   │   ├── PhaseStabilityTargets.lean
+│   │   │   ├── ProtectedMinusTraceTargets.lean
+│   │   │   ├── SoinInterface.lean
+│   │   │   ├── TorsionZeroTransferCertificate.lean
+│   │   │   ├── TraceFormulaTargets.lean
+│   │   │   └── ZeroCountingCertificate.lean
+│   │   ├── Audit
+│   │   │   └── PrintAxioms.lean
+│   │   ├── Core
+│   │   │   ├── Arithmetic.lean
+│   │   │   ├── CarlemanUniqueness.lean
+│   │   │   ├── CayleyConnected.lean
+│   │   │   ├── CayleyG30.lean
+│   │   │   ├── CayleySpectrum.lean
+│   │   │   ├── CenteredEigenspace.lean
+│   │   │   ├── CenteredSpace30.lean
+│   │   │   ├── CharacterLemmas.lean
+│   │   │   ├── Characters30Bridge.lean
+│   │   │   ├── Characters30.lean
+│   │   │   ├── CharParity30.lean
+│   │   │   ├── CharPoly.lean
+│   │   │   ├── Classification63Detail.lean
+│   │   │   ├── Classification63.lean
+│   │   │   ├── ComponentSpectrum.lean
+│   │   │   ├── Convolution30.lean
+│   │   │   ├── CouretDocumentaryCertificate.lean
+│   │   │   ├── CouretMinimalPackage.lean
+│   │   │   ├── CouretPowerCertificate.lean
+│   │   │   ├── CRTEquiv.lean
+│   │   │   ├── CRTTransport.lean
+│   │   │   ├── DefectProjection.lean
+│   │   │   ├── Doctrine.lean
+│   │   │   ├── ExceptionalTriplets.lean
+│   │   │   ├── FiniteCore.lean
+│   │   │   ├── FiniteOperator.lean
+│   │   │   ├── FormuleLk.lean
+│   │   │   ├── Fourier30.lean
+│   │   │   ├── HarmonicCertificate.lean
+│   │   │   ├── IntegralSpectrum.lean
+│   │   │   ├── InvariantE.lean
+│   │   │   ├── Kurtosis.lean
+│   │   │   ├── Lambda.lean
+│   │   │   ├── LMFDBAlignment.lean
+│   │   │   ├── MersenneMod30.lean
+│   │   │   ├── Mod30.lean
+│   │   │   ├── MultiplicityUniqueness.lean
+│   │   │   ├── OddDimComplexObstruction.lean
+│   │   │   ├── ParsevalL5.lean
+│   │   │   ├── Parseval.lean
+│   │   │   ├── README.md
+│   │   │   ├── SophieGermainHecke.lean
+│   │   │   ├── SophieGermain.lean
+│   │   │   ├── SophieGermainMod30.lean
+│   │   │   ├── SophieGermainTowerLift.lean
+│   │   │   ├── SpectralGap.lean
+│   │   │   ├── SpectralMoments.lean
+│   │   │   ├── SpectralProfile.lean
+│   │   │   ├── SymplecticObstruction.lean
+│   │   │   ├── TCAutoInverse.lean
+│   │   │   ├── TraceRecurrence.lean
+│   │   │   ├── TripletCandidateInterface.lean
+│   │   │   ├── TripletDocumentaryCertificate.lean
+│   │   │   ├── TripletDocumentaryPowerInterface.lean
+│   │   │   ├── TripletExceptionalPredicate.lean
+│   │   │   ├── TripletHarmonicSpectrum.lean
+│   │   │   ├── TripletLocalExceptionalCandidate.lean
+│   │   │   ├── TripletPowerSpectrum.lean
+│   │   │   ├── TripletQuadraticCandidateCertificate.lean
+│   │   │   ├── TripletQuadraticIntegralCandidateInterface.lean
+│   │   │   ├── TripletRawIntegralCriterion.lean
+│   │   │   ├── TripletRawQuadraticConsistency.lean
+│   │   │   ├── TripletSpectrum.lean
+│   │   │   ├── TripletToFiniteSpectrum.lean
+│   │   │   ├── U30.lean
+│   │   │   └── UnitsBridge.lean
+│   │   ├── Empirical
+│   │   │   ├── SophieGermainExpected.lean
+│   │   │   └── SophieGermainTransitions.lean
+│   │   ├── EpistemicDiscipline
+│   │   │   ├── BridgeStatus.lean
+│   │   │   └── DoctrinalInvariants.lean
+│   │   ├── Experimental
+│   │   │   ├── TowerLift
+│   │   │   │   ├── ToyModelFloat.lean
+│   │   │   │   ├── ToyModel.lean
+│   │   │   │   └── ToyModelSpec.lean
+│   │   │   └── TowerLift.lean
+│   │   ├── FCI
+│   │   │   ├── CausalSupportImmunity.lean
+│   │   │   ├── CausalSupportMeasureBridge.lean
+│   │   │   ├── FCI.lean
+│   │   │   ├── ModThirtyCheckerBridge.lean
+│   │   │   └── ModThirtyChecker.lean
+│   │   ├── Finite
+│   │   │   ├── Defect.lean
+│   │   │   └── Foundations.lean
+│   │   ├── FiniteDefect
+│   │   │   └── T1_to_T7.lean
+│   │   ├── Frozen.lean
+│   │   ├── FunctionalFoundation
+│   │   │   ├── DiscreteConnection.lean
+│   │   │   └── DiscretePaths.lean
+│   │   ├── Logic
+│   │   │   ├── C2
+│   │   │   │   ├── Umbrella.lean
+│   │   │   │   └── Window.lean
+│   │   │   ├── C3Weak_Gram.lean
+│   │   │   ├── C3Weak.lean
+│   │   │   ├── ChiralityFinite.lean
+│   │   │   ├── ChiralityLinear.lean
+│   │   │   ├── CriticalLineTransferSpec.lean
+│   │   │   ├── Doctrine.lean
+│   │   │   ├── EulerBridgeInfiniteCompat.lean
+│   │   │   ├── EulerBridgeInfinite.lean
+│   │   │   ├── EulerBridgeInfiniteReal.lean
+│   │   │   ├── ExplicitFormula
+│   │   │   │   ├── ArchimedeanKernelBound.lean
+│   │   │   │   ├── ArchimedeanSide.lean
+│   │   │   │   ├── ArithmeticWeight.lean
+│   │   │   │   ├── ExplicitFormulaBridge.lean
+│   │   │   │   ├── PrimeSideCompactSupport.lean
+│   │   │   │   ├── PrimeSide.lean
+│   │   │   │   ├── StatusFlags.lean
+│   │   │   │   ├── TestFunctions.lean
+│   │   │   │   ├── TestPair.lean
+│   │   │   │   ├── TraceObject.lean
+│   │   │   │   ├── ZeroCounting.lean
+│   │   │   │   └── ZeroSideObligation.lean
+│   │   │   ├── FEnriched30.lean
+│   │   │   ├── FEnrichedSpec.lean
+│   │   │   ├── H3
+│   │   │   │   ├── AbelWeightedBound.lean
+│   │   │   │   ├── AlgebraTC.lean
+│   │   │   │   ├── ArithmeticBridge.lean
+│   │   │   │   ├── C2Restricted.lean
+│   │   │   │   ├── C3Weak_Gram.lean
+│   │   │   │   ├── C3Weak.lean
+│   │   │   │   ├── CriticalLineTransferSpec.lean
+│   │   │   │   ├── FEnriched30.lean
+│   │   │   │   ├── FEnrichedSpec.lean
+│   │   │   │   ├── FiniteSpectralAPI.lean
+│   │   │   │   ├── FunctionalFoundation.lean
+│   │   │   │   ├── H3TestSpace.lean
+│   │   │   │   ├── HPCertificate.lean
+│   │   │   │   ├── L10Bridge.lean
+│   │   │   │   ├── L10_MassPersistence.lean
+│   │   │   │   ├── Lemma7Residual.lean
+│   │   │   │   ├── LocalFactor.lean
+│   │   │   │   ├── LocalSquarefreeBridge.lean
+│   │   │   │   ├── Lock2Conditional.lean
+│   │   │   │   ├── MoebiusBridge.lean
+│   │   │   │   ├── ParityGamma30.lean
+│   │   │   │   ├── PhaseBCompositionCouretEta.lean
+│   │   │   │   ├── PhaseBCompositionCouret.lean
+│   │   │   │   ├── PhaseBCompositionCouretZeta.lean
+│   │   │   │   ├── PhaseBComposition.lean
+│   │   │   │   ├── RigidityParams.lean
+│   │   │   │   ├── RouteC.lean
+│   │   │   │   ├── SpectralBridge.lean
+│   │   │   │   ├── SpectralSpatial.lean
+│   │   │   │   ├── SquarefreeDensity.lean
+│   │   │   │   ├── SquarefreeSupport.lean
+│   │   │   │   ├── T5Weak.lean
+│   │   │   │   └── ZeroMatching.lean
+│   │   │   ├── L10NoGoTheorem.lean
+│   │   │   ├── L6Analytic.lean
+│   │   │   ├── L6Bridge.lean
+│   │   │   ├── L6Interface.lean
+│   │   │   ├── L6RatioEstimateDerived.lean
+│   │   │   ├── Lock3
+│   │   │   │   ├── LocalDebiasing.lean
+│   │   │   │   ├── ProtectedTraceGate.lean
+│   │   │   │   └── RHGuard.lean
+│   │   │   ├── OpenLocks.lean
+│   │   │   ├── SophieGermainMatrix.lean
+│   │   │   └── TimeBridge
+│   │   │       ├── B2Calibration.lean
+│   │   │       ├── Basic.lean
+│   │   │       ├── BostConnesMod30Spec.lean
+│   │   │       └── ModularFlowSpec.lean
+│   │   ├── Meta
+│   │   │   ├── AuditHints.lean
+│   │   │   ├── Doctrine.lean
+│   │   │   ├── Layer.lean
+│   │   │   ├── ProofJurisdiction.lean
+│   │   │   └── SnapshotSentinel.lean
+│   │   ├── Numerics
+│   │   │   ├── ScanSummary.lean
+│   │   │   └── UseScanSummary.lean
+│   │   ├── Release
+│   │   │   └── ReleaseManifest.lean
+│   │   ├── Residue
+│   │   │   ├── ClosureTC.lean
+│   │   │   ├── CycleCoset.lean
+│   │   │   ├── PuncturedKlein30.lean
+│   │   │   ├── SGShiftSpectrum.lean
+│   │   │   ├── SGShiftSqrt2.lean
+│   │   │   └── TorsionLift210.lean
+│   │   ├── SophieGermainUmbrella.lean
+│   │   ├── Spectral
+│   │   │   ├── FiniteCore.lean
+│   │   │   └── T2Gap.lean
+│   │   └── Speculative
+│   │       ├── AnalogyMTF.lean
+│   │       └── Ontology.lean
+│   └── CouretUnification.lean
+├── lean-toolchain
+├── LICENSE
+├── Makefile
+├── outputs
+│   ├── absorption_map.png
+│   ├── absorption_slice.png
+│   ├── couret_rapport_complet.png
+│   ├── h3_step_d_final.json
+│   └── rapport_detaille.txt
+├── pari
+│   ├── bost_connes_mod30_tests.gp
+│   ├── channel_balance_v7_2d.gp
+│   ├── channel_balance_v7.gp
+│   ├── test_veff.gp
+│   ├── veff_high_res.gp
+│   ├── veff_scan.csv
+│   ├── veff_scan_fast.gp
+│   └── veff_scan.gp
+├── python
+│   ├── compute_locks.py
+│   ├── couret_defect_lab.py
+│   ├── couret_full_tests.py
+│   ├── couret_offdiag_proxy.py
+│   ├── couret_route_C.py
+│   ├── couret_rs1_enriched_tests.py
+│   ├── couret_schur_leakage.py
+│   ├── couret_spatial_scan.py
+│   ├── couret_tower_sieve.py
+│   ├── guinand_weil_channelwise.py
+│   └── proof_chain.py
+├── README.md
+├── requirements.txt
+├── scripts
+│   ├── audit_orphans.sh
+│   ├── audit_reachability.sh
+│   ├── audit_structure_collisions.sh
+│   ├── audit_v36.0.sh
+│   ├── audit_v36.1.sh
+│   ├── audit_v36.9.sh
+│   ├── audit_v36_torsion.sh
+│   ├── audit_v37_aggregation.sh
+│   ├── audit_v38_global_doctrine.sh
+│   ├── audit_v38_harmonisee.sh
+│   ├── channel_bridge_v3.py
+│   ├── check_frozen_invariants.sh
+│   ├── compute_moments.py
+│   ├── evidence_veff.py
+│   ├── gate_no_frozen_imports_residue.sh
+│   ├── lintWhitespace.sh
+│   ├── outputs
+│   │   ├── N1.json
+│   │   ├── N2.json
+│   │   ├── N3.json
+│   │   ├── N4.json
+│   │   ├── N5.json
+│   │   ├── N6.json
+│   │   ├── N7.json
+│   │   ├── N8.json
+│   │   └── N9.json
+│   ├── run_all_tests.sh
+│   ├── SG_HL_matrix_calculation.py
+│   ├── sorry_audit.sh
+│   ├── test_cayley_connectivity.py
+│   ├── test_euler_defect.py
+│   ├── test_finite_core.py
+│   ├── test_guinand_weil.py
+│   ├── test_klmn_bound.py
+│   ├── test_negative_results.py
+│   ├── test_parseval_tower.py
+│   ├── test_sigma_matching.py
+│   ├── test_vchi_channels.py
+│   ├── towerlift
+│   │   ├── delta7_sophie_germain.py
+│   │   ├── dimensional_test.py
+│   │   ├── information_analysis.py
+│   │   ├── README.md
+│   │   ├── sophie_germain_analysis.py
+│   │   └── toymodel_validation.py
+│   └── validate_pack.sh
+└── sprint
+    └── 14_Route_D_contradiction.tex
+
+59 directories, 422 files

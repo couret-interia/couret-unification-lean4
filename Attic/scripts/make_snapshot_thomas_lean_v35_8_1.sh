@@ -19,7 +19,7 @@ set -euo pipefail
 
 OUTPUT="${1:-./CouretUnification_Snapshot_Thomas.lean}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SRC="$ROOT/CouretUnification"
+SRC="$ROOT/lean/CouretUnification"
 
 if [ ! -d "$SRC" ]; then
   echo "Erreur : répertoire source introuvable : $SRC" >&2

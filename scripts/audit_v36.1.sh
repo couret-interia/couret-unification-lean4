@@ -13,7 +13,8 @@
 # Usage : cd v36.1/ && bash audit_v36.1.sh
 
 set -u
-cd "$(dirname "$0")"
+# cd "$(dirname "$0")"   # historique : se positionnait sur scripts/
+cd "lean/"               # nouveau : se positionne sur lean/ pour les greps relatifs
 
 errors=0
 
@@ -178,3 +179,5 @@ else
   echo "═══════════════════════════════════════════════════════════════════"
   exit 1
 fi
+
+cd "../"

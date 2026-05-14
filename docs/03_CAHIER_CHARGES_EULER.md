@@ -1,8 +1,8 @@
 # Cahier des charges mathématique — `EulerCompletion.lean`
 
-**Statut :** [O] Ouvert — spécification formelle du pont eulérien global  
-**Niveau cible :** 3 — AnalyticHorizon  
-**Bloc Go/No-Go :** D  
+**Statut :** [O] Ouvert — spécification formelle du pont eulérien global
+**Niveau cible :** 3 — AnalyticHorizon
+**Bloc Go/No-Go :** D
 **Invariant :** `RHClaimed = false`
 
 ---
@@ -22,8 +22,8 @@ charges écrit, on peut évaluer l'avancée de la littérature existante
 (Bombieri-Vinogradov, Vaughan, Heath-Brown, etc.) par rapport à nos besoins
 précis.
 
-Ce document est **le type de livrable qui peut être communiqué à Dr Julien
-Riposo** comme preuve que le verrou est compris et posé, même s'il reste
+Ce document est **le type de livrable qui peut être communiqué à un
+Expert** comme preuve que le verrou est compris et posé, même s'il reste
 ouvert.
 
 ---
@@ -336,8 +336,8 @@ theorem euler_equals_xi (s : ℂ) :
    en un problème posé précisément, avec décomposition en 4 briques et audit
    Mathlib clair.
 
-3. **Communication externe :** ce document peut être envoyé à Dr Julien
-   Riposo comme preuve que le verrou D (pont eulérien) est compris et
+3. **Communication externe :** ce document peut être envoyé à un
+   Expert comme preuve que le verrou D (pont eulérien) est compris et
    cartographié, même s'il reste ouvert. C'est bien plus solide qu'un
    scaffold Lean vide.
 

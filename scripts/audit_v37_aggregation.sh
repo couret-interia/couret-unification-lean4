@@ -102,6 +102,10 @@ maybe_run_gate \
   "scripts/audit_v36.0.sh"
 
 maybe_run_gate \
+  "audit_v36.1" \
+  "scripts/audit_v36.1.sh"
+
+maybe_run_gate \
   "audit_v36_torsion" \
   "scripts/audit_v36_torsion.sh"
 

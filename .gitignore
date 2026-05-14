@@ -7,3 +7,7 @@ patches
 *.gz
 .venv
 /venv
+build_reports/*
+!build_reports/*.txt
+!build_reports/snapshots/
+!build_reports/snapshots/**

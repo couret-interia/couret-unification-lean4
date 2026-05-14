@@ -273,7 +273,7 @@ Cinq routes naïves vers l'opérateur de Hilbert-Pólya ont été testées puis 
 | χ₁₅ réel (C=1/64) | 0.44792 |
 | χ₁₅ complexe (C=2/64) | [...] |
 
-**Verdict** : le ratio V_eff / (1/7) est **loin de 1** — ce qui signifie que la proximité 3/8 ≈ 1/√7 est une **coïncidence numérique**, pas un mécanisme analytique. L'erreur #23 de la critique externe (Riposo) est confirmée.
+**Verdict** : le ratio V_eff / (1/7) est **loin de 1** — ce qui signifie que la proximité 3/8 ≈ 1/√7 est une **coïncidence numérique**, pas un mécanisme analytique. L'erreur #23 de la critique externe (Expert) est confirmée.
 
 **Diagnostic théorique** : V(χ) ~ C_RS · log(q_χ). Donc V_eff · dim diverge logarithmiquement. Le bon objet est V_RS = V/log(q) ≈ 0.365, et non V_eff brut.
 
@@ -518,7 +518,7 @@ Pour chaque entrée, je fournis : titre + mention courte + marqueur [À COMPLÉT
 
 ### B12 — Correction « Parseval L5 = 960 » dans les scripts externes
 
-**Mention** : la correction v28 (entrée A7) a été propagée au pack Lean. Mais d'autres scripts (Python, PARI/GP) ont-ils été corrigés ? Notamment ceux partagés avec Thomas et Riposo ?
+**Mention** : la correction v28 (entrée A7) a été propagée au pack Lean. Mais d'autres scripts (Python, PARI/GP) ont-ils été corrigés ? Notamment ceux partagés avec Thomas et Expert ?
 
 **À compléter par Couret** :
 - Liste des scripts affectés : [_____]
@@ -551,7 +551,7 @@ Pour chaque entrée, je fournis : titre + mention courte + marqueur [À COMPLÉT
 | 3 avril 2026 | v26 → v27 | Consolidation ~70 chats, 23→32 fichiers, 4 axiomes H3 → 0. A6 (Lock 2 dissous) |
 | 5 avril 2026 | v27.2 | A7 (E = 3 faux à L5), A5 route N5 (µ_k → δ₁ réfutée) |
 | 6 avril 2026 | v28 | B7 (30 erreurs), B8 (overclaims), A10 (V_eff réfute λ=1/√7), A13 (M3 falsifié) |
-| 7 avril 2026 | v28 → v29/v30 | Mise à jour site + dossier Riposo |
+| 7 avril 2026 | v28 → v29/v30 | Mise à jour site + dossier Expert |
 | 8 avril 2026 | — | A9 (bug channel_balance v7.2d) |
 | 23 avril 2026 | v35.7.2 → v35.8.6 | Refactoring L6Analytic, décomposition spectrale K⊕C⁺⊕C⁻ |
 | 24 avril 2026 | v35.8.7 (aujourd'hui) | A11 (B2 plateau retiré), A12 (candidat C réfuté) |

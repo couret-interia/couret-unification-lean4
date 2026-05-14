@@ -224,7 +224,7 @@ example : fileIdentity.rhClaimed = false := rfl
      `Real.finset_prod_rpow` selon le snapshot).
    - `Finset.prod_ne_zero_iff` : nom stable.
 
-4. **Réutilisation** : ce théorème pourra être cité dans la note Riposo
+4. **Réutilisation** : ce théorème pourra être cité dans une note
    comme exemple concret de pont fini certifié.
 -/
 

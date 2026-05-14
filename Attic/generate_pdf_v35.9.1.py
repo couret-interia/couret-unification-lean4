@@ -527,7 +527,7 @@ partB = [
     ["B9",  "Abandon de la « tour enrichie »",                        "canal parallèle"],
     ["B10", "Dérive logarithmique globale falsifiée",                 "scripts PARI/Python"],
     ["B11", "Anisotropie R = 0.75, d_eff ≈ 5.15",                     "chat Claude 7 avril 2026"],
-    ["B12", "Propagation Parseval L5 = 960 aux scripts externes",     "audit scripts Thomas/Riposo"],
+    ["B12", "Propagation Parseval L5 = 960 aux scripts externes",     "audit scripts Thomas/Expert"],
     ["B13", "Corrections Tesla : κ=0, comptage 59 vs 63",             "script Tesla v1"],
 ]
 story.append(tbl(partB, [1*cm, 10*cm, 5.5*cm], font=8.5))
@@ -912,7 +912,7 @@ story.append(box("STATUT : OUVERT — nouvelle piste de recherche",
     "réfutée. Il devient la <b>piste concrète principale pour l'Horizon 6</b> "
     "(construction d'un opérateur Hilbert-Pólya) du dossier Horizons v35.9.1. "
     "La sous-question technique précise est consignée comme programme "
-    "prospectif dans le dossier Riposo.", color=GREEN))
+    "prospectif dans le dossier Expert.", color=GREEN))
 
 story.append(P("<b>Motivation</b>", H3))
 story.append(P(
@@ -1001,7 +1001,7 @@ story.append(box("Nouvelle piste E — Bost-Connes mod 30 restreint",
 
 story.append(P(
     "<b>Recommandation</b> : retenir cette piste comme <i>programme "
-    "prospectif TimeBridge</i> dans une annexe du dossier Riposo, sans "
+    "prospectif TimeBridge</i> dans une annexe du dossier Expert, sans "
     "la faire entrer dans le dossier principal de résultats certifiés. "
     "Le statut <font face='Courier'>openProblem True</font> du fichier "
     "Lean <font face='Courier'>ModularFlowSpec.lean</font> encode "
@@ -1170,9 +1170,9 @@ story.append(P("<b>Inconsistance 1 — M₄ : 15 vs 21</b>", H3))
 story.append(P(
     "L'entrée A8 du rapport des impasses clarifie définitivement : "
     "P − ρ² = <b>15</b> (masse Parseval non triviale), M₄ = Tr(A⁴)/8 = "
-    "<b>21</b> (4ᵉ moment spectral brut). La synthèse Riposo, la note "
+    "<b>21</b> (4ᵉ moment spectral brut). La synthèse Expert, la note "
     "TimeBridge et les documents antérieurs utilisent les deux nombres. "
-    "<b>Action</b> : audit textuel du dossier Riposo avec remplacement "
+    "<b>Action</b> : audit textuel du dossier Expert avec remplacement "
     "systématique « M₄ = 15 » → « P − ρ² = 15 » et vérification explicite "
     "de chaque occurrence de « M₄ » pour distinguer les deux sens.", BODY))
 
@@ -1189,7 +1189,7 @@ story.append(bullet("(c) entièrement ouvert avec C3-B et C3-C retirées."))
 story.append(P(
     "La clarification doit être inscrite dans la chaîne C0-C5 du site "
     "<font face='Courier'>couret-unification.fr</font> et dans le dossier "
-    "Riposo v2.", BODY))
+    "Expert v2.", BODY))
 
 # ─── §V.3 ────────────────────────────────────────────────────────────────
 story.append(P("§V.3. Plan 2026-2029 révisé avec intégrations", H2))
@@ -1199,7 +1199,7 @@ plan = [
     ["Mai 2026",           "Build v35.9.1-complete vert chez Thomas + audit M₄/C3",                 "Repo clean"],
     ["Mai 2026",           "Rédaction RetiredBridges.lean à partir du rapport d'impasses",          "Meta/RetiredBridges.lean"],
     ["Juin 2026",          "Workshop Norwich : présentation + LMFDB alignment",                     "Communication externe"],
-    ["Juillet 2026",       "Rapport Riposo v2 avec M₄/C3 corrigés + Candidat C documenté",          "Doc validée"],
+    ["Juillet 2026",       "Rapport Expert v2 avec M₄/C3 corrigés + Candidat C documenté",          "Doc validée"],
     ["Août 2026",          "Priorités 3-7 architecture Thomas (SorryRegistry, CI, quickstart)",     "Infrastructure"],
     ["Septembre 2026",     "Préprint Sophie Germain χ²=243 (résultat autonome)",                     "arXiv math.NT"],
     ["T4 2026",            "Horizon 1 (vonMangoldt) en Lean → PR Mathlib",                          "Contribution Mathlib"],
@@ -1323,7 +1323,7 @@ story.append(SP(25))
 story.append(invariant_block())
 
 doc = SimpleDocTemplate(
-    "/home/claude/v35.9.1-complete/Dossier_Couret_Unification_RH_HP_v35.9.1_Integrations.pdf",
+    "Attic/Dossier_Couret_Unification_RH_HP_v35.9.1_Integrations.pdf",
     pagesize=A4,
     leftMargin=2*cm, rightMargin=2*cm,
     topMargin=2*cm, bottomMargin=2*cm,
@@ -1335,5 +1335,5 @@ doc = SimpleDocTemplate(
 doc.build(story, onFirstPage=cover, onLaterPages=hf)
 
 import os
-size = os.path.getsize("/home/claude/v35.9.1-complete/Dossier_Couret_Unification_RH_HP_v35.9.1_Integrations.pdf")
+size = os.path.getsize("Attic/Dossier_Couret_Unification_RH_HP_v35.9.1_Integrations.pdf")
 print(f"OK : PDF généré — {size:,} bytes ({size/1024:.1f} KB)")

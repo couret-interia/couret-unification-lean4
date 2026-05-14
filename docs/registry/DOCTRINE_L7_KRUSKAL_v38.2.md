@@ -183,7 +183,7 @@ est le **vrai verrou eulérien** de toute approche Hilbert-Pólya à base de noy
 
 **Statut : `[O]`.** Verrou principal de la position v38.2.
 
-**Trois routes préparées pour Dr. Riposo (mission v38.2) :**
+**Trois routes préparées pour un Expert (mission v38.2) :**
 
 - **Route A** — Interpolation Beurling-Nyman. Densité d'un espace fonctionnel approprié dans L²(0,1) équivalente à RH. Avantage : machinerie bien établie. Risque : la traduction concrète mod 30 → Beurling reste à construire.
 
@@ -248,7 +248,7 @@ Ne peut être attaqué qu'après fermeture de L7.4. Couvert partiellement par le
 
 ## 4. Mapping avec la cartographie analytique v38.1
 
-La décomposition L7.1–L7.5 reprojette la cartographie v38.1 sous l'angle "pont spectral candidat". Ce n'est pas une réécriture ; c'est une traduction utile parce qu'elle parle le langage de Connes-Burnol que Dr. Riposo lira mieux.
+La décomposition L7.1–L7.5 reprojette la cartographie v38.1 sous l'angle "pont spectral candidat". Ce n'est pas une réécriture ; c'est une traduction utile parce qu'elle parle le langage de Connes-Burnol qu'un Expert lira mieux.
 
 | Sous-verrou L7 | Cartographie v38.1 | Statut actuel |
 |----------------|---------------------|---------------|
@@ -313,7 +313,7 @@ Le théorème conditionnel **ne prouve pas RH**. Il rend explicite la *réductio
 2. Réduire les 4 sorrys de `Analytic/GammaFactor.lean` — `[O] → [D] partiel`
 3. Articuler L7.2 + L7.3 partiel via la note canal-par-canal — *première forme du facteur G structurel*
 
-**Horizon moyen terme (6 mois, mission Dr. Riposo).**
+**Horizon moyen terme (6 mois, mission un Expert).**
 
 4. Choisir entre Routes A/B/C pour L7.3 sur la base d'un dictionnaire trois critères :
    - critère Weil (positivité)
@@ -339,7 +339,7 @@ Le théorème conditionnel **ne prouve pas RH**. Il rend explicite la *réductio
 >
 > Tant que L7.4 reste ouvert (et il le restera vraisemblablement), la réduction sous L7.1 + L7.3 reste l'horizon scientifique honorable du programme.
 
-C'est la formulation la plus saine : ambitieuse, mais protégée contre la surrevendication. À conserver mot pour mot dans la documentation publique et dans les communications externes (Riposo, INPI, ANSSI, etc.).
+C'est la formulation la plus saine : ambitieuse, mais protégée contre la surrevendication. À conserver mot pour mot dans la documentation publique et dans les communications externes (Expert, INPI, ANSSI, etc.).
 
 ---
 
