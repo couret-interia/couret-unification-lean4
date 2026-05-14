@@ -55,6 +55,8 @@
 │   │       │   └── CouretDesicsSpectral.lean
 │   │       ├── Logic
 │   │       │   ├── H3
+│   │       │   │   ├── FEnriched30.lean
+│   │       │   │   ├── FEnrichedSpec.lean
 │   │       │   │   ├── LocalFactor.lean
 │   │       │   │   └── SquarefreeSupport.lean
 │   │       │   ├── LocalFactor.lean
@@ -330,8 +332,6 @@
 │   │   │   │   ├── C3Weak_Gram.lean
 │   │   │   │   ├── C3Weak.lean
 │   │   │   │   ├── CriticalLineTransferSpec.lean
-│   │   │   │   ├── FEnriched30.lean
-│   │   │   │   ├── FEnrichedSpec.lean
 │   │   │   │   ├── FiniteSpectralAPI.lean
 │   │   │   │   ├── FunctionalFoundation.lean
 │   │   │   │   ├── H3TestSpace.lean

@@ -45,8 +45,6 @@ lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:371:theorem rh_n
 lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:24:RHClaimed = false, car la version infinie touche à E2 (det₂), E3 (convergence
 lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:32:  - RHClaimed = false.
 lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:195:l'invariant RHClaimed = false.** La frontière est maintenue.
-lean/CouretUnification/Logic/H3/FEnriched30.lean:152:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/H3/FEnriched30.lean:153:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/H3/H3TestSpace.lean:7:  RHClaimed = false.
 lean/CouretUnification/Logic/H3/T5Weak.lean:71:`RHClaimed = false`.
 lean/CouretUnification/Logic/H3/T5Weak.lean:308:def RHClaimed : Bool := false
@@ -75,9 +73,6 @@ lean/CouretUnification/Logic/H3/L10_MassPersistence.lean:176:theorem rh_not_clai
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouret.lean:62:  RHClaimed = false. Aucun sorry consommé par les cinq branches
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouret.lean:217:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouret.lean:220:theorem rh_not_claimed : RHClaimed = false := rfl
-lean/CouretUnification/Logic/H3/FEnrichedSpec.lean:25:  - RHClaimed = false
-lean/CouretUnification/Logic/H3/FEnrichedSpec.lean:183:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/H3/FEnrichedSpec.lean:184:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/H3/SpectralSpatial.lean:47:RHClaimed = false.
 lean/CouretUnification/Logic/H3/SpectralSpatial.lean:205:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/SpectralSpatial.lean:206:theorem rh_not_claimed : RHClaimed = false := rfl
