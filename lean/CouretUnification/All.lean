@@ -364,6 +364,9 @@ import CouretUnification.Experimental.TowerLift.ToyModelFloat
 import CouretUnification.SophieGermainUmbrella
 import CouretUnification.Experimental.TowerLift
 
--- TODO v38.1+ : une fois les 6 TODO ci-dessus levés, activer
+-- v38.3
+import CouretUnification.Logic.H3.SpectralBridge
+
+-- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.
