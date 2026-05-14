@@ -193,8 +193,8 @@ report: tree audit-all
 	@echo "Sorries (déclarations) : $$(wc -l < $(REPORTS)/sorries_declarations.txt)"
 	@echo "Warnings non-sorry     : $$(wc -l < $(REPORTS)/warnings_non_sorry.txt)"
 	@echo "Imports cassés         : $$(wc -l < $(REPORTS)/broken_imports.txt)"
-	@echo "Axiomes déclarés       : $$(grep -c '^[[:space:]]*axiom[[:space:]]' $(REPORTS)/axiom_declarations.txt 2>/dev/null || echo 0)"
-	@echo "Théorèmes ': True := …': $$(grep -c ': True[[:space:]]*:=' $(REPORTS)/true_statements.txt 2>/dev/null || echo 0)"
+	@echo "Axiomes déclarés       : $$(grep -rn '^[[:space:]]*axiom[[:space:]]' lean/ 2>/dev/null | wc -l)"
+	@echo "Théorèmes ': True := …': $$(grep -rn ': True[[:space:]]*:=' lean/ 2>/dev/null | wc -l)"
 	@echo ""
 
 # ─── SNAPSHOT (pour livraisons majeures) ──────────────────────────

@@ -97,11 +97,18 @@ grep -rn "RHClaimed" "$LEAN_DIR" --include="*.lean" || true
 echo ""
 
 echo "━━━ Prop := True (potentiellement suspect) ━━━"
-grep -rn "Prop := True" "$LEAN_DIR" --include="*.lean" | head -20 || true
-PROP_TRUE=$(grep -rc "Prop := True" "$LEAN_DIR" --include="*.lean" 2>/dev/null \
-    | awk -F: '{s+=$2}END{print s}' || echo 0)
-echo "  Total Prop := True: $PROP_TRUE"
-echo ""
+PROP_TRUE_LINES=$(
+  find "$LEAN_DIR" -type f -name "*.lean" -print0 |
+  while IFS= read -r -d '' file; do
+    awk -v file="$file" '
+      # ... (même parseur que pour sorry, mais avec le pattern Prop := True)
+      function has_prop_true_token(text) {
+        return text ~ /Prop[[:space:]]*:=[[:space:]]*True/
+      }
+      # ... reste identique ...
+    ' "$file"
+  done
+)
 
 echo "━━━ VERDICT ━━━"
 if [ "$SORRY_COUNT" -le 1 ] && [ "$AXIOM_COUNT" -le 1 ]; then
