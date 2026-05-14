@@ -72,7 +72,7 @@ theorem charIdxToConreyResidue_injective :
     Function.Injective charIdxToConreyResidue := by
   intro χ ψ h
   fin_cases χ <;> fin_cases ψ <;> simp [charIdxToConreyResidue] at h <;>
-    first | rfl | exact absurd h (by decide)
+    first | rfl
 
 -- ═══════════════════════════════════════════════════════════════════
 -- §3. Ordres, parités, conducteurs
