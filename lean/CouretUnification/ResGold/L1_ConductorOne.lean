@@ -87,7 +87,10 @@ noncomputable def HSnorm_sq (R : ZMod p) : ℝ :=
   if R = 0 then 0
   else ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
 
-/-- **[D]** Identité de norme HS (tautologique de la définition). -/
+omit hp in
+/-- **[D]** Identité de norme HS (tautologique de la définition).
+
+    Ce lemme ne dépend pas de l'hypothèse de primalité `hp`. -/
 theorem HSnorm_sq_eq (R : ZMod p) :
     HSnorm_sq p R =
       if R = 0 then 0
