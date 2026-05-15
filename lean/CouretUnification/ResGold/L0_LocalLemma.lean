@@ -44,6 +44,7 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Complex.Basic
+import Mathlib.FieldTheory.Finite.Basic
 import CouretUnification.ResGold.Status
 
 namespace CouretUnification.ResGold.L0

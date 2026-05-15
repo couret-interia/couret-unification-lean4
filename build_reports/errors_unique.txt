@@ -1,4 +1,3 @@
 error: build failed
-error: lean/CouretUnification/ResGold/L0_LocalLemma.lean:98:43: failed to synthesize instance of type class
-error: lean/CouretUnification/ResGold/L0_LocalLemma.lean:98:9: unsolved goals
+error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:64:2: failed to synthesize instance of type class
 error: Lean exited with code 1
