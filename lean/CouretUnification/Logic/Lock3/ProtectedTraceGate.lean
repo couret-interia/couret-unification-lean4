@@ -1,7 +1,7 @@
 /-
   CouretUnification.Logic.Lock3.ProtectedTraceGate
   ════════════════════════════════════════════════════════════════════
-  Promotion logique d'un candidat Lock 2 à un objet Lock 3 localement
+  Promotion logique d'un candidat Lock 2 vers un objet Lock 3 localement
   verrouillé. Cette promotion N'EST PAS une preuve analytique de RH.
 
   Architecture :
@@ -11,45 +11,46 @@
   CORRECTION v38 harmonisée
   ────────────────────────────────────────────────────────────────────
 
-  Dans la v38.1 enrichi, la structure `PhantomMass19` portait trois
+  Dans la v38.1 enrichie, la structure `PhantomMass19` portait trois
   champs de type `Prop` :
       defect_is_19           : Prop
       protected_trace_target : Prop
       no_global_RH_claim     : Prop
-  C'est universellement incorrect : un champ de type `Prop` (où le
-  type EST `Prop`, qui vit dans `Type 0`) interdit à la structure
-  d'habiter `Prop` elle-même. Lean 4 promeut alors PhantomMass19 à
-  `Type`, ce qui n'est pas l'intention doctrinale (PhantomMass19
-  doit être un *énoncé*, pas une donnée).
+
+  C'est universellement incorrect : un champ de type `Prop` — où le
+  type EST `Prop`, qui vit dans `Type 0` — interdit à la structure
+  d'habiter `Prop` elle-même. Lean 4 promeut alors `PhantomMass19` à
+  `Type`, ce qui n'est pas l'intention doctrinale : `PhantomMass19`
+  doit être un *énoncé*, non une donnée.
 
   La forme correcte, conservée ici, paramètre la structure par les
   trois propositions et exige des PREUVES de ces propositions :
       structure PhantomMass19 (... ) (D PT NR : Prop) : Prop where
-        defect_is_19_proof          : D
+        defect_is_19_proof           : D
         protected_trace_target_proof : PT
-        no_global_RH_claim_proof    : NR
+        no_global_RH_claim_proof     : NR
 
-  Ainsi PhantomMass19 reste honnêtement dans `Prop`, et chaque champ
-  est une obligation de preuve fournie par l'utilisateur de la
+  Ainsi `PhantomMass19` reste honnêtement dans `Prop`, et chaque champ
+  devient une obligation de preuve fournie par l'utilisateur de la
   promotion.
 
-  Doctrine : v38 harmonisée
-  Status   : interface logique, 0 sorry.
+  Doctrine : v38 harmonisée.
+  Statut   : interface logique, 0 sorry.
 -/
 
 import CouretUnification.Logic.Lock3.LocalDebiasing
 
 namespace CouretUnification.Logic.Lock3
 
-/-! ## §1 — Local lock status -/
+/-! ## §1 — Statut local du verrou -/
 
 /--
-Local status of the Lock 3 gate.
+Statut local de la porte Lock 3.
 
-  candidate     — Lock 2 reached, residual identified
-  biasedPlateau — counterterm hypothesised but not yet certified
-  locallyLocked — Lock 3 certified locally (under current thresholds)
-  rejected      — certification failed
+  candidate     — Lock 2 atteint, résidu identifié.
+  biasedPlateau — contreterme hypothétisé mais pas encore certifié.
+  locallyLocked — Lock 3 certifié localement, sous les seuils courants.
+  rejected      — certification échouée.
 -/
 inductive LocalLockStatus where
   | candidate
@@ -58,23 +59,24 @@ inductive LocalLockStatus where
   | rejected
 deriving DecidableEq, Repr
 
-/-! ## §2 — Locally locked Phantom 19 object -/
+/-! ## §2 — Objet Phantom 19 localement verrouillé -/
 
 /--
-A locally locked Phantom 19 object.
+Un objet Phantom 19 localement verrouillé.
 
-This does NOT claim RH. It only says that the local Lock 3 gate has
-been crossed under the declared thresholds and admissible counterterm,
-modulo the four interface predicates of `LocalDebiasing` (currently
-vacuous — see `Lock3Certified_is_currently_vacuous`).
+Cela ne revendique PAS RH. Cela affirme seulement que la porte locale
+Lock 3 a été franchie sous les seuils déclarés et avec un contreterme
+admissible, modulo les quatre prédicats d'interface de `LocalDebiasing`
+— actuellement vacuous ; voir `Lock3Certified_is_currently_vacuous`.
 
-The structure is parametrised by three propositions, each of which
-must be proved by the user of the promotion :
-  - `Defect19`           : the residual is attributed to phantom 19
-  - `ProtectedTrace`     : the protected trace candidate -12 is in scope
-  - `NoGlobalRHClaim`    : the local lock does NOT promote to RH
+La structure est paramétrée par trois propositions, chacune devant être
+prouvée par l'utilisateur de la promotion :
 
-Field naming : `*_proof` to make the obligation explicit.
+  - `Defect19`        : le résidu est attribué au fantôme 19 ;
+  - `ProtectedTrace`  : la cible de trace protégée `-12` est dans le cadre ;
+  - `NoGlobalRHClaim` : le verrou local ne promeut PAS vers RH.
+
+Nommage des champs : `*_proof`, afin de rendre l'obligation explicite.
 -/
 structure PhantomMass19
     (R : LocalResidual)
@@ -93,11 +95,13 @@ structure PhantomMass19
 /-! ## §3 — Promotion -/
 
 /--
-Promotion from Lock 2 candidate to Lock 3 locally locked.
+Promotion d'un candidat Lock 2 vers un objet Lock 3 localement verrouillé.
 
-This is a logical promotion (a function from a certificate to a
-status enum), not an analytic proof of RH. The certificate itself
-remains conditional on the refinement of the four interface predicates.
+Il s'agit d'une promotion logique — une fonction d'un certificat vers une
+énumération de statut — et non d'une preuve analytique de RH.
+
+Le certificat lui-même reste conditionnel au raffinement des quatre
+prédicats d'interface.
 -/
 def promoteToLock3
     (R : LocalResidual)
@@ -108,11 +112,11 @@ def promoteToLock3
   LocalLockStatus.locallyLocked
 
 /--
-If the Lock 3 certificate is available, one may build a local
-`PhantomMass19` object, provided proofs of the three guard
-propositions are supplied.
+Si le certificat Lock 3 est disponible, on peut construire un objet local
+`PhantomMass19`, à condition de fournir les preuves des trois propositions
+de garde.
 
-This is a constructive packaging, not a proof of any analytic content.
+C'est un emballage constructif, non une preuve de contenu analytique.
 -/
 theorem protectedTraceStableAfterCounterterm
     (R : LocalResidual)

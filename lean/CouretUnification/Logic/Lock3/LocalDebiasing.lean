@@ -6,44 +6,44 @@
   ⚠ ⚠ ⚠   AVERTISSEMENT DOCTRINAL — VACUITÉ EXPLICITE   ⚠ ⚠ ⚠
   ════════════════════════════════════════════════════════════════════
   Les quatre prédicats de certification (`MeanBelow`, `SlopeBelow`,
-  `EnergyBelow`, `GridNoiseVanishes`) sont CURRENTLY DÉFINIS COMME
-  `True`. C'est un choix architectural assumé qui permet à la
-  structure `Lock3Certified` d'être typée et chaînée sans `sorry`,
-  mais qui rend cette structure CONSTRUCTIVEMENT TRIVIALE.
+  `EnergyBelow`, `GridNoiseVanishes`) sont ACTUELLEMENT DÉFINIS COMME
+  `True`. C'est un choix architectural assumé qui permet à la structure
+  `Lock3Certified` d'être typée et chaînée sans `sorry`, mais qui rend
+  cette structure CONSTRUCTIVEMENT TRIVIALE.
 
-  Tant que ces quatre prédicats restent `True`, tout
-  `(R, C, T)` muni de `C.compatibleWithRefinement` satisfait
-  `Lock3Certified` — voir le théorème `Lock3Certified_is_currently_vacuous`
-  plus bas, qui rend cette vacuité un FAIT EXPLICITE du namespace,
-  pas une propriété cachée.
+  Tant que ces quatre prédicats restent `True`, tout triplet `(R, C, T)`
+  muni de `C.compatibleWithRefinement` satisfait `Lock3Certified`.
+  Voir le théorème `Lock3Certified_is_currently_vacuous` plus bas :
+  il rend cette vacuité un FAIT EXPLICITE du namespace, et non une
+  propriété cachée.
 
-  Pour utiliser substantivement `Lock3Certified` dans une preuve
-  non triviale, il faut REMPLACER les quatre `True` par des
-  conditions analytiques effectives :
+  Pour utiliser substantiellement `Lock3Certified` dans une preuve
+  non triviale, il faut REMPLACER les quatre `True` par des conditions
+  analytiques effectives :
     • MeanBelow         → ‖(1/(b-a)) ∫ₐᵇ f‖ < τ_mean
     • SlopeBelow        → ‖f'‖_∞ < τ_slope
     • EnergyBelow       → ‖f - f̄‖_{L²} < τ_energy
     • GridNoiseVanishes → lim_{h→0} R.residual stable
 
-  Cette refondation est un travail d'analyse réelle non trivial
-  qui n'est PAS dans le périmètre de v38.1.
+  Cette refondation relève d'un travail d'analyse réelle non trivial
+  qui n'entre PAS dans le périmètre de v38.1.
   ════════════════════════════════════════════════════════════════════
 
-  Doctrine : v38.1 enrichi
-  Status   : interface, vacuité explicite, 0 sorry.
+  Doctrine : v38.1 enrichi.
+  Statut   : interface, vacuité explicite, 0 sorry.
 -/
 
 import Mathlib.Data.Real.Basic
 
 namespace CouretUnification.Logic.Lock3
 
-/-! ## §1 — Source admissibility for counterterms -/
+/-! ## §1 — Admissibilité de source pour les contretermes -/
 
 /--
-Allowed sources for a local counterterm.
+Sources autorisées pour un contreterme local.
 
-A counterterm must be predicted by structure, not fitted after the fact.
-This enum locks the admissible origins.
+Un contreterme doit être prédit par la structure, et non ajusté après coup.
+Cette énumération verrouille les origines admissibles.
 -/
 inductive CountertermSource where
   | projectorBoundary
@@ -51,12 +51,12 @@ inductive CountertermSource where
   | weilNormalization
 deriving DecidableEq, Repr
 
-/-! ## §2 — Thresholds of the certification gate -/
+/-! ## §2 — Seuils de la porte de certification -/
 
 /--
-Thresholds defining the Lock 3 certification gate.
+Seuils définissant la porte de certification de Lock 3.
 
-All four thresholds must be strictly positive.
+Les quatre seuils doivent être strictement positifs.
 -/
 structure Lock3Thresholds where
   tauMean : ℝ
@@ -68,10 +68,10 @@ structure Lock3Thresholds where
   tauEnergy_pos : 0 < tauEnergy
   tauGrid_pos : 0 < tauGrid
 
-/-! ## §3 — Local residual structure -/
+/-! ## §3 — Structure du résidu local -/
 
 /--
-A local residual R_{19,h}(σ) observed on a spectral band.
+Un résidu local R_{19,h}(σ) observé sur une bande spectrale.
 -/
 structure LocalResidual where
   sigmaMin : ℝ
@@ -81,15 +81,15 @@ structure LocalResidual where
   sigma_ordered : sigmaMin < sigmaMax
   grid_pos : 0 < gridStep
 
-/-! ## §4 — Admissible counterterm structure -/
+/-! ## §4 — Structure de contreterme admissible -/
 
 /--
-An admissible counterterm is not a free parameter.
+Un contreterme admissible n'est pas un paramètre libre.
 
-It must be:
-- σ-independent,
-- structurally sourced,
-- compatible with grid refinement.
+Il doit être :
+- indépendant de σ ;
+- issu d'une source structurelle ;
+- compatible avec le raffinement de grille.
 -/
 structure AdmissibleCounterterm where
   value : ℝ
@@ -97,62 +97,64 @@ structure AdmissibleCounterterm where
   independentOfSigma : Prop
   compatibleWithRefinement : Prop
 
-/-- Corrected residual after subtraction of an admissible counterterm. -/
+/-- Résidu corrigé après soustraction d'un contreterme admissible. -/
 def correctedResidual
     (R : LocalResidual)
     (C : AdmissibleCounterterm) :
     ℝ → ℝ :=
   fun σ => R.residual σ - C.value
 
-/-! ## §5 — Certification predicates (CURRENTLY VACUOUS — see header)
+/-! ## §5 — Prédicats de certification — ACTUELLEMENT VACUOUS, voir l'en-tête
 
-    These four predicates are intentionally `True` at v38.1.
-    Their refinement to genuine analytic conditions is documented
-    as the principal obligation of the Lock 3 layer.                 -/
+    Ces quatre prédicats valent intentionnellement `True` en v38.1.
+    Leur raffinement en conditions analytiques véritables constitue
+    l'obligation principale de la couche Lock 3.                      -/
 
-/-- Mean residual is below tolerance.
+/-- Le résidu moyen est sous la tolérance.
 
-    ⚠ Currently vacuous. To be replaced by an integral condition. -/
+    ⚠ Actuellement trivial. À remplacer par une condition intégrale. -/
 def MeanBelow
     (_f : ℝ → ℝ)
     (_sigmaMin _sigmaMax _τ : ℝ) : Prop :=
   True
 
-/-- Slope is below tolerance.
+/-- La pente est sous la tolérance.
 
-    ⚠ Currently vacuous. To be replaced by a derivative-norm condition. -/
+    ⚠ Actuellement trivial. À remplacer par une condition sur la norme
+    de la dérivée. -/
 def SlopeBelow
     (_f : ℝ → ℝ)
     (_sigmaMin _sigmaMax _τ : ℝ) : Prop :=
   True
 
-/-- Oscillatory energy is below tolerance.
+/-- L'énergie oscillatoire est sous la tolérance.
 
-    ⚠ Currently vacuous. To be replaced by an L² condition. -/
+    ⚠ Actuellement trivial. À remplacer par une condition L². -/
 def EnergyBelow
     (_f : ℝ → ℝ)
     (_sigmaMin _sigmaMax _τ : ℝ) : Prop :=
   True
 
-/-- Grid noise vanishes under refinement.
+/-- Le bruit de grille s'annule sous raffinement.
 
-    ⚠ Currently vacuous. To be replaced by a grid-limit condition. -/
+    ⚠ Actuellement trivial. À remplacer par une condition de limite
+    de grille. -/
 def GridNoiseVanishes
     (_R : LocalResidual)
     (_τ : ℝ) : Prop :=
   True
 
-/-! ## §6 — Lock 3 certification structure -/
+/-! ## §6 — Structure de certification Lock 3 -/
 
 /--
-Lock 3 certification for a corrected local residual.
+Certification Lock 3 pour un résidu local corrigé.
 
-Logical gate combining mean, slope, energy, grid refinement, and
-counterterm refinement compatibility.
+Porte logique combinant moyenne, pente, énergie, raffinement de grille
+et compatibilité du contreterme avec le raffinement.
 
-⚠ See header: as long as the four certification predicates are
-`True`, this structure is constructively trivial. The witness
-`Lock3Certified_is_currently_vacuous` below makes this fact explicit.
+⚠ Voir l'en-tête : tant que les quatre prédicats de certification valent
+`True`, cette structure est constructivement triviale. Le témoin
+`Lock3Certified_is_currently_vacuous` ci-dessous rend ce fait explicite.
 -/
 structure Lock3Certified
     (R : LocalResidual)
@@ -175,22 +177,26 @@ structure Lock3Certified
   counterterm_refinement_ok :
     C.compatibleWithRefinement
 
-/-! ## §7 — EXPLICIT VACUITY WITNESS -/
+/-! ## §7 — TÉMOIN EXPLICITE DE VACUITÉ -/
 
 /--
-**Vacuity witness** : as long as the four certification predicates
-are defined as `True`, every `(R, C, T)` with a counterterm carrying
-a refinement-compatibility witness trivially satisfies `Lock3Certified`.
+**Témoin de vacuité** : tant que les quatre prédicats de certification
+sont définis comme `True`, tout triplet `(R, C, T)` muni d'un contreterme
+portant un témoin de compatibilité au raffinement satisfait trivialement
+`Lock3Certified`.
 
-This theorem makes the vacuity an EXPLICIT FACT of the namespace, so
-that any future use of `Lock3Certified` in a non-trivial proof must
-first either:
-  (a) refine the four predicates above to non-trivial analytic
-      conditions, OR
-  (b) acknowledge in the proof comment that no analytic content is
-      being claimed.
+Ce théorème fait de la vacuité un FAIT EXPLICITE du namespace, de sorte
+que toute utilisation future de `Lock3Certified` dans une preuve non
+triviale devra d'abord :
 
-This protects against silent over-claims by future contributors.
+  (a) raffiner les quatre prédicats ci-dessus en conditions analytiques
+      non triviales ; OU
+
+  (b) reconnaître dans le commentaire de preuve qu'aucun contenu analytique
+      n'est revendiqué.
+
+Cela protège contre les surrevendications silencieuses de futurs
+contributeurs.
 -/
 theorem Lock3Certified_is_currently_vacuous
     (R : LocalResidual)

@@ -1,17 +1,47 @@
 /-
-  Couret-Unification — v38
+  CouretUnification.Logic.ExplicitFormula.TraceObject
+  ════════════════════════════════════════════════════════════════════
+  Réceptacle typé pour les côtés formels de la future formule explicite.
 
-  TraceObject.lean
+  Ce fichier ne prouve aucune identité analytique. Il fournit seulement
+  deux objets d'interface :
 
-  v35.9.0 → v38 :
-    Anciennement, ce fichier déclarait `structure TestPair { g, ghat,
-    admissible }` en doublon de `TestPair.lean` (v35.9.1, version
-    canonique avec `compactSupport_g`). Conflit `TestPair.ctorIdx`.
+    • `FormulaSide`  : un côté formel évalué sur une fonction test canonique ;
+    • `TraceObject`  : une cible neutre pour une future identité de trace
+                       de type Riemann–Weil.
 
-    Désormais, on importe la version canonique. Les champs `ghat` et
-    `admissible` ne sont pas réintroduits : ils n'ont aucun
-    consommateur dans la couche Frozen. S'ils deviennent nécessaires
-    plus tard, créer une extension `TestPairFourier extends TestPair`.
+  Refactor v35.9.0 → v38 :
+    Anciennement, ce fichier déclarait en doublon :
+
+      structure TestPair { g, ghat, admissible }
+
+    alors que `TestPair.lean` contient déjà la version canonique v35.9.1,
+    avec `compactSupport_g`. Ce doublon provoquait le conflit :
+
+      TestPair.ctorIdx
+
+    Désormais, ce fichier importe la version canonique de `TestPair`.
+
+  Choix v38 :
+    Les champs `ghat` et `admissible` ne sont pas réintroduits ici, car ils
+    n'ont aucun consommateur dans la couche Frozen.
+
+    S'ils deviennent nécessaires plus tard, créer une extension séparée :
+
+      TestPairFourier extends TestPair
+
+    plutôt que de modifier ou dupliquer `TestPair`.
+
+  Garde-fous :
+    • aucune formule explicite globale n'est prouvée ici ;
+    • aucune égalité PrimeSide = ZeroSide n'est affirmée ;
+    • aucune identification Det2/ξ n'est exportée ;
+    • aucune conséquence RH n'est revendiquée.
+
+  Statut :
+    interface logique / Frozen-safe ;
+    point d'ancrage typé pour PrimeSide, ZeroSide, ArchimedeanSide
+    et Det2Side.
 -/
 
 import CouretUnification.Logic.ExplicitFormula.StatusFlags
@@ -19,16 +49,16 @@ import CouretUnification.Logic.ExplicitFormula.TestPair
 
 namespace CouretUnification.Logic.ExplicitFormula
 
-/-- A formal side of an explicit-formula identity. -/
+/-- Un côté formel d'une identité de formule explicite. -/
 structure FormulaSide where
   value : TestPair → ℂ
 
 /--
-Neutral typed receptacle for the future Riemann-Weil trace identity.
+Réceptacle typé neutre pour la future identité de trace de Riemann–Weil.
 
-No analytic equality is proved here.
-This object is only the formal target into which PrimeSide,
-ZeroSide, ArchimedeanSide and Det2Side may later map.
+Aucune égalité analytique n'est prouvée ici.
+Cet objet est seulement la cible formelle vers laquelle `PrimeSide`,
+`ZeroSide`, `ArchimedeanSide` et `Det2Side` pourront se projeter plus tard.
 -/
 structure TraceObject where
   value : TestPair → ℂ

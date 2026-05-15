@@ -15,7 +15,7 @@
 
 namespace CouretUnification.EpistemicDiscipline
 
-/-- Five-level status for analytic bridges in the program. -/
+/-- Statut à cinq niveaux pour les ponts analytiques dans le programme. -/
 inductive BridgeStatus where
   | absent
   | candidate
@@ -26,5 +26,5 @@ deriving Repr, DecidableEq, Inhabited
 
 end CouretUnification.EpistemicDiscipline
 
--- Re-export at the top namespace for downstream readability.
+-- Réexporter dans l'espace de noms supérieur pour faciliter la lecture en aval.
 export CouretUnification.EpistemicDiscipline (BridgeStatus)

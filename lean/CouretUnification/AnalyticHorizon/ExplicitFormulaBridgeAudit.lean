@@ -4,66 +4,75 @@ import CouretUnification.Logic.ExplicitFormula.ExplicitFormulaBridge
 /-!
 # ExplicitFormulaBridgeAudit.lean
 
-Active layer. Audit certificate for the ExplicitFormulaBridge
-contract of the Frozen core.
+Couche Active. Certificat d'audit pour le contrat `ExplicitFormulaBridge`
+du noyau Frozen.
 
-This file does not prove the explicit formula. It merely records
-that the four bridge ports (PrimeSide, ZeroSide, ArchimedeanSide,
-Det2Side) are structurally present and can be composed into a
-Bridge receptacle.
+Ce fichier ne prouve pas la formule explicite. Il enregistre seulement
+que les quatre ports du pont :
 
-Doctrine:
-- no RH claim;
-- no Hilbert-Polya claim;
-- no proof that PrimeSide + ArchimedeanSide = ZeroSide;
-- no closed explicit formula claim;
-- the audit is structural, not analytic.
+- `PrimeSide`,
+- `ZeroSide`,
+- `ArchimedeanSide`,
+- `Det2Side`,
 
-This file is a contract, not a theorem.
+sont structurellement présents et peuvent être composés dans un réceptacle
+de type `Bridge`.
+
+## Doctrine
+
+- aucune revendication RH ;
+- aucune revendication Hilbert–Pólya ;
+- aucune preuve que `PrimeSide + ArchimedeanSide = ZeroSide` ;
+- aucune fermeture de formule explicite ;
+- l'audit est structurel, non analytique.
+
+Ce fichier est un contrat, non un théorème.
 -/
 
 namespace CouretUnification.AnalyticHorizon
 
 open CouretUnification.Logic.ExplicitFormula
 
-/-- Audit certificate for the ExplicitFormulaBridge.
+/-- Certificat d'audit pour `ExplicitFormulaBridge`.
 
-The only content is the availability of the underlying bridge
-contract. No analytic equality between the four sides is asserted. -/
+Le seul contenu est la disponibilité du contrat de pont sous-jacent.
+Aucune égalité analytique entre les quatre côtés n'est affirmée. -/
 structure ExplicitFormulaBridgeAudit where
   bridge : ExplicitFormulaBridge
-  /-- Structural availability proposition for the bridge contract. -/
+  /-- Proposition de disponibilité structurelle du contrat de pont. -/
   bridgeContractAvailable : Prop
 
-  /-- Witness that the bridge contract availability obligation is satisfied.
-      This still does not prove any analytic four-side equality. -/
+  /-- Témoin que l'obligation de disponibilité du contrat de pont est satisfaite.
+
+      Cela ne prouve toujours aucune égalité analytique entre les quatre côtés. -/
   bridgeContractAvailable_proof : bridgeContractAvailable
 
 /- ══════════════════════════════════════════════════════════════
-   Doctrinal flags.
+   Drapeaux doctrinaux.
    ══════════════════════════════════════════════════════════════ -/
 
-/-- The explicit formula is NOT declared closed by this audit. -/
+/-- La formule explicite n'est PAS déclarée fermée par cet audit. -/
 def ExplicitFormulaClosedFromBridgeAudit : Bool := false
 
-/-- The four-side equality is NOT declared proved. -/
+/-- L'égalité des quatre côtés n'est PAS déclarée prouvée. -/
 def FourSideEqualityClaimedFromBridgeAudit : Bool := false
 
-/-- No RH consequence is exported. -/
+/-- Aucune conséquence RH n'est exportée. -/
 def RHFromBridgeAudit : Bool := false
 
-/-- No Hilbert-Polya consequence is exported. -/
+/-- Aucune conséquence Hilbert–Pólya n'est exportée. -/
 def HilbertPolyaFromBridgeAudit : Bool := false
 
-/-- No determinant identity is claimed. -/
+/-- Aucune identité déterminantielle n'est revendiquée. -/
 def Det2IdentityFromBridgeAudit : Bool := false
 
 /- ══════════════════════════════════════════════════════════════
-   Tautological accessor.
+   Accesseur tautologique.
    ══════════════════════════════════════════════════════════════ -/
 
-/-- Tautological access to the bridge contract availability.
-    This does not prove any analytic identity. -/
+/-- Accès tautologique à la disponibilité du contrat de pont.
+
+    Cela ne prouve aucune identité analytique. -/
 theorem bridgeAudit_contract_obligation
     (audit : ExplicitFormulaBridgeAudit) :
     audit.bridgeContractAvailable :=

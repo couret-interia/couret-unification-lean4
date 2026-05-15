@@ -1,34 +1,65 @@
 /-
   CouretUnification.AnalyticHorizon.DefectOperator30
   ════════════════════════════════════════════════════════════════════
-  Opérateur de défaut sur la structure de Klein ponctuée — couche
-  matricielle, complément de `ProtectedMinusTraceTargets.lean`.
+  Opérateur de défaut sur la structure de Klein ponctuée.
 
-  Là où `ProtectedMinusTraceTargets` POSE la valeur scalaire -12 comme
-  définition, ce module fournit la CONSTRUCTION matricielle abstraite
-  qui produira cette valeur, une fois une représentation concrète
-  fournie. Les deux modules ne se substituent pas l'un à l'autre :
-    • ProtectedMinusTraceTargets : invariant scalaire -12 (hypothèse).
-    • DefectOperator30           : structure matricielle qui le porte.
+  Ce fichier appartient à la couche `AnalyticHorizon`, mais il consomme
+  une structure finie issue de `Residue` uniquement via un pont explicite :
 
-  Les valeurs spécifiques (P_-, A^{nt}, ρ) restent NON CONSTRUITES :
-  ce module définit l'interface mais n'instancie aucune représentation.
+      CouretUnification.Residue.Bridge.DefectOperatorBridge
 
-  REFACTOR v38.1 :
-    • Importe ClosureTC pour Z30, K4.
-    • Importe Residue.Bridge.DefectOperatorBridge pour consommer la structure
-      ponctuée via un contrat explicite Residue → AnalyticHorizon.
-    • Le poids spectral spectralWeight est explicite :
-        +1 sur TC,
-        -1 sur Phantom19,
-         0 ailleurs.
+  Il ne doit donc pas importer directement `CouretUnification.Residue.*`.
+
+  Rôle
+  ----
+  Ce module fournit l'interface matricielle abstraite qui portera, dans
+  une représentation concrète future, la trace protégée associée au défaut
+  du Klein ponctué.
+
+  Là où `ProtectedMinusTraceTargets.lean` POSE la valeur scalaire -12 comme
+  cible doctrinale, ce module fournit la structure matricielle abstraite
+  susceptible de produire cette valeur une fois les données concrètes
+  disponibles.
+
+  Les deux modules ne se substituent pas l'un à l'autre :
+
+    • `ProtectedMinusTraceTargets`
+        invariant scalaire -12, actuellement posé comme cible.
+
+    • `DefectOperator30`
+        structure matricielle abstraite qui porte le défaut.
+
+  Données non construites ici
+  --------------------------
+  Les objets spécifiques suivants restent NON CONSTRUITS :
+
+    • P_-      : projecteur spectral sur E_{-1} ;
+    • A^{nt}  : opérateur antisymétrique non tensoriel ;
+    • ρ       : représentation finie concrète de Z30 par matrices.
+
+  Ce fichier définit l'interface, mais n'instancie aucune représentation.
+
+  Refactor v38.1
+  --------------
+    • Consomme Z30, TC, K4 et Phantom19 via
+      `Residue.Bridge.DefectOperatorBridge`.
+    • Rend explicite le poids spectral `spectralWeight` :
+          +1 sur TC,
+          -1 sur Phantom19,
+           0 ailleurs.
+    • Préserve la séparation architecturale :
+          Residue → Residue.Bridge → AnalyticHorizon.
+
+  Garde-fous
+  ----------
+    • aucune représentation concrète n'est construite ;
+    • aucune trace -12 n'est prouvée ici ;
+    • aucune identification P_- = P_19 n'est affirmée ;
+    • aucune fermeture analytique globale n'est revendiquée ;
+    • aucune conséquence RH n'est exportée.
 
   Doctrine : v38.1 enrichi.
   Statut   : interface matricielle, pas d'instance, 0 sorry.
-
-  Architecture :
-    ce fichier ne doit pas importer directement `CouretUnification.Residue.*`,
-    sauf via `CouretUnification.Residue.Bridge.*`.
 -/
 
 import Mathlib.Data.Matrix.Basic
@@ -40,7 +71,7 @@ import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 namespace CouretUnification.AnalyticHorizon
 
 open CouretUnification.Residue.Bridge
-open CouretUnification.EpistemicDiscipline   -- ← pour BridgeStatus et RHClaimed
+open CouretUnification.EpistemicDiscipline   -- pour BridgeStatus et RHClaimed
 
 /-! ## §1 — Poids spectral sur la structure de Klein ponctuée -/
 
@@ -51,22 +82,30 @@ Poids spectral de la structure de Klein ponctuée.
   -1 sur Phantom19 = {19}
    0 ailleurs dans Z30.
 
-La somme signée  Σ w(x) ρ(x)  sur K₄ est l'opérateur de défaut.
+La somme signée
+
+  Σ w(x) ρ(x)
+
+sur K₄ est l'opérateur de défaut.
 -/
 def spectralWeight (x : DefectOperatorZ30) : ℤ :=
   if x ∈ defectOperatorTC then 1
   else if x = defectOperatorPhantom19 then -1
   else 0
 
+/-- Le poids spectral du résidu 1 vaut +1. -/
 theorem spectralWeight_one : spectralWeight (1 : DefectOperatorZ30) = 1 := by
   native_decide
 
+/-- Le poids spectral du résidu 11 vaut +1. -/
 theorem spectralWeight_eleven : spectralWeight (11 : DefectOperatorZ30) = 1 := by
   native_decide
 
+/-- Le poids spectral du résidu 29 vaut +1. -/
 theorem spectralWeight_twentynine : spectralWeight (29 : DefectOperatorZ30) = 1 := by
   native_decide
 
+/-- Le poids spectral du fantôme 19 vaut -1. -/
 theorem spectralWeight_phantom19 : spectralWeight defectOperatorPhantom19 = -1 := by
   native_decide
 
@@ -117,6 +156,9 @@ Doctrinalement :
   - P_- est un projecteur SPECTRAL — sur l'espace propre E_{-1}.
   - A^{nt} est un opérateur antisymétrique non tensoriel.
   - La conjecture est Tr(P_- · A^{nt} · P_-) = -12 à q = 30.
+
+Ce fichier ne fournit ni P_-, ni A^{nt}, ni ρ. Il définit seulement le
+contrat propositionnel que devra satisfaire une future instance concrète.
 -/
 structure ProtectedTraceTarget
     {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -131,11 +173,13 @@ structure ProtectedTraceTarget
 def DefectOperator30Status : BridgeStatus :=
   BridgeStatus.theoremTarget
 
+/-- Vérification statique du statut courant de `DefectOperator30`. -/
 theorem defect_operator_30_status :
     DefectOperator30Status = BridgeStatus.theoremTarget := rfl
 
 /-! ## §5 — Pare-feu doctrinal -/
 
+/-- Pare-feu doctrinal : l'interface matricielle de défaut ne revendique pas RH. -/
 theorem no_rh_from_defect_operator_30 :
     RHClaimed = false := rfl
 

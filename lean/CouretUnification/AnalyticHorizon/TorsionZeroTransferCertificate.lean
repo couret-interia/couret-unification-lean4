@@ -9,105 +9,134 @@ import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
 /-!
 # TorsionZeroTransferCertificate.lean
 
-Active layer.
+Couche Active.
 
-This file does NOT redefine the classical zero-counting certificate.
-It introduces a *pullback interface* from the torsion-deformed
-Archimedean clock to the zero-side counting obligation.
+Ce fichier ne redéfinit PAS le certificat classique de comptage des zéros.
+Il introduit une *interface de pullback* depuis l'horloge archimédienne
+déformée par torsion vers l'obligation de comptage côté zéros.
 
-The three analytic constraints required for the pullback to preserve
-logarithmic shell-counting are isolated in a dedicated structure
-`TorsionAnalyticObligation`:
+Les contraintes analytiques requises pour que ce pullback préserve le
+comptage logarithmique par coquilles sont isolées dans une structure dédiée :
 
-  (T.1) monotone               StrictMono phi_τ
-  (T.2) bi_lipschitz_lower      lower bi-Lipschitz: c · |t-u| ≤ |φ_τ(t)−φ_τ(u)|
-  (T.3) bi_lipschitz_upper      upper controlled distortion (polynomial)
-  (T.4) polynomial_growth       envelope |φ_τ(t)| ≤ A·(1+|t|)^q
+  `TorsionAnalyticObligation`
 
-These are typed obligations. None is proved here.
+Les quatre obligations sont :
 
-Doctrine:
-- the torsion is NOT noise;
-- the torsion does NOT move zeros;
-- the torsion changes the clock used to observe zero ordinates;
-- zero-counting in the torsion clock remains an UNPAID Active obligation;
-- no RH claim;
-- no Hilbert-Polya claim;
-- no closed explicit formula claim;
-- no determinant identity claim;
-- no Riemann-von Mangoldt theorem is proved here.
+  (T.1) `monotone`
+        `StrictMono phi_τ`
 
-This file is a contract, not a theorem.
+  (T.2) `bi_lipschitz_lower`
+        contrôle bi-Lipschitz inférieur :
+        `c · |t-u| ≤ |φ_τ(t) − φ_τ(u)|`
+
+  (T.3) `bi_lipschitz_upper`
+        distorsion supérieure contrôlée, avec perte polynomiale
+
+  (T.4) `polynomial_growth`
+        enveloppe polynomiale :
+        `|φ_τ(t)| ≤ A · (1 + |t|)^q`
+
+Ces quatre éléments sont des obligations typées. Aucune n'est prouvée ici.
+
+## Doctrine
+
+- la torsion n'est PAS du bruit ;
+- la torsion ne déplace PAS les zéros ;
+- la torsion change seulement l'horloge utilisée pour observer les ordonnées
+  des zéros ;
+- le comptage des zéros dans l'horloge de torsion reste une obligation Active
+  NON PAYÉE ;
+- aucune revendication RH ;
+- aucune revendication Hilbert–Pólya ;
+- aucune fermeture de formule explicite ;
+- aucune identité déterminantielle ;
+- aucun théorème de Riemann–von Mangoldt n'est prouvé ici.
+
+Ce fichier est un contrat, non un théorème.
 -/
 
 namespace CouretUnification.AnalyticHorizon
 
-/-- Analytic obligations required for a torsion clock to be admissible
-as a pullback interface for zero-counting.
+/-- Obligations analytiques requises pour qu'une horloge de torsion soit
+admissible comme interface de pullback pour le comptage des zéros.
 
-These obligations are localized here and are not declared paid. They
-ensure that the pullback clock is order-preserving, non-collapsing,
-of upper-controlled distortion, and of polynomial envelope. -/
+Ces obligations sont localisées ici et ne sont pas déclarées payées. Elles
+garantissent que l'horloge de pullback est :
+
+- préservatrice de l'ordre ;
+- non effondrante ;
+- de distorsion supérieure contrôlée ;
+- munie d'une enveloppe polynomiale. -/
 structure TorsionAnalyticObligation
     (tau : ArchimedeanTorsionMap) where
-  /-- (T.1) The torsion clock preserves the spectral order. -/
+  /-- (T.1) L'horloge de torsion préserve l'ordre spectral. -/
   monotone : StrictMono tau.phi
-  /-- (T.2) Lower bi-Lipschitz: the torsion does not collapse shells.
 
-  Prevents an unbounded number of zeros from accumulating in a
-  single torsion-shell. -/
+  /-- (T.2) Contrôle bi-Lipschitz inférieur :
+      la torsion n'effondre pas les coquilles.
+
+  Cette condition empêche qu'un nombre non borné de zéros s'accumule
+  dans une seule coquille de torsion. -/
   bi_lipschitz_lower :
     ∃ c : ℝ, c > 0 ∧
       ∀ t u : ℝ,
         c * |t - u| ≤ |tau.phi t - tau.phi u|
-  /-- (T.3) Upper controlled distortion, allowing polynomial loss.
 
-  Bounds how violently the torsion can stretch intervals. -/
+  /-- (T.3) Distorsion supérieure contrôlée, autorisant une perte
+      polynomiale.
+
+  Cette condition borne la violence avec laquelle la torsion peut étirer
+  les intervalles. -/
   bi_lipschitz_upper :
     ∃ C : ℝ, C > 0 ∧
       ∃ q : ℕ,
         ∀ t u : ℝ,
           |tau.phi t - tau.phi u|
             ≤ C * (1 + |t| + |u|) ^ q * |t - u|
-  /-- (T.4) Polynomial growth, preserving logarithmic order after pullback. -/
+
+  /-- (T.4) Croissance polynomiale, préservant l'ordre logarithmique
+      après pullback. -/
   polynomial_growth :
     ∃ A : ℝ, A > 0 ∧
       ∃ q : ℕ,
         ∀ t : ℝ,
           |tau.phi t| ≤ A * (1 + |t|) ^ q
 
-/-- Torsion-deformed spectral clock.
+/-- Horloge spectrale déformée par torsion.
 
-`gamma` is the original zero ordinate from `ZeroShellData`.
-`theta` is the observed ordinate after applying the torsion clock.
-Intended relation: `theta z = tau.phi (Z.gamma z)`.
+`gamma` est l'ordonnée originale d'un zéro issue de `ZeroShellData`.
+`theta` est l'ordonnée observée après application de l'horloge de torsion.
 
-This structure does NOT move zeros. It only changes the clock used
-to observe them. -/
+Relation visée :
+
+  `theta z = tau.phi (Z.gamma z)`.
+
+Cette structure ne déplace PAS les zéros. Elle change seulement l'horloge
+utilisée pour les observer. -/
 structure TorsionSpectralClock
     (Z : ZeroShellData) (tau : ArchimedeanTorsionMap) where
   theta : Z.Zero → ℝ
   theta_eq_phi_gamma :
     ∀ z : Z.Zero, theta z = tau.phi (Z.gamma z)
 
-/-- Zero shells measured in the torsion-deformed clock.
+/-- Coquilles de zéros mesurées dans l'horloge déformée par torsion.
 
-These are not necessarily the same shells as the original
-Riemann-von Mangoldt shells. They are the shells seen after the
-torsion clock has been applied. -/
+Ces coquilles ne sont pas nécessairement les mêmes que les coquilles
+originales de Riemann–von Mangoldt. Ce sont les coquilles vues après
+application de l'horloge de torsion. -/
 structure TorsionZeroShellData
     (Z : ZeroShellData) (tau : ArchimedeanTorsionMap) where
   clock : TorsionSpectralClock Z tau
   torsionZerosInShell : ℕ → Finset Z.Zero
 
-/-- Pullback counting certificate.
+/-- Certificat de comptage par pullback.
 
-The classical `ZeroCountingCertificate` is preserved untouched. This
-structure adds the SEPARATE obligation that counting remains
-logarithmic after applying the torsion clock, together with the
-analytic obligations that make this possible.
+Le certificat classique `ZeroCountingCertificate` est préservé tel quel.
+Cette structure ajoute l'obligation SÉPARÉE selon laquelle le comptage reste
+logarithmique après application de l'horloge de torsion, avec les obligations
+analytiques qui rendent cela possible.
 
-This is the core Active debt introduced by v36.8. -/
+C'est la dette Active centrale introduite par v36.8. -/
 structure TorsionZeroTransferCertificate where
   zeroCounting : ZeroCountingCertificate
   torsionMap : ArchimedeanTorsionMap
@@ -118,12 +147,12 @@ structure TorsionZeroTransferCertificate where
       ((torsionShells.torsionZerosInShell k).card : ℝ)
         ≤ C * Real.log ((k : ℝ) + 3)
 
-/-- Full interface between Archimedean torsion and ZeroSide counting.
+/-- Interface complète entre torsion archimédienne et comptage côté zéros.
 
-This is an interface certificate, not a proof of Riemann-von
-Mangoldt. It glues the torsion certificate (v36.7) and the
-canonical zero-side summability wrapper (v36.2) through the torsion
-transfer (this module). -/
+C'est un certificat d'interface, non une preuve de Riemann–von Mangoldt.
+Il raccorde le certificat de torsion — v36.7 — et l'emballage canonique de
+sommabilité côté zéros — v36.2 — via le transfert de torsion défini dans
+ce module. -/
 structure TorsionZeroInterfaceCertificate where
   torsion : ArchimedeanTorsionCertificate
   zeroSide : ZeroSideSummabilityCertificate
@@ -132,66 +161,69 @@ structure TorsionZeroInterfaceCertificate where
     transfer.torsionMap = torsion.torsionMap
   same_zero_counting :
     transfer.zeroCounting = zeroSide.zeroCounting
-  /-- Interface admissibility proposition for the torsion-zero transfer.
 
-  This is an explicit obligation carried by the certificate.  It expresses
-  that the torsion-zero interface is admissible as a structural interface;
-  it does not assert any new zero-matching theorem, determinant identity,
-  or RH/HP consequence. -/
+  /-- Proposition d'admissibilité de l'interface pour le transfert
+  torsion-zéros.
+
+  C'est une obligation explicite portée par le certificat. Elle exprime
+  que l'interface torsion-zéros est admissible comme interface structurelle.
+
+  Elle n'affirme aucun nouveau théorème d'appariement des zéros, aucune
+  identité déterminantielle, ni aucune conséquence RH/HP. -/
   interfaceAdmissible : Prop
 
-  /-- Witness that the torsion-zero interface admissibility obligation is
-  satisfied.
+  /-- Témoin que l'obligation d'admissibilité de l'interface torsion-zéros
+  est satisfaite.
 
-  This proof only discharges the local interface obligation stored in the
-  certificate.  It is not a proof of spectral coincidence, zero matching,
-  or analytic closure. -/
+  Cette preuve ne décharge que l'obligation locale d'interface stockée dans
+  le certificat. Ce n'est pas une preuve de coïncidence spectrale,
+  d'appariement des zéros, ni de fermeture analytique. -/
   interfaceAdmissible_proof : interfaceAdmissible
 
 /- ══════════════════════════════════════════════════════════════
-   Doctrinal flags.
+   Drapeaux doctrinaux.
    ══════════════════════════════════════════════════════════════ -/
 
-/-- The torsion does NOT move zeros. -/
+/-- La torsion ne déplace PAS les zéros. -/
 def TorsionMovesZeros : Bool := false
 
-/-- The torsion changes only the observation clock.
+/-- La torsion change uniquement l'horloge d'observation.
 
-Deliberately `true` — this is the doctrinal verrou. Future
-contributors must not flip it to `false` without producing a
-complete reinterpretation of the torsion as a spectral
-displacement, which would collapse the v36 doctrine. -/
+Volontairement `true` : c'est le verrou doctrinal. Les futurs contributeurs
+ne doivent pas le basculer à `false` sans fournir une réinterprétation
+complète de la torsion comme déplacement spectral, ce qui effondrerait la
+doctrine v36. -/
 def TorsionChangesClockOnly : Bool := true
 
-/-- The pullback counting obligation is NOT declared closed. -/
+/-- L'obligation de comptage par pullback n'est PAS déclarée fermée. -/
 def ZeroCountingPulledBackClaimedClosed : Bool := false
 
-/-- Riemann-von Mangoldt is NOT claimed from this transfer. -/
+/-- Riemann–von Mangoldt n'est PAS revendiqué à partir de ce transfert. -/
 def RiemannVonMangoldtFromTorsionTransfer : Bool := false
 
-/-- No ZeroSide closure is exported. -/
+/-- Aucune fermeture du côté zéros n'est exportée. -/
 def ZeroSideClosedFromTorsionTransfer : Bool := false
 
-/-- No explicit formula closure is exported. -/
+/-- Aucune fermeture de formule explicite n'est exportée. -/
 def ExplicitFormulaClosedFromTorsionTransfer : Bool := false
 
-/-- No Hilbert-Polya consequence is exported. -/
+/-- Aucune conséquence Hilbert–Pólya n'est exportée. -/
 def HilbertPolyaFromTorsionTransfer : Bool := false
 
-/-- No RH consequence is exported. -/
+/-- Aucune conséquence RH n'est exportée. -/
 def RHFromTorsionTransfer : Bool := false
 
 /- ══════════════════════════════════════════════════════════════
-   Tautological accessors.
+   Accesseurs tautologiques.
    ══════════════════════════════════════════════════════════════ -/
 
-/-- Tautological access to monotonicity (T.1). -/
+/-- Accès tautologique à la monotonie (T.1). -/
 theorem torsionZeroTransfer_has_monotone_clock
     (cert : TorsionZeroTransferCertificate) :
     StrictMono cert.torsionMap.phi :=
   cert.torsionAnalytic.monotone
 
-/-- Tautological access to lower bi-Lipschitz (T.2). -/
+/-- Accès tautologique au contrôle bi-Lipschitz inférieur (T.2). -/
 theorem torsionZeroTransfer_has_lower_bilipschitz
     (cert : TorsionZeroTransferCertificate) :
     ∃ c : ℝ, c > 0 ∧
@@ -199,7 +231,8 @@ theorem torsionZeroTransfer_has_lower_bilipschitz
         c * |t - u| ≤ |cert.torsionMap.phi t - cert.torsionMap.phi u| :=
   cert.torsionAnalytic.bi_lipschitz_lower
 
-/-- Tautological access to upper bi-Lipschitz / controlled distortion (T.3). -/
+/-- Accès tautologique au contrôle bi-Lipschitz supérieur /
+    distorsion contrôlée (T.3). -/
 theorem torsionZeroTransfer_has_upper_bilipschitz
     (cert : TorsionZeroTransferCertificate) :
     ∃ C : ℝ, C > 0 ∧
@@ -209,7 +242,7 @@ theorem torsionZeroTransfer_has_upper_bilipschitz
             ≤ C * (1 + |t| + |u|) ^ q * |t - u| :=
   cert.torsionAnalytic.bi_lipschitz_upper
 
-/-- Tautological access to polynomial growth (T.4). -/
+/-- Accès tautologique à la croissance polynomiale (T.4). -/
 theorem torsionZeroTransfer_has_polynomial_growth
     (cert : TorsionZeroTransferCertificate) :
     ∃ A : ℝ, A > 0 ∧
@@ -218,7 +251,8 @@ theorem torsionZeroTransfer_has_polynomial_growth
           |cert.torsionMap.phi t| ≤ A * (1 + |t|) ^ q :=
   cert.torsionAnalytic.polynomial_growth
 
-/-- Tautological access to the torsion-clock logarithmic counting bound. -/
+/-- Accès tautologique à la borne logarithmique de comptage dans
+    l'horloge de torsion. -/
 theorem torsionZeroTransfer_has_log_counting
     (cert : TorsionZeroTransferCertificate) :
     ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ,
@@ -226,13 +260,13 @@ theorem torsionZeroTransfer_has_log_counting
         ≤ C * Real.log ((k : ℝ) + 3) :=
   cert.torsion_shell_log_bound
 
-/-- Tautological access to interface admissibility. -/
+/-- Accès tautologique à l'admissibilité de l'interface. -/
 theorem torsionZeroInterface_admissible
     (cert : TorsionZeroInterfaceCertificate) :
     cert.interfaceAdmissible :=
   cert.interfaceAdmissible_proof
 
-/-- Tautological access to the clock equation theta = phi ∘ gamma. -/
+/-- Accès tautologique à l'équation d'horloge `theta = phi ∘ gamma`. -/
 theorem torsionClock_theta_eq_phi_gamma
     (cert : TorsionZeroTransferCertificate)
     (z : cert.zeroCounting.data.Zero) :

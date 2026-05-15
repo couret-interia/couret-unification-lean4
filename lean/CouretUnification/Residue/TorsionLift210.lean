@@ -20,7 +20,7 @@
 
   STATUTS :
 
-  - clôture / fantômes / certificats CRT      [P-Lean-local]
+  - clôture / fantômes / certificats CRT       [P-Lean-local]
   - participation ratio (arithmétique)         [P-arithmetic | conditional]
   - spectre de l'opérateur de convolution      [theoremTarget]
   - garde doctrinale                           [P-doctrine]
@@ -287,43 +287,3 @@ theorem no_RH_from_TC210_torsion :
   rfl
 
 end CouretUnification.Residue
-
-/-
-================================================================================
-  Notes pour Thomas
-================================================================================
-
-  1. Toutes les preuves calculatoires utilisent `native_decide` plutôt
-     que `decide`. Raison : les calculs sur Z210 (Finsets de cardinal
-     ≤ 8 mais avec multiplications dans un anneau de cardinal 210)
-     peuvent être lents avec `decide` standard.
-
-  2. Le fichier importe `Mathlib` complet par simplicité. Pour
-     intégration finale dans le dépôt, restreindre aux imports
-     précis :
-       import Mathlib.Data.ZMod.Basic
-       import Mathlib.Data.Finset.Basic
-       import Mathlib.Data.Multiset.Basic
-       import Mathlib.Tactic.NormNum
-
-  3. La définition locale de `RHClaimed` est redondante avec celle de
-     `EpistemicDiscipline/DoctrinalInvariants.lean`. À l'intégration :
-       import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
-     et supprimer la `def RHClaimed` locale.
-
-  4. La syntaxe `(... : List Int).toMultiset` peut différer selon la
-     version de Mathlib. Si problème, alternative :
-       Multiset.ofList [6, 6, ..., 0]
-     ou bien
-       ([6, 6, ..., 0] : Multiset Int)
-     selon ce qui est disponible.
-
-  5. La syntaxe `S.product S` peut être `S ×ˢ S` selon version. Si
-     problème, basculer.
-
-  6. Précondition : ce module suppose que `ClosureTC.lean` et
-     `CycleCoset.lean` ont été testés en compilation. Il en est
-     indépendant mathématiquement, mais il s'inscrit dans la même
-     ligne doctrinale.
-================================================================================
--/
