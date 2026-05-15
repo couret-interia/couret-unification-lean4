@@ -33,11 +33,9 @@
   Status   : interface, vacuité explicite, 0 sorry.
 -/
 
-import Mathlib
+import Mathlib.Data.Real.Basic
 
-namespace CouretUnification
-namespace Logic
-namespace Lock3
+namespace CouretUnification.Logic.Lock3
 
 /-! ## §1 — Source admissibility for counterterms -/
 
@@ -206,6 +204,4 @@ theorem Lock3Certified_is_currently_vacuous
     grid_ok := trivial
     counterterm_refinement_ok := h_refinement }
 
-end Lock3
-end Logic
-end CouretUnification
+end CouretUnification.Logic.Lock3

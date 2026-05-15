@@ -20,13 +20,11 @@
   Doctrine : v38 unifiée, commit 5
 -/
 
-import Mathlib
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 /-- Possible regimes for the non-tensor spectral gap. -/
 inductive SpectralGapRegime where
@@ -60,5 +58,4 @@ theorem perturbative_isolation_doctrine :
 theorem no_rh_from_perturbed_spectral_isolation :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

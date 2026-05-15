@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Data.Finset.Powerset
 import CouretUnification.Logic.ExplicitFormula.TraceObject
 
 namespace CouretUnification.Logic.ExplicitFormula

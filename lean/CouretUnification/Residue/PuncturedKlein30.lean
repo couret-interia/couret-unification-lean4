@@ -19,11 +19,9 @@
   Status   : closed (preuves par native_decide, fin_cases ou decide)
 -/
 
-import Mathlib
 import CouretUnification.Residue.ClosureTC
 
-namespace CouretUnification
-namespace Residue
+namespace CouretUnification.Residue
 
 /-- The missing point of the punctured Klein structure. -/
 def Phantom19 : Z30 := 19
@@ -70,5 +68,4 @@ theorem phantom19_is_product_witness :
 theorem phantom19_completes_TC_to_K4 :
     insert Phantom19 TC = K4 := TC_insert_19_eq_K4
 
-end Residue
-end CouretUnification
+end CouretUnification.Residue

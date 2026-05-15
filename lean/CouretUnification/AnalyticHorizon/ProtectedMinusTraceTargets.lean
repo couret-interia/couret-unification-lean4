@@ -16,13 +16,12 @@
   Doctrine : v38 unifiée, commit 4
 -/
 
-import Mathlib
+import Mathlib.Tactic.ComputeAsymptotics.Lemmas
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 /--
 Protected compressed trace on the defect sector E(-1).
@@ -84,5 +83,4 @@ theorem protected_lift_at_2310 :
 theorem no_rh_from_protected_minus_trace :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

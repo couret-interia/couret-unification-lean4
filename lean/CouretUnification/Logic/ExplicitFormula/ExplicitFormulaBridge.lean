@@ -42,7 +42,6 @@ Doctrine
 - Le fichier joue un rôle de contrat structurel, pas de clôture analytique.
 -/
 
-import Mathlib
 import CouretUnification.Logic.ExplicitFormula.TraceObject
 import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport
 import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation

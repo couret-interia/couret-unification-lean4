@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import CouretUnification.Logic.ExplicitFormula.TraceObject
 import CouretUnification.Logic.ExplicitFormula.ArithmeticWeight
 

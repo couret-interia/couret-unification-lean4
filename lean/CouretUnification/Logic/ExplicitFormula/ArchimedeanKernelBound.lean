@@ -1,4 +1,3 @@
-import Mathlib
 import CouretUnification.Logic.ExplicitFormula.TraceObject
 
 namespace CouretUnification.Logic.ExplicitFormula

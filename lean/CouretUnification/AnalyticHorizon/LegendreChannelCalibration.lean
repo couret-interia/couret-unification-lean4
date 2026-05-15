@@ -13,13 +13,12 @@
   Doctrine : v38 unifiée, commit 3
 -/
 
-import Mathlib
+import Mathlib.Tactic.Ring
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 inductive CalibrationStatus where
   | exactConservation
@@ -57,5 +56,4 @@ theorem odd_channel_zero_at_zero :
 theorem no_rh_from_legendre_channel_calibration :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

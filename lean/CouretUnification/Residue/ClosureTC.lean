@@ -47,8 +47,7 @@
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Basic
 
-namespace CouretUnification
-namespace Residue
+namespace CouretUnification.Residue
 
 /-- L'anneau Z/30Z. Toute la mathématique du module se passe dedans. -/
 abbrev Z30 := ZMod 30
@@ -174,8 +173,7 @@ def closure_tc_architectural_layer : String := "Active"
     RHClaimed reste false. -/
 theorem no_RH_from_closure_residue : True := trivial
 
-end Residue
-end CouretUnification
+end CouretUnification.Residue
 
 /-
 ================================================================================

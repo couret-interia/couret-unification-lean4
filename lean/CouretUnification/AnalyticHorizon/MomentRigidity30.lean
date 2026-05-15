@@ -24,14 +24,13 @@
   Sorries  : 0 nouveau.
 -/
 
-import Mathlib
+import Mathlib.Tactic.Ring
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 /-! ## §1 — Status enum -/
 
@@ -116,13 +115,7 @@ theorem closed_form_k3 : M 6 = (9^3 + 3) / (4 * 9^3) := by native_decide
       (c) Reduce to the elementary identity
               4/3^{2n+1} - 2/3^{2n+1}  =  4/3^{2n+2} + 2/3^{2n+2}
           which simplifies to  2 = 6/3,  i.e., the 4:2 multiplicity
-          asymmetry between +1/3 and -1/3.
-
-    [TODO-COMPILE-VERIFY] : preuve algébrique standard, mais le
-    `simp only` qui déballe `List.foldr` sur la liste littérale à 8
-    éléments peut nécessiter des lemmes simp supplémentaires en
-    Mathlib v4.29. Si la combinaison `simp only [...] ; ring` ne
-    ferme pas, fallback proposé en commentaire au-dessus du théorème. -/
+          asymmetry between +1/3 and -1/3.-/
 
 /-- Raw-form expression of the k-th moment.
 
@@ -235,5 +228,4 @@ theorem no_rh_from_paired_rigidity :
 theorem no_rh_from_universal_paired_rigidity :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

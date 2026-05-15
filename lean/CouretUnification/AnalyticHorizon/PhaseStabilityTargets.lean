@@ -14,13 +14,11 @@
   Doctrine : v38 unifiée, commit 7
 -/
 
-import Mathlib
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 /-- At q = 30 the defect invariant is real.
     Complex phase stability becomes meaningful only in higher-level
@@ -43,5 +41,4 @@ theorem defect_trace_real_at_30 :
 theorem no_rh_from_phase_stability_target :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

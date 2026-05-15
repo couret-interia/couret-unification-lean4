@@ -20,15 +20,12 @@
   Status   : firewall, 0 sorry.
 -/
 
-import Mathlib
 import CouretUnification.Logic.Lock3.ProtectedTraceGate
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace Logic
-namespace Lock3
+namespace CouretUnification.Logic.Lock3
 
 /-! ## §1 — Anchoring the global RH claim flag -/
 
@@ -110,6 +107,4 @@ theorem vacuous_phantomMass19_does_not_claim_RH
       R C T True True True hCert trivial trivial trivial
   rfl
 
-end Lock3
-end Logic
-end CouretUnification
+end CouretUnification.Logic.Lock3

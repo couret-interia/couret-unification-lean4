@@ -12,14 +12,12 @@
   Doctrine : v38 unifiée, support commun pour les commits 2–7
 -/
 
-import Mathlib
 import CouretUnification.EpistemicDiscipline.BridgeStatus
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 /-! ## The three analytic locks of Lock 3 -/
 
@@ -46,5 +44,4 @@ theorem all_three_locks_open :
 theorem no_rh_from_trace_formula_targets :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

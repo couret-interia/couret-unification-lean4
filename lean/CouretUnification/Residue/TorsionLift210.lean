@@ -42,10 +42,10 @@
   ─────────────────────────────────────────────────────────────────────────
 -/
 
-import Mathlib
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.Linarith
 
-namespace CouretUnification
-namespace Residue
+namespace CouretUnification.Residue
 
 abbrev Z210 := ZMod 210
 
@@ -286,8 +286,7 @@ theorem no_RH_from_TC210_torsion :
     RHClaimed = false := by
   rfl
 
-end Residue
-end CouretUnification
+end CouretUnification.Residue
 
 /-
 ================================================================================

@@ -10,16 +10,10 @@
     • theoremTarget  — pont avec cible formelle, en cours de fermeture
     • closed         — pont fermé, sans sorry, sans condition
 
-  ⚠ NOTE Thomas : si tu as déjà ce fichier dans le dépôt, ÉCRASE
-  cette version par la tienne (même sémantique attendue).
-
   Doctrine : v38 unifiée
 -/
 
-import Mathlib
-
-namespace CouretUnification
-namespace EpistemicDiscipline
+namespace CouretUnification.EpistemicDiscipline
 
 /-- Five-level status for analytic bridges in the program. -/
 inductive BridgeStatus where
@@ -30,8 +24,7 @@ inductive BridgeStatus where
   | closed
 deriving Repr, DecidableEq, Inhabited
 
-end EpistemicDiscipline
-end CouretUnification
+end CouretUnification.EpistemicDiscipline
 
 -- Re-export at the top namespace for downstream readability.
 export CouretUnification.EpistemicDiscipline (BridgeStatus)

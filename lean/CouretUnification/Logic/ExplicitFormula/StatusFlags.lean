@@ -1,5 +1,3 @@
-import Mathlib
-
 namespace CouretUnification.Logic.ExplicitFormula
 
 /-- No Riemann Hypothesis claim is exported. -/

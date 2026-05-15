@@ -37,12 +37,9 @@
   Status   : interface logique, 0 sorry.
 -/
 
-import Mathlib
 import CouretUnification.Logic.Lock3.LocalDebiasing
 
-namespace CouretUnification
-namespace Logic
-namespace Lock3
+namespace CouretUnification.Logic.Lock3
 
 /-! ## §1 — Local lock status -/
 
@@ -132,6 +129,4 @@ theorem protectedTraceStableAfterCounterterm
     protected_trace_target_proof := hTrace
     no_global_RH_claim_proof := hNoRH }
 
-end Lock3
-end Logic
-end CouretUnification
+end CouretUnification.Logic.Lock3

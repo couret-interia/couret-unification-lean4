@@ -15,13 +15,12 @@
   Doctrine : v38 unifiée, commit 6
 -/
 
-import Mathlib
+import Mathlib.Data.Real.Basic
 import CouretUnification.AnalyticHorizon.TraceFormulaTargets
 
 open CouretUnification.EpistemicDiscipline
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
 /-- A band of admissible smooth-bump widths. -/
 structure AdmissibleSigmaBand where
@@ -51,5 +50,4 @@ theorem no_quasi_dirac_validation :
 theorem no_rh_from_sigma_band_target :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

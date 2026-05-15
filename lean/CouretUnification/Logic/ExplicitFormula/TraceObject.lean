@@ -14,7 +14,6 @@
     plus tard, créer une extension `TestPairFourier extends TestPair`.
 -/
 
-import Mathlib
 import CouretUnification.Logic.ExplicitFormula.StatusFlags
 import CouretUnification.Logic.ExplicitFormula.TestPair
 
