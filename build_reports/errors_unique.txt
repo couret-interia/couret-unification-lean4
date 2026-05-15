@@ -1,9 +1,4 @@
 error: build failed
-error: lean/CouretUnification/All.lean: bad import 'CouretUnification.ResGold'
-error: lean/CouretUnification/ResGold/L0_LocalLemma.lean: bad import 'Mathlib.Algebra.BigOperators.Basic'
-error: lean/CouretUnification/ResGold/L1_ConductorOne.lean: bad import 'CouretUnification.ResGold.L0_LocalLemma'
-error: lean/CouretUnification/ResGold/L2_MertensAsymptotic.lean: bad import 'CouretUnification.ResGold.L1_ConductorOne'
-error: lean/CouretUnification/ResGold.lean: bad import 'CouretUnification.ResGold.L0_LocalLemma'
-error: lean/CouretUnification/ResGold.lean: bad import 'CouretUnification.ResGold.L1_ConductorOne'
-error: lean/CouretUnification/ResGold.lean: bad import 'CouretUnification.ResGold.L2_MertensAsymptotic'
-error: no such file or directory (error code: 4294967294)
+error: lean/CouretUnification/ResGold/L0_LocalLemma.lean:98:43: failed to synthesize instance of type class
+error: lean/CouretUnification/ResGold/L0_LocalLemma.lean:98:9: unsolved goals
+error: Lean exited with code 1

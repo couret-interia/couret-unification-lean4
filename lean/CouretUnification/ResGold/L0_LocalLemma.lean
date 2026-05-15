@@ -42,7 +42,7 @@ le module ResGold principal reste indépendant du wiring p-adique.
 
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Complex.Basic
 import CouretUnification.ResGold.Status
 
