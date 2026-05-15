@@ -60,10 +60,12 @@ Convention : λ_χ = (1/(p-1)) · J_p(R, χ^{-1}).
 * χ ≠ 1, R ≠ 0 : λ_χ = -χ(R)^{-1}/(p-1)
 
 Pour l'opérateur **centré** M^{(1),0}, le mode trivial λ_1 est mis à zéro. -/
-noncomputable def eigenvalue (R : ZMod p) (χ : FiniteMulChar p) : ℂ :=
-  if χ = trivChar p then 0  -- mode trivial annulé par centrage
-  else if R = 0 then 0
-  else -(χ R) / (p - 1 : ℂ)
+noncomputable def eigenvalue (R : ZMod p) (χ : FiniteMulChar p) : ℂ := by
+  classical
+  exact
+    if χ = trivChar p then 0  -- mode trivial annulé par centrage
+    else if R = 0 then 0
+    else -(χ R) / (p - 1 : ℂ)
   -- convention χ ↔ χ^{-1} à fixer côté Thomas si nécessaire
 
 /-- **[D]** Carré du module des valeurs propres non triviales.
