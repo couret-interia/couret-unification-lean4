@@ -103,7 +103,7 @@ lean/CouretUnification/AnalyticHorizon/AdmissibleSigmaBand.lean:52:    RHClaimed
 lean/CouretUnification/AnalyticHorizon/ActiveLayerFullAudit.lean:61:def RHClaimedFromActiveLayerFull : Bool := false
 lean/CouretUnification/AnalyticHorizon/ActiveLayerFullAudit.lean:64:def HilbertPolyaClaimedFromActiveLayerFull : Bool := false
 lean/CouretUnification/AnalyticHorizon/ActiveLayerFullAudit.lean:73:def Det2IdentityClaimedFromActiveLayerFull : Bool := false
-lean/CouretUnification/AnalyticHorizon/DefectOperator30.lean:131:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/DefectOperator30.lean:140:    RHClaimed = false := rfl
 lean/CouretUnification/AnalyticHorizon/L6Stirling.lean:5:- RHClaimed = false.
 lean/CouretUnification/AnalyticHorizon/L6Stirling.lean:7:- Det2IdentityClaimed = false.
 lean/CouretUnification/AnalyticHorizon/PhaseStabilityTargets.lean:44:    RHClaimed = false := rfl

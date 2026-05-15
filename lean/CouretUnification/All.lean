@@ -367,6 +367,9 @@ import CouretUnification.Experimental.TowerLift
 -- v38.3
 import CouretUnification.Logic.H3.SpectralBridge
 
+-- v38.4.3
+import CouretUnification.Residue.Bridge.DefectOperatorBridge
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.

@@ -1,7 +1,7 @@
 /-
   CouretUnification.AnalyticHorizon.DefectOperator30
   ════════════════════════════════════════════════════════════════════
-  Opérateur de défaut sur la structure Klein ponctué — couche
+  Opérateur de défaut sur la structure de Klein ponctuée — couche
   matricielle, complément de `ProtectedMinusTraceTargets.lean`.
 
   Là où `ProtectedMinusTraceTargets` POSE la valeur scalaire -12 comme
@@ -15,100 +15,108 @@
   ce module définit l'interface mais n'instancie aucune représentation.
 
   REFACTOR v38.1 :
-    • Importe ClosureTC pour Z30, K4
-    • Importe PuncturedKlein30 pour la structure ponctuée
-    • Le poids spectral spectralWeight est explicite (+1 sur TC, -1
-      sur Phantom19, 0 ailleurs)
+    • Importe ClosureTC pour Z30, K4.
+    • Importe Residue.Bridge.DefectOperatorBridge pour consommer la structure
+      ponctuée via un contrat explicite Residue → AnalyticHorizon.
+    • Le poids spectral spectralWeight est explicite :
+        +1 sur TC,
+        -1 sur Phantom19,
+         0 ailleurs.
 
-  Doctrine : v38.1 enrichi
-  Status   : interface matricielle, pas d'instance, 0 sorry.
+  Doctrine : v38.1 enrichi.
+  Statut   : interface matricielle, pas d'instance, 0 sorry.
+
+  Architecture :
+    ce fichier ne doit pas importer directement `CouretUnification.Residue.*`,
+    sauf via `CouretUnification.Residue.Bridge.*`.
 -/
 
-import Mathlib
-import CouretUnification.Residue.PuncturedKlein30
+import Mathlib.Data.Matrix.Basic
+import Mathlib.LinearAlgebra.Matrix.Trace
+import CouretUnification.Residue.Bridge.DefectOperatorBridge
 import CouretUnification.EpistemicDiscipline.BridgeStatus
 import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
 
-namespace CouretUnification
-namespace AnalyticHorizon
+namespace CouretUnification.AnalyticHorizon
 
-open CouretUnification.Residue
+open CouretUnification.Residue.Bridge
 open CouretUnification.EpistemicDiscipline   -- ← pour BridgeStatus et RHClaimed
 
-/-! ## §1 — Spectral weight on the punctured Klein structure -/
+/-! ## §1 — Poids spectral sur la structure de Klein ponctuée -/
 
 /--
-Spectral weight of the punctured Klein structure.
+Poids spectral de la structure de Klein ponctuée.
 
-  +1 on TC = {1, 11, 29}
-  -1 on Phantom19 = {19}
-   0 elsewhere in Z30.
+  +1 sur TC = {1, 11, 29}
+  -1 sur Phantom19 = {19}
+   0 ailleurs dans Z30.
 
-The signed sum  Σ w(x) ρ(x)  over K₄ is the defect operator.
+La somme signée  Σ w(x) ρ(x)  sur K₄ est l'opérateur de défaut.
 -/
-def spectralWeight (x : Z30) : ℤ :=
-  if x ∈ TC then 1
-  else if x = Phantom19 then -1
+def spectralWeight (x : DefectOperatorZ30) : ℤ :=
+  if x ∈ defectOperatorTC then 1
+  else if x = defectOperatorPhantom19 then -1
   else 0
 
-theorem spectralWeight_one : spectralWeight (1 : Z30) = 1 := by
+theorem spectralWeight_one : spectralWeight (1 : DefectOperatorZ30) = 1 := by
   native_decide
 
-theorem spectralWeight_eleven : spectralWeight (11 : Z30) = 1 := by
+theorem spectralWeight_eleven : spectralWeight (11 : DefectOperatorZ30) = 1 := by
   native_decide
 
-theorem spectralWeight_twentynine : spectralWeight (29 : Z30) = 1 := by
+theorem spectralWeight_twentynine : spectralWeight (29 : DefectOperatorZ30) = 1 := by
   native_decide
 
-theorem spectralWeight_phantom19 : spectralWeight Phantom19 = -1 := by
+theorem spectralWeight_phantom19 : spectralWeight defectOperatorPhantom19 = -1 := by
   native_decide
 
-/-! ## §2 — Abstract finite representation -/
+/-! ## §2 — Représentation finie abstraite -/
 
 /--
-A finite representation of Z30 by rational matrices.
+Une représentation finie de Z30 par matrices rationnelles.
 
-This is deliberately abstract: concrete representations (regular,
-character-decomposed, Fourier, Cayley-of-K4, ...) can be plugged in
-later through instances of this structure.
+Cette représentation est volontairement abstraite : des représentations
+concrètes — régulière, décomposée en caractères, de Fourier, de Cayley sur K4,
+etc. — pourront être branchées plus tard via des instances de cette structure.
 
-Doctrinally: the program does NOT commit to a single representation.
-The defect operator below is parametrised by ρ.
+Doctrinalement : le programme ne s'engage PAS sur une représentation unique.
+L'opérateur de défaut ci-dessous est paramétré par ρ.
 -/
 structure FiniteRepresentation
     (ι : Type) [Fintype ι] [DecidableEq ι] where
-  rho : Z30 → Matrix ι ι ℚ
+  rho : DefectOperatorZ30 → Matrix ι ι ℚ
 
-/-! ## §3 — The defect operator D_19 -/
+/-! ## §3 — L'opérateur de défaut D_19 -/
 
 /--
-The defect operator associated with the punctured Klein structure.
+L'opérateur de défaut associé à la structure de Klein ponctuée.
 
   D_19 = Σ_{x ∈ K₄} w(x) · ρ(x)
        = ρ(1) + ρ(11) + ρ(29) − ρ(19)
 
-This sum captures the algebraic content of "TC corrected by the
-phantom" : the three TC elements contribute +1 each, the phantom
-contributes −1, and everything else in Z30 is invisible.
+Cette somme capture le contenu algébrique de « TC corrigé par le fantôme » :
+les trois éléments de TC contribuent chacun avec le poids +1, le fantôme
+contribue avec le poids −1, et tout le reste de Z30 est invisible.
 -/
 noncomputable def defectOperator19
     {ι : Type} [Fintype ι] [DecidableEq ι]
     (ρ : FiniteRepresentation ι) :
     Matrix ι ι ℚ :=
-  ∑ x ∈ K4, (spectralWeight x : ℚ) • ρ.rho x
+  ∑ x ∈ defectOperatorK4, (spectralWeight x : ℚ) • ρ.rho x
 
-/-! ## §4 — Protected trace target (interface) -/
+/-! ## §4 — Cible de trace protégée — interface -/
 
 /--
-A protected trace target on a finite representation.
+Une cible de trace protégée sur une représentation finie.
 
-This is a Prop-valued structure. It becomes a theorem only once
-ρ, P_-, and A^{nt} are all concrete and the trace is computable.
+C'est une structure à valeur propositionnelle. Elle ne devient un théorème
+qu'une fois que ρ, P_- et A^{nt} sont tous concrets et que la trace est
+calculable.
 
-Doctrinally:
-  - P_- is a SPECTRAL projector (onto the eigenspace E_{-1})
-  - A^{nt} is a non-tensor anti-symmetric operator
-  - The conjecture is Tr(P_- · A^{nt} · P_-) = -12 at q=30.
+Doctrinalement :
+  - P_- est un projecteur SPECTRAL — sur l'espace propre E_{-1}.
+  - A^{nt} est un opérateur antisymétrique non tensoriel.
+  - La conjecture est Tr(P_- · A^{nt} · P_-) = -12 à q = 30.
 -/
 structure ProtectedTraceTarget
     {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -116,19 +124,19 @@ structure ProtectedTraceTarget
   trace_eq_minus12 :
     Matrix.trace (Pminus * Ant * Pminus) = (-12 : ℚ)
 
-/-- Bridge status of the protected trace target.
-    Currently `theoremTarget` because no concrete representation
-    has been wired in. -/
+/-- Statut de pont de la cible de trace protégée.
+
+    Actuellement `theoremTarget`, car aucune représentation concrète
+    n'a encore été raccordée. -/
 def DefectOperator30Status : BridgeStatus :=
   BridgeStatus.theoremTarget
 
 theorem defect_operator_30_status :
     DefectOperator30Status = BridgeStatus.theoremTarget := rfl
 
-/-! ## §5 — Doctrinal firewall -/
+/-! ## §5 — Pare-feu doctrinal -/
 
 theorem no_rh_from_defect_operator_30 :
     RHClaimed = false := rfl
 
-end AnalyticHorizon
-end CouretUnification
+end CouretUnification.AnalyticHorizon

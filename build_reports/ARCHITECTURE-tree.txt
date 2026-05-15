@@ -384,6 +384,8 @@
 │   │   ├── Release
 │   │   │   └── ReleaseManifest.lean
 │   │   ├── Residue
+│   │   │   ├── Bridge
+│   │   │   │   └── DefectOperatorBridge.lean
 │   │   │   ├── ClosureTC.lean
 │   │   │   ├── CycleCoset.lean
 │   │   │   ├── PuncturedKlein30.lean
@@ -480,4 +482,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-59 directories, 422 files
+60 directories, 423 files
