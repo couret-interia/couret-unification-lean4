@@ -1,5 +1,5 @@
 === Théorèmes ': True := ...' (exceptions d'anchor à auditer) ===
-lean/CouretUnification/Logic/ExplicitFormula/ExplicitFormulaBridge.lean:86:    (_B : ExplicitFormulaBridge) : True := by
+lean/CouretUnification/Logic/ExplicitFormula/ExplicitFormulaBridge.lean:106:    (_B : ExplicitFormulaBridge) : True := by
 lean/CouretUnification/Logic/H3/CriticalLineTransferSpec.lean:76:theorem mellin_inversion_public_anchor : True := by trivial
 lean/CouretUnification/Logic/H3/C3Weak.lean:127:theorem RHClaimed_false_guard : True := trivial
 lean/CouretUnification/Logic/H3/AlgebraTC.lean:419:theorem RHClaimed_false_AlgebraTC : True := trivial
@@ -9,4 +9,4 @@ lean/CouretUnification/Active/TraceObjectEnriched.lean:154:    (_T : EnrichedTra
 lean/CouretUnification/Active/TraceObjectEnriched.lean:159:    (_T : EnrichedTraceObject) : True := by
 lean/CouretUnification/FCI/FCI.lean:37:theorem fci_facade_loaded : True := trivial
 lean/CouretUnification/FCI/ModThirtyChecker.lean:272:theorem checker_no_ml : True := trivial
-lean/CouretUnification/Residue/ClosureTC.lean:175:theorem no_RH_from_closure_residue : True := trivial
+lean/CouretUnification/Residue/ClosureTC.lean:174:theorem no_RH_from_closure_residue : True := trivial

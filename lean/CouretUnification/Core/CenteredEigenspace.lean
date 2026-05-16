@@ -1,8 +1,7 @@
 import CouretUnification.Core.CayleySpectrum
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace CenteredEigenspace
+namespace CouretUnification.Core.CenteredEigenspace
 
 /-!
 # Uniqueness of the centered 3-eigenvector
@@ -107,5 +106,4 @@ complement of this line within H°, the gap κ = 2 holds
 (proved in `Spectral/FiniteCore.lean`).
 -/
 
-end CenteredEigenspace
-end CouretUnification.Core
+end CouretUnification.Core.CenteredEigenspace

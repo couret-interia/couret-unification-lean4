@@ -115,8 +115,6 @@
 │   ├── broken_imports.txt
 │   ├── errors_unique.txt
 │   ├── invariants.txt
-│   ├── snapshots
-│   │   └── 2026-05-14
 │   ├── sorries_declarations.txt
 │   ├── true_statements.txt
 │   ├── warnings_non_sorry.txt
@@ -208,6 +206,7 @@
 │   │   │   ├── CayleyConnected.lean
 │   │   │   ├── CayleyG30.lean
 │   │   │   ├── CayleySpectrum.lean
+│   │   │   ├── CenteredCoordinates.lean
 │   │   │   ├── CenteredEigenspace.lean
 │   │   │   ├── CenteredSpace30.lean
 │   │   │   ├── CharacterLemmas.lean
@@ -482,4 +481,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-60 directories, 423 files
+58 directories, 424 files
