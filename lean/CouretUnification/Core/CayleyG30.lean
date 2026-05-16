@@ -1,7 +1,7 @@
 /-
   CouretUnification/Core/CayleyG30.lean
   Graphe de Cayley sur G30, connecté à la convolution.
-  0 sorry visé.
+  0 sorry
 -/
 
 import CouretUnification.Core.Convolution30
@@ -47,9 +47,36 @@ theorem TC_G30_symmetric (g : G30) (h : g ∈ TC_G30) : g⁻¹ ∈ TC_G30 := by
 def TC_kernel : FunG30 := fun g =>
   if g ∈ TC_G30 then 1 else 0
 
-/-- Somme totale du noyau = 3. Sorry : simp maxRecDepth sur ℂ. -/
+/-- Somme totale du noyau = 3.
+
+    Preuve par support fini :
+    la somme de l'indicatrice de `TC_G30` sur `G30` est la somme constante
+    `1` sur `TC_G30`, donc le cardinal de `TC_G30`, égal à 3. -/
 theorem totalSum_TC_kernel : totalSum TC_kernel = 3 := by
-  sorry
+  unfold totalSum TC_kernel
+  change
+    Finset.sum (Finset.univ : Finset G30)
+      (fun g => if g ∈ TC_G30 then (1 : ℂ) else 0) = 3
+  calc
+    Finset.sum (Finset.univ : Finset G30)
+      (fun g => if g ∈ TC_G30 then (1 : ℂ) else 0)
+        = Finset.sum TC_G30
+            (fun g => if g ∈ TC_G30 then (1 : ℂ) else 0) := by
+          symm
+          apply Finset.sum_subset
+          · intro g _hg
+            exact Finset.mem_univ g
+          · intro g _hg_univ hg_not
+            simp [hg_not]
+    _ = Finset.sum TC_G30 (fun _g => (1 : ℂ)) := by
+          apply Finset.sum_congr rfl
+          intro g hg
+          simp [hg]
+    _ = (TC_G30.card : ℂ) := by
+          simp
+    _ = 3 := by
+          rw [card_TC_G30]
+          norm_num
 
 -- ═══════════════════════════════════════════════════════════
 -- §4. Composantes
