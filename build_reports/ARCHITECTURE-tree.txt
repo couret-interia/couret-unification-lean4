@@ -9,103 +9,106 @@
 │   ├── H1_H7_STATUS_v32.md
 │   ├── lakefile.toml
 │   ├── lean
-│   │   └── CouretUnification
-│   │       ├── Absorption
-│   │       │   └── AbsorptionMap.lean
-│   │       ├── Bridge
-│   │       │   ├── AnalyticChain.lean
-│   │       │   ├── CharacterTower.lean
-│   │       │   ├── Claims.lean
-│   │       │   ├── ContinuousModel.lean
-│   │       │   ├── GlobalBridge.lean
-│   │       │   ├── README.md
-│   │       │   ├── Status.lean
-│   │       │   ├── Unification.lean
-│   │       │   └── VoroninInterface.lean
-│   │       ├── Core
-│   │       │   ├── CouretCertificate.lean
-│   │       │   ├── CouretIntegralReferencePackage.lean
-│   │       │   ├── CouretQuadraticIntegralReferencePackage.lean
-│   │       │   ├── CouretReferencePackage.lean
-│   │       │   ├── IntegerSpectrumClassification.lean
-│   │       │   ├── TripletDocumentaryIntegralInterface.lean
-│   │       │   ├── TripletDocumentaryIntegralPowerPackage.lean
-│   │       │   ├── TripletExceptionalCanonicalBridge.lean
-│   │       │   ├── TripletExceptionalCanonicalWitness.lean
-│   │       │   ├── TripletExceptionalCoreView.lean
-│   │       │   ├── TripletExceptionalDecidableShell.lean
-│   │       │   ├── TripletExceptionalLocalCriterion.lean
-│   │       │   ├── TripletExceptionalLocalPackage.lean
-│   │       │   ├── TripletExceptionalLocalSummary.lean
-│   │       │   ├── TripletExceptionalWitness.lean
-│   │       │   ├── TripletIntegralCandidateInterface.lean
-│   │       │   ├── TripletRawIntegralCandidateBridge.lean
-│   │       │   └── TripletRawIntegralFiniteBridge.lean
-│   │       ├── Criterion
-│   │       │   ├── CouretDefect.lean
-│   │       │   ├── L6_Absorption.lean
-│   │       │   └── RouteDContradiction.lean
-│   │       ├── Crown
-│   │       │   └── Crown.lean
-│   │       ├── Crown.lean
-│   │       ├── Geometry
-│   │       │   ├── CouretDesicsCayleyG30.lean
-│   │       │   ├── CouretDesicsExistence.lean
-│   │       │   ├── CouretDesics.lean
-│   │       │   └── CouretDesicsSpectral.lean
-│   │       ├── Logic
-│   │       │   ├── H3
-│   │       │   │   ├── FEnriched30.lean
-│   │       │   │   ├── FEnrichedSpec.lean
-│   │       │   │   ├── LocalFactor.lean
-│   │       │   │   └── SquarefreeSupport.lean
-│   │       │   ├── LocalFactor.lean
-│   │       │   ├── LocalSquarefreeBridge.lean
-│   │       │   └── SquarefreeSupport.lean
-│   │       ├── Meta
-│   │       │   ├── Audit.lean
-│   │       │   ├── Empirical.lean
-│   │       │   ├── Manifest.lean
-│   │       │   ├── README.md
-│   │       │   └── Reproducibility.lean
-│   │       ├── Spectral
-│   │       │   ├── H1Bridge.lean
-│   │       │   ├── H2Transfer.lean
-│   │       │   ├── H3ArithmeticBridge.lean
-│   │       │   ├── H3Status.lean
-│   │       │   ├── H3Trace.lean
-│   │       │   ├── H4WeakHP.lean
-│   │       │   ├── H5Analytic.lean
-│   │       │   ├── H6GlobalHP.lean
-│   │       │   ├── H6Microlocal.lean
-│   │       │   └── H6NoGo.lean
-│   │       └── Tower
-│   │           ├── ConcreteCharacters210Family.lean
-│   │           ├── ConcreteCharacters210Generators.lean
-│   │           ├── ConcreteCharacters210.lean
-│   │           ├── ConcreteCharacters210Lift.lean
-│   │           ├── ConcreteCharacters210SignExplicit.lean
-│   │           ├── ConcreteCharacters210Sign.lean
-│   │           ├── ConcreteCharacters210SignReal.lean
-│   │           ├── ConcreteFiber30To210.lean
-│   │           ├── ConcreteFiberCard30To210.lean
-│   │           ├── ConcreteFiberClosure30To210.lean
-│   │           ├── ConcreteFiberComparison30To210.lean
-│   │           ├── ConcreteFiberCompletion30To210.lean
-│   │           ├── ConcreteFiberOrbit30To210.lean
-│   │           ├── ConcreteKernel210Card.lean
-│   │           ├── ConcreteKernel210.lean
-│   │           ├── ConcreteKernelAction210.lean
-│   │           ├── ConcreteKernelLiftAction210.lean
-│   │           ├── ConcreteKernelOrbit210.lean
-│   │           ├── ConcreteTransition30To210.lean
-│   │           ├── ConcreteUnits210.lean
-│   │           ├── ConcreteUnits30.lean
-│   │           └── PrimorialCharacterTower.lean
+│   │   ├── CouretUnification
+│   │   │   ├── Absorption
+│   │   │   │   └── AbsorptionMap.lean
+│   │   │   ├── Bridge
+│   │   │   │   ├── AnalyticChain.lean
+│   │   │   │   ├── CharacterTower.lean
+│   │   │   │   ├── Claims.lean
+│   │   │   │   ├── ContinuousModel.lean
+│   │   │   │   ├── GlobalBridge.lean
+│   │   │   │   ├── README.md
+│   │   │   │   ├── Status.lean
+│   │   │   │   ├── Unification.lean
+│   │   │   │   └── VoroninInterface.lean
+│   │   │   ├── Core
+│   │   │   │   ├── CouretCertificate.lean
+│   │   │   │   ├── CouretIntegralReferencePackage.lean
+│   │   │   │   ├── CouretQuadraticIntegralReferencePackage.lean
+│   │   │   │   ├── CouretReferencePackage.lean
+│   │   │   │   ├── IntegerSpectrumClassification.lean
+│   │   │   │   ├── TripletDocumentaryIntegralInterface.lean
+│   │   │   │   ├── TripletDocumentaryIntegralPowerPackage.lean
+│   │   │   │   ├── TripletExceptionalCanonicalBridge.lean
+│   │   │   │   ├── TripletExceptionalCanonicalWitness.lean
+│   │   │   │   ├── TripletExceptionalCoreView.lean
+│   │   │   │   ├── TripletExceptionalDecidableShell.lean
+│   │   │   │   ├── TripletExceptionalLocalCriterion.lean
+│   │   │   │   ├── TripletExceptionalLocalPackage.lean
+│   │   │   │   ├── TripletExceptionalLocalSummary.lean
+│   │   │   │   ├── TripletExceptionalWitness.lean
+│   │   │   │   ├── TripletIntegralCandidateInterface.lean
+│   │   │   │   ├── TripletRawIntegralCandidateBridge.lean
+│   │   │   │   └── TripletRawIntegralFiniteBridge.lean
+│   │   │   ├── Criterion
+│   │   │   │   ├── CouretDefect.lean
+│   │   │   │   ├── L6_Absorption.lean
+│   │   │   │   └── RouteDContradiction.lean
+│   │   │   ├── Crown
+│   │   │   │   └── Crown.lean
+│   │   │   ├── Crown.lean
+│   │   │   ├── Geometry
+│   │   │   │   ├── CouretDesicsCayleyG30.lean
+│   │   │   │   ├── CouretDesicsExistence.lean
+│   │   │   │   ├── CouretDesics.lean
+│   │   │   │   └── CouretDesicsSpectral.lean
+│   │   │   ├── Logic
+│   │   │   │   ├── H3
+│   │   │   │   │   ├── FEnriched30.lean
+│   │   │   │   │   ├── FEnrichedSpec.lean
+│   │   │   │   │   ├── LocalFactor.lean
+│   │   │   │   │   └── SquarefreeSupport.lean
+│   │   │   │   ├── LocalFactor.lean
+│   │   │   │   ├── LocalSquarefreeBridge.lean
+│   │   │   │   └── SquarefreeSupport.lean
+│   │   │   ├── Meta
+│   │   │   │   ├── Audit.lean
+│   │   │   │   ├── Empirical.lean
+│   │   │   │   ├── Manifest.lean
+│   │   │   │   ├── README.md
+│   │   │   │   └── Reproducibility.lean
+│   │   │   ├── Spectral
+│   │   │   │   ├── H1Bridge.lean
+│   │   │   │   ├── H2Transfer.lean
+│   │   │   │   ├── H3ArithmeticBridge.lean
+│   │   │   │   ├── H3Status.lean
+│   │   │   │   ├── H3Trace.lean
+│   │   │   │   ├── H4WeakHP.lean
+│   │   │   │   ├── H5Analytic.lean
+│   │   │   │   ├── H6GlobalHP.lean
+│   │   │   │   ├── H6Microlocal.lean
+│   │   │   │   └── H6NoGo.lean
+│   │   │   └── Tower
+│   │   │       ├── ConcreteCharacters210Family.lean
+│   │   │       ├── ConcreteCharacters210Generators.lean
+│   │   │       ├── ConcreteCharacters210.lean
+│   │   │       ├── ConcreteCharacters210Lift.lean
+│   │   │       ├── ConcreteCharacters210SignExplicit.lean
+│   │   │       ├── ConcreteCharacters210Sign.lean
+│   │   │       ├── ConcreteCharacters210SignReal.lean
+│   │   │       ├── ConcreteFiber30To210.lean
+│   │   │       ├── ConcreteFiberCard30To210.lean
+│   │   │       ├── ConcreteFiberClosure30To210.lean
+│   │   │       ├── ConcreteFiberComparison30To210.lean
+│   │   │       ├── ConcreteFiberCompletion30To210.lean
+│   │   │       ├── ConcreteFiberOrbit30To210.lean
+│   │   │       ├── ConcreteKernel210Card.lean
+│   │   │       ├── ConcreteKernel210.lean
+│   │   │       ├── ConcreteKernelAction210.lean
+│   │   │       ├── ConcreteKernelLiftAction210.lean
+│   │   │       ├── ConcreteKernelOrbit210.lean
+│   │   │       ├── ConcreteTransition30To210.lean
+│   │   │       ├── ConcreteUnits210.lean
+│   │   │       ├── ConcreteUnits30.lean
+│   │   │       └── PrimorialCharacterTower.lean
+│   │   ├── test_check_frozen_invariants_sh.lean
+│   │   └── test_v38_4_8.lean
 │   ├── README_v36.md
 │   ├── RELEASE_ENV.txt
 │   ├── RELEASE_TRACE.md
 │   ├── scripts
+│   │   ├── check_frozen_invariants_v35_9_1.sh
 │   │   └── make_snapshot_thomas_lean_v35_8_1.sh
 │   ├── TAG_MESSAGE_v36.0-proof-jurisdiction.txt
 │   └── tags
@@ -447,6 +450,8 @@
 │   ├── compute_moments.py
 │   ├── evidence_veff.py
 │   ├── gate_no_frozen_imports_residue.sh
+│   ├── lib
+│   │   └── lean_strip_comments.awk
 │   ├── lintWhitespace.sh
 │   ├── outputs
 │   │   ├── N1.json
@@ -481,4 +486,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-58 directories, 424 files
+59 directories, 428 files
