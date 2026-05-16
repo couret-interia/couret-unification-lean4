@@ -88,9 +88,10 @@ lean/CouretUnification/Logic/H3/SpectralBridge.lean:64:- `Det2IdentityClaimed = 
 lean/CouretUnification/Logic/H3/FiniteSpectralAPI.lean:3:   0 sorry. RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/ZeroMatching.lean:7:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/ZeroMatching.lean:8:theorem rh_not_claimed : RHClaimed = false := rfl
-lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:252:def RHClaimed : Prop := False
-lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:255:def HilbertPolyaClaimed : Prop := False
-lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:264:theorem no_rh_claim : ¬ RHClaimed := id
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:252:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:255:def HilbertPolyaClaimed : Bool := false
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:264:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:267:theorem hp_not_claimed : HilbertPolyaClaimed = false := rfl
 lean/CouretUnification/Logic/TimeBridge/ModularFlowSpec.lean:146:    `HilbertPolyaClaimed = false` : ce pont reste ouvert. -/
 lean/CouretUnification/Logic/TimeBridge/ModularFlowSpec.lean:149:  status := "équivalent à Hilbert-Pólya — HilbertPolyaClaimed = false"
 lean/CouretUnification/Meta/AuditHints.lean:9:  - RHClaimed = false

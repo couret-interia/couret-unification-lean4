@@ -249,18 +249,21 @@ def resolutionSnapshot : CandidateCResolution :=
    ═══════════════════════════════════════════════════════════════════════════ -/
 
 /-- Ce module ne revendique pas RH. -/
-def RHClaimed : Prop := False
+def RHClaimed : Bool := false
 
 /-- Ce module ne revendique pas Hilbert-Pólya. -/
-def HilbertPolyaClaimed : Prop := False
+def HilbertPolyaClaimed : Bool := false
 
 /-- Ce module ne revendique pas le Candidat C. -/
-def CandidateCClaimed : Prop := False
+def CandidateCClaimed : Bool := false
 
-/-- Le drapeau « revendique la résolution du Candidat C » est False. -/
-theorem no_candidateC_claim : ¬ CandidateCClaimed := id
+/-- Invariant doctrinal : ce module ne revendique pas la résolution du Candidat C. -/
+theorem candidateC_not_claimed : CandidateCClaimed = false := rfl
 
-/-- L'invariant RH est préservé. -/
-theorem no_rh_claim : ¬ RHClaimed := id
+/-- Invariant doctrinal : ce module ne revendique pas RH. -/
+theorem rh_not_claimed : RHClaimed = false := rfl
+
+/-- Invariant doctrinal : ce module ne revendique pas l'identité Hilbert–Pólya. -/
+theorem hp_not_claimed : HilbertPolyaClaimed = false := rfl
 
 end CouretUnification.Logic.TimeBridge.BostConnesMod30
