@@ -108,6 +108,7 @@
 │   ├── RELEASE_ENV.txt
 │   ├── RELEASE_TRACE.md
 │   ├── scripts
+│   │   ├── audit_structure_collisions_v38_0.sh
 │   │   ├── check_frozen_invariants_v35_9_1.sh
 │   │   └── make_snapshot_thomas_lean_v35_8_1.sh
 │   ├── TAG_MESSAGE_v36.0-proof-jurisdiction.txt
@@ -486,4 +487,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-59 directories, 428 files
+59 directories, 429 files
