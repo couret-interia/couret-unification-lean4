@@ -1,8 +1,8 @@
 .PHONY: build build-all clean validate \
         audit-imports audit-axioms audit-sorries audit-warnings \
         audit-axiom-declarations audit-true-statements audit-invariants \
-        audit-collisions audit-orphans audit-reachability audit-scripts \
-        audit-v38 audit-doctrine audit-all audit-historical \
+        audit-collisions audit-collisions-basic audit-orphans audit-reachability \
+        audit-v38 audit-doctrine audit-scripts audit-all audit-historical \
         check-frozen gate-frozen \
         build-log-all tree report doctrine-check \
         snapshot test-all \
@@ -103,6 +103,10 @@ audit-invariants: $(REPORTS)
 
 audit-collisions: $(REPORTS)
 	bash scripts/audit_structure_collisions.sh \
+	    2>&1 | tee $(REPORTS)/collisions.log
+
+audit-collisions-basic: $(REPORTS)
+	bash scripts/audit_structure_collisions.sh --basic \
 	    2>&1 | tee $(REPORTS)/collisions.log
 
 check-frozen: $(REPORTS)
