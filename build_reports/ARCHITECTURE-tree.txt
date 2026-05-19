@@ -109,6 +109,8 @@
 │   ├── RELEASE_TRACE.md
 │   ├── scripts
 │   │   ├── audit_structure_collisions_v38_0.sh
+│   │   ├── audit_v38_global_doctrine.sh
+│   │   ├── audit_v38_harmonisee.sh
 │   │   ├── check_frozen_invariants_v35_9_1.sh
 │   │   └── make_snapshot_thomas_lean_v35_8_1.sh
 │   ├── TAG_MESSAGE_v36.0-proof-jurisdiction.txt
@@ -436,6 +438,7 @@
 ├── README.md
 ├── requirements.txt
 ├── scripts
+│   ├── audit_doctrine.sh
 │   ├── audit_orphans.sh
 │   ├── audit_reachability.sh
 │   ├── audit_structure_collisions.sh
@@ -444,8 +447,6 @@
 │   ├── audit_v36.9.sh
 │   ├── audit_v36_torsion.sh
 │   ├── audit_v37_aggregation.sh
-│   ├── audit_v38_global_doctrine.sh
-│   ├── audit_v38_harmonisee.sh
 │   ├── channel_bridge_v3.py
 │   ├── check_frozen_invariants.sh
 │   ├── compute_moments.py
@@ -487,4 +488,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-59 directories, 429 files
+59 directories, 430 files
