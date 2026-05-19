@@ -358,8 +358,6 @@ import CouretUnification.Residue.SGShiftSpectrum -- [O] frontière spectrale
 import CouretUnification.Numerics.ScanSummary
 import CouretUnification.Numerics.UseScanSummary
 import CouretUnification.Experimental.TowerLift.ToyModelSpec
-import CouretUnification.Experimental.TowerLift.ToyModel
-import CouretUnification.Experimental.TowerLift.ToyModelFloat
 -- umbrella
 import CouretUnification.SophieGermainUmbrella
 import CouretUnification.Experimental.TowerLift

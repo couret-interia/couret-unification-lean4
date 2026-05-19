@@ -9,8 +9,8 @@ et l'exploration, mais ne constituent pas le noyau démonstratif `[D]`.
 -/
 
 import CouretUnification.Experimental.TowerLift.ToyModelSpec
-import CouretUnification.Experimental.TowerLift.ToyModel
-import CouretUnification.Experimental.TowerLift.ToyModelFloat
+-- import CouretUnification.Experimental.TowerLift.ToyModel      -- Attic v38.4.17
+-- import CouretUnification.Experimental.TowerLift.ToyModelFloat -- Attic v38.4.17
 
 namespace CouretUnification.Experimental.TowerLift
 
