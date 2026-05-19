@@ -4,7 +4,7 @@ lean/CouretUnification/Finite/Foundations.lean:305:def RHClaimed : Bool := false
 lean/CouretUnification/Finite/Foundations.lean:308:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/SophieGermainUmbrella.lean:24:  * RHClaimed = false
 lean/CouretUnification/SophieGermainUmbrella.lean:25:  * HilbertPolyaClaimed = false
-lean/CouretUnification/SophieGermainUmbrella.lean:78:  "[D] core SG + [M] empirical/numerics; RHClaimed = false"
+lean/CouretUnification/SophieGermainUmbrella.lean:76:  "[D] core SG + [M] empirical/numerics; RHClaimed = false"
 lean/CouretUnification/Logic/L6Bridge.lean:38:`RHClaimed = false` est strictement préservé.
 lean/CouretUnification/Logic/L10NoGoTheorem.lean:7:  - RHClaimed = false
 lean/CouretUnification/Logic/C2/Umbrella.lean:48:  "[M] C2 typed scaffold; local [D] Fejer compact support; RHClaimed = false"
@@ -38,7 +38,6 @@ lean/CouretUnification/Logic/ChiralityLinear.lean:240:example : RHClaimed = fals
 lean/CouretUnification/Logic/FEnrichedSpec.lean:25:  - RHClaimed = false
 lean/CouretUnification/Logic/FEnrichedSpec.lean:183:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/FEnrichedSpec.lean:184:example : RHClaimed = false := rfl
-lean/CouretUnification/Logic/SophieGermainMatrix.lean:31:  - RHClaimed = false (résultat indépendant de RH par construction).
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:73:  RHClaimed = false. Aucun sorry consommé par les six sous-branches
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:368:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:371:theorem rh_not_claimed : RHClaimed = false := rfl
@@ -149,7 +148,7 @@ lean/CouretUnification/Core/Doctrine.lean:29:`RHClaimed = false` est l'invariant
 lean/CouretUnification/Core/Doctrine.lean:35:def RHClaimed : Bool := false
 lean/CouretUnification/Core/Doctrine.lean:38:theorem rhClaimed_eq_false : RHClaimed = false := rfl
 lean/CouretUnification/Core/Doctrine.lean:85:/-- [P] Tout `FileIdentity` respecte l'invariant RHClaimed = false. -/
-lean/CouretUnification/Core/SophieGermain.lean:32:  - RHClaimed = false (résultat indépendant de RH par construction).
+lean/CouretUnification/Core/SophieGermain.lean:31:  - RHClaimed = false (résultat indépendant de RH par construction).
 lean/CouretUnification/Core/U30.lean:36:`RHClaimed = false`.
 lean/CouretUnification/Core/U30.lean:163:def RHClaimed : Bool := false
 lean/CouretUnification/Core/U30.lean:166:theorem rh_not_claimed : RHClaimed = false := rfl

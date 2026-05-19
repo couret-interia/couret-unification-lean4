@@ -61,6 +61,7 @@
 │   │   │   │   │   └── SquarefreeSupport.lean
 │   │   │   │   ├── LocalFactor.lean
 │   │   │   │   ├── LocalSquarefreeBridge.lean
+│   │   │   │   ├── SophieGermainMatrix.lean
 │   │   │   │   └── SquarefreeSupport.lean
 │   │   │   ├── Meta
 │   │   │   │   ├── Audit.lean
@@ -371,7 +372,6 @@
 │   │   │   │   ├── ProtectedTraceGate.lean
 │   │   │   │   └── RHGuard.lean
 │   │   │   ├── OpenLocks.lean
-│   │   │   ├── SophieGermainMatrix.lean
 │   │   │   └── TimeBridge
 │   │   │       ├── B2Calibration.lean
 │   │   │       ├── Basic.lean

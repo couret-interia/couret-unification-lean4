@@ -35,8 +35,6 @@ import CouretUnification.Core.SophieGermainMod30
 import CouretUnification.Core.SophieGermainHecke
 import CouretUnification.Core.SophieGermainTowerLift
 
-import CouretUnification.Logic.SophieGermainMatrix
-
 import CouretUnification.Empirical.SophieGermainExpected
 import CouretUnification.Empirical.SophieGermainTransitions
 

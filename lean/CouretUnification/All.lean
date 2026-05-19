@@ -222,7 +222,7 @@ import CouretUnification.Logic.Doctrine
 import CouretUnification.Logic.EulerBridgeInfinite
 import CouretUnification.Logic.FEnriched30
 import CouretUnification.Logic.FEnrichedSpec
-import CouretUnification.Logic.SophieGermainMatrix
+
 import CouretUnification.Speculative.AnalogyMTF
 import CouretUnification.Speculative.Ontology
 

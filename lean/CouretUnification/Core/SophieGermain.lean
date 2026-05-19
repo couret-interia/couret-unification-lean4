@@ -1,6 +1,5 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
 # Core/SophieGermain.lean — Front 1 : matrice M3 des transitions
 
@@ -38,9 +37,7 @@ import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Tactic.FinCases
 
-namespace CouretUnification
-namespace Core
-namespace SophieGermain
+namespace CouretUnification.Core.SophieGermain
 
 open Finset
 
@@ -209,6 +206,4 @@ example : fileIdentity.rhClaimed = false := rfl
    strictement empirique sur des comptages finis.
 -/
 
-end SophieGermain
-end Core
-end CouretUnification
+end CouretUnification.Core.SophieGermain
