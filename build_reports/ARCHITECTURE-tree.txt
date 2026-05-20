@@ -122,6 +122,7 @@
 │   └── tags
 ├── build_reports
 │   ├── ARCHITECTURE-tree.txt
+│   ├── audit_structure_collisions.txt
 │   ├── axiom_declarations.txt
 │   ├── broken_imports.txt
 │   ├── errors_unique.txt
@@ -490,4 +491,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-61 directories, 430 files
+61 directories, 431 files
