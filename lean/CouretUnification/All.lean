@@ -255,7 +255,6 @@ import CouretUnification.Logic.ChiralityLinear
 
 -- v35.8.8
 import CouretUnification.AnalyticHorizon.Det2Transport
-import CouretUnification.Logic.ChiralityFinite
 import CouretUnification.Logic.H3.CriticalLineTransferSpec
 import CouretUnification.Logic.H3.LocalFactor
 import CouretUnification.Logic.H3.MoebiusBridge

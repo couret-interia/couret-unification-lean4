@@ -28,7 +28,7 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ── Catégorie 2.1 — Réplications hors whitelist (à examiner) ──
  ⚠ Core ──       4 TC
-       ./Logic/ChiralityFinite.lean:70:def TC : Finset (ZMod 30) := {1, 11, 29}
+       ./Logic/ChiralityFinite.lean:69:def TC : Finset (ZMod 30) := {1, 11, 29}
        ./Core/U30.lean:43:def TC : Finset (ZMod 30) := {1, 11, 29}
        ./Core/FiniteCore.lean:42:abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
        ./Residue/ClosureTC.lean:56:def TC : Finset Z30 := {1, 11, 29}
@@ -50,7 +50,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteCore.lean:178:theorem phi_210  : Nat.totient 210  = 48  := by native_decide
        ./Core/ParsevalL5.lean:34:theorem phi_210 : Nat.totient 210 = 48 := by native_decide
  ⚠ Core ──       3 phantom_not_in_TC
-       ./Logic/ChiralityFinite.lean:158:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
+       ./Logic/ChiralityFinite.lean:157:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
        ./Core/U30.lean:69:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
        ./Core/FiniteCore.lean:62:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
  ⚠ Core ──       3 parsevalMass
@@ -127,11 +127,11 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
         ──       2 Omega7_antisymmetric
-       ./Logic/ChiralityFinite.lean:192:theorem Omega7_antisymmetric (f : ZMod 30 → ℂ) (a : ZMod 30) :
-       ./Logic/ChiralityLinear.lean:104:theorem Omega7_antisymmetric : Omega7.transpose = -Omega7 := by native_decide
+       ./Logic/ChiralityFinite.lean:190:theorem Omega7_antisymmetric (f : ZMod 30 → ℂ) (a : ZMod 30) :
+       ./Logic/ChiralityLinear.lean:103:theorem Omega7_antisymmetric : Omega7.transpose = -Omega7 := by native_decide
         ──       2 Omega7
-       ./Logic/ChiralityFinite.lean:187:def Omega7 (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ :=
-       ./Logic/ChiralityLinear.lean:87:def Omega7 : Matrix (Fin 8) (Fin 8) ℤ := P7 - P7inv
+       ./Logic/ChiralityFinite.lean:186:def Omega7 (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ := f (7 * a) - f (13 * a)
+       ./Logic/ChiralityLinear.lean:86:def Omega7 : Matrix (Fin 8) (Fin 8) ℤ := P7 - P7inv
  ⚠ Core ──       2 nontrivial_ratio
        ./FiniteDefect/T1_to_T7.lean:391:theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by
        ./Core/Kurtosis.lean:66:theorem nontrivial_ratio : (15 : ℚ) / (3 ^ 2) = 5 / 3 := by norm_num
@@ -194,7 +194,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./FiniteDefect/T1_to_T7.lean:366:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
        ./Core/FormuleLk.lean:33:def eigTrace (k : Nat) : Int := 2 * (3 : Int) ^ k + 4 + 2 * (-1 : Int) ^ k
         ──       2 E
-       ./Logic/ChiralityFinite.lean:61:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
+       ./Logic/ChiralityFinite.lean:60:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
        ./Logic/H3/RouteC.lean:505:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
  ⚠ Core ──       2 crt_29
        ./Core/FiniteCore.lean:165:theorem crt_29 : (11 : ZMod 30) ^ 1 * (7 : ZMod 30) ^ 2 = 29 := by native_decide
@@ -230,7 +230,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Logic.ChiralityFinite
        ./Frozen.lean:58:import CouretUnification.Logic.ChiralityFinite
        ./All.lean:253:import CouretUnification.Logic.ChiralityFinite
-       ./All.lean:258:import CouretUnification.Logic.ChiralityFinite
         ──        import CouretUnification.Core.U30
        ./Logic/H3/T5Weak.lean:2:import CouretUnification.Core.U30
        ./All.lean:124:import CouretUnification.Core.U30
@@ -241,7 +240,7 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Core.FiniteCore
        ./All.lean:117:import CouretUnification.Core.FiniteCore
         ──        import CouretUnification.Residue.ClosureTC
-       ./All.lean:324:import CouretUnification.Residue.ClosureTC
+       ./All.lean:323:import CouretUnification.Residue.ClosureTC
        ./Residue/PuncturedKlein30.lean:22:import CouretUnification.Residue.ClosureTC
        ./Residue/CycleCoset.lean:85:import CouretUnification.Residue.ClosureTC
         ──        import CouretUnification.Finite.Foundations
@@ -286,12 +285,12 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/ExceptionalTriplets.lean:1:import CouretUnification.Core.Mod30
         ──        import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
        ./Logic/ExplicitFormula/ExplicitFormulaBridge.lean:66:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
-       ./All.lean:315:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+       ./All.lean:314:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
         ──        import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
        ./AnalyticHorizon/ActiveLayerFullAudit.lean:4:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
        ./AnalyticHorizon/TorsionZeroTransferCertificate.lean:7:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
        ./Release/ReleaseManifest.lean:3:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
-       ./All.lean:302:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+       ./All.lean:301:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
         ──        import CouretUnification.Core.FiniteOperator
        ./All.lean:28:import CouretUnification.Core.FiniteOperator
        ./Core/SpectralProfile.lean:1:import CouretUnification.Core.FiniteOperator
@@ -305,7 +304,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./All.lean:145:import CouretUnification.Logic.H3.RouteC
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
        ./Active.lean:58:import CouretUnification.Logic.H3.SquarefreeDensity
-       ./All.lean:262:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
         ──        import CouretUnification.FiniteDefect.T1_to_T7
        ./Logic/H3/PhaseBCompositionCouret.lean:74:import CouretUnification.FiniteDefect.T1_to_T7
        ./All.lean:129:import CouretUnification.FiniteDefect.T1_to_T7
@@ -324,7 +323,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/AlgebraTC.lean:17:import CouretUnification.Core.CharParity30
        ./All.lean:167:import CouretUnification.Core.CharParity30
         ──        import CouretUnification.AnalyticHorizon.MomentRigidity30
-       ./All.lean:332:import CouretUnification.AnalyticHorizon.MomentRigidity30
+       ./All.lean:331:import CouretUnification.AnalyticHorizon.MomentRigidity30
         ──        import CouretUnification.Core.FormuleLk
        ./Logic/H3/PhaseBCompositionCouretEta.lean:88:import CouretUnification.Core.FormuleLk
        ./All.lean:76:import CouretUnification.Core.FormuleLk
@@ -350,8 +349,8 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/CenteredSpace30.lean:6:import CouretUnification.Core.UnitsBridge
        ./FCI/ModThirtyChecker.lean:44:import CouretUnification.Core.UnitsBridge
         ──        import CouretUnification.FCI.ModThirtyChecker
-       ./All.lean:287:import CouretUnification.FCI.ModThirtyChecker
-       ./All.lean:342:import CouretUnification.FCI.ModThirtyCheckerBridge
+       ./All.lean:286:import CouretUnification.FCI.ModThirtyChecker
+       ./All.lean:341:import CouretUnification.FCI.ModThirtyCheckerBridge
        ./FCI/FCI.lean:24:import CouretUnification.FCI.ModThirtyChecker
        ./FCI/FCI.lean:25:import CouretUnification.FCI.ModThirtyCheckerBridge
        ./FCI/ModThirtyCheckerBridge.lean:40:import CouretUnification.FCI.ModThirtyChecker

@@ -1,6 +1,5 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
 # Logic/ChiralityLinear.lean — Couche B / Réalisation matricielle de Ω₇
 

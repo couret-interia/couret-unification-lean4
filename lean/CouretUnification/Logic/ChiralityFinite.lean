@@ -1,6 +1,5 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
 # Logic/ChiralityFinite.lean — Couche A / Chiralité finie de (ℤ/30ℤ)×
 
@@ -184,8 +183,7 @@ theorem thirteen_is_seven_cubed : (7 : ZMod 30)^3 = 13 := by native_decide
       (Ω₇ f)(a) = f(7·a) − f(13·a).
     Cette définition abstraite permet de parler du noyau et de l'image
     de Ω₇ sans construire encore la matrice 8×8 (cf. couche B). -/
-def Omega7 (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ :=
-  f (7 * a) - f (13 * a)
+def Omega7 (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ := f (7 * a) - f (13 * a)
 
 /-- **Propriété clé (antisymétrie)** : Ω_g change de signe
     quand on remplace g par g⁻¹. -/
