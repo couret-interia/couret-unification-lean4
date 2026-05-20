@@ -28,13 +28,13 @@ lean/CouretUnification/Logic/Doctrine.lean:38:theorem rh_claimed_false : RHClaim
 lean/CouretUnification/Logic/Doctrine.lean:101:example : RHClaimed = false := rh_claimed_false
 lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:8:  - RHClaimed = false
 lean/CouretUnification/Logic/ChiralityFinite.lean:46:L'invariant `RHClaimed = false` est enforcé au niveau du type.
-lean/CouretUnification/Logic/ChiralityFinite.lean:226:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/ChiralityFinite.lean:228:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/ChiralityFinite.lean:230:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/ChiralityFinite.lean:232:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/C3Weak.lean:23:  - Invariant constitutionnel : RHClaimed = false
 lean/CouretUnification/Logic/C3Weak.lean:177:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/C3Weak.lean:178:example : RHClaimed = false := rfl
-lean/CouretUnification/Logic/ChiralityLinear.lean:237:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/ChiralityLinear.lean:239:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/ChiralityLinear.lean:246:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/ChiralityLinear.lean:248:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/FEnrichedSpec.lean:25:  - RHClaimed = false
 lean/CouretUnification/Logic/FEnrichedSpec.lean:183:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/FEnrichedSpec.lean:184:example : RHClaimed = false := rfl

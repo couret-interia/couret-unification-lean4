@@ -39,14 +39,23 @@ Sous cette indexation :
 
 Tous les énoncés sont vérifiés par `native_decide` sur des matrices
 entières de taille 8×8, sans aucune dépendance analytique.
+
+  Note de nomenclature v38.4.20 :
+    `ChiralityFinite.Omega7Fun` désigne l'opérateur fonctionnel abstrait
+    sur les fonctions `ZMod 30 → ℂ`.
+
+    `ChiralityLinear.Omega7` désigne sa réalisation matricielle 8×8 dans
+    l'indexation explicite de E.
+
+    Les deux objets ne sont pas synonymes Lean : l'un est fonctionnel,
+    l'autre matriciel. Le fichier présent formalise seulement la couche B.
 -/
 
 import Mathlib.Data.Matrix.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Trace
 
-namespace CouretUnification
-namespace ChiralityLinear
+namespace CouretUnification.ChiralityLinear
 
 open Matrix
 
@@ -238,5 +247,5 @@ def RHClaimed : Bool := false
 
 example : RHClaimed = false := rfl
 
-end ChiralityLinear
-end CouretUnification
+end CouretUnification.ChiralityLinear
+

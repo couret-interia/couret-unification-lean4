@@ -51,8 +51,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
-namespace CouretUnification
-namespace ChiralityFinite
+namespace CouretUnification.ChiralityFinite
 
 /-! ## Section 1 — Le noyau fini E et sa stabilité multiplicative -/
 
@@ -171,25 +170,30 @@ theorem phantom_jumps_orbit :
     (19 : ZMod 30) ∈ orbA ∧
     (19 : ZMod 30) ∉ orbB := by native_decide
 
-/-! ## Section 6 — L'opérateur chiral Ω_g = P_g − P_g⁻¹ -/
+/-! ## Section 6 — L'opérateur chiral fonctionnel Ω₇ = P₇ − P₇⁻¹ -/
 
-/-- Inverse multiplicatif de 7 mod 30 : 7 · 13 = 91 ≡ 1. -/
-theorem inv_of_7 : (7 : ZMod 30) * 13 = 1 := by native_decide
+/-- Ω₇ fonctionnel agit sur les fonctions f : E → ℂ par
 
-/-- 13 = 7⁻¹ = 7³ mod 30 (cohérent avec 7⁴ = 1). -/
-theorem thirteen_is_seven_cubed : (7 : ZMod 30)^3 = 13 := by native_decide
-
-/-- Ω_7 agit sur les fonctions f : E → ℂ par
       (Ω₇ f)(a) = f(7·a) − f(13·a).
-    Cette définition abstraite permet de parler du noyau et de l'image
-    de Ω₇ sans construire encore la matrice 8×8 (cf. couche B). -/
-def Omega7 (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ := f (7 * a) - f (13 * a)
 
-/-- **Propriété clé (antisymétrie)** : Ω_g change de signe
-    quand on remplace g par g⁻¹. -/
-theorem Omega7_antisymmetric (f : ZMod 30 → ℂ) (a : ZMod 30) :
-    Omega7 f a = - (f (13 * a) - f (7 * a)) := by
-  unfold Omega7; ring
+    Cette définition abstraite appartient à la couche A : elle parle de
+    l'action sur les fonctions de résidus, sans construire la matrice 8×8.
+
+    La réalisation matricielle correspondante vit dans
+    `Logic/ChiralityLinear.lean`, sous le nom `Omega7`. -/
+def Omega7Fun (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ :=
+  f (7 * a) - f (13 * a)
+
+/-- **Propriété clé fonctionnelle** : Ω₇ change de signe quand on échange
+    le transport direct `7` et le transport inverse `13`.
+
+    Ceci est l'antisymétrie de la couche A, distincte de l'antisymétrie
+    matricielle `Omega7.transpose = -Omega7` prouvée dans
+    `ChiralityLinear.lean`. -/
+theorem Omega7Fun_antisymmetric (f : ZMod 30 → ℂ) (a : ZMod 30) :
+    Omega7Fun f a = - (f (13 * a) - f (7 * a)) := by
+  unfold Omega7Fun
+  ring
 
 /-! ## Section 7 — Localisation des paires Janus dans les orbites -/
 
@@ -277,5 +281,5 @@ arithmétique est l'unique moteur de la non-fermeture.
 
 -/
 
-end ChiralityFinite
-end CouretUnification
+end CouretUnification.ChiralityFinite
+

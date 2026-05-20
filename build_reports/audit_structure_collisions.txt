@@ -28,7 +28,7 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ── Catégorie 2.1 — Réplications hors whitelist (à examiner) ──
  ⚠ Core ──       4 TC
-       ./Logic/ChiralityFinite.lean:69:def TC : Finset (ZMod 30) := {1, 11, 29}
+       ./Logic/ChiralityFinite.lean:68:def TC : Finset (ZMod 30) := {1, 11, 29}
        ./Core/U30.lean:43:def TC : Finset (ZMod 30) := {1, 11, 29}
        ./Core/FiniteCore.lean:42:abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
        ./Residue/ClosureTC.lean:56:def TC : Finset Z30 := {1, 11, 29}
@@ -50,7 +50,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteCore.lean:178:theorem phi_210  : Nat.totient 210  = 48  := by native_decide
        ./Core/ParsevalL5.lean:34:theorem phi_210 : Nat.totient 210 = 48 := by native_decide
  ⚠ Core ──       3 phantom_not_in_TC
-       ./Logic/ChiralityFinite.lean:157:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
+       ./Logic/ChiralityFinite.lean:156:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
        ./Core/U30.lean:69:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
        ./Core/FiniteCore.lean:62:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
  ⚠ Core ──       3 parsevalMass
@@ -126,12 +126,6 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 oneVec
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
-        ──       2 Omega7_antisymmetric
-       ./Logic/ChiralityFinite.lean:190:theorem Omega7_antisymmetric (f : ZMod 30 → ℂ) (a : ZMod 30) :
-       ./Logic/ChiralityLinear.lean:103:theorem Omega7_antisymmetric : Omega7.transpose = -Omega7 := by native_decide
-        ──       2 Omega7
-       ./Logic/ChiralityFinite.lean:186:def Omega7 (f : ZMod 30 → ℂ) (a : ZMod 30) : ℂ := f (7 * a) - f (13 * a)
-       ./Logic/ChiralityLinear.lean:86:def Omega7 : Matrix (Fin 8) (Fin 8) ℤ := P7 - P7inv
  ⚠ Core ──       2 nontrivial_ratio
        ./FiniteDefect/T1_to_T7.lean:391:theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by
        ./Core/Kurtosis.lean:66:theorem nontrivial_ratio : (15 : ℚ) / (3 ^ 2) = 5 / 3 := by norm_num
@@ -194,7 +188,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./FiniteDefect/T1_to_T7.lean:366:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
        ./Core/FormuleLk.lean:33:def eigTrace (k : Nat) : Int := 2 * (3 : Int) ^ k + 4 + 2 * (-1 : Int) ^ k
         ──       2 E
-       ./Logic/ChiralityFinite.lean:60:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
+       ./Logic/ChiralityFinite.lean:59:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
        ./Logic/H3/RouteC.lean:505:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
  ⚠ Core ──       2 crt_29
        ./Core/FiniteCore.lean:165:theorem crt_29 : (11 : ZMod 30) ^ 1 * (7 : ZMod 30) ^ 2 = 29 := by native_decide
@@ -310,9 +304,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./All.lean:129:import CouretUnification.FiniteDefect.T1_to_T7
         ──        import CouretUnification.Core.Kurtosis
        ./All.lean:67:import CouretUnification.Core.Kurtosis
-        ──        import CouretUnification.Logic.ChiralityLinear
-       ./Frozen.lean:59:import CouretUnification.Logic.ChiralityLinear
-       ./All.lean:254:import CouretUnification.Logic.ChiralityLinear
         ──        import CouretUnification.Core.TCAutoInverse
        ./All.lean:79:import CouretUnification.Core.TCAutoInverse
         ──        import CouretUnification.Logic.H3.FiniteSpectralAPI
@@ -389,7 +380,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        import CouretUnification.Logic.H3.SquarefreeDensity
        import CouretUnification.FiniteDefect.T1_to_T7
        import CouretUnification.Core.Kurtosis
-       import CouretUnification.Logic.ChiralityLinear
        import CouretUnification.Core.TCAutoInverse
        import CouretUnification.Logic.H3.FiniteSpectralAPI
        import CouretUnification.Core.CharParity30
@@ -429,7 +419,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/SquarefreeDensity.lean
        ./FiniteDefect/T1_to_T7.lean
        ./Core/Kurtosis.lean
-       ./Logic/ChiralityLinear.lean
        ./Core/TCAutoInverse.lean
        ./Logic/H3/FiniteSpectralAPI.lean
        ./Core/CharParity30.lean
@@ -449,9 +438,9 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 59
-Identifiants répliqués     (total) hors whitelist : 126
-Fichiers identifiés hors whitelist avec répliques : 38 fichiers
+Identifiants répliqués             hors whitelist : 57
+Identifiants répliqués     (total) hors whitelist : 122
+Fichiers identifiés hors whitelist avec répliques : 37 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.
        (Les vraies collisions intra-namespace sont refusées par Lean.)
