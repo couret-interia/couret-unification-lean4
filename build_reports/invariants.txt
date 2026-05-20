@@ -131,10 +131,10 @@ lean/CouretUnification/Analytic/VerifiedIntervals.lean:28:- `RHClaimed = false`
 lean/CouretUnification/Analytic/VerifiedIntervals.lean:160:def RHClaimed : Bool := false
 lean/CouretUnification/Analytic/VerifiedIntervals.lean:163:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/All.lean:24:-- RHClaimed = false
-lean/CouretUnification/All.lean:183:-- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
-lean/CouretUnification/All.lean:190:-- RHClaimed = false. Aucun sorry consommé.
-lean/CouretUnification/All.lean:198:-- RHClaimed = false. Aucun sorry consommé.
-lean/CouretUnification/All.lean:210:-- RHClaimed = false. Aucun sorry consommé.
+lean/CouretUnification/All.lean:182:-- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
+lean/CouretUnification/All.lean:189:-- RHClaimed = false. Aucun sorry consommé.
+lean/CouretUnification/All.lean:197:-- RHClaimed = false. Aucun sorry consommé.
+lean/CouretUnification/All.lean:209:-- RHClaimed = false. Aucun sorry consommé.
 lean/CouretUnification/Core/Arithmetic.lean:10:RHClaimed = false. Dédié à Bernard Couret (1928–1999).
 lean/CouretUnification/Core/Arithmetic.lean:207:def RHClaimed : Bool := false
 lean/CouretUnification/Core/Arithmetic.lean:208:theorem rh_not_claimed : RHClaimed = false := rfl

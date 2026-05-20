@@ -1,9 +1,7 @@
 import Mathlib.Tactic
 import CouretUnification.Core.U30
 
-namespace CouretUnification.Core
-namespace SymplecticObstruction
-
+namespace CouretUnification.Core.SymplecticObstruction
 
 /-!
 # Obstruction symplectique : J² = −I impossible en dimension impaire
@@ -33,9 +31,8 @@ theorem neg_one_pow_odd (k : Nat) : (-1 : Int) ^ (2 * k + 1) = -1 := by
     rw [pow_add, ih]
     norm_num
 
-/-- A perfect square is non-negative. -/
-theorem sq_nonneg_int (a : Int) : a * a ≥ 0 := by
-  nlinarith [mul_self_nonneg a]
+/-- A perfect square in ℤ is non-negative. -/
+theorem sq_nonneg_int (a : Int) : a * a ≥ 0 := by nlinarith [mul_self_nonneg a]
 
 /--
 **Core obstruction**: if n is odd, there is no integer d such that
@@ -67,8 +64,7 @@ theorem five_odd : ¬ 2 ∣ 5 := by decide
 theorem V5_coprime : V5.Forall (fun a => Nat.gcd a 30 = 1) := by native_decide
 
 /-- V₅ contains all of TC = {1, 11, 29}. -/
-theorem V5_contains_TC :
-    [1, 11, 29].Forall (fun a => a ∈ V5) := by decide
+theorem V5_contains_TC : [1, 11, 29].Forall (fun a => a ∈ V5) := by decide
 
 /--
 **Main theorem**: No matrix J : ℤ^5 → ℤ^5 satisfies J² = −I,
@@ -132,5 +128,4 @@ The determinant argument det(J)² = (−1)^n closes all odd cases.
 This is independent of RH and holds over any commutative ring.
 -/
 
-end SymplecticObstruction
-end CouretUnification.Core
+end CouretUnification.Core.SymplecticObstruction

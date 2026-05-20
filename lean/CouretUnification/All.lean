@@ -115,7 +115,6 @@ import CouretUnification.Analytic.Integration
 import CouretUnification.Analytic.VerifiedIntervals
 import CouretUnification.Analytic.ZeroDensityAxioms
 import CouretUnification.Core.FiniteCore
-import CouretUnification.Core.SymplecticObstruction
 
 import CouretUnification.FunctionalFoundation.DiscreteConnection
 import CouretUnification.FunctionalFoundation.DiscretePaths
