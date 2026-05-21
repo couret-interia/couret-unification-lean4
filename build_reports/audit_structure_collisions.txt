@@ -64,18 +64,6 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 unitsMod30
        ./Spectral/FiniteCore.lean:20:def unitsMod30 : Idx → ℤ
        ./Core/SpectralMoments.lean:29:def unitsMod30 : Fin 8 → Nat
- ⚠ Core ──       2 TC_subset
-       ./Core/U30.lean:59:theorem TC_subset : TC ⊆ U30 := by native_decide
-       ./Core/FiniteCore.lean:49:theorem TC_subset : TC ⊆ admissibleResidues := by
- ⚠ Core ──       2 TC_not_subgroup
-       ./Core/U30.lean:75:theorem TC_not_subgroup : ¬(∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) := by
-       ./Core/FiniteCore.lean:69:theorem TC_not_subgroup : ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
- ⚠ Core ──       2 TC_dim_odd
-       ./Core/U30.lean:138:theorem TC_dim_odd : ¬ 2 ∣ TC.card := by native_decide
-       ./Core/FiniteCore.lean:191:theorem TC_dim_odd : ¬ 2 ∣ TC.card := CouretUnification.Core.TC_dim_odd
- ⚠ Core ──       2 TC_card
-       ./Core/U30.lean:56:theorem TC_card : TC.card = 3 := card_TC
-       ./Core/FiniteCore.lean:45:theorem TC_card : TC.card = 3 :=
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
@@ -84,10 +72,10 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/Kurtosis.lean:34:theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
  ⚠ Core ──       2 order_7
        ./Core/U30.lean:111:theorem order_7  : (7 : ZMod 30) ^ 4 = 1 := by native_decide
-       ./Core/FiniteCore.lean:134:theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
+       ./Core/FiniteCore.lean:132:theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
  ⚠ Core ──       2 order_11
        ./Core/U30.lean:108:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
-       ./Core/FiniteCore.lean:131:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
+       ./Core/FiniteCore.lean:129:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
  ⚠ Core ──       2 oneVec
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
@@ -139,13 +127,13 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
  ⚠ Core ──       2 chi_at_19
        ./FiniteDefect/T1_to_T7.lean:289:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
-       ./Core/FiniteCore.lean:83:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, 1, -1, 1, -1]
+       ./Core/FiniteCore.lean:81:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, 1, -1, 1, -1]
  ⚠ Core ──       2 charParity
        ./Analytic/GammaFactor.lean:41:def charParity : CharIdx → Bool := fun _ => true
        ./Core/CharParity30.lean:27:noncomputable def charParity (χ : CharIdx) : Bool :=
  ⚠ Core ──       2 c_chi
        ./FiniteDefect/T1_to_T7.lean:286:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
-       ./Core/FiniteCore.lean:77:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
+       ./Core/FiniteCore.lean:75:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
  ⚠ Core ──       2 altVec_centered
        ./Spectral/FiniteCore.lean:132:theorem altVec_centered : ∑ i, altVec i = 0 := by
        ./Core/CenteredEigenspace.lean:27:theorem altVec_centered : vsum v3b = 0 := by native_decide
@@ -376,8 +364,8 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 39
-Identifiants répliqués     (total) hors whitelist : 81
+Identifiants répliqués             hors whitelist : 35
+Identifiants répliqués     (total) hors whitelist : 73
 Fichiers identifiés hors whitelist avec répliques : 35 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.

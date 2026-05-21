@@ -42,12 +42,10 @@ theorem admissibleResidues_card : admissibleResidues.card = 8 :=
 abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
 
 /-- [REAL] `TC` a exactement trois éléments. -/
-theorem TC_card : TC.card = 3 :=
-  CouretUnification.Core.TC_card
+theorem FCTC_card : TC.card = 3 := CouretUnification.Core.TC_card
 
 /-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles. -/
-theorem TC_subset : TC ⊆ admissibleResidues := by
-  exact CouretUnification.Core.TC_subset
+theorem FCTC_subset : TC ⊆ admissibleResidues := by exact CouretUnification.Core.TC_subset
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Fantôme 19
@@ -66,7 +64,7 @@ theorem phantom_in_G : (19 : ZMod 30) ∈ admissibleResidues := by native_decide
 /-- [REAL] `TC` n’est pas un sous-groupe multiplicatif de `(ℤ/30ℤ)×`.
 
 Preuve : `11,29 ∈ TC`, mais `11*29 = 19` et `19 ∉ TC`, alias de U30 (TC_not_subgroup). -/
-theorem TC_not_subgroup : ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
+theorem FCTC_not_subgroup : ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
   CouretUnification.Core.TC_not_subgroup
 
 -- ═══════════════════════════════════════════════════════════
@@ -188,7 +186,7 @@ theorem split_11 : 480 = 48 * (11 - 1) := by norm_num
 -- ═══════════════════════════════════════════════════════════
 
 /-- [REAL] Le cardinal de `TC` est impair, alias de U30 (TC_dim_odd). -/
-theorem TC_dim_odd : ¬ 2 ∣ TC.card := CouretUnification.Core.TC_dim_odd
+theorem FCTC_dim_odd : ¬ 2 ∣ TC.card := CouretUnification.Core.TC_dim_odd
 
 /-- [REAL] Le cardinal de `G₃₀` est pair. -/
 theorem G30_dim_even : 2 ∣ admissibleResidues.card := by native_decide

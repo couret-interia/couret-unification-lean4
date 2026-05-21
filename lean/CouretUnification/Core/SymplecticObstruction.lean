@@ -84,8 +84,7 @@ For any odd number n = 2k+1, no integer square root of (−1)^n exists.
 Applied: any subset of (ℤ/30ℤ)× with odd cardinality has no
 symplectic structure.
 -/
-theorem symplectic_requires_even (n : Nat) (hn : ∃ k, n = 2 * k + 1) :
-    ¬ ∃ d : Int, d * d = (-1 : Int) ^ n := by
+theorem symplectic_requires_even (n : Nat) (hn : ∃ k, n = 2 * k + 1) : ¬ ∃ d : Int, d * d = (-1 : Int) ^ n := by
   obtain ⟨k, rfl⟩ := hn
   exact no_square_root_neg_one_odd k
 
@@ -94,14 +93,11 @@ theorem symplectic_requires_even (n : Nat) (hn : ∃ k, n = 2 * k + 1) :
 -- ═══════════════════════════════════════════
 
 /-- TC itself has cardinal 3 (odd): no symplectic structure. -/
-theorem TC_card_eq_three : CouretUnification.Core.TC.card = 3 :=
-  CouretUnification.Core.TC_card
+theorem TC_card_eq_three : CouretUnification.Core.TC.card = 3 := CouretUnification.Core.TC_card
 
-theorem TC_card_odd : ¬ 2 ∣ CouretUnification.Core.TC.card :=
-  CouretUnification.Core.TC_dim_odd
+theorem TC_card_odd : ¬ 2 ∣ CouretUnification.Core.TC.card := CouretUnification.Core.TC_dim_odd
 
-theorem no_symplectic_TC :
-    ¬ ∃ d : Int, d * d = (-1 : Int) ^ 3 := by
+theorem no_symplectic_TC : ¬ ∃ d : Int, d * d = (-1 : Int) ^ 3 := by
   rw [show (3 : Nat) = 2 * 1 + 1 from by norm_num]
   exact no_square_root_neg_one_odd 1
 
@@ -109,8 +105,7 @@ theorem no_symplectic_TC :
 theorem G30_card_even : 2 ∣ 8 := by decide
 
 /-- Singleton {1} has cardinal 1 (odd): no symplectic structure. -/
-theorem no_symplectic_dim1 :
-    ¬ ∃ d : Int, d * d = (-1 : Int) ^ 1 := by
+theorem no_symplectic_dim1 : ¬ ∃ d : Int, d * d = (-1 : Int) ^ 1 := by
   rw [show (1 : Nat) = 2 * 0 + 1 from by norm_num]
   exact no_square_root_neg_one_odd 0
 
