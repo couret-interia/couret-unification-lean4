@@ -144,12 +144,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──       2 dot
        ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ :=
        ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
- ⚠ Core ──       2 crt_29
-       ./Core/FiniteCore.lean:165:theorem crt_29 : (11 : ZMod 30) ^ 1 * (7 : ZMod 30) ^ 2 = 29 := by native_decide
-       ./Core/DefectProjection.lean:51:theorem crt_29 : crtCoord 7 = (1, 0) := by native_decide
- ⚠ Core ──       2 crt_19
-       ./Core/FiniteCore.lean:153:theorem crt_19 : (11 : ZMod 30) ^ 0 * (7 : ZMod 30) ^ 2 = 19 := by native_decide
-       ./Core/DefectProjection.lean:50:theorem crt_19 : crtCoord 5 = (0, 2) := by native_decide
  ⚠ Core ──       2 chi_at_19
        ./FiniteDefect/T1_to_T7.lean:289:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
        ./Core/FiniteCore.lean:86:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, 1, -1, 1, -1]
@@ -307,8 +301,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Empirical.SophieGermainExpected
        ./SophieGermainUmbrella.lean:38:import CouretUnification.Empirical.SophieGermainExpected
        ./All.lean:229:import CouretUnification.Empirical.SophieGermainExpected
-        ──        import CouretUnification.Core.DefectProjection
-       ./All.lean:85:import CouretUnification.Core.DefectProjection
         ──        import CouretUnification.Analytic.GammaFactor
        ./All.lean:247:import CouretUnification.Analytic.GammaFactor
         ──        import CouretUnification.Core.CenteredEigenspace
@@ -348,7 +340,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        import CouretUnification.FCI.ModThirtyChecker
        import CouretUnification.Empirical.SophieGermainTransitions
        import CouretUnification.Empirical.SophieGermainExpected
-       import CouretUnification.Core.DefectProjection
        import CouretUnification.Analytic.GammaFactor
        import CouretUnification.Core.CenteredEigenspace
 
@@ -386,15 +377,14 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./FCI/ModThirtyChecker.lean
        ./Empirical/SophieGermainTransitions.lean
        ./Empirical/SophieGermainExpected.lean
-       ./Core/DefectProjection.lean
        ./Analytic/GammaFactor.lean
        ./Core/CenteredEigenspace.lean
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 43
-Identifiants répliqués     (total) hors whitelist : 90
-Fichiers identifiés hors whitelist avec répliques : 36 fichiers
+Identifiants répliqués             hors whitelist : 41
+Identifiants répliqués     (total) hors whitelist : 86
+Fichiers identifiés hors whitelist avec répliques : 35 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.
        (Les vraies collisions intra-namespace sont refusées par Lean.)

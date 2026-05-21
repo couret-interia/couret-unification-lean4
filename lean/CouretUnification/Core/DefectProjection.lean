@@ -1,8 +1,7 @@
 import CouretUnification.Core.Classification63
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace DefectProjection
+namespace CouretUnification.Core.DefectProjection
 
 /-!
 # Projection du défaut δ₁₉ − δ₂₉
@@ -47,8 +46,8 @@ def mask19 : Nat := 32
 def mask29 : Nat := 128
 
 -- Verify CRT coordinates
-theorem crt_19 : crtCoord 5 = (0, 2) := by native_decide
-theorem crt_29 : crtCoord 7 = (1, 0) := by native_decide
+theorem crtCoord_19 : crtCoord 5 = (0, 2) := by native_decide
+theorem crtCoord_29 : crtCoord 7 = (1, 0) := by native_decide
 
 -- ═══════════════════════════════════════════
 -- Fourier coefficients of δ₁₉ (single-element indicator)
@@ -165,5 +164,4 @@ In the Lean convention (29 ↦ (1, 0)) it lives on the "parity-mismatch"
 channels. Both are correct; only the C₄ generator labeling differs.
 -/
 
-end DefectProjection
-end CouretUnification.Core
+end CouretUnification.Core.DefectProjection
