@@ -41,10 +41,10 @@ theorem admissibleResidues_card : admissibleResidues.card = 8 :=
 /-- [REAL] Le triplet de Couret `TC = {1, 11, 29}`. -/
 abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
 
-/-- [REAL] `TC` a exactement trois éléments. -/
+/-- [REAL] `TC` a exactement trois éléments, alias de U30 (TC_card). -/
 theorem FCTC_card : TC.card = 3 := CouretUnification.Core.TC_card
 
-/-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles. -/
+/-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles, alias de U30 (TC_subset). -/
 theorem FCTC_subset : TC ⊆ admissibleResidues := by exact CouretUnification.Core.TC_subset
 
 -- ═══════════════════════════════════════════════════════════
@@ -125,11 +125,11 @@ theorem parseval_normalized : (24 : ℚ) / 8 = 3 := by norm_num
 -- §6. Ordres des générateurs
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] `11` est d’ordre `2` modulo `30`. -/
-theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
+/-- [REAL] `11` est d’ordre `2` modulo `30`, alias de U30 (order_11). -/
+theorem FCorder_11 : (11 : ZMod 30) ^ 2 = 1 := CouretUnification.Core.order_11
 
-/-- [REAL] `7` est d’ordre `4` modulo `30`. -/
-theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
+/-- [REAL] `7` est d’ordre `4` modulo `30`, alias de U30 (order_7). -/
+theorem FCorder_7 : (7 : ZMod 30) ^ 4 = 1 := CouretUnification.Core.order_7
 
 /-- [REAL] `7` n’est pas d’ordre `2`. -/
 theorem order_7_not_2 : (7 : ZMod 30) ^ 2 ≠ 1 := by native_decide

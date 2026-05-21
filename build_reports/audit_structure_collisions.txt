@@ -70,12 +70,6 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 parseval_24
        ./FiniteDefect/T1_to_T7.lean:356:theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
        ./Core/Kurtosis.lean:34:theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
- ⚠ Core ──       2 order_7
-       ./Core/U30.lean:111:theorem order_7  : (7 : ZMod 30) ^ 4 = 1 := by native_decide
-       ./Core/FiniteCore.lean:132:theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
- ⚠ Core ──       2 order_11
-       ./Core/U30.lean:108:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
-       ./Core/FiniteCore.lean:129:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
  ⚠ Core ──       2 oneVec
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
@@ -364,8 +358,8 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 35
-Identifiants répliqués     (total) hors whitelist : 73
+Identifiants répliqués             hors whitelist : 33
+Identifiants répliqués     (total) hors whitelist : 69
 Fichiers identifiés hors whitelist avec répliques : 35 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.
