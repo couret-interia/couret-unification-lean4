@@ -3,8 +3,9 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace ParsevalL5
+import CouretUnification.Core.U30
+
+namespace CouretUnification.Core.ParsevalL5
 
 /-!
 # Parseval mass at L5 (q = 2310) and the E = 2 correction
@@ -18,6 +19,8 @@ At L5 (q = 2310 = 2·3·5·7·11), the element 11 ∈ TC satisfies
 
 This corrects the v17 claim E = 3 at all levels.
 The true invariant is E/|TC_coprime(q)| = 1 at every level.
+
+The Euler totients (phi_30, phi_210, phi_2310) provided by Core U30
 -/
 
 -- ═══════════════════════════════════════════
@@ -28,11 +31,6 @@ The true invariant is E/|TC_coprime(q)| = 1 at every level.
 theorem q3_def : 2 * 3 * 5 = (30 : Nat) := by norm_num
 theorem q4_def : 2 * 3 * 5 * 7 = (210 : Nat) := by norm_num
 theorem q5_def : 2 * 3 * 5 * 7 * 11 = (2310 : Nat) := by norm_num
-
-/-- Euler totients. -/
-theorem phi_30 : Nat.totient 30 = 8 := by native_decide
-theorem phi_210 : Nat.totient 210 = 48 := by native_decide
-theorem phi_2310 : Nat.totient 2310 = 480 := by native_decide
 
 -- ═══════════════════════════════════════════
 -- TC elements: coprimality at each level
@@ -75,8 +73,7 @@ theorem tcCoprime_2310 : tcCoprime 2310 = 2 := by native_decide
 -- ═══════════════════════════════════════════
 
 /-- Parseval mass formula. -/
-def parsevalMass (q : Nat) : Nat :=
-  Nat.totient q * tcCoprime q
+def parsevalMass (q : Nat) : Nat := Nat.totient q * tcCoprime q
 
 theorem parseval_30 : parsevalMass 30 = 24 := by native_decide
 theorem parseval_210 : parsevalMass 210 = 144 := by native_decide
@@ -93,18 +90,17 @@ theorem parseval_correction : (960 : Nat) ≠ 1440 := by norm_num
 -- ═══════════════════════════════════════════
 
 /-- Energy at each level. -/
-noncomputable def energy (q : Nat) : ℚ :=
-  (parsevalMass q : ℚ) / (Nat.totient q : ℚ)
+noncomputable def energy (q : Nat) : ℚ := (parsevalMass q : ℚ) / (Nat.totient q : ℚ)
 
 theorem energy_30 : energy 30 = 3 := by
-  simp [energy, parseval_30, phi_30]; norm_num
+  simp [energy, parseval_30, CouretUnification.Core.phi_30]; norm_num
 
 theorem energy_210 : energy 210 = 3 := by
-  simp [energy, parseval_210, phi_210]; norm_num
+  simp [energy, parseval_210, CouretUnification.Core.phi_210]; norm_num
 
 /-- **E(2310) = 2**, not 3. -/
 theorem energy_2310 : energy 2310 = 2 := by
-  simp [energy, parseval_2310, phi_2310]; norm_num
+  simp [energy, parseval_2310, CouretUnification.Core.phi_2310]; norm_num
 
 -- ═══════════════════════════════════════════
 -- The true invariant: E/|TC_coprime| = 1 always
@@ -114,13 +110,13 @@ noncomputable def normalizedEnergy (q : Nat) : ℚ :=
   energy q / (tcCoprime q : ℚ)
 
 theorem normalized_energy_30 : normalizedEnergy 30 = 1 := by
-  simp [normalizedEnergy, energy, parseval_30, phi_30, tcCoprime_30]; norm_num
+  simp [normalizedEnergy, energy, parseval_30, CouretUnification.Core.phi_30, tcCoprime_30]; norm_num
 
 theorem normalized_energy_210 : normalizedEnergy 210 = 1 := by
-  simp [normalizedEnergy, energy, parseval_210, phi_210, tcCoprime_210]; norm_num
+  simp [normalizedEnergy, energy, parseval_210, CouretUnification.Core.phi_210, tcCoprime_210]; norm_num
 
 theorem normalized_energy_2310 : normalizedEnergy 2310 = 1 := by
-  simp [normalizedEnergy, energy, parseval_2310, phi_2310, tcCoprime_2310]; norm_num
+  simp [normalizedEnergy, energy, parseval_2310, CouretUnification.Core.phi_2310, tcCoprime_2310]; norm_num
 
 /-!
 ## Summary
@@ -138,5 +134,4 @@ giving P = 960 (not 1440) and E = 2 (not 3).
 The **stable invariant** is E/|TC_coprime(q)| = 1 at every level.
 -/
 
-end ParsevalL5
-end CouretUnification.Core
+end CouretUnification.Core.ParsevalL5

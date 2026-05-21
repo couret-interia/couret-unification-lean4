@@ -37,18 +37,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/T2Gap.lean:39:def normSq (x : CoerciveSector) : ℝ := x.1.normSq
        ./Spectral/FiniteCore.lean:104:def normSq (x : Vec) : ℝ :=
        ./Spectral/FiniteCore.lean:123:def normSq (x : Centered8) : ℝ := FiniteCore.normSq x.1
- ⚠ Core ──       3 phi_30
-       ./Core/U30.lean:128:theorem phi_30   : Nat.totient 30   = 8   := by native_decide
-       ./Core/FiniteCore.lean:175:theorem phi_30   : Nat.totient 30   = 8   := by native_decide
-       ./Core/ParsevalL5.lean:33:theorem phi_30 : Nat.totient 30 = 8 := by native_decide
- ⚠ Core ──       3 phi_2310
-       ./Core/U30.lean:130:theorem phi_2310 : Nat.totient 2310 = 480 := by native_decide
-       ./Core/FiniteCore.lean:181:theorem phi_2310 : Nat.totient 2310 = 480 := by native_decide
-       ./Core/ParsevalL5.lean:35:theorem phi_2310 : Nat.totient 2310 = 480 := by native_decide
- ⚠ Core ──       3 phi_210
-       ./Core/U30.lean:129:theorem phi_210  : Nat.totient 210  = 48  := by native_decide
-       ./Core/FiniteCore.lean:178:theorem phi_210  : Nat.totient 210  = 48  := by native_decide
-       ./Core/ParsevalL5.lean:34:theorem phi_210 : Nat.totient 210 = 48 := by native_decide
  ⚠ Core ──       3 phantom_not_in_TC
        ./Logic/ChiralityFinite.lean:156:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
        ./Core/U30.lean:69:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
@@ -56,7 +44,7 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       3 parsevalMass
        ./Core/Classification63.lean:122:def parsevalMass (mask : Nat) : Nat :=
        ./Core/Parseval.lean:7:def parsevalMass : Nat := TCParsevalMass
-       ./Core/ParsevalL5.lean:78:def parsevalMass (q : Nat) : Nat :=
+       ./Core/ParsevalL5.lean:76:def parsevalMass (q : Nat) : Nat := Nat.totient q * tcCoprime q
         ──       3 normSq_nonneg
        ./Spectral/T2Gap.lean:44:theorem normSq_nonneg (x : CoerciveSector) : 0 ≤ x.normSq := by
        ./Spectral/FiniteCore.lean:111:theorem normSq_nonneg (x : Vec) : 0 ≤ normSq x := by
@@ -143,7 +131,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./FCI/ModThirtyChecker.lean:51:abbrev G30 := CouretUnification.Core.G30
  ⚠ Core ──       2 energy
        ./Spectral/T2Gap.lean:42:def energy (x : CoerciveSector) : ℝ := quadratic x.1.1
-       ./Core/ParsevalL5.lean:96:noncomputable def energy (q : Nat) : ℚ :=
+       ./Core/ParsevalL5.lean:93:noncomputable def energy (q : Nat) : ℚ := (parsevalMass q : ℚ) / (Nat.totient q : ℚ)
         ──       2 empirical_statement
        ./Empirical/SophieGermainTransitions.lean:121:def empirical_statement : Statement := {
        ./Empirical/SophieGermainExpected.lean:171:def empirical_statement : Statement := {
@@ -196,6 +184,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteCore.lean:6:import CouretUnification.Core.U30
        ./Core/SymplecticObstruction.lean:2:import CouretUnification.Core.U30
        ./Core/CenteredCoordinates.lean:35:import CouretUnification.Core.U30
+       ./Core/ParsevalL5.lean:6:import CouretUnification.Core.U30
        ./Core/UnitsBridge.lean:7:import CouretUnification.Core.U30
         ──        import CouretUnification.Core.FiniteCore
        ./All.lean:117:import CouretUnification.Core.FiniteCore
@@ -216,9 +205,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/T2Gap.lean:1:import CouretUnification.Spectral.FiniteCore
        ./Logic/H3/PhaseBCompositionCouret.lean:75:import CouretUnification.Spectral.FiniteCore
        ./All.lean:53:import CouretUnification.Spectral.FiniteCore
-        ──        import CouretUnification.Core.ParsevalL5
-       ./Logic/H3/PhaseBCompositionCouret.lean:73:import CouretUnification.Core.ParsevalL5
-       ./All.lean:70:import CouretUnification.Core.ParsevalL5
         ──        import CouretUnification.Core.Classification63
        ./Logic/H3/PhaseBCompositionCouretEta.lean:85:import CouretUnification.Core.Classification63
        ./Logic/H3/PhaseBCompositionCouretEta.lean:86:import CouretUnification.Core.Classification63Detail
@@ -230,6 +216,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/PhaseBCompositionCouret.lean:72:import CouretUnification.Core.Parseval
        ./Logic/H3/PhaseBCompositionCouret.lean:73:import CouretUnification.Core.ParsevalL5
        ./All.lean:31:import CouretUnification.Core.Parseval
+       ./All.lean:70:import CouretUnification.Core.ParsevalL5
+        ──        import CouretUnification.Core.ParsevalL5
+       ./Logic/H3/PhaseBCompositionCouret.lean:73:import CouretUnification.Core.ParsevalL5
        ./All.lean:70:import CouretUnification.Core.ParsevalL5
         ──        import CouretUnification.Core.CayleySpectrum
        ./Logic/H3/PhaseBCompositionCouretEta.lean:80:import CouretUnification.Core.CayleySpectrum
@@ -333,9 +322,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        import CouretUnification.Finite.Foundations
        import CouretUnification.Spectral.T2Gap
        import CouretUnification.Spectral.FiniteCore
-       import CouretUnification.Core.ParsevalL5
        import CouretUnification.Core.Classification63
        import CouretUnification.Core.Parseval
+       import CouretUnification.Core.ParsevalL5
        import CouretUnification.Core.CayleySpectrum
        import CouretUnification.Core.Mod30
        import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
@@ -371,9 +360,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Finite/Foundations.lean
        ./Spectral/T2Gap.lean
        ./Spectral/FiniteCore.lean
-       ./Core/ParsevalL5.lean
        ./Core/Classification63.lean
        ./Core/Parseval.lean
+       ./Core/ParsevalL5.lean
        ./Core/CayleySpectrum.lean
        ./Core/Mod30.lean
        ./Logic/ExplicitFormula/ZeroSideObligation.lean
@@ -403,8 +392,8 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 46
-Identifiants répliqués     (total) hors whitelist : 99
+Identifiants répliqués             hors whitelist : 43
+Identifiants répliqués     (total) hors whitelist : 90
 Fichiers identifiés hors whitelist avec répliques : 36 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.

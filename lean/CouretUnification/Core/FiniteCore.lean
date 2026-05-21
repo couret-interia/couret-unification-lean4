@@ -171,14 +171,14 @@ theorem crt_23 : (11 : ZMod 30) ^ 1 * (7 : ZMod 30) ^ 3 = 23 := by native_decide
 -- §8. Tour primoriale
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] `φ(30) = 8`. -/
-theorem phi_30   : Nat.totient 30   = 8   := by native_decide
+/-- [REAL] `φ(30) = 8`, alias de U30 (phi_30). -/
+theorem FCphi_30   : Nat.totient 30   = 8   := CouretUnification.Core.phi_30
 
-/-- [REAL] `φ(210) = 48`. -/
-theorem phi_210  : Nat.totient 210  = 48  := by native_decide
+/-- [REAL] `φ(210) = 48`, alias de U30 (phi_210). -/
+theorem FCphi_210  : Nat.totient 210  = 48  := CouretUnification.Core.phi_210
 
-/-- [REAL] `φ(2310) = 480`. -/
-theorem phi_2310 : Nat.totient 2310 = 480 := by native_decide
+/-- [REAL] `φ(2310) = 480`, alias de U30 (phi_2310). -/
+theorem FCphi_2310 : Nat.totient 2310 = 480 := CouretUnification.Core.phi_2310
 
 /-- [REAL] Passage `30 → 210` : facteur `7 - 1 = 6`. -/
 theorem split_7  : 48  = 8  * (7 - 1)  := by norm_num
