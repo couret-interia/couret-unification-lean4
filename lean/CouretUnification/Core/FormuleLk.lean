@@ -1,9 +1,9 @@
 import CouretUnification.Core.CayleySpectrum
+import CouretUnification.Finite.Foundations
 import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace FormuleLk
+namespace CouretUnification.Core.FormuleLk
 
 /-!
 # Formule fermée L_k = 2 + (4 + 2·(−1)ᵏ) / 3ᵏ
@@ -24,13 +24,17 @@ No matrix power computation needed beyond k = 4.
 -/
 
 open CayleySpectrum
+open Finite.Foundations
 
 -- ═══════════════════════════════════════════
 -- Eigenvalue decomposition formula (integer)
 -- ═══════════════════════════════════════════
 
-/-- The eigenvalue trace formula: T(k) = 2·3ᵏ + 4 + 2·(−1)ᵏ. -/
-def eigTrace (k : Nat) : Int := 2 * (3 : Int) ^ k + 4 + 2 * (-1 : Int) ^ k
+/-- Formule de trace spectrale : T(k) = 2·3ᵏ + 4 + 2·(−1)ᵏ.
+
+    Version rationnelle, alignée sur `Finite.Foundations` et
+    `CayleySpectrum`, où les matrices vivent désormais sur `ℚ`. -/
+def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
 
 /-- Consistency with the certified matrix traces from CayleySpectrum. -/
 theorem eigTrace_matches_1 : eigTrace 1 = 8 := by norm_num [eigTrace]
@@ -61,7 +65,7 @@ theorem eigTrace_10 : eigTrace 10 = 118104 := by norm_num [eigTrace]
 -- ═══════════════════════════════════════════
 
 /-- L_k = eigTrace(k) / 3ᵏ. -/
-def Lk (k : Nat) : ℚ := (eigTrace k : ℚ) / (3 : ℚ) ^ k
+def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
 
 /-- Closed form: 2 + (4 + 2·(−1)ᵏ) / 3ᵏ. -/
 def LkFormula (k : Nat) : ℚ := 2 + (4 + 2 * (-1 : ℚ) ^ k) / (3 : ℚ) ^ k
@@ -133,5 +137,4 @@ traces. Higher traces and all L_k values follow by `norm_num`
 on the closed formula — no matrix powers beyond A⁴ needed.
 -/
 
-end FormuleLk
-end CouretUnification.Core
+end CouretUnification.Core.FormuleLk

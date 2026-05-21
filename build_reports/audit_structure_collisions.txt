@@ -11,7 +11,7 @@ Recherche : def / structure / inductive / abbrev / theorem
 ═══ Identifiants répliqués (≥ 2 occurrences) ═══
 ── Catégorie 1 — Réplications doctrinales attendues (whitelist) ──
 (gardes RH/HP, fileIdentity, statuts, métriques d'audit par module)
-        ──      30 RHClaimed
+        ──      31 RHClaimed
         ──      21 fileIdentity
         ──      20 rh_not_claimed
         ──       3 status
@@ -63,33 +63,23 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/FiniteCore.lean:127:theorem normSq_nonneg (x : Centered8) : 0 ≤ x.normSq := by
  ⚠ Core ──       3 Idx
        ./Spectral/FiniteCore.lean:15:abbrev Idx := Fin 8
-       ./Core/CayleySpectrum.lean:20:abbrev Idx := Fin 8
+       ./Core/CayleySpectrum.lean:46:abbrev Idx := Fin 8
        ./Core/Mod30.lean:8:abbrev Idx := Fin 8
- ⚠ Core ──       3 dot
-       ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ :=
-       ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
-       ./Core/CayleySpectrum.lean:150:def dot (u v : IVec) : Int :=
         ──       2 ZeroShellData
        ./Logic/ExplicitFormula/ZeroSideObligation.lean:41:structure ZeroShellData where
        ./AnalyticHorizon/ZeroCountingCertificate.lean:40:structure ZeroShellData where
- ⚠ Core ──       2 veq
-       ./Finite/Foundations.lean:268:def veq (u v : Sig) : Bool :=
-       ./Core/CayleySpectrum.lean:61:def veq (u v : IVec) : Bool :=
  ⚠ Core ──       2 Vec
        ./Spectral/FiniteCore.lean:16:abbrev Vec := Idx → ℝ
        ./Core/FiniteOperator.lean:12:abbrev Vec := Idx → ℂ
  ⚠ Core ──       2 v1b
        ./Core/ComponentSpectrum.lean:83:def v1b : V4 := ![0, 0, 1, -1]
-       ./Core/CayleySpectrum.lean:136:def v1b : IVec := ![0, 1, 0, -1, 0, 1, 0, -1]
+       ./Core/CayleySpectrum.lean:185:def v1b : IVec := ![0, 1, 0, -1, 0, 1, 0, -1]
  ⚠ Core ──       2 v1a
        ./Core/ComponentSpectrum.lean:82:def v1a : V4 := ![1, -1, 0, 0]
-       ./Core/CayleySpectrum.lean:135:def v1a : IVec := ![1, 0, -1, 0, 1, 0, -1, 0]
+       ./Core/CayleySpectrum.lean:182:def v1a : IVec := ![1, 0, -1, 0, 1, 0, -1, 0]
  ⚠ Core ──       2 unitsMod30
        ./Spectral/FiniteCore.lean:20:def unitsMod30 : Idx → ℤ
        ./Core/SpectralMoments.lean:29:def unitsMod30 : Fin 8 → Nat
- ⚠ Core ──       2 tr
-       ./Finite/Foundations.lean:276:def tr (M : QMat) : ℚ :=
-       ./Core/CayleySpectrum.lean:49:def tr (M : IMat) : Int :=
  ⚠ Core ──       2 TC_subset
        ./Core/U30.lean:59:theorem TC_subset : TC ⊆ U30 := by native_decide
        ./Core/FiniteCore.lean:49:theorem TC_subset : TC ⊆ admissibleResidues := by
@@ -102,21 +92,15 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 TC_card
        ./Core/U30.lean:56:theorem TC_card : TC.card = 3 := card_TC
        ./Core/FiniteCore.lean:45:theorem TC_card : TC.card = 3 :=
- ⚠ Core ──       2 sv
-       ./Finite/Foundations.lean:261:def sv (k : ℚ) (v : Sig) : Sig := fun i => k * v i
-       ./Core/CayleySpectrum.lean:59:def sv (k : Int) (v : IVec) : IVec := fun i => k * v i
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
- ⚠ Core ──       2 scI
-       ./Finite/Foundations.lean:289:def scI (k : ℚ) : QMat := fun i j => if i = j then k else 0
-       ./Core/CayleySpectrum.lean:41:def scI (k : Int) : IMat :=
  ⚠ Core ──       2 phantom_product
        ./Core/U30.lean:66:theorem phantom_product : (11 * 29 : ZMod 30) = 19 := by native_decide
        ./Core/FiniteCore.lean:58:theorem phantom_product : (11 * 29 : ZMod 30) = 19 :=
  ⚠ Core ──       2 parseval_24
        ./FiniteDefect/T1_to_T7.lean:356:theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
-       ./Core/Kurtosis.lean:34:theorem parseval_24 : tr (mm A A) = 24 := trace_A2
+       ./Core/Kurtosis.lean:34:theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
  ⚠ Core ──       2 order_7
        ./Core/U30.lean:111:theorem order_7  : (7 : ZMod 30) ^ 4 = 1 := by native_decide
        ./Core/FiniteCore.lean:137:theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
@@ -135,24 +119,9 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 negOneG30
        ./Logic/H3/FiniteSpectralAPI.lean:15:abbrev negOneG30 : G30 := u29
        ./Core/CharParity30.lean:5:def negOneG30 : G30 := -1
- ⚠ Core ──       2 mzero
-       ./Finite/Foundations.lean:295:def mzero : QMat := fun _ _ => 0
-       ./Core/CayleySpectrum.lean:47:def mzero : IMat := fun _ _ => 0
- ⚠ Core ──       2 mv
-       ./Finite/Foundations.lean:257:def mv (M : QMat) (v : Sig) : Sig :=
-       ./Core/CayleySpectrum.lean:56:def mv (M : IMat) (v : IVec) : IVec :=
- ⚠ Core ──       2 msub
-       ./Finite/Foundations.lean:292:def msub (M N : QMat) : QMat := fun i j => M i j - N i j
-       ./Core/CayleySpectrum.lean:44:def msub (M N : IMat) : IMat :=
- ⚠ Core ──       2 mm
-       ./Finite/Foundations.lean:272:def mm (M N : QMat) : QMat :=
-       ./Core/CayleySpectrum.lean:38:def mm (M N : IMat) : IMat :=
- ⚠ Core ──       2 meq
-       ./Finite/Foundations.lean:285:def meq (M N : QMat) : Bool :=
-       ./Core/CayleySpectrum.lean:52:def meq (M N : IMat) : Bool :=
  ⚠ Core ──       2 Lk
        ./FiniteDefect/T1_to_T7.lean:369:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
-       ./Core/FormuleLk.lean:64:def Lk (k : Nat) : ℚ := (eigTrace k : ℚ) / (3 : ℚ) ^ k
+       ./Core/FormuleLk.lean:68:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
  ⚠ Core ──       2 kurtosis_raw
        ./FiniteDefect/T1_to_T7.lean:387:theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by
        ./Core/Kurtosis.lean:53:theorem kurtosis_raw : (21 : ℚ) / (3 ^ 2) = 7 / 3 := by norm_num
@@ -180,10 +149,13 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Empirical/SophieGermainExpected.lean:171:def empirical_statement : Statement := {
  ⚠ Core ──       2 eigTrace
        ./FiniteDefect/T1_to_T7.lean:366:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
-       ./Core/FormuleLk.lean:33:def eigTrace (k : Nat) : Int := 2 * (3 : Int) ^ k + 4 + 2 * (-1 : Int) ^ k
+       ./Core/FormuleLk.lean:37:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
         ──       2 E
        ./Logic/ChiralityFinite.lean:59:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
        ./Logic/H3/RouteC.lean:505:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
+        ──       2 dot
+       ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ :=
+       ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
  ⚠ Core ──       2 crt_29
        ./Core/FiniteCore.lean:165:theorem crt_29 : (11 : ZMod 30) ^ 1 * (7 : ZMod 30) ^ 2 = 29 := by native_decide
        ./Core/DefectProjection.lean:51:theorem crt_29 : crtCoord 7 = (1, 0) := by native_decide
@@ -201,7 +173,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteCore.lean:80:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
  ⚠ Core ──       2 altVec_centered
        ./Spectral/FiniteCore.lean:132:theorem altVec_centered : ∑ i, altVec i = 0 := by
-       ./Core/CenteredEigenspace.lean:26:theorem altVec_centered : vsum v3b = 0 := by native_decide
+       ./Core/CenteredEigenspace.lean:27:theorem altVec_centered : vsum v3b = 0 := by native_decide
         ──       2 altVec
        ./Finite/Foundations.lean:105:abbrev altVec : Sig := chi5
        ./Spectral/FiniteCore.lean:77:def altVec : Vec
@@ -235,6 +207,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Finite/Defect.lean:1:import CouretUnification.Finite.Foundations
        ./FiniteDefect/T1_to_T7.lean:1:import CouretUnification.Finite.Foundations
        ./All.lean:126:import CouretUnification.Finite.Foundations
+       ./Core/CayleySpectrum.lean:1:import CouretUnification.Finite.Foundations
+       ./Core/CenteredEigenspace.lean:2:import CouretUnification.Finite.Foundations
+       ./Core/FormuleLk.lean:2:import CouretUnification.Finite.Foundations
         ──        import CouretUnification.Spectral.T2Gap
        ./All.lean:54:import CouretUnification.Spectral.T2Gap
         ──        import CouretUnification.Spectral.FiniteCore
@@ -428,8 +403,8 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 55
-Identifiants répliqués     (total) hors whitelist : 118
+Identifiants répliqués             hors whitelist : 46
+Identifiants répliqués     (total) hors whitelist : 99
 Fichiers identifiés hors whitelist avec répliques : 36 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.

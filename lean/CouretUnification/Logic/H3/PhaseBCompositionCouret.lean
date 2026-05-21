@@ -92,13 +92,13 @@ namespace CouretUnification.Logic.H3.PhaseBCompositionCouret
     Aucun sorry, aucun axiome. Réexposition de
     `T7_pythagoras_tc` (preuve par `native_decide`). -/
 theorem branch_pythagoras_couret :
-    CouretUnification.Finite.normSq CouretUnification.Finite.tcInd =
-      CouretUnification.Finite.normSq
-          (CouretUnification.Finite.p3 CouretUnification.Finite.tcInd)
-      + CouretUnification.Finite.normSq
-          (CouretUnification.Finite.p1 CouretUnification.Finite.tcInd)
-      + CouretUnification.Finite.normSq
-          (CouretUnification.Finite.pminus CouretUnification.Finite.tcInd) :=
+    CouretUnification.Finite.Foundations.normSq CouretUnification.Finite.Foundations.tcInd =
+      CouretUnification.Finite.Foundations.normSq
+          (CouretUnification.Finite.Foundations.p3 CouretUnification.Finite.Foundations.tcInd)
+      + CouretUnification.Finite.Foundations.normSq
+          (CouretUnification.Finite.Foundations.p1 CouretUnification.Finite.Foundations.tcInd)
+      + CouretUnification.Finite.Foundations.normSq
+          (CouretUnification.Finite.Foundations.pminus CouretUnification.Finite.Foundations.tcInd) :=
   CouretUnification.FiniteDefect.T7_pythagoras_tc
 
 -- ═══════════════════════════════════════════════════════════════════

@@ -1,8 +1,7 @@
 import CouretUnification.Core.CayleySpectrum
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace CharPoly
+namespace CouretUnification.Core.CharPoly
 
 /-!
 # Polynôme caractéristique exact de la matrice de Cayley
@@ -74,13 +73,13 @@ def powerSum (k : Nat) : Int :=
   2 * (3 : Int) ^ k + 4 * (1 : Int) ^ k + 2 * (-1 : Int) ^ k
 
 -- Match against certified traces (k = 1..4 from CayleySpectrum)
-theorem newton_1 : powerSum 1 = tr A := by
+theorem newton_1 : powerSum 1 = CS_tr A := by
   native_decide
-theorem newton_2 : powerSum 2 = tr (mm A A) := by
+theorem newton_2 : powerSum 2 = CS_tr (CS_mm A A) := by
   native_decide
-theorem newton_3 : powerSum 3 = tr (mm (mm A A) A) := by
+theorem newton_3 : powerSum 3 = CS_tr (CS_mm (CS_mm A A) A) := by
   native_decide
-theorem newton_4 : powerSum 4 = tr (mm (mm (mm A A) A) A) := by
+theorem newton_4 : powerSum 4 = CS_tr (CS_mm (CS_mm (CS_mm A A) A) A) := by
   native_decide
 
 -- Higher power sums (from formula, no matrix computation)
@@ -135,5 +134,4 @@ Certified by:
 - Explicit coefficients extracted (`native_decide`)
 -/
 
-end CharPoly
-end CouretUnification.Core
+end CouretUnification.Core.CharPoly

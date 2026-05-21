@@ -1,6 +1,8 @@
 import CouretUnification.Finite.Foundations
 
-namespace CouretUnification.Finite
+namespace CouretUnification.Finite.Defect
+
+open Foundations
 
 /-!
 # Defect — Énergie de défaut du noyau fini
@@ -57,4 +59,4 @@ interprétation plus conceptuelle.
 theorem defect_extends_finite (f : Sig) :
     defectEnergy f = normSq (pminus f) := rfl
 
-end CouretUnification.Finite
+end CouretUnification.Finite.Defect

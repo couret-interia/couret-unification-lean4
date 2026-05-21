@@ -3,7 +3,7 @@ import Mathlib.Tactic
 
 namespace CouretUnification.FiniteDefect
 
-open CouretUnification.Finite
+open Finite.Foundations
 
 /-!
 # T1–T7 — Théorèmes certifiés du noyau spectral fini

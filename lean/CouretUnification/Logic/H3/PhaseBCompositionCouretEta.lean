@@ -106,19 +106,19 @@ namespace CouretUnification.Logic.H3.PhaseBCompositionCouretEta
     `CayleySpectrum.minpoly_annihilates` (preuve par `native_decide`
     exhaustif sur les 64 entrées de la matrice 8×8). -/
 theorem branch_eta_minpoly_annihilates :
-    CouretUnification.Core.CayleySpectrum.meq
-      (CouretUnification.Core.CayleySpectrum.mm
-        (CouretUnification.Core.CayleySpectrum.mm
-          (CouretUnification.Core.CayleySpectrum.msub
+    CouretUnification.Core.CayleySpectrum.CS_meq
+      (CouretUnification.Core.CayleySpectrum.CS_mm
+        (CouretUnification.Core.CayleySpectrum.CS_mm
+          (CouretUnification.Core.CayleySpectrum.CS_msub
             CouretUnification.Core.CayleySpectrum.A
-            (CouretUnification.Core.CayleySpectrum.scI 3))
-          (CouretUnification.Core.CayleySpectrum.msub
+            (CouretUnification.Core.CayleySpectrum.CS_scI 3))
+          (CouretUnification.Core.CayleySpectrum.CS_msub
             CouretUnification.Core.CayleySpectrum.A
-            (CouretUnification.Core.CayleySpectrum.scI 1)))
-        (CouretUnification.Core.CayleySpectrum.msub
+            (CouretUnification.Core.CayleySpectrum.CS_scI 1)))
+        (CouretUnification.Core.CayleySpectrum.CS_msub
           CouretUnification.Core.CayleySpectrum.A
-          (CouretUnification.Core.CayleySpectrum.scI (-1))))
-      CouretUnification.Core.CayleySpectrum.mzero = true :=
+          (CouretUnification.Core.CayleySpectrum.CS_scI (-1))))
+      CouretUnification.Core.CayleySpectrum.CS_mzero = true :=
   CouretUnification.Core.CayleySpectrum.minpoly_annihilates
 
 /-- **Sous-branche C-η.1.bis — Traces certifiées Tr(A) = 8 et Tr(A²) = 24.**
@@ -133,10 +133,10 @@ theorem branch_eta_minpoly_annihilates :
 
     Réexposition de `trace_A` et `trace_A2` (preuves par `native_decide`). -/
 theorem branch_eta_traces_certified :
-    CouretUnification.Core.CayleySpectrum.tr
+    CouretUnification.Core.CayleySpectrum.CS_tr
         CouretUnification.Core.CayleySpectrum.A = 8
-    ∧ CouretUnification.Core.CayleySpectrum.tr
-        (CouretUnification.Core.CayleySpectrum.mm
+    ∧ CouretUnification.Core.CayleySpectrum.CS_tr
+        (CouretUnification.Core.CayleySpectrum.CS_mm
           CouretUnification.Core.CayleySpectrum.A
           CouretUnification.Core.CayleySpectrum.A) = 24 :=
   ⟨CouretUnification.Core.CayleySpectrum.trace_A,

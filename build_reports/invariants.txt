@@ -152,6 +152,9 @@ lean/CouretUnification/Core/SophieGermain.lean:31:  - RHClaimed = false (résult
 lean/CouretUnification/Core/U30.lean:36:`RHClaimed = false`.
 lean/CouretUnification/Core/U30.lean:163:def RHClaimed : Bool := false
 lean/CouretUnification/Core/U30.lean:166:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/CayleySpectrum.lean:38:`RHClaimed = false`.
+lean/CouretUnification/Core/CayleySpectrum.lean:262:def RHClaimed : Bool := false
+lean/CouretUnification/Core/CayleySpectrum.lean:264:example : RHClaimed = false := rfl
 lean/CouretUnification/Core/FiniteCore.lean:249:def RHClaimed : Bool := false
 lean/CouretUnification/Core/FiniteCore.lean:252:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/Core/SophieGermainHecke.lean:26:RHClaimed = false.

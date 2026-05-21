@@ -2,7 +2,7 @@ import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
-namespace CouretUnification.Finite
+namespace CouretUnification.Finite.Foundations
 
 /-!
 # Foundations — Noyau spectral fini sur `Fin 8 → ℚ`
@@ -307,4 +307,4 @@ def RHClaimed : Bool := false
 /-- Vérification formelle de la garde épistémique. -/
 theorem rh_not_claimed : RHClaimed = false := rfl
 
-end CouretUnification.Finite
+end CouretUnification.Finite.Foundations

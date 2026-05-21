@@ -1,5 +1,5 @@
 import CouretUnification.Core.CayleySpectrum
-import Mathlib.Tactic
+import CouretUnification.Finite.Foundations
 
 namespace CouretUnification.Core.CenteredEigenspace
 
@@ -18,9 +18,10 @@ Therefore v = v₀ · altVec.
 -/
 
 open CayleySpectrum
+open Finite.Foundations
 
-/-- Sum of all entries. -/
-def vsum (v : IVec) : Int :=
+/-- Somme de toutes les coordonnées. -/
+def vsum (v : IVec) : ℚ :=
   (List.finRange 8).foldl (fun acc i => acc + v i) 0
 
 theorem altVec_centered : vsum v3b = 0 := by native_decide
@@ -60,41 +61,62 @@ The hypotheses are the explicit row equations of Av = 3v:
 i.e.     v(j) + v(k) = 2·v(i)
 where {j, k} = neighbors(i) \ {i}.
 
-These are 8 linear equations over ℤ. Combined with Σvᵢ = 0,
-`omega` solves the system completely.
+Ces huit équations sont des équations linéaires sur ℚ. Avec Σvᵢ = 0,
+`linarith` ferme les contraintes de coordonnées.
 -/
 
 /--
-Any centered integer eigenvector for λ = 3 is proportional to altVec.
+Tout vecteur propre centré rationnel pour `λ = 3` est proportionnel à `altVec`.
 
-The 8 hypotheses are the rows of Av = 3v, rewritten as
+Les 8 hypothèses sont les lignes de `Av = 3v`, réécrites sous la forme
+
   v(j) + v(k) = 2·v(i).
 -/
 theorem unique_centered_eig3
-    (v : Idx → Int)
+    (v : Idx → ℚ)
     (h0 : v 4 + v 6 = 2 * v 0)
     (h1 : v 5 + v 7 = 2 * v 1)
     (h2 : v 4 + v 6 = 2 * v 2)
     (h3 : v 5 + v 7 = 2 * v 3)
     (h4 : v 0 + v 2 = 2 * v 4)
     (h5 : v 1 + v 3 = 2 * v 5)
-    (h6 : v 0 + v 2 = 2 * v 6)
-    (h7 : v 1 + v 3 = 2 * v 7)
+    (_h6 : v 0 + v 2 = 2 * v 6)
+    (_h7 : v 1 + v 3 = 2 * v 7)
     (hcen : v 0 + v 1 + v 2 + v 3 + v 4 + v 5 + v 6 + v 7 = 0)
     (i : Idx) : v i = v 0 * v3b i := by
-  fin_cases i <;> simp_all [v3b] <;> omega
+  have hv2 : v 2 = v 0 := by
+    linarith
+  have hv3 : v 3 = v 1 := by
+    linarith
+  have hv4 : v 4 = v 0 := by
+    linarith
+  have hv6 : v 6 = v 0 := by
+    linarith
+  have hv5 : v 5 = v 1 := by
+    linarith
+  have hv7 : v 7 = v 1 := by
+    linarith
+  have hv1 : v 1 = -v 0 := by
+    linarith
+  fin_cases i <;>
+    simp [v3b, CouretUnification.Finite.Foundations.chi5,
+      hv1, hv2, hv3, hv4, hv5, hv6, hv7]
 
 /--
-Verification: the row equations are correct. For any test vector,
-if Av = 3v then the row equations hold. Verified on 3 test vectors.
+Vérification : les équations de ligne sont correctes.
+Pour tout vecteur test, si `Av = 3v`, alors l'équation de ligne 0 vaut.
 -/
 theorem rows_correct_on_v3a :
     mv A v3a = sv 3 v3a →
-    v3a 4 + v3a 6 = 2 * v3a 0 := by native_decide
+    v3a 4 + v3a 6 = 2 * v3a 0 := by
+  intro _h
+  native_decide
 
 theorem rows_correct_on_v3b :
     mv A v3b = sv 3 v3b →
-    v3b 4 + v3b 6 = 2 * v3b 0 := by native_decide
+    v3b 4 + v3b 6 = 2 * v3b 0 := by
+  intro _h
+  native_decide
 
 /-!
 ## Consequences

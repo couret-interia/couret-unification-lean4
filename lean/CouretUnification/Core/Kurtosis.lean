@@ -31,10 +31,10 @@ open CayleySpectrum
 -- ═══════════════════════════════════════════
 
 /-- Parseval mass = Tr(A²) = 24. -/
-theorem parseval_24 : tr (mm A A) = 24 := trace_A2
+theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
 
 /-- Tr(A⁴) = 168. -/
-theorem trace_fourth : tr (mm (mm (mm A A) A) A) = 168 := trace_A4
+theorem trace_fourth : CS_tr (CS_mm (CS_mm (CS_mm A A) A) A) = 168 := trace_A4
 
 /-- Dominant eigenvalue squared: ρ² = 9. -/
 theorem dominant_sq : (3 : Int) ^ 2 = 9 := by norm_num
