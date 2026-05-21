@@ -150,12 +150,6 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 meq
        ./Finite/Foundations.lean:285:def meq (M N : QMat) : Bool :=
        ./Core/CayleySpectrum.lean:52:def meq (M N : IMat) : Bool :=
- ⚠ Core ──       2 M4_eq
-       ./AnalyticHorizon/MomentRigidity30.lean:97:theorem M4_eq : M 4 = 7 / 27  := by native_decide
-       ./Core/Kurtosis.lean:50:theorem M4_eq : (168 : ℚ) / 8 = 21 := by norm_num
- ⚠ Core ──       2 M2_eq
-       ./AnalyticHorizon/MomentRigidity30.lean:95:theorem M2_eq : M 2 = 1 / 3   := by native_decide
-       ./Core/Kurtosis.lean:47:theorem M2_eq : (24 : ℚ) / 8 = 3 := by norm_num
  ⚠ Core ──       2 Lk
        ./FiniteDefect/T1_to_T7.lean:369:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
        ./Core/FormuleLk.lean:64:def Lk (k : Nat) : ℚ := (eigTrace k : ℚ) / (3 : ℚ) ^ k
@@ -313,8 +307,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Core.CharParity30
        ./Logic/H3/AlgebraTC.lean:17:import CouretUnification.Core.CharParity30
        ./All.lean:167:import CouretUnification.Core.CharParity30
-        ──        import CouretUnification.AnalyticHorizon.MomentRigidity30
-       ./All.lean:331:import CouretUnification.AnalyticHorizon.MomentRigidity30
         ──        import CouretUnification.Core.FormuleLk
        ./Logic/H3/PhaseBCompositionCouretEta.lean:88:import CouretUnification.Core.FormuleLk
        ./All.lean:76:import CouretUnification.Core.FormuleLk
@@ -383,7 +375,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        import CouretUnification.Core.TCAutoInverse
        import CouretUnification.Logic.H3.FiniteSpectralAPI
        import CouretUnification.Core.CharParity30
-       import CouretUnification.AnalyticHorizon.MomentRigidity30
        import CouretUnification.Core.FormuleLk
        import CouretUnification.Core.Arithmetic
        import CouretUnification.Logic.C3Weak
@@ -422,7 +413,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/TCAutoInverse.lean
        ./Logic/H3/FiniteSpectralAPI.lean
        ./Core/CharParity30.lean
-       ./AnalyticHorizon/MomentRigidity30.lean
        ./Core/FormuleLk.lean
        ./Core/Arithmetic.lean
        ./Logic/C3Weak.lean
@@ -438,9 +428,9 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 57
-Identifiants répliqués     (total) hors whitelist : 122
-Fichiers identifiés hors whitelist avec répliques : 37 fichiers
+Identifiants répliqués             hors whitelist : 55
+Identifiants répliqués     (total) hors whitelist : 118
+Fichiers identifiés hors whitelist avec répliques : 36 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.
        (Les vraies collisions intra-namespace sont refusées par Lean.)

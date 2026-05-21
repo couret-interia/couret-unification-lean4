@@ -91,26 +91,26 @@ def M (k : ℕ) : ℚ :=
 
 /-! ### Valeurs fermées des moments — k = 1..6, témoins concrets par `native_decide` -/
 
-theorem M1_eq : M 1 = 1 / 3   := by native_decide
-theorem M2_eq : M 2 = 1 / 3   := by native_decide
-theorem M3_eq : M 3 = 7 / 27  := by native_decide
-theorem M4_eq : M 4 = 7 / 27  := by native_decide
-theorem M5_eq : M 5 = 61 / 243 := by native_decide
-theorem M6_eq : M 6 = 61 / 243 := by native_decide
+theorem CM1_eq : M 1 = 1 / 3   := by native_decide
+theorem CM2_eq : M 2 = 1 / 3   := by native_decide
+theorem CM3_eq : M 3 = 7 / 27  := by native_decide
+theorem CM4_eq : M 4 = 7 / 27  := by native_decide
+theorem CM5_eq : M 5 = 61 / 243 := by native_decide
+theorem CM6_eq : M 6 = 61 / 243 := by native_decide
 
 /-! ### Rigidité par paires aux ordres concrets -/
 
 /-- Rigidité par paires à l'ordre 1 : M_1 = M_2. -/
 theorem moments_paired_k1 : M 1 = M 2 := by
-  rw [M1_eq, M2_eq]
+  rw [CM1_eq, CM2_eq]
 
 /-- Rigidité par paires à l'ordre 2 : M_3 = M_4. -/
 theorem moments_paired_k2 : M 3 = M 4 := by
-  rw [M3_eq, M4_eq]
+  rw [CM3_eq, CM4_eq]
 
 /-- Rigidité par paires à l'ordre 3 : M_5 = M_6. -/
 theorem moments_paired_k3 : M 5 = M 6 := by
-  rw [M5_eq, M6_eq]
+  rw [CM5_eq, CM6_eq]
 
 /-- Conjonction des trois premières rigidités par paires. -/
 theorem moments_paired_first_three :
