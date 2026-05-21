@@ -343,7 +343,7 @@ if [ -n "$UNEXPECTED" ]; then
         IMP_LIST="$IMP_LIST$line"$'\n'
         GREP_IMPMD='`grep -rnE "'"$IMP"'([^[:alnum:]_]|$)" "lean/'"$CU_FOLDER"'/" --include="*.lean"`'
         IMP_FULLMD="$IMP_FULLMD"'### `'"$LN"'`'$'\n'"$GREP_IMPMD"$'\n'$(echo "$FIMP" | sed -E 's/^[[:space:]]+/- /g')$'\n'
-        IMP_LISTMD="$IMP_LISTMD"'- `'$(echo "$line" | sed "s| ||g")'`'$'\n'
+        IMP_LISTMD="$IMP_LISTMD"'- `'$(echo "$line" | sed "s|^[[:space:]]+||g")'`'$'\n'
       fi
     done <<< "$IMPORTS"
 
@@ -374,17 +374,18 @@ SYNT=""
 TOTAL_EXPECTED=$(printf '%s' "$EXPECTED" | wc -l | tr -d ' ')
 TOTAL_UNEXPECTED=$(printf '%s' "$UNEXPECT_L" | wc -l | tr -d ' ')
 SYNT="$SYNT""Identifiants doctrinaux répliqués     (whitelist) : $TOTAL_EXPECTED"$'\n'
-SYNT="$SYNT""Identifiants répliqués             hors whitelist : $TOTAL_UNEXPECTED"$'\n'
+SYNT="$SYNT""Identifiants répliqués             hors whitelist : $TOTAL_UNEXPECTED"
 if [ -n "$FULL_LIST" ]; then
   TOTAL_UNEXPECT_I=$(printf '%s' "$UNEXPECT_I" | wc -l | tr -d ' ')
   TOTAL_UNEXPECT_W=$(printf '%s' "$UNEXPECT_W" | wc -l | tr -d ' ')
-  SYNT="$SYNT""Identifiants répliqués     (total) hors whitelist : $TOTAL_UNEXPECT_I"$'\n'
-  SYNT="$SYNT""Fichiers identifiés hors whitelist avec répliques : $TOTAL_UNEXPECT_W fichiers"$'\n'
+  SYNT="$SYNT"$'\n'"Identifiants répliqués     (total) hors whitelist : $TOTAL_UNEXPECT_I"$'\n'
+  SYNT="$SYNT""Fichiers identifiés hors whitelist avec répliques : $TOTAL_UNEXPECT_W fichiers"
 fi
 FOOT=$(
 echo ""
 echo "═══ Synthèse ═══"
 echo "$SYNT"
+echo ""
 echo "[INFO] Cet audit est informatif, non bloquant."
 echo "       (Les vraies collisions intra-namespace sont refusées par Lean.)"
 )
