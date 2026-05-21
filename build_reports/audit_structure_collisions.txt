@@ -68,13 +68,13 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
  ⚠ Core ──       2 parseval_24
-       ./FiniteDefect/T1_to_T7.lean:356:theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
+       ./FiniteDefect/T1_to_T7.lean:358:theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
        ./Core/Kurtosis.lean:34:theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
  ⚠ Core ──       2 oneVec
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
  ⚠ Core ──       2 nontrivial_ratio
-       ./FiniteDefect/T1_to_T7.lean:391:theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by
+       ./FiniteDefect/T1_to_T7.lean:393:theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by
        ./Core/Kurtosis.lean:66:theorem nontrivial_ratio : (15 : ℚ) / (3 ^ 2) = 5 / 3 := by norm_num
  ⚠ Core ──       2 nineteen_not_in_TC
        ./Core/TCAutoInverse.lean:24:theorem nineteen_not_in_TC : 19 ≠ 1 ∧ 19 ≠ 11 ∧ 19 ≠ 29 := by omega
@@ -83,10 +83,10 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/FiniteSpectralAPI.lean:15:abbrev negOneG30 : G30 := u29
        ./Core/CharParity30.lean:5:def negOneG30 : G30 := -1
  ⚠ Core ──       2 Lk
-       ./FiniteDefect/T1_to_T7.lean:369:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
+       ./FiniteDefect/T1_to_T7.lean:371:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
        ./Core/FormuleLk.lean:68:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
  ⚠ Core ──       2 kurtosis_raw
-       ./FiniteDefect/T1_to_T7.lean:387:theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by
+       ./FiniteDefect/T1_to_T7.lean:389:theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by
        ./Core/Kurtosis.lean:53:theorem kurtosis_raw : (21 : ℚ) / (3 ^ 2) = 7 / 3 := by norm_num
  ⚠ Core ──       2 kappa
        ./Spectral/T2Gap.lean:54:def kappa : ℝ := 2
@@ -111,7 +111,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Empirical/SophieGermainTransitions.lean:121:def empirical_statement : Statement := {
        ./Empirical/SophieGermainExpected.lean:171:def empirical_statement : Statement := {
  ⚠ Core ──       2 eigTrace
-       ./FiniteDefect/T1_to_T7.lean:366:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
+       ./FiniteDefect/T1_to_T7.lean:368:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
        ./Core/FormuleLk.lean:37:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
         ──       2 E
        ./Logic/ChiralityFinite.lean:61:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
@@ -119,15 +119,9 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──       2 dot
        ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ :=
        ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
- ⚠ Core ──       2 chi_at_19
-       ./FiniteDefect/T1_to_T7.lean:289:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
-       ./Core/FiniteCore.lean:81:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, 1, -1, 1, -1]
  ⚠ Core ──       2 charParity
        ./Analytic/GammaFactor.lean:41:def charParity : CharIdx → Bool := fun _ => true
        ./Core/CharParity30.lean:27:noncomputable def charParity (χ : CharIdx) : Bool :=
- ⚠ Core ──       2 c_chi
-       ./FiniteDefect/T1_to_T7.lean:286:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
-       ./Core/FiniteCore.lean:75:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
  ⚠ Core ──       2 altVec_centered
        ./Spectral/FiniteCore.lean:132:theorem altVec_centered : ∑ i, altVec i = 0 := by
        ./Core/CenteredEigenspace.lean:27:theorem altVec_centered : vsum v3b = 0 := by native_decide
@@ -358,8 +352,8 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 33
-Identifiants répliqués     (total) hors whitelist : 69
+Identifiants répliqués             hors whitelist : 31
+Identifiants répliqués     (total) hors whitelist : 65
 Fichiers identifiés hors whitelist avec répliques : 35 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.

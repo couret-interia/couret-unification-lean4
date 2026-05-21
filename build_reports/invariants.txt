@@ -116,9 +116,9 @@ lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:168:    RHCl
 lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:231:- RHClaimed = false ;
 lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:239:    RHClaimed = false ∧
 lean/CouretUnification/FiniteDefect/T1_to_T7.lean:37:`RHClaimed = false`.
-lean/CouretUnification/FiniteDefect/T1_to_T7.lean:436:def RHClaimed : Bool := false
-lean/CouretUnification/FiniteDefect/T1_to_T7.lean:439:theorem rh_not_claimed : RHClaimed = false := rfl
-lean/CouretUnification/FiniteDefect/T1_to_T7.lean:460:Aucun `sorry`. Aucun axiome. `RHClaimed = false`.
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:438:def RHClaimed : Bool := false
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:441:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:462:Aucun `sorry`. Aucun axiome. `RHClaimed = false`.
 lean/CouretUnification/Release/ReleaseManifest.lean:49:def RHClaimed_v36 : Bool := false
 lean/CouretUnification/Release/ReleaseManifest.lean:52:def HilbertPolyaClaimed_v36 : Bool := false
 lean/CouretUnification/Release/ReleaseManifest.lean:61:def Det2IdentityClaimed_v36 : Bool := false

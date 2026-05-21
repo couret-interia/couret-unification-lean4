@@ -282,11 +282,13 @@ Lecture :
 Leur somme redonne exactement la valeur initiale `tcInd(5) = 0`.
 -/
 
-/-- Coefficients auxiliaires historiques du profil fantôme. -/
-def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
+/-- Coefficients auxiliaires historiques du profil fantôme.
+Note : même énoncé que CouretUnification.Core.c_chi (U30). -/
+def coef_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
 
-/-- Profil signé de `χ` au site fantôme `19`. -/
-def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
+/-- Profil signé de `χ` au site fantôme `19`.
+Note : même énoncé que CouretUnification.Core.chi_at_19 (U30). -/
+def chi_at_nineteen : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
 
 /--
 Décomposition du site `19` selon les trois projecteurs.
