@@ -28,7 +28,7 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ── Catégorie 2.1 — Réplications hors whitelist (à examiner) ──
  ⚠ Core ──       4 TC
-       ./Logic/ChiralityFinite.lean:68:def TC : Finset (ZMod 30) := {1, 11, 29}
+       ./Logic/ChiralityFinite.lean:70:def TC : Finset (ZMod 30) := {1, 11, 29}
        ./Core/U30.lean:43:def TC : Finset (ZMod 30) := {1, 11, 29}
        ./Core/FiniteCore.lean:42:abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
        ./Residue/ClosureTC.lean:56:def TC : Finset Z30 := {1, 11, 29}
@@ -37,10 +37,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/T2Gap.lean:39:def normSq (x : CoerciveSector) : ℝ := x.1.normSq
        ./Spectral/FiniteCore.lean:104:def normSq (x : Vec) : ℝ :=
        ./Spectral/FiniteCore.lean:123:def normSq (x : Centered8) : ℝ := FiniteCore.normSq x.1
- ⚠ Core ──       3 phantom_not_in_TC
-       ./Logic/ChiralityFinite.lean:156:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
-       ./Core/U30.lean:69:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
-       ./Core/FiniteCore.lean:62:theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
  ⚠ Core ──       3 parsevalMass
        ./Core/Classification63.lean:122:def parsevalMass (mask : Nat) : Nat :=
        ./Core/Parseval.lean:7:def parsevalMass : Nat := TCParsevalMass
@@ -73,28 +69,25 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteCore.lean:49:theorem TC_subset : TC ⊆ admissibleResidues := by
  ⚠ Core ──       2 TC_not_subgroup
        ./Core/U30.lean:75:theorem TC_not_subgroup : ¬(∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) := by
-       ./Core/FiniteCore.lean:71:theorem TC_not_subgroup :
+       ./Core/FiniteCore.lean:69:theorem TC_not_subgroup : ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
  ⚠ Core ──       2 TC_dim_odd
        ./Core/U30.lean:138:theorem TC_dim_odd : ¬ 2 ∣ TC.card := by native_decide
-       ./Core/FiniteCore.lean:194:theorem TC_dim_odd : ¬ 2 ∣ TC.card :=
+       ./Core/FiniteCore.lean:191:theorem TC_dim_odd : ¬ 2 ∣ TC.card := CouretUnification.Core.TC_dim_odd
  ⚠ Core ──       2 TC_card
        ./Core/U30.lean:56:theorem TC_card : TC.card = 3 := card_TC
        ./Core/FiniteCore.lean:45:theorem TC_card : TC.card = 3 :=
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
- ⚠ Core ──       2 phantom_product
-       ./Core/U30.lean:66:theorem phantom_product : (11 * 29 : ZMod 30) = 19 := by native_decide
-       ./Core/FiniteCore.lean:58:theorem phantom_product : (11 * 29 : ZMod 30) = 19 :=
  ⚠ Core ──       2 parseval_24
        ./FiniteDefect/T1_to_T7.lean:356:theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
        ./Core/Kurtosis.lean:34:theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
  ⚠ Core ──       2 order_7
        ./Core/U30.lean:111:theorem order_7  : (7 : ZMod 30) ^ 4 = 1 := by native_decide
-       ./Core/FiniteCore.lean:137:theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
+       ./Core/FiniteCore.lean:134:theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
  ⚠ Core ──       2 order_11
        ./Core/U30.lean:108:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
-       ./Core/FiniteCore.lean:134:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
+       ./Core/FiniteCore.lean:131:theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
  ⚠ Core ──       2 oneVec
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
@@ -139,20 +132,20 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./FiniteDefect/T1_to_T7.lean:366:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
        ./Core/FormuleLk.lean:37:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
         ──       2 E
-       ./Logic/ChiralityFinite.lean:59:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
+       ./Logic/ChiralityFinite.lean:61:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
        ./Logic/H3/RouteC.lean:505:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
         ──       2 dot
        ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ :=
        ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
  ⚠ Core ──       2 chi_at_19
        ./FiniteDefect/T1_to_T7.lean:289:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
-       ./Core/FiniteCore.lean:86:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, 1, -1, 1, -1]
+       ./Core/FiniteCore.lean:83:def chi_at_19 : Fin 8 → ℚ := ![1, -1, 1, -1, 1, -1, 1, -1]
  ⚠ Core ──       2 charParity
        ./Analytic/GammaFactor.lean:41:def charParity : CharIdx → Bool := fun _ => true
        ./Core/CharParity30.lean:27:noncomputable def charParity (χ : CharIdx) : Bool :=
  ⚠ Core ──       2 c_chi
        ./FiniteDefect/T1_to_T7.lean:286:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
-       ./Core/FiniteCore.lean:80:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
+       ./Core/FiniteCore.lean:77:def c_chi : Fin 8 → ℚ := ![3/8, 1/8, 3/8, 1/8, -1/8, 1/8, -1/8, 1/8]
  ⚠ Core ──       2 altVec_centered
        ./Spectral/FiniteCore.lean:132:theorem altVec_centered : ∑ i, altVec i = 0 := by
        ./Core/CenteredEigenspace.lean:27:theorem altVec_centered : vsum v3b = 0 := by native_decide
@@ -173,6 +166,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Frozen.lean:58:import CouretUnification.Logic.ChiralityFinite
        ./All.lean:253:import CouretUnification.Logic.ChiralityFinite
         ──        import CouretUnification.Core.U30
+       ./Logic/ChiralityFinite.lean:54:import CouretUnification.Core.U30
        ./Logic/H3/T5Weak.lean:2:import CouretUnification.Core.U30
        ./All.lean:124:import CouretUnification.Core.U30
        ./Core/FiniteCore.lean:6:import CouretUnification.Core.U30
@@ -382,8 +376,8 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 41
-Identifiants répliqués     (total) hors whitelist : 86
+Identifiants répliqués             hors whitelist : 39
+Identifiants répliqués     (total) hors whitelist : 81
 Fichiers identifiés hors whitelist avec répliques : 35 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.

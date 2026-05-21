@@ -54,22 +54,19 @@ theorem TC_subset : TC ⊆ admissibleResidues := by
 -- ═══════════════════════════════════════════════════════════
 
 /-- [REAL] Produit fantôme :
-`11 * 29 ≡ 19 [ZMOD 30]`. -/
-theorem phantom_product : (11 * 29 : ZMod 30) = 19 :=
-  CouretUnification.Core.phantom_product
+`11 * 29 ≡ 19 [ZMOD 30]`, alias de U30 (phantom_product). -/
+theorem FCphantom_product : (11 * 29 : ZMod 30) = 19 := CouretUnification.Core.phantom_product
 
-/-- [REAL] Le fantôme `19` n’appartient pas au triplet `TC`. -/
-theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
-  CouretUnification.Core.phantom_not_in_TC
+/-- [REAL] Le fantôme `19` n’appartient pas au triplet `TC`, alias de U30 (phantom_not_in_TC). -/
+theorem FCphantom_not_in_TC : (19 : ZMod 30) ∉ TC := CouretUnification.Core.phantom_not_in_TC
 
 /-- [REAL] Le fantôme `19` reste néanmoins admissible dans `G₃₀`. -/
 theorem phantom_in_G : (19 : ZMod 30) ∈ admissibleResidues := by native_decide
 
 /-- [REAL] `TC` n’est pas un sous-groupe multiplicatif de `(ℤ/30ℤ)×`.
 
-Preuve : `11,29 ∈ TC`, mais `11*29 = 19` et `19 ∉ TC`. -/
-theorem TC_not_subgroup :
-    ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
+Preuve : `11,29 ∈ TC`, mais `11*29 = 19` et `19 ∉ TC`, alias de U30 (TC_not_subgroup). -/
+theorem TC_not_subgroup : ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
   CouretUnification.Core.TC_not_subgroup
 
 -- ═══════════════════════════════════════════════════════════
@@ -190,9 +187,8 @@ theorem split_11 : 480 = 48 * (11 - 1) := by norm_num
 -- §9. Obstruction symplectique
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] Le cardinal de `TC` est impair. -/
-theorem TC_dim_odd : ¬ 2 ∣ TC.card :=
-  CouretUnification.Core.TC_dim_odd
+/-- [REAL] Le cardinal de `TC` est impair, alias de U30 (TC_dim_odd). -/
+theorem TC_dim_odd : ¬ 2 ∣ TC.card := CouretUnification.Core.TC_dim_odd
 
 /-- [REAL] Le cardinal de `G₃₀` est pair. -/
 theorem G30_dim_even : 2 ∣ admissibleResidues.card := by native_decide

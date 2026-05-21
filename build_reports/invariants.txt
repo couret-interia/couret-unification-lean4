@@ -28,8 +28,8 @@ lean/CouretUnification/Logic/Doctrine.lean:38:theorem rh_claimed_false : RHClaim
 lean/CouretUnification/Logic/Doctrine.lean:101:example : RHClaimed = false := rh_claimed_false
 lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:8:  - RHClaimed = false
 lean/CouretUnification/Logic/ChiralityFinite.lean:46:L'invariant `RHClaimed = false` est enforcé au niveau du type.
-lean/CouretUnification/Logic/ChiralityFinite.lean:230:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/ChiralityFinite.lean:232:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/ChiralityFinite.lean:232:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/ChiralityFinite.lean:234:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/C3Weak.lean:23:  - Invariant constitutionnel : RHClaimed = false
 lean/CouretUnification/Logic/C3Weak.lean:177:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/C3Weak.lean:178:example : RHClaimed = false := rfl
@@ -155,8 +155,8 @@ lean/CouretUnification/Core/U30.lean:166:theorem rh_not_claimed : RHClaimed = fa
 lean/CouretUnification/Core/CayleySpectrum.lean:38:`RHClaimed = false`.
 lean/CouretUnification/Core/CayleySpectrum.lean:262:def RHClaimed : Bool := false
 lean/CouretUnification/Core/CayleySpectrum.lean:264:example : RHClaimed = false := rfl
-lean/CouretUnification/Core/FiniteCore.lean:249:def RHClaimed : Bool := false
-lean/CouretUnification/Core/FiniteCore.lean:252:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/FiniteCore.lean:245:def RHClaimed : Bool := false
+lean/CouretUnification/Core/FiniteCore.lean:248:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/Core/SophieGermainHecke.lean:26:RHClaimed = false.
 lean/CouretUnification/Core/CenteredCoordinates.lean:28:    • RHClaimed = false (invariant préservé via import Core.U30).
 lean/CouretUnification/Core/CenteredCoordinates.lean:142:    RHClaimed = false := rh_not_claimed

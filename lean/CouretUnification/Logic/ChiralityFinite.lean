@@ -51,6 +51,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
+import CouretUnification.Core.U30
+
 namespace CouretUnification.ChiralityFinite
 
 /-! ## Section 1 — Le noyau fini E et sa stabilité multiplicative -/
@@ -152,8 +154,8 @@ theorem TC_not_in_orbB : ¬ TC ⊆ orbB := by native_decide
 /-- Classe phantom : 11 · 29 ≡ 19 (mod 30). -/
 theorem phantom_mul : (11 : ZMod 30) * 29 = 19 := by native_decide
 
-/-- 19 ∉ TC. -/
-theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC := by native_decide
+/-- 19 ∉ TC, alias de Core.U30.phantom_not_in_TC. -/
+theorem phantom_19_not_in_TC : (19 : ZMod 30) ∉ TC := CouretUnification.Core.phantom_not_in_TC
 
 /-- **Théorème central (saut d'orbite chirale)**. La classe phantom 19,
     produit des deux facteurs 11 et 29, appartient à l'orbite **opposée**
