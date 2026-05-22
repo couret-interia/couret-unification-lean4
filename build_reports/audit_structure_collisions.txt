@@ -67,27 +67,15 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
- ⚠ Core ──       2 parseval_24
-       ./FiniteDefect/T1_to_T7.lean:336:theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
-       ./Core/Kurtosis.lean:34:theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
  ⚠ Core ──       2 oneVec
        ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
- ⚠ Core ──       2 nontrivial_ratio
-       ./FiniteDefect/T1_to_T7.lean:373:theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by norm_num
-       ./Core/Kurtosis.lean:66:theorem nontrivial_ratio : (15 : ℚ) / (3 ^ 2) = 5 / 3 := by norm_num
  ⚠ Core ──       2 nineteen_not_in_TC
        ./Core/TCAutoInverse.lean:24:theorem nineteen_not_in_TC : 19 ≠ 1 ∧ 19 ≠ 11 ∧ 19 ≠ 29 := by omega
        ./Residue/ClosureTC.lean:91:theorem nineteen_not_in_TC :
  ⚠ Core ──       2 negOneG30
        ./Logic/H3/FiniteSpectralAPI.lean:15:abbrev negOneG30 : G30 := u29
        ./Core/CharParity30.lean:5:def negOneG30 : G30 := -1
- ⚠ Core ──       2 Lk
-       ./FiniteDefect/T1_to_T7.lean:350:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
-       ./Core/FormuleLk.lean:68:def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
- ⚠ Core ──       2 kurtosis_raw
-       ./FiniteDefect/T1_to_T7.lean:369:theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by norm_num
-       ./Core/Kurtosis.lean:53:theorem kurtosis_raw : (21 : ℚ) / (3 ^ 2) = 7 / 3 := by norm_num
  ⚠ Core ──       2 kappa
        ./Spectral/T2Gap.lean:54:def kappa : ℝ := 2
        ./Core/Arithmetic.lean:194:noncomputable def kappa (q : ℕ) : ℝ := Real.sqrt (kappaSq q)
@@ -110,9 +98,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──       2 empirical_statement
        ./Empirical/SophieGermainTransitions.lean:121:def empirical_statement : Statement := {
        ./Empirical/SophieGermainExpected.lean:171:def empirical_statement : Statement := {
- ⚠ Core ──       2 eigTrace
-       ./FiniteDefect/T1_to_T7.lean:346:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
-       ./Core/FormuleLk.lean:37:def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
         ──       2 E
        ./Logic/ChiralityFinite.lean:61:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
        ./Logic/H3/RouteC.lean:505:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
@@ -221,11 +206,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
        ./Active.lean:58:import CouretUnification.Logic.H3.SquarefreeDensity
        ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
-        ──        import CouretUnification.FiniteDefect.T1_to_T7
-       ./Logic/H3/PhaseBCompositionCouret.lean:74:import CouretUnification.FiniteDefect.T1_to_T7
-       ./All.lean:129:import CouretUnification.FiniteDefect.T1_to_T7
-        ──        import CouretUnification.Core.Kurtosis
-       ./All.lean:67:import CouretUnification.Core.Kurtosis
         ──        import CouretUnification.Core.TCAutoInverse
        ./All.lean:79:import CouretUnification.Core.TCAutoInverse
         ──        import CouretUnification.Logic.H3.FiniteSpectralAPI
@@ -235,10 +215,6 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Core.CharParity30
        ./Logic/H3/AlgebraTC.lean:17:import CouretUnification.Core.CharParity30
        ./All.lean:167:import CouretUnification.Core.CharParity30
-        ──        import CouretUnification.Core.FormuleLk
-       ./Logic/H3/PhaseBCompositionCouretEta.lean:88:import CouretUnification.Core.FormuleLk
-       ./All.lean:76:import CouretUnification.Core.FormuleLk
-       ./Core/TraceRecurrence.lean:1:import CouretUnification.Core.FormuleLk
         ──        import CouretUnification.Core.Arithmetic
        ./Logic/H3/RouteC.lean:8:import CouretUnification.Core.Arithmetic
        ./All.lean:146:import CouretUnification.Core.Arithmetic
@@ -296,12 +272,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        import CouretUnification.Core.SpectralMoments
        import CouretUnification.Logic.H3.RouteC
        import CouretUnification.Logic.H3.SquarefreeDensity
-       import CouretUnification.FiniteDefect.T1_to_T7
-       import CouretUnification.Core.Kurtosis
        import CouretUnification.Core.TCAutoInverse
        import CouretUnification.Logic.H3.FiniteSpectralAPI
        import CouretUnification.Core.CharParity30
-       import CouretUnification.Core.FormuleLk
        import CouretUnification.Core.Arithmetic
        import CouretUnification.Logic.C3Weak
        import CouretUnification.Logic.H3.H3TestSpace
@@ -333,12 +306,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/SpectralMoments.lean
        ./Logic/H3/RouteC.lean
        ./Logic/H3/SquarefreeDensity.lean
-       ./FiniteDefect/T1_to_T7.lean
-       ./Core/Kurtosis.lean
        ./Core/TCAutoInverse.lean
        ./Logic/H3/FiniteSpectralAPI.lean
        ./Core/CharParity30.lean
-       ./Core/FormuleLk.lean
        ./Core/Arithmetic.lean
        ./Logic/C3Weak.lean
        ./Logic/H3/H3TestSpace.lean
@@ -352,9 +322,9 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 31
-Identifiants répliqués     (total) hors whitelist : 65
-Fichiers identifiés hors whitelist avec répliques : 35 fichiers
+Identifiants répliqués             hors whitelist : 26
+Identifiants répliqués     (total) hors whitelist : 55
+Fichiers identifiés hors whitelist avec répliques : 32 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.
        (Les vraies collisions intra-namespace sont refusées par Lean.)

@@ -332,8 +332,8 @@ theorem T7_decomposition_tc :
 -- ═══════════════════════════════════════════════════════════
 
 /-- Alias Parseval : `tr(A²) = 24`.
-Note : même énoncé que CouretUnification.Core.parseval_24 (U30). -/
-theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
+Note : même énoncé que CouretUnification.Core.parseval_24 (Kurtosis). -/
+theorem parseval_24_OK : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
 
 /-- Énergie moyenne par site : `24 / 8 = 3`. -/
 theorem parseval_E : (24 : ℚ) / 8 = 3 := by norm_num
@@ -341,36 +341,36 @@ theorem parseval_E : (24 : ℚ) / 8 = 3 := by norm_num
 /--
 Trace spectrale théorique à l’ordre `k`,
 déduite de la décomposition `{3², 1⁴, (-1)²}`..
-Note : même énoncé que CouretUnification.Core.eigTrace (U30).
+Note : même énoncé que CouretUnification.Core.eigTrace (FormuleLk).
 -/
-def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
+def eigTrace_OK (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
 
 /-- Ratio spectral normalisé `L_k = eigTrace(k) / 3^k`..
-Note : même énoncé que CouretUnification.Core.Lk (U30). -/
-def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
+Note : même énoncé que CouretUnification.Core.Lk (FormuleLk). -/
+def Lk_OK (k : Nat) : ℚ := eigTrace_OK k / (3 : ℚ) ^ k
 
 /-- Valeur de `L₁`. -/
-theorem Lk_1 : Lk 1 = 8/3 := by
-  simp [Lk, eigTrace]
+theorem Lk_1 : Lk_OK 1 = 8/3 := by
+  simp [Lk_OK, eigTrace_OK]
   norm_num
 
 /-- Ici `L₁ = L₂`. -/
-theorem Lk_pair : Lk 1 = Lk 2 := by
-  simp [Lk, eigTrace]
+theorem Lk_pair : Lk_OK 1 = Lk_OK 2 := by
+  simp [Lk_OK, eigTrace_OK]
   norm_num
 
 /-- La valeur initiale est strictement supérieure à `2`. -/
-theorem Lk_gt_2 : Lk 1 > 2 := by
-  simp [Lk, eigTrace]
+theorem Lk_gt_2 : Lk_OK 1 > 2 := by
+  simp [Lk_OK, eigTrace_OK]
   norm_num
 
 /-- Rapport brut de kurtosis symbolique..
-Note : même énoncé que CouretUnification.Core.kurtosis_raw (U30). -/
-theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by norm_num
+Note : même énoncé que CouretUnification.Core.kurtosis_raw (Kurtosis). -/
+theorem kurtosis_raw_OK : (21 : ℚ) / 9 = 7/3 := by norm_num
 
 /-- Rapport non trivial stabilisé..
-Note : même énoncé que CouretUnification.Core.nontrivial_ratio (U30). -/
-theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by norm_num
+Note : même énoncé que CouretUnification.Core.nontrivial_ratio (Kurtosis). -/
+theorem nontrivial_ratio_OK : (15 : ℚ) / 9 = 5/3 := by norm_num
 
 /-- Petite identité binaire associée à la classification `63`. -/
 theorem classification_63 : (63 : ℕ) = 2^6 - 1 := by norm_num
