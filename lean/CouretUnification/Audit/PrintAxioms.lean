@@ -10,6 +10,7 @@ Audit/PrintAxioms.lean (v38x).
 
 import CouretUnification.Core.CenteredCoordinates
 import CouretUnification.Logic.H3.SpectralBridge
+import CouretUnification.ResGold.Status
 
 namespace CouretUnification.Audit
 
@@ -21,5 +22,8 @@ namespace CouretUnification.Audit
 -- PrintAxioms de CenteredCoordinates.lean (since v38.4.7)
 #print axioms CouretUnification.Core.centered_29_eq_neg_sevenSum
 #print axioms CouretUnification.Core.centered_ext_from_first_seven
+
+-- PrintAxioms de ResGold.lean (since v38.5)
+#print axioms CouretUnification.ResGold.rh_not_claimed
 
 end CouretUnification.Audit

@@ -30,12 +30,12 @@ Cette structure est purement documentaire — elle n'a pas de contenu
 mathématique mais elle permet d'inscrire le statut de chaque définition
 dans la signature de type.
 -/
-inductive Status where
-  | D : Status
-  | M : Status
-  | H : Status
-  | O : Status
-  | E : Status
+inductive ResGoldStatus where
+  | D : ResGoldStatus
+  | M : ResGoldStatus
+  | H : ResGoldStatus
+  | O : ResGoldStatus
+  | E : ResGoldStatus
 deriving DecidableEq, Repr
 
 /-- `RHClaimed` est un drapeau booléen fixé à `false` :
@@ -56,6 +56,6 @@ elle doit provenir d'une dualité inscrite dans l'espace fonctionnel
 
 Cette gate est une règle épistémique et n'a pas de contenu Lean direct ;
 elle est documentée ici comme contrainte sur l'architecture. -/
-def gate0_principle : Status := Status.E
+def gate0_principle : ResGoldStatus := ResGoldStatus.E
 
 end CouretUnification.ResGold

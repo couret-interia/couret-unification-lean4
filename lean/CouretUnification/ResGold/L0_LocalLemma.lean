@@ -9,7 +9,7 @@ où ν_p(R) = (p - 1) si p ∣ R, sinon (p - 2).
 
 ## Statut par bloc
 
-* `phi`, `nu`              : définitions finies, [D]
+* `localPhi`, `nu`         : définitions finies, [D]
 * `nu_value`               : identité combinatoire, [D] (provable, sorry routinier)
 * `Jcal`, `Jcal_one`,
   `Jcal_nontrivial`        : décomposition Dirichlet multiplicative, [D]
@@ -55,7 +55,7 @@ variable (p : ℕ) [hp : Fact p.Prime]
 
 /-- ResGold local indicator on 𝔽_p :
     φ_{p,R}(a) = 1 si a ≠ 0 et R - a ≠ 0, sinon 0. -/
-def phi (R a : ZMod p) : ℕ :=
+def localPhi (R a : ZMod p) : ℕ :=
   if a ≠ 0 ∧ R - a ≠ 0 then 1 else 0
 
 /-- Local count :
@@ -101,7 +101,7 @@ def trivChar : FiniteMulChar p where
 
 /-- Somme de caractères J_p(R, χ) = Σ_a φ(a) χ(a). -/
 def Jcal (R : ZMod p) (χ : FiniteMulChar p) : ℂ :=
-  ∑ a, (phi p R a : ℂ) * χ a
+  ∑ a, (localPhi p R a : ℂ) * χ a
 
 /-- **[D]** Caractère trivial : J_p(R, 1) = ν_p(R). -/
 theorem Jcal_one (R : ZMod p) :
@@ -149,7 +149,7 @@ p-adique réelle est reportée à un module séparé `ResGold/PadicMeasure.lean`
 
 **Note** : ce n'est pas un théorème mais un marqueur documentaire.
 Aucun `True` placeholder ici. La discipline v38.5 anti-True-énoncé est
-respectée par le choix de typer comme `Status` plutôt que `Prop`. -/
-def Ip_padic_integral_status : Status := Status.H
+respectée par le choix de typer comme `ResGoldStatus` plutôt que `Prop`. -/
+def Ip_padic_integral_status : ResGoldStatus := ResGoldStatus.H
 
 end CouretUnification.ResGold.L0

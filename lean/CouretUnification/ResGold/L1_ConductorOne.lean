@@ -26,7 +26,7 @@ et `psi_L2_eq_HSnorm : True`. Ces énoncés sont *trivialement habitables*
 par `trivial` et ne disent rien mathématiquement. Ils ont été remplacés
 par des énoncés substantiels.
 
-La connexion avec la somme spectrale Σ_χ eigenvalue χ requiert
+La connexion avec la somme spectrale Σ_χ conductorOneEigenvalue χ requiert
 `Fintype (FiniteMulChar p)`, non construit dans ce module. Elle est
 explicitement reportée à un module ultérieur `SpectralEnumeration.lean`.
 
@@ -49,7 +49,7 @@ variable (p : ℕ) [hp : Fact p.Prime]
 /-- Fonction ResGold centrée sur 𝔽_p^× :
     ψ_{p,R}(a) = φ_{p,R}(a) - I_p^quot(R). -/
 noncomputable def psi (R : ZMod p) (a : ZMod p) : ℂ :=
-  (phi p R a : ℂ) - (Ip_quotient p R : ℂ)
+  (localPhi p R a : ℂ) - (Ip_quotient p R : ℂ)
 
 /-- Valeur propre du mode de caractère χ pour l'opérateur de convolution.
 **[D]**
@@ -60,7 +60,7 @@ Convention : λ_χ = (1/(p-1)) · J_p(R, χ^{-1}).
 * χ ≠ 1, R ≠ 0 : λ_χ = -χ(R)^{-1}/(p-1)
 
 Pour l'opérateur **centré** M^{(1),0}, le mode trivial λ_1 est mis à zéro. -/
-noncomputable def eigenvalue (R : ZMod p) (χ : FiniteMulChar p) : ℂ := by
+noncomputable def conductorOneEigenvalue (R : ZMod p) (χ : FiniteMulChar p) : ℂ := by
   classical
   exact
     if χ = trivChar p then 0  -- mode trivial annulé par centrage
@@ -71,9 +71,9 @@ noncomputable def eigenvalue (R : ZMod p) (χ : FiniteMulChar p) : ℂ := by
 /-- **[D]** Carré du module des valeurs propres non triviales.
 
 Pour χ ≠ 1, R ≠ 0 : |λ_χ|² = 1/(p-1)². -/
-theorem eigenvalue_abs_sq (R : ZMod p) (χ : FiniteMulChar p)
+theorem conductorOneEigenvalue_abs_sq (R : ZMod p) (χ : FiniteMulChar p)
     (hχ : χ ≠ trivChar p) (hR : R ≠ 0) :
-    Complex.normSq (eigenvalue p R χ) = 1 / ((p - 1 : ℝ) ^ 2) := by
+    Complex.normSq (conductorOneEigenvalue p R χ) = 1 / ((p - 1 : ℝ) ^ 2) := by
   sorry -- [D, provable] depuis |χ(R)| = 1 sur (ZMod p)^×
 
 /-- **[D]** Norme de Hilbert–Schmidt au carré de l'opérateur centré.
@@ -139,14 +139,14 @@ theorem signedTrace_three_cases (R : ZMod p) :
     rw [if_neg hR0, if_neg hR1]
 
 /-- **[O]** Statut documentaire : connexion entre `signedTrace` et la
-    somme spectrale Σ_χ eigenvalue χ.
+    somme spectrale Σ_χ conductorOneEigenvalue χ.
 
 Cette connexion est démontrable mathématiquement (orthogonalité des
-caractères + définition de eigenvalue), mais sa formalisation Lean
+caractères + définition de conductorOneEigenvalue), mais sa formalisation Lean
 demande `Fintype (FiniteMulChar p)`, non construit ici.
 
 Module ultérieur : `ResGold/SpectralEnumeration.lean` (à créer). -/
-def signedTrace_spectral_sum_status : Status := Status.O
+def signedTrace_spectral_sum_status : ResGoldStatus := ResGoldStatus.O
 
 /-- **[D]** Identité de norme L² au niveau quotient fini :
 

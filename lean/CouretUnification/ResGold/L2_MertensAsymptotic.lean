@@ -29,7 +29,7 @@ Les versions antérieures portaient `MertensConstant : ℝ := sorry` et
 niveau d'une *constante* (objet non-Prop), ce qui est doctrinalement
 ambigu (ce n'est ni un théorème conditionnel, ni un axiom assumé).
 
-Correction v38.5 : `A_asymptotic` est désormais **paramétré** par la
+Correction v38.5 : `mertensA_asymptotic` est désormais **paramétré** par la
 constante de Mertens et son asymptotique, suivant le pattern `L7For`
 du `SpectralBridge` v38.3.
 
@@ -44,10 +44,10 @@ des chaînes transitives Mathlib (qui peuvent changer entre versions).
 
 ## Statut
 
-* `A` (somme tronquée) : [D]
+* `mertensA` (somme tronquée) : [D]
 * `Dconst` (série convergente Σ 1/(p(p-1)²)) : [D, provable]
 * `Bconst_param mc R` (constante paramétrée) : [D, structural]
-* `A_asymptotic_param` : [D conditional on h_mertens]
+* `mertensA_asymptotic_param` : [D conditional on h_mertens]
 * Limite globale renormalisée : **non construite ici**, statut [H/O]
 -/
 
@@ -62,7 +62,7 @@ open BigOperators Finset Filter ResGold.L1
 
 /-- Somme tronquée des normes HS au carré, sur les premiers p ≤ P tels
 que p ∤ R. **[D]** comme objet fini ; l'asymptotique est traitée plus bas. -/
-noncomputable def A (P : ℕ) (R : ℤ) : ℝ :=
+noncomputable def mertensA (P : ℕ) (R : ℤ) : ℝ :=
   ∑ p ∈ (Finset.range (P + 1)).filter Nat.Prime,
     if (p : ℤ) ∣ R then 0
     else ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
@@ -90,7 +90,7 @@ de Mertens.
 Énoncé : si `mc` satisfait l'asymptotique de Mertens
     Σ_{p ≤ P} 1/p − log log P → mc,
 alors
-    A_P(R) − (log log P + B_R(mc)) → 0.
+    mertensA_P(R) − (log log P + B_R(mc)) → 0.
 
 **Pattern paramétrique (cf. v38.3 SpectralBridge.L7For)** : le théorème
 prend la constante et son asymptotique en hypothèses, sans les
@@ -102,7 +102,7 @@ externe.
 * h_mertens donne Σ_{p ≤ P} 1/p = log log P + mc + o(1)
 * Σ_{p ≤ P} 1/(p(p−1)²) → Dconst (absolument convergent)
 * corrections finies pour p | R rassemblées dans Bconst_param mc R. -/
-theorem A_asymptotic_param
+theorem mertensA_asymptotic_param
     (mc : ℝ)
     (h_mertens : Tendsto
         (fun P : ℕ =>
@@ -112,31 +112,31 @@ theorem A_asymptotic_param
         atTop (nhds 0))
     (R : ℤ) :
     Tendsto
-      (fun P : ℕ => A P R - (Real.log (Real.log P) + Bconst_param mc R))
+      (fun P : ℕ => mertensA P R - (Real.log (Real.log P) + Bconst_param mc R))
       atTop (nhds 0) := by
   sorry -- [D conditional on h_mertens]
 
 /-- **Limite globale renormalisée** : explicitement **non construite** ici.
 Documentée comme verrou pour module ultérieur. -/
-def globalRenormalizedTensor_status : Status := Status.H
+def globalRenormalizedTensor_status : ResGoldStatus := ResGoldStatus.H
 
 /-- **Compatibilité Poisson sous Gate 0** : explicitement non traitée ici.
 Verrou séparé. -/
-def poisson_compatibility_status : Status := Status.O
+def poisson_compatibility_status : ResGoldStatus := ResGoldStatus.O
 
 /-- **Inscription doctrinale** : ce module fixe L2a et **uniquement** L2a.
 
 L2b (Poisson séparé) et le pont vers ξ sont à traiter dans des modules
 distincts, après validation de L2a et construction préalable d'un
 foncteur Mellin–adélique (Verrou A). -/
-def L2a_scope : Status := Status.D
+def L2a_scope : ResGoldStatus := ResGoldStatus.D
 
 /-- **Statut Mertens externe** : la constante de Mertens n'est *pas*
 définie dans ce module. Si Mathlib v4.29.1 la fournit (à vérifier par
 grep dans `.lake/packages/mathlib/Mathlib/NumberTheory/`), on peut
 créer un fichier feuille `ResGold/MertensExternal.lean` qui l'importe
-et fournit `h_mertens`. Sinon, le théorème principal `A_asymptotic_param`
+et fournit `h_mertens`. Sinon, le théorème principal `mertensA_asymptotic_param`
 reste conditionnel — pattern strictement parallèle à `L7For` v38.3. -/
-def MertensConstant_status : Status := Status.H
+def MertensConstant_status : ResGoldStatus := ResGoldStatus.H
 
 end CouretUnification.ResGold.L2
