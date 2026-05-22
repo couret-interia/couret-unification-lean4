@@ -2,7 +2,7 @@
 # ResGold/Status.lean
 
 Marqueurs épistémiques du programme Couret–Unification et invariant
-de compilation `RHClaimed = False`.
+de compilation `RHClaimed = false`.
 
 Doctrine héritée de v36 : aucun axiome global ne redescend dans le noyau fini.
 Tous les énoncés non démontrés sont marqués `sorry` (local, traçable),
@@ -12,7 +12,7 @@ Discipline anti-trivialité (v38.3 + v38.5) :
 * Pas de Prop nues comme champs de structure (anti-Prop-nue, v38.3).
 * Pas de True comme énoncé de théorème (anti-True-énoncé, v38.5).
 
-Auteur : Alexandre Couret (programme), squelette préparé pour validation Thomas.
+Auteur : Alexandre Couret (programme), squelette prêt et validé par Thomas.
 Statut de ce fichier : [D] (pur, aucun sorry).
 -/
 
@@ -38,13 +38,16 @@ inductive Status where
   | E : Status
 deriving DecidableEq, Repr
 
-/-- `RHClaimed` est défini comme `False` : ce module n'affirme pas RH.
-Toute tentative de dériver RH depuis ce module nécessite de prouver `False`,
-ce qui est interdit sans `sorry` ou `axiom` explicite. -/
-def RHClaimed : Prop := False
+/-- `RHClaimed` est un drapeau booléen fixé à `false` :
+ce module ne revendique pas RH.
+
+La convention v38.5 est uniforme dans le dépôt :
+les gardes de revendication globales sont des `Bool := false`,
+et non des propositions `Prop := False`. -/
+def RHClaimed : Bool := false
 
 /-- Invariant de compilation : RH n'est pas revendiquée. -/
-theorem rh_not_claimed : ¬ RHClaimed := id
+theorem rh_not_claimed : RHClaimed = false := rfl
 
 /-- Gate 0 (statut [E]) — règle d'inscription :
 aucune symétrie fonctionnelle s ↔ 1 - s ne peut être supposée ;

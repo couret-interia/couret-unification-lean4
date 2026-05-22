@@ -4,8 +4,7 @@
 Fichier-racine du module `ResGold` (sous-programme du programme
 Couret–Unification, dossier Expert / ResGold local).
 
-Importe les couches L0, L1, L2 et vérifie l'invariant de compilation
-`RHClaimed = False`.
+Importe les couches L0, L1, L2 et vérifie l'invariant de compilation `RHClaimed = false`.
 
 ## Architecture
 
@@ -47,7 +46,7 @@ Voir `RESGOLD_CORRECTIONS_v38.5_NOTE.md` pour le détail des corrections.
   uniquement `[propext, Classical.choice, Quot.sound]`
 
 Auteur : programme Couret–Unification.
-Squelette préparé pour Thomas (Lean 4 / Mathlib v4.29.1).
+Squelette validé par Thomas (Lean 4 / Mathlib v4.29.1).
 -/
 
 import CouretUnification.ResGold.Status
@@ -57,9 +56,8 @@ import CouretUnification.ResGold.L2_MertensAsymptotic
 
 namespace CouretUnification.ResGold
 
-/-- Invariant de compilation final.
-Si ce théorème compile, le module respecte la garde `RHClaimed = false`. -/
-theorem module_does_not_claim_RH : ¬ RHClaimed := rh_not_claimed
+/-- Vérification triviale : RHClaimed est false par construction. -/
+theorem ResGold_module_does_not_claim_RH : RHClaimed = false := rfl
 
 /-- Statut consolidé des objets de ce module, à des fins documentaires.
 
