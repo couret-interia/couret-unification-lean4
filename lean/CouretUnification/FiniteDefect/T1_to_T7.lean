@@ -47,8 +47,7 @@ L’espace discret observé comporte 8 positions.
 Lecture : on travaille sur les 8 unités modulo 30,
 indexées par `Fin 8`.
 -/
-theorem T1_dim : (List.finRange 8).length = 8 := by
-  decide
+theorem T1_dim : (List.finRange 8).length = 8 := by decide
 
 -- ═══════════════════════════════════════════════════════════
 -- T2 — Pôle quadratique (fantôme 19)
@@ -147,12 +146,10 @@ On le lit via la trace et la trace du carré.
 -/
 
 /-- Trace de la matrice de Cayley. -/
-theorem T3_trace : tr cayleyMat = 8 := by
-  native_decide
+theorem T3_trace : tr cayleyMat = 8 := by native_decide
 
 /-- Trace du carré de la matrice de Cayley. -/
-theorem T3_trace2 : tr (mm cayleyMat cayleyMat) = 24 := by
-  native_decide
+theorem T3_trace2 : tr (mm cayleyMat cayleyMat) = 24 := by native_decide
 
 /-!
 ## T3.4 — Polynôme annulateur
@@ -202,17 +199,14 @@ dans le secteur propre cohérent `λ = 3`.
 -/
 
 /-- Première coordonnée de `P₃(tcInd)`. -/
-theorem T4_P3_tc_0 : p3 tcInd 0 = 1/2 := by
-  native_decide
+theorem T4_P3_tc_0 : p3 tcInd 0 = 1/2 := by native_decide
 
 /-- Deuxième coordonnée de `P₃(tcInd)`. -/
-theorem T4_P3_tc_1 : p3 tcInd 1 = 1/4 := by
-  native_decide
+theorem T4_P3_tc_1 : p3 tcInd 1 = 1/4 := by native_decide
 
 /-- Idempotence de `P₃` sur `tcInd`. -/
 theorem T4_P3_idempotent :
-    veq (p3 (p3 tcInd)) (p3 tcInd) = true := by
-  native_decide
+    veq (p3 (p3 tcInd)) (p3 tcInd) = true := by native_decide
 
 /-- Énergie de la composante cohérente de `tcInd`. -/
 theorem T4_normSq_P3_tc : normSq (p3 tcInd) = 5/4 := by
@@ -228,12 +222,10 @@ Le projecteur `p1` récupère la composante du secteur intermédiaire `λ = 1`.
 
 /-- Idempotence de `P₁` sur `tcInd`. -/
 theorem T5_P1_idempotent :
-    veq (p1 (p1 tcInd)) (p1 tcInd) = true := by
-  native_decide
+    veq (p1 (p1 tcInd)) (p1 tcInd) = true := by native_decide
 
 /-- Énergie de la composante neutre de `tcInd`. -/
-theorem T5_normSq_P1_tc : normSq (p1 tcInd) = 1/2 := by
-  native_decide
+theorem T5_normSq_P1_tc : normSq (p1 tcInd) = 1/2 := by native_decide
 
 -- ═══════════════════════════════════════════════════════════
 -- T6 — Projecteur de défaut P₋
@@ -245,29 +237,23 @@ interprété ici comme **secteur de défaut**.
 -/
 
 /-- Coordonnée `alpha` du signal `tcInd`. -/
-theorem T6_alpha_tc : alpha tcInd = 2 := by
-  native_decide
+theorem T6_alpha_tc : alpha tcInd = 2 := by native_decide
 
 /-- Coordonnée `beta` du signal `tcInd`. -/
-theorem T6_beta_tc : beta tcInd = -1 := by
-  native_decide
+theorem T6_beta_tc : beta tcInd = -1 := by native_decide
 
 /-- Idempotence de `P₋` sur `tcInd`. -/
 theorem T6_Pminus_idempotent :
-    veq (pminus (pminus tcInd)) (pminus tcInd) = true := by
-  native_decide
+    veq (pminus (pminus tcInd)) (pminus tcInd) = true := by native_decide
 
 /-- Énergie de la composante de défaut de `tcInd`. -/
-theorem T6_normSq_Pminus_tc : normSq (pminus tcInd) = 5/4 := by
-  native_decide
+theorem T6_normSq_Pminus_tc : normSq (pminus tcInd) = 5/4 := by native_decide
 
 /-- Canal quadratique `χ₃` du signal `tcInd`. -/
-theorem T6_B3_tc : B3 tcInd = 1 := by
-  native_decide
+theorem T6_B3_tc : B3 tcInd = 1 := by native_decide
 
 /-- Canal quadratique `χ₁₅` du signal `tcInd`. -/
-theorem T6_B15_tc : B15 tcInd = 3 := by
-  native_decide
+theorem T6_B15_tc : B15 tcInd = 3 := by native_decide
 
 /-!
 ## T6.5 — Profil du fantôme 19
@@ -293,8 +279,7 @@ def chi_at_nineteen : Fin 8 → ℚ := ![1, -1, 1, -1, -1, 1, -1, 1]
 /--
 Décomposition du site `19` selon les trois projecteurs.
 -/
-theorem T6_ghost_19_profile :
-    p3 tcInd 5 = 1/4 ∧ p1 tcInd 5 = -1/2 ∧ pminus tcInd 5 = 1/4 := by
+theorem T6_ghost_19_profile : p3 tcInd 5 = 1/4 ∧ p1 tcInd 5 = -1/2 ∧ pminus tcInd 5 = 1/4 := by
   refine ⟨?_, ?_, ?_⟩ <;> native_decide
 
 /--
@@ -303,8 +288,7 @@ Réassemblage exact au site `19`.
 La somme des trois composantes vaut bien `0`,
 c’est-à-dire la valeur de `tcInd` au site fantôme.
 -/
-theorem T6_ghost_19_cancellation :
-    p3 tcInd 5 + p1 tcInd 5 + pminus tcInd 5 = 0 := by
+theorem T6_ghost_19_cancellation : p3 tcInd 5 + p1 tcInd 5 + pminus tcInd 5 = 0 := by
   native_decide
 
 -- ═══════════════════════════════════════════════════════════
@@ -317,9 +301,7 @@ On obtient donc une identité de type Pythagore.
 -/
 
 /-- Décomposition énergétique exacte de `tcInd`. -/
-theorem T7_pythagoras_tc :
-    normSq tcInd =
-      normSq (p3 tcInd) + normSq (p1 tcInd) + normSq (pminus tcInd) := by
+theorem T7_pythagoras_tc : normSq tcInd = normSq (p3 tcInd) + normSq (p1 tcInd) + normSq (pminus tcInd) := by
   native_decide
 
 /--
@@ -327,47 +309,44 @@ Vérification numérique de l’égalité énergétique :
 
 `3 = 5/4 + 1/2 + 5/4`.
 -/
-theorem T7_energy_check : (5 : ℚ)/4 + 1/2 + 5/4 = 3 := by
-  norm_num
+theorem T7_energy_check : (5 : ℚ)/4 + 1/2 + 5/4 = 3 := by norm_num
 
 /-- Orthogonalité entre `P₃(tcInd)` et `P₁(tcInd)`. -/
-theorem T7_orth_P3_P1_tc : dot (p3 tcInd) (p1 tcInd) = 0 := by
-  native_decide
+theorem T7_orth_P3_P1_tc : dot (p3 tcInd) (p1 tcInd) = 0 := by native_decide
 
 /-- Orthogonalité entre `P₃(tcInd)` et `P₋(tcInd)`. -/
-theorem T7_orth_P3_Pm_tc : dot (p3 tcInd) (pminus tcInd) = 0 := by
-  native_decide
+theorem T7_orth_P3_Pm_tc : dot (p3 tcInd) (pminus tcInd) = 0 := by native_decide
 
 /-- Orthogonalité entre `P₁(tcInd)` et `P₋(tcInd)`. -/
-theorem T7_orth_P1_Pm_tc : dot (p1 tcInd) (pminus tcInd) = 0 := by
-  native_decide
+theorem T7_orth_P1_Pm_tc : dot (p1 tcInd) (pminus tcInd) = 0 := by native_decide
 
 /--
 Décomposition exacte :
 `tcInd = P₃(tcInd) + P₁(tcInd) + P₋(tcInd)`.
 -/
 theorem T7_decomposition_tc :
-    veq (fun i => p3 tcInd i + p1 tcInd i + pminus tcInd i) tcInd = true := by
-  native_decide
+    veq (fun i => p3 tcInd i + p1 tcInd i + pminus tcInd i) tcInd = true := by native_decide
 
 -- ═══════════════════════════════════════════════════════════
 -- Compléments : trace, Parseval, tours et ratios
 -- ═══════════════════════════════════════════════════════════
 
-/-- Alias Parseval : `tr(A²) = 24`. -/
+/-- Alias Parseval : `tr(A²) = 24`.
+Note : même énoncé que CouretUnification.Core.parseval_24 (U30). -/
 theorem parseval_24 : tr (mm cayleyMat cayleyMat) = 24 := T3_trace2
 
 /-- Énergie moyenne par site : `24 / 8 = 3`. -/
-theorem parseval_E : (24 : ℚ) / 8 = 3 := by
-  norm_num
+theorem parseval_E : (24 : ℚ) / 8 = 3 := by norm_num
 
 /--
 Trace spectrale théorique à l’ordre `k`,
-déduite de la décomposition `{3², 1⁴, (-1)²}`.
+déduite de la décomposition `{3², 1⁴, (-1)²}`..
+Note : même énoncé que CouretUnification.Core.eigTrace (U30).
 -/
 def eigTrace (k : Nat) : ℚ := 2 * (3 : ℚ) ^ k + 4 + 2 * (-1 : ℚ) ^ k
 
-/-- Ratio spectral normalisé `L_k = eigTrace(k) / 3^k`. -/
+/-- Ratio spectral normalisé `L_k = eigTrace(k) / 3^k`..
+Note : même énoncé que CouretUnification.Core.Lk (U30). -/
 def Lk (k : Nat) : ℚ := eigTrace k / (3 : ℚ) ^ k
 
 /-- Valeur de `L₁`. -/
@@ -385,17 +364,16 @@ theorem Lk_gt_2 : Lk 1 > 2 := by
   simp [Lk, eigTrace]
   norm_num
 
-/-- Rapport brut de kurtosis symbolique. -/
-theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by
-  norm_num
+/-- Rapport brut de kurtosis symbolique..
+Note : même énoncé que CouretUnification.Core.kurtosis_raw (U30). -/
+theorem kurtosis_raw : (21 : ℚ) / 9 = 7/3 := by norm_num
 
-/-- Rapport non trivial stabilisé. -/
-theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by
-  norm_num
+/-- Rapport non trivial stabilisé..
+Note : même énoncé que CouretUnification.Core.nontrivial_ratio (U30). -/
+theorem nontrivial_ratio : (15 : ℚ) / 9 = 5/3 := by norm_num
 
 /-- Petite identité binaire associée à la classification `63`. -/
-theorem classification_63 : (63 : ℕ) = 2^6 - 1 := by
-  norm_num
+theorem classification_63 : (63 : ℕ) = 2^6 - 1 := by norm_num
 
 -- ═══════════════════════════════════════════════════════════
 -- Test hors triplet : robustesse formelle
@@ -410,14 +388,12 @@ ne sont pas propres au seul signal `tcInd`.
 def testSig : Sig := ![3, 1, 0, 2, -1, 4, 1, -2]
 
 /-- Pythagore spectral sur le signal test. -/
-theorem test_pythagoras :
-    normSq testSig =
+theorem test_pythagoras : normSq testSig =
     normSq (p3 testSig) + normSq (p1 testSig) + normSq (pminus testSig) := by
   native_decide
 
 /-- Décomposition exacte du signal test par les trois projecteurs. -/
-theorem test_decomposition :
-    veq (fun i => p3 testSig i + p1 testSig i + pminus testSig i) testSig = true := by
+theorem test_decomposition : veq (fun i => p3 testSig i + p1 testSig i + pminus testSig i) testSig = true := by
   native_decide
 
 /-- Orthogonalité mutuelle des trois composantes du signal test. -/
