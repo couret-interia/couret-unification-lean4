@@ -11,9 +11,9 @@ Recherche : def / structure / inductive / abbrev / theorem
 ═══ Identifiants répliqués (≥ 2 occurrences) ═══
 ── Catégorie 1 — Réplications doctrinales attendues (whitelist) ──
 (gardes RH/HP, fileIdentity, statuts, métriques d'audit par module)
-        ──      31 RHClaimed
+        ──      32 RHClaimed
+        ──      21 rh_not_claimed
         ──      21 fileIdentity
-        ──      20 rh_not_claimed
         ──       3 status
         ──       3 sorryCount
         ──       3 loaded

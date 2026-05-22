@@ -153,9 +153,12 @@
 │   ├── Rapport_Impasses_CouretUnification.md
 │   ├── registry
 │   │   ├── CHIRALITY_MULTI_Q_PROTOCOL.md
+│   │   ├── DOCTRINE_FINITECORE_VS_CORE_v38.5.md
 │   │   ├── DOCTRINE_L7_KRUSKAL_v38.2.md
 │   │   ├── DOCTRINE_L7_KRUSKAL_v38.3_ADDENDUM.md
 │   │   ├── NO_GO_SG_1SQRT7.md
+│   │   ├── README_RESGOLD-V38.5b.md
+│   │   ├── RESGOLD_CORRECTIONS_v38.5_NOTE.md
 │   │   └── SophieGermain.md
 │   ├── ROADMAP_FINAL.md
 │   ├── THOMAS_BUILD_PROTOCOL.md
@@ -391,6 +394,12 @@
 │   │   │   └── UseScanSummary.lean
 │   │   ├── Release
 │   │   │   └── ReleaseManifest.lean
+│   │   ├── ResGold
+│   │   │   ├── L0_LocalLemma.lean
+│   │   │   ├── L1_ConductorOne.lean
+│   │   │   ├── L2_MertensAsymptotic.lean
+│   │   │   └── Status.lean
+│   │   ├── ResGold.lean
 │   │   ├── Residue
 │   │   │   ├── Bridge
 │   │   │   │   └── DefectOperatorBridge.lean
@@ -491,4 +500,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-61 directories, 431 files
+62 directories, 439 files
