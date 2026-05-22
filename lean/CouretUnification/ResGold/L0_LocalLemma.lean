@@ -71,6 +71,7 @@ Esquisse de preuve (pour Thomas) :
 * Si R = 0, la condition R - a ≠ 0 devient -a ≠ 0, équivalent à a ≠ 0.
   On compte donc {a : ZMod p, a ≠ 0} = p - 1.
 * Si R ≠ 0, on exclut deux éléments distincts : 0 et R, donc p - 2.
+    nu p R = if R = 0 then p - 1 else p - 2 := by
 -/
 theorem nu_value (R : ZMod p) :
     nu p R = if R = 0 then p - 1 else p - 2 := by
@@ -106,7 +107,20 @@ def Jcal (R : ZMod p) (χ : FiniteMulChar p) : ℂ :=
 /-- **[D]** Caractère trivial : J_p(R, 1) = ν_p(R). -/
 theorem Jcal_one (R : ZMod p) :
     Jcal p R (trivChar p) = (nu p R : ℂ) := by
-  sorry -- [D, provable] dépliage des définitions + somme indicatrice
+  classical
+  unfold Jcal nu
+  have hsum :
+      (∑ a : ZMod p, (localPhi p R a : ℂ) * (trivChar p) a)
+        =
+      ∑ a : ZMod p, if a ≠ 0 ∧ R - a ≠ 0 then (1 : ℂ) else 0 := by
+    apply Finset.sum_congr rfl
+    intro a _
+    by_cases h : a ≠ 0 ∧ R - a ≠ 0
+    · simp [localPhi, trivChar, h]
+    · simp [localPhi, trivChar, h]
+  rw [hsum]
+  rw [← Finset.sum_filter]
+  simp
 
 /-- **[D]** Caractère non trivial :
     J_p(R, χ) = 0 si R = 0, sinon -χ(R).
