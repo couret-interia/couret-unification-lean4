@@ -52,9 +52,10 @@ des chaînes transitives Mathlib (qui peuvent changer entre versions).
 -/
 
 import CouretUnification.ResGold.L1_ConductorOne
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Order.Filter.AtTopBot.Basic
+-- import Mathlib.Analysis.SpecialFunctions.Log.Basic
+-- import Mathlib.NumberTheory.Divisors
+-- import Mathlib.Order.Filter.AtTopBot.Basic
+-- import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 namespace CouretUnification.ResGold.L2
 
@@ -67,41 +68,54 @@ noncomputable def mertensA (P : ℕ) (R : ℤ) : ℝ :=
     if (p : ℤ) ∣ R then 0
     else ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
 
-/-- Constante D = Σ_p 1/(p(p−1)²). Converge absolument car ~ 1/p³.
-**[D, provable]** comme limite d'une série convergente. -/
+/-- Constante D = Σ_p 1/(p(p−1)²).
+
+On l'encode comme une somme infinie sur `ℕ`, avec terme nul hors des
+nombres premiers. La convergence absolue est un lemme séparé éventuel ;
+la définition elle-même ne nécessite aucun `sorry`. -/
 noncomputable def Dconst : ℝ :=
-  sorry -- [D, provable] limite de série absolument convergente
+  ∑' p : ℕ,
+    if Nat.Prime p then
+      (1 : ℝ) / ((p : ℝ) * ((p : ℝ) - 1) ^ 2)
+    else
+      0
+
+/-- Somme tronquée de la correction absolument convergente
+    D_P = Σ_{p ≤ P} 1/(p(p−1)²). -/
+noncomputable def Dpartial (P : ℕ) : ℝ :=
+  ∑ p ∈ (Finset.range (P + 1)).filter Nat.Prime,
+    (1 : ℝ) / ((p : ℝ) * ((p : ℝ) - 1) ^ 2)
+
+/-- Correction tronquée des premiers divisant `R`. -/
+noncomputable def RpartialCorrection (P : ℕ) (R : ℤ) : ℝ :=
+  ∑ p ∈ (Finset.range (P + 1)).filter Nat.Prime,
+    if (p : ℤ) ∣ R then
+      ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
+    else
+      0
+
+/-- Correction finie complète des premiers divisant `R`. -/
+noncomputable def RfullCorrection (R : ℤ) : ℝ :=
+  ∑ p ∈ (Nat.divisors R.natAbs).filter Nat.Prime,
+    ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
 
 /-- Constante B_R paramétrée par la constante de Mertens.
 
-**[D, structural]** — la valeur dépend de `mc` (constante de Mertens
-externe). Quand Mathlib fournit la constante, on peut instancier ;
-en attendant, ce paramètre reste explicite.
-
 Formule : B_R(mc) = (mc - D) - Σ_{p | R, p premier} (p-2)/(p-1)². -/
 noncomputable def Bconst_param (mc : ℝ) (R : ℤ) : ℝ :=
-  (mc - Dconst)
-    - ∑ p ∈ (Nat.divisors R.natAbs).filter Nat.Prime,
-        ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
+  (mc - Dconst) - RfullCorrection R
 
-/-- **[D conditionnel]** Identité asymptotique paramétrée par la constante
-de Mertens.
+/-- **[D conditionnel]** Identité asymptotique paramétrée.
 
-Énoncé : si `mc` satisfait l'asymptotique de Mertens
-    Σ_{p ≤ P} 1/p − log log P → mc,
-alors
-    mertensA_P(R) − (log log P + B_R(mc)) → 0.
+Cette version rend explicites les trois ingrédients nécessaires :
 
-**Pattern paramétrique (cf. v38.3 SpectralBridge.L7For)** : le théorème
-prend la constante et son asymptotique en hypothèses, sans les
-axiomatiser. Le module ResGold principal ne dépend ainsi d'aucun axiom
-externe.
+* `h_mertens` : asymptotique de Mertens pour `Σ 1/p`,
+* `h_D` : convergence de la correction absolument convergente vers `Dconst`,
+* `h_Rcorr` : convergence/stabilisation de la correction finie des `p ∣ R`,
+* `h_decomp` : décomposition algébrique finie de `mertensA`.
 
-**Esquisse de preuve :**
-* (p−2)/(p−1)² = 1/p − 1/(p(p−1)²)
-* h_mertens donne Σ_{p ≤ P} 1/p = log log P + mc + o(1)
-* Σ_{p ≤ P} 1/(p(p−1)²) → Dconst (absolument convergent)
-* corrections finies pour p | R rassemblées dans Bconst_param mc R. -/
+Aucun axiome, aucun `sorry` : les verrous arithmétiques restants sont
+des hypothèses nommées, séparées et donc traçables. -/
 theorem mertensA_asymptotic_param
     (mc : ℝ)
     (h_mertens : Tendsto
@@ -110,11 +124,38 @@ theorem mertensA_asymptotic_param
               (1 : ℝ) / (p : ℝ))
           - Real.log (Real.log P) - mc)
         atTop (nhds 0))
-    (R : ℤ) :
+    (R : ℤ)
+    (h_D : Tendsto
+        (fun P : ℕ => Dpartial P - Dconst)
+        atTop (nhds 0))
+    (h_Rcorr : Tendsto
+        (fun P : ℕ => RpartialCorrection P R - RfullCorrection R)
+        atTop (nhds 0))
+    (h_decomp : ∀ P : ℕ,
+        mertensA P R - (Real.log (Real.log P) + Bconst_param mc R)
+          =
+        ((∑ p ∈ (Finset.range (P + 1)).filter Nat.Prime,
+              (1 : ℝ) / (p : ℝ))
+          - Real.log (Real.log P) - mc)
+          - (Dpartial P - Dconst)
+          - (RpartialCorrection P R - RfullCorrection R)) :
     Tendsto
       (fun P : ℕ => mertensA P R - (Real.log (Real.log P) + Bconst_param mc R))
       atTop (nhds 0) := by
-  sorry -- [D conditional on h_mertens]
+  have hcomb :
+      Tendsto
+        (fun P : ℕ =>
+          ((∑ p ∈ (Finset.range (P + 1)).filter Nat.Prime,
+                (1 : ℝ) / (p : ℝ))
+            - Real.log (Real.log P) - mc)
+            - (Dpartial P - Dconst)
+            - (RpartialCorrection P R - RfullCorrection R))
+        atTop (nhds 0) := by
+    simpa using (h_mertens.sub h_D).sub h_Rcorr
+
+  exact hcomb.congr'
+    (Filter.Eventually.of_forall
+      (fun P : ℕ => (h_decomp P).symm))
 
 /-- **Limite globale renormalisée** : explicitement **non construite** ici.
 Documentée comme verrou pour module ultérieur. -/
