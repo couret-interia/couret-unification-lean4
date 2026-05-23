@@ -246,13 +246,23 @@ theorem psi_L2_eq_HSnorm (R : ZMod p) :
       rw [Finset.card_erase_of_mem hRmem, hcardU]
       omega
 
-    have hpsi_R_norm :
-        Complex.normSq (psi p R R) =
-          (((p : ℝ) - 2) / ((p : ℝ) - 1)) ^ 2 := by
+    have hpsi_R_val :
+        psi p R R =
+          (-(((p : ℝ) - 2) / ((p : ℝ) - 1)) : ℂ) := by
       unfold psi localPhi
       rw [hI_complex]
       simp [hR]
-      norm_num [Complex.normSq, pow_two]
+
+    have hpsi_R_norm :
+        Complex.normSq (psi p R R) =
+          (((p : ℝ) - 2) / ((p : ℝ) - 1)) ^ 2 := by
+      rw [hpsi_R_val]
+      simpa [pow_two] using
+        (Complex.normSq_ofReal (-(((p : ℝ) - 2) / ((p : ℝ) - 1))))
+
+    have hreal_other :
+        (1 : ℝ) - (((p : ℝ) - 2) / ((p : ℝ) - 1)) =
+          1 / ((p : ℝ) - 1) := by
       field_simp [hden]
       ring
 
@@ -269,12 +279,26 @@ theorem psi_L2_eq_HSnorm (R : ZMod p) :
         intro hz
         exact haR ((sub_eq_zero.mp hz).symm)
 
-      unfold psi localPhi
-      rw [hI_complex]
-      simp [ha0, hsub]
-      norm_num [Complex.normSq, pow_two]
-      field_simp [hden]
-      ring
+      have hpsi_val :
+          psi p R a = ((1 / ((p : ℝ) - 1) : ℝ) : ℂ) := by
+        calc
+          psi p R a
+              =
+            (1 : ℂ) -
+              ((((p : ℝ) - 2) / ((p : ℝ) - 1) : ℝ) : ℂ) := by
+                unfold psi localPhi
+                rw [hI_complex]
+                simp [ha0, hsub]
+          _ =
+            (((1 : ℝ) - (((p : ℝ) - 2) / ((p : ℝ) - 1)) : ℝ) : ℂ) := by
+                simp
+          _ =
+            ((1 / ((p : ℝ) - 1) : ℝ) : ℂ) := by
+                rw [hreal_other]
+
+      rw [hpsi_val]
+      simpa [pow_two] using
+        (Complex.normSq_ofReal (1 / ((p : ℝ) - 1)))
 
     have hsum_rest :
         Finset.sum (U.erase R) (fun a => Complex.normSq (psi p R a)) =
@@ -304,13 +328,21 @@ theorem psi_L2_eq_HSnorm (R : ZMod p) :
         Finset.sum U (fun a => Complex.normSq (psi p R a)) =
           ((p : ℝ) - 2) * (1 / ((p : ℝ) - 1)) ^ 2
             + (((p : ℝ) - 2) / ((p : ℝ) - 1)) ^ 2 := by
-      rw [← hsplit]
-      rw [hsum_rest, hpsi_R_norm]
+      calc
+        Finset.sum U (fun a => Complex.normSq (psi p R a))
+            =
+          Finset.sum (U.erase R) (fun a => Complex.normSq (psi p R a))
+            + Complex.normSq (psi p R R) := by
+              exact hsplit.symm
+        _ =
+          ((p : ℝ) - 2) * (1 / ((p : ℝ) - 1)) ^ 2
+            + (((p : ℝ) - 2) / ((p : ℝ) - 1)) ^ 2 := by
+              rw [hsum_rest, hpsi_R_norm]
 
     rw [hsum_total]
     unfold HSnorm_sq
     rw [if_neg hR]
     field_simp [hden]
-    ring
+    ring_nf
 
 end CouretUnification.ResGold.L1
