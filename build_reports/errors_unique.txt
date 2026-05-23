@@ -1,3 +1,0 @@
-error: build failed
-error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:227:6: No goals to be solved
-error: Lean exited with code 1

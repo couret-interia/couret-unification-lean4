@@ -165,7 +165,7 @@ qui sera relu (au niveau global) comme identité Tamagawa une fois la
 mesure adélique en place. À ce stade, c'est uniquement une identité
 de normalisations finies.
 
-**Calcul (esquisse pour Thomas) :**
+**Calcul :**
 
 * Si R = 0 : ψ_{p,0}(a) = φ_{p,0}(a) - I_p^quot(0) = 𝟙[a≠0] - 1 = 0
   pour a ≠ 0. Somme = 0. HSnorm_sq = 0. OK.
@@ -224,7 +224,6 @@ theorem psi_L2_eq_HSnorm (R : ZMod p) :
           (((p : ℝ) - 2) / ((p : ℝ) - 1) : ℂ) := by
       rw [Ip_quotient_eq]
       simp [hR]
-      norm_num [Nat.cast_sub hp2, Nat.cast_sub hp1]
 
     have hRmem : R ∈ U := by
       simp [U, hR]
