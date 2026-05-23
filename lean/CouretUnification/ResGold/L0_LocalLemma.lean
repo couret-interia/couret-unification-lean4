@@ -65,17 +65,51 @@ def nu (R : ZMod p) : ℕ :=
     (fun a => a ≠ 0 ∧ R - a ≠ 0)).card
 
 /-- **[D]** Identité combinatoire fondamentale :
-    ν_p(R) = (p - 1) si R = 0, sinon (p - 2).
-
-Esquisse de preuve (pour Thomas) :
-* Si R = 0, la condition R - a ≠ 0 devient -a ≠ 0, équivalent à a ≠ 0.
-  On compte donc {a : ZMod p, a ≠ 0} = p - 1.
-* Si R ≠ 0, on exclut deux éléments distincts : 0 et R, donc p - 2.
-    nu p R = if R = 0 then p - 1 else p - 2 := by
--/
+    ν_p(R) = (p - 1) si R = 0, sinon (p - 2). -/
 theorem nu_value (R : ZMod p) :
     nu p R = if R = 0 then p - 1 else p - 2 := by
-  sorry -- [D, provable] case split sur R = 0, Finset.card_filter
+  classical
+  unfold nu
+  have hcard : (Finset.univ : Finset (ZMod p)).card = p := by
+    simp
+  by_cases hR : R = 0
+  · rw [if_pos hR]
+    subst R
+    have hfilter :
+        ((Finset.univ : Finset (ZMod p)).filter
+          (fun a => a ≠ 0 ∧ (0 : ZMod p) - a ≠ 0))
+          =
+        ((Finset.univ : Finset (ZMod p)).erase 0) := by
+      ext a
+      by_cases ha : a = 0 <;> simp [ha]
+    rw [hfilter]
+    rw [Finset.card_erase_of_mem (Finset.mem_univ (0 : ZMod p))]
+    rw [hcard]
+  · rw [if_neg hR]
+    have hfilter :
+        ((Finset.univ : Finset (ZMod p)).filter
+          (fun a => a ≠ 0 ∧ R - a ≠ 0))
+          =
+        (((Finset.univ : Finset (ZMod p)).erase 0).erase R) := by
+      ext a
+      by_cases ha0 : a = 0
+      · subst a
+        simp [hR]
+      · by_cases haR : a = R
+        · subst a
+          simp [hR]
+        · have hsub : R - a ≠ 0 := by
+            intro hz
+            exact haR ((sub_eq_zero.mp hz).symm)
+          simp [ha0, haR, hsub]
+    rw [hfilter]
+    have hRmem : R ∈ ((Finset.univ : Finset (ZMod p)).erase 0) := by
+      simp [hR]
+    rw [Finset.card_erase_of_mem hRmem]
+    rw [Finset.card_erase_of_mem (Finset.mem_univ (0 : ZMod p))]
+    rw [hcard]
+    have hp2 : 2 ≤ p := hp.out.two_le
+    omega
 
 /-- Caractère multiplicatif sur (ZMod p)^×, étendu par 0 hors des unités.
 Convention abstraite : on suppose χ : ZMod p → ℂ avec χ 0 = 0,
