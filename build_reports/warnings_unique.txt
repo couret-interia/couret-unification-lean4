@@ -16,8 +16,7 @@ warning: lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:71:6: declaratio
 warning: lean/CouretUnification/Logic/L10NoGoTheorem.lean:206:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L10NoGoTheorem.lean:63:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L6RatioEstimateDerived.lean:66:8: declaration uses `sorry`
-warning: lean/CouretUnification/ResGold/L0_LocalLemma.lean:166:8: declaration uses `sorry`
-warning: lean/CouretUnification/ResGold/L0_LocalLemma.lean:179:8: declaration uses `sorry`
+warning: lean/CouretUnification/ResGold/L0_LocalLemma.lean:405:8: declaration uses `sorry`
 warning: lean/CouretUnification/ResGold/L1_ConductorOne.lean:176:8: declaration uses `sorry`
 warning: lean/CouretUnification/ResGold/L1_ConductorOne.lean:74:8: declaration uses `sorry`
 warning: lean/CouretUnification/ResGold/L2_MertensAsymptotic.lean:105:8: declaration uses `sorry`
