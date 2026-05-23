@@ -78,7 +78,9 @@ theorem conductorOneEigenvalue_abs_sq (R : ZMod p) (χ : FiniteMulChar p)
 
   have hden_norm :
       Complex.normSq ((p : ℂ) - 1) = ((p : ℝ) - 1) ^ 2 := by
-    simpa using (Complex.normSq_ofReal ((p : ℝ) - 1))
+    have h :=
+      Complex.normSq_ofReal ((p : ℝ) - 1)
+    simpa [Complex.ofReal_sub, Complex.ofReal_natCast] using h
 
   unfold conductorOneEigenvalue
   simp [hχ, hR, χ.normSq_nonzero R hR, hden_norm]
