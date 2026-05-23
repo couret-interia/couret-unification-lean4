@@ -1,0 +1,3 @@
+error: build failed
+error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:76:77: unsolved goals
+error: Lean exited with code 1

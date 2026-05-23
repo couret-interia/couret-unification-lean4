@@ -113,16 +113,18 @@ theorem nu_value (R : ZMod p) :
 
 /-- Caractère multiplicatif sur (ZMod p)^×, étendu par 0 hors des unités.
 Convention abstraite : on suppose χ : ZMod p → ℂ avec χ 0 = 0,
-χ (a * b) = χ a * χ b sur les unités, et χ 1 = 1.
+χ (a * b) = χ a * χ b sur les unités, χ 1 = 1, et |χ a|² = 1
+sur les unités.
 
-**Note v38.3** : tous les champs sont effectifs (pas de Prop nues).
-Le champ `toFun` est la donnée fonctionnelle ; `zero`, `mul`, `one`
-sont des contraintes effectives sur cette donnée. -/
+**Note v38.5** : `normSq_nonzero` explicite l'invariant spectral utilisé
+dans L1. Il évite de refaire dans L1 la preuve finie que les valeurs d'un
+caractère multiplicatif fini sont des racines de l'unité. -/
 structure FiniteMulChar (p : ℕ) [Fact p.Prime] where
   toFun : ZMod p → ℂ
   zero : toFun 0 = 0
   mul : ∀ a b : ZMod p, a ≠ 0 → b ≠ 0 → toFun (a * b) = toFun a * toFun b
   one : toFun 1 = 1
+  normSq_nonzero : ∀ a : ZMod p, a ≠ 0 → Complex.normSq (toFun a) = 1
 
 instance : CoeFun (FiniteMulChar p) (fun _ => ZMod p → ℂ) :=
   ⟨FiniteMulChar.toFun⟩
@@ -148,6 +150,9 @@ def trivChar : FiniteMulChar p where
   zero := by simp
   mul := by intro a b ha hb; simp [ha, hb, mul_ne_zero ha hb]
   one := by simp
+  normSq_nonzero := by
+    intro a ha
+    simp [ha]
 
 /-- Somme de caractères J_p(R, χ) = Σ_a φ(a) χ(a). -/
 def Jcal (R : ZMod p) (χ : FiniteMulChar p) : ℂ :=
