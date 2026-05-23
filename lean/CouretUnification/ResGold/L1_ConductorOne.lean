@@ -78,10 +78,10 @@ theorem conductorOneEigenvalue_abs_sq (R : ZMod p) (χ : FiniteMulChar p)
 
   have hden_norm :
       Complex.normSq ((p : ℂ) - 1) = ((p : ℝ) - 1) ^ 2 := by
-    norm_num [Complex.normSq]
+    simpa [pow_two] using (Complex.normSq_ofReal ((p : ℝ) - 1))
 
   unfold conductorOneEigenvalue
-  simp [hχ, hR, χ.normSq_nonzero R hR, hden_norm]
+  simp [hχ, hR, χ.normSq_nonzero R hR, hden_norm, pow_two]
 
 /-- **[D]** Norme de Hilbert–Schmidt au carré de l'opérateur centré.
 
