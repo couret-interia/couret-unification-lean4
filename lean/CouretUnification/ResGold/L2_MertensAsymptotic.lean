@@ -52,9 +52,10 @@ des chaînes transitives Mathlib (qui peuvent changer entre versions).
 -/
 
 import CouretUnification.ResGold.L1_ConductorOne
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Order.Filter.AtTopBot.Basic
+-- import Mathlib.Analysis.SpecialFunctions.Log.Basic
+-- import Mathlib.NumberTheory.Divisors
+-- import Mathlib.Order.Filter.AtTopBot.Basic
+-- import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 namespace CouretUnification.ResGold.L2
 
@@ -67,10 +68,17 @@ noncomputable def mertensA (P : ℕ) (R : ℤ) : ℝ :=
     if (p : ℤ) ∣ R then 0
     else ((p : ℝ) - 2) / ((p : ℝ) - 1) ^ 2
 
-/-- Constante D = Σ_p 1/(p(p−1)²). Converge absolument car ~ 1/p³.
-**[D, provable]** comme limite d'une série convergente. -/
+/-- Constante D = Σ_p 1/(p(p−1)²).
+
+On l'encode comme une somme infinie sur `ℕ`, avec terme nul hors des
+nombres premiers. La convergence absolue est un lemme séparé éventuel ;
+la définition elle-même ne nécessite aucun `sorry`. -/
 noncomputable def Dconst : ℝ :=
-  sorry -- [D, provable] limite de série absolument convergente
+  ∑' p : ℕ,
+    if Nat.Prime p then
+      (1 : ℝ) / ((p : ℝ) * ((p : ℝ) - 1) ^ 2)
+    else
+      0
 
 /-- Constante B_R paramétrée par la constante de Mertens.
 
