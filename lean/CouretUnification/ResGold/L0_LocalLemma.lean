@@ -404,7 +404,39 @@ noncomputable def Ip_quotient (R : ZMod p) : ℚ :=
 /-- **[D]** Identité rationnelle. -/
 theorem Ip_quotient_eq (R : ZMod p) :
     Ip_quotient p R = if R = 0 then 1 else (p - 2 : ℚ) / (p - 1 : ℚ) := by
-  sorry -- [D, provable] depuis nu_value et arithmétique
+  classical
+  unfold Ip_quotient
+  rw [nu_value]
+
+  by_cases hR : R = 0
+  · simp [hR]
+
+    have hp1 : 1 ≤ p := by
+      have hp2 : 2 ≤ p := hp.out.two_le
+      omega
+
+    have hnum :
+        ((p - 1 : ℕ) : ℚ) = (p : ℚ) - 1 := by
+      rw [Nat.cast_sub hp1]
+      simp
+
+    have hden : (p : ℚ) - 1 ≠ 0 := by
+      intro h
+      have hpq : (p : ℚ) = 1 := sub_eq_zero.mp h
+      have hpnat : p = 1 := by
+        exact Nat.cast_inj.mp (by simpa using hpq)
+      have hp2 : 2 ≤ p := hp.out.two_le
+      omega
+
+    rw [hnum]
+    exact div_self hden
+
+  · simp [hR]
+
+    have hp2 : 2 ≤ p := hp.out.two_le
+
+    rw [Nat.cast_sub hp2]
+    simp
 
 /-- **[H]** Statut de l'identité avec l'intégrale p-adique :
     I_p(R) = ν_p(R) / (p - 1)
