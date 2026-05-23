@@ -1,0 +1,6 @@
+error: build failed
+error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:227:6: No goals to be solved
+error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:257:6: No goals to be solved
+error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:262:39: unsolved goals
+error: lean/CouretUnification/ResGold/L1_ConductorOne.lean:308:21: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Lean exited with code 1
