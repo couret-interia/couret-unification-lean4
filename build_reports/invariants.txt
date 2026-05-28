@@ -171,7 +171,7 @@ lean/CouretUnification/FCI/ModThirtyCheckerBridge.lean:37:  RHClaimed = false.
 lean/CouretUnification/FCI/CausalSupportMeasureBridge.lean:43:  RHClaimed = false.
 lean/CouretUnification/FCI/ModThirtyChecker.lean:37:  RHClaimed = false.
 lean/CouretUnification/ResGold.lean:7:Importe les couches L0, L1, L2 et vérifie l'invariant de compilation `RHClaimed = false`.
-lean/CouretUnification/ResGold.lean:59:theorem ResGold_module_does_not_claim_RH : RHClaimed = false := rfl
+lean/CouretUnification/ResGold.lean:65:theorem ResGold_module_does_not_claim_RH : RHClaimed = false := rfl
 lean/CouretUnification/Speculative/AnalogyMTF.lean:10:  - RHClaimed = false
 lean/CouretUnification/Speculative/Ontology.lean:9:  - RHClaimed = false
 lean/CouretUnification/Residue/SGShiftSpectrum.lean:42:  - RHClaimed = false.

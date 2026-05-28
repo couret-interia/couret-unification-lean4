@@ -18,8 +18,11 @@ ResGold.lean                        -- ce fichier
 
 ## Doctrine
 
-Aucun fichier de cette hiérarchie n'introduit `axiom`. Les énoncés
-non démontrés utilisent `sorry`, traçable et local.
+Aucun fichier de cette hiérarchie n'introduit `axiom`.
+Depuis la clôture v38.5, L0–L2 compilent sans `sorry` et sans warning.
+Les verrous non construits ne sont pas encodés par des preuves manquantes :
+ils sont exposés comme statuts épistémiques (`H` ou `O`) ou comme
+hypothèses explicites de théorèmes conditionnels.
 
 L'identification globale `det₂(I − zM) ∼ ξ(½ + iz)` n'est **pas**
 formulée dans ce module. Elle relève de modules `VerrouA.lean`,
@@ -39,13 +42,16 @@ Voir `RESGOLD_CORRECTIONS_v38.5_NOTE.md` pour le détail des corrections.
 ## État de compilation attendu (validé par Thomas)
 
 * Compile sans erreur
-* Sorries présents documentés par bloc `[D, provable]` ou `[H]` ou `[O]`
+* Compile sans warning
+* Aucun `sorry` attendu dans ResGold L0–L2
+* Les dépendances non fermées sont représentées par statuts ou hypothèses nommées
 * Aucun axiome
-* `#print axioms CouretUnification.ResGold.rh_not_claimed` doit retourner
-  `does not depend on any axioms`. (voir Audit.PrintAxioms)
+* `#print axioms CouretUnification.ResGold.ResGold_module_does_not_claim_RH` doit retourner
+  `does not depend on any axioms`.
+  (besoin de `import CouretUnification.ResGold`).
 
 Auteur : programme Couret–Unification.
-Squelette validé et dédupliqué par Thomas (Lean 4 / Mathlib v4.29.1).
+Façade consolidée validée et dédupliquée par Thomas (Lean 4 / Mathlib v4.29.1).
 -/
 
 import CouretUnification.ResGold.Status
@@ -63,23 +69,23 @@ theorem ResGold_module_does_not_claim_RH : RHClaimed = false := rfl
 Mis à jour v38.5 : les entrées Mertens et signedTrace reflètent la
 correction (paramétrisation et énoncés substantiels). -/
 def statusTable : List (String × ResGoldStatus) :=
-  [ ("nu_value (combinatorial)",               ResGoldStatus.D)
-  , ("Jcal_one, Jcal_nontrivial",              ResGoldStatus.D)
-  , ("Ip_quotient (rational form)",            ResGoldStatus.D)
-  , ("I_p(R) as p-adic integral",              ResGoldStatus.H)
-  , ("M^(1,0) conductorOneEigenvalue_abs_sq",  ResGoldStatus.D)
-  , ("HSnorm_sq_eq (definition)",              ResGoldStatus.D)
-  , ("signedTrace_three_cases",                ResGoldStatus.D)  -- v38.5: replaces True
-  , ("signedTrace ↔ spectral sum",             ResGoldStatus.O)  -- v38.5: requires Fintype
-  , ("psi_L2_eq_HSnorm (real identity)",       ResGoldStatus.D)  -- v38.5: replaces True
-  , ("mertensA_P(R) truncated sum",            ResGoldStatus.D)
-  , ("Dconst (convergent series)",             ResGoldStatus.D)
-  , ("Bconst_param (Mertens-parametric)",      ResGoldStatus.D)  -- v38.5: parametric form
-  , ("mertensA_asymptotic_param",              ResGoldStatus.D)  -- v38.5: conditional on h_mertens
-  , ("MertensConstant (external)",             ResGoldStatus.H)  -- v38.5: out of module
-  , ("global renormalized tensor",             ResGoldStatus.H)
-  , ("Poisson compatibility (Gate 0)",         ResGoldStatus.O)
-  , ("det₂(I − zM) ∼ ξ(½ + iz)",               ResGoldStatus.O)
+  [ ("nu_value (combinatorial)",                    ResGoldStatus.D)
+  , ("Jcal_one, Jcal_nontrivial",                   ResGoldStatus.D)
+  , ("Ip_quotient (rational form)",                 ResGoldStatus.D)
+  , ("I_p(R) as p-adic integral",                   ResGoldStatus.H)
+  , ("M^(1,0) conductorOneEigenvalue_abs_sq",       ResGoldStatus.D)
+  , ("HSnorm_sq_eq (definition)",                   ResGoldStatus.D)
+  , ("signedTrace_three_cases",                     ResGoldStatus.D)  -- v38.5: replaces True
+  , ("signedTrace ↔ spectral sum",                  ResGoldStatus.O)  -- requires Fintype enumeration
+  , ("psi_L2_eq_HSnorm (real finite identity)",     ResGoldStatus.D)  -- v38.5: replaces True
+  , ("mertensA_P(R) truncated sum",                 ResGoldStatus.D)
+  , ("Dconst (tsum object; convergence via h_D)",   ResGoldStatus.D)
+  , ("Bconst_param (Mertens-parametric)",           ResGoldStatus.D)  -- v38.5: parametric form
+  , ("mertensA_asymptotic_param",                   ResGoldStatus.D)  -- conditional on explicit hypotheses
+  , ("MertensConstant (external)",                  ResGoldStatus.H)
+  , ("global renormalized tensor",                  ResGoldStatus.H)
+  , ("Poisson compatibility (Gate 0)",              ResGoldStatus.O)
+  , ("det₂(I − zM) ∼ ξ(½ + iz)",                    ResGoldStatus.O)
   ]
 
 end CouretUnification.ResGold
