@@ -369,6 +369,9 @@ import CouretUnification.Residue.Bridge.DefectOperatorBridge
 -- v38.4.7 — fermeture coordonnée du sous-espace centré sur U30
 import CouretUnification.Core.CenteredCoordinates
 
+-- v38.5 ResGold
+import CouretUnification.ResGold
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.
