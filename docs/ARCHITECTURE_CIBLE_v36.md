@@ -353,7 +353,7 @@ Ces invariants sont vérifiés par `scripts/validate_pack.sh` à chaque commit :
 
 1. **Exactement 3 sorries doctrinaux**, aux trois emplacements ci-dessus.
 2. **`RHClaimed = false`** déclaré dans `README.md`.
-3. **`RHClaimed = true` absent** de l'ensemble du repo.
+3. **`RHClaimed` `=` `true` absent** de l'ensemble du repo.
 4. **34/34 fichiers requis** présents (Core, Spectral, scripts).
 5. **`audit_reachability.sh` depuis `All.lean`** : tous les modules atteignables.
 

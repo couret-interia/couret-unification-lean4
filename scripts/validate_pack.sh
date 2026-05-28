@@ -26,7 +26,7 @@ echo "[1/5] Required files..."
 check "test -f README.md" "README.md"
 check "test -f LICENSE" "LICENSE"
 check "test -f CITATION.cff" "CITATION.cff"
-check "test -f lakefile.toml" "lakefile."
+check "test -f lakefile.lean" "lakefile.lean"
 check "test -f lean/CouretUnification.lean" "Root import file"
 
 # ──── 2. Core files (v32 structure) ────
@@ -63,21 +63,32 @@ check "test -f lean/CouretUnification/Spectral/T2Gap.lean" "Spectral/T2Gap"
 echo ""
 echo "[4/5] Epistemic invariants..."
 
-# (a) Compteur strict des sorries doctrinaux (3 attendus : Cayley, Lemma7, RouteC)
-EXPECTED_SORRIES=3
+# (a) Compteur des sorries doctrinaux (2 attendus : Lemma7, RouteC)
+EXPECTED_SORRIES=2
 SORRY_COUNT=$(lake build 2>&1 | grep -cF 'declaration uses `sorry`' || true)
 check "[ \"$SORRY_COUNT\" -eq \"$EXPECTED_SORRIES\" ]" \
-  "Exactly $EXPECTED_SORRIES doctrinal sorries (CayleyG30:51, Lemma7Residual:6, RouteC:765, found: $SORRY_COUNT)"
+  "Exactly $EXPECTED_SORRIES doctrinal sorries (Lemma7Residual:6, RouteC:765, found: $SORRY_COUNT)"
 
 # (b) Garde épistémique : RHClaimed = false déclaré dans le README
 check "grep -qF 'RHClaimed = false' README.md" \
   "RHClaimed = false declared in README"
 
 # (c) Garde épistémique globale : aucun fichier ne revendique RHClaimed = true
+FAIL_BEFORE_RHCLAIMED=$FAIL
+RHCLAIMED_TRUE_MATCHES=""
+
 check "! grep -rqF 'RHClaimed = true' \
        --include='*.lean' --include='*.md' --include='*.py' \
        lean/ docs/ python/ scripts/ README.md 2>/dev/null" \
   "RHClaimed = true absent from entire repo"
+
+if [ "$FAIL_BEFORE_RHCLAIMED" -lt "$FAIL" ]; then
+  RHCLAIMED_TRUE_MATCHES=$(
+    grep -rnF 'RHClaimed = true' \
+      --include='*.lean' --include='*.md' --include='*.py' \
+      lean/ docs/ python/ scripts/ README.md 2>/dev/null || true
+  )
+fi
 
 # ──── 5. Scripts ────
 echo ""
@@ -97,5 +108,12 @@ if [ "$FAIL" -eq 0 ]; then
   exit 0
 else
   echo "  Pack validation: ✗ $FAIL FAILURES"
+  # Affiche le(s) fichier(s) RHClaimed = true en cause
+  if [ "$RHCLAIMED_TRUE_MATCHES" ]; then
+    echo ""
+    echo "══ 'RHClaimed = true' files ══"
+    echo "$RHCLAIMED_TRUE_MATCHES"
+    echo ""
+  fi
   exit 1
 fi

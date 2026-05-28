@@ -9,13 +9,6 @@
         python-moments python-gw python-tests python-defect \
         clean-reports
 
-# ─── DIRECTORIES ───────────────────────────────────────────────────
-
-REPORTS := build_reports
-
-$(REPORTS):
-	@mkdir -p $(REPORTS)
-
 # ─── BUILDS ────────────────────────────────────────────────────────
 
 build:
@@ -23,6 +16,15 @@ build:
 
 build-all:
 	lake build CouretUnification.All
+
+# ─── RÉPERTOIRES ───────────────────────────────────────────────────
+
+REPORTS := build_reports
+
+$(REPORTS):
+	@mkdir -p $(REPORTS)
+
+# ─── NETTOYAGES ────────────────────────────────────────────────────
 
 clean:
 	lake clean
