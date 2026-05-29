@@ -132,7 +132,6 @@
 │   ├── warnings_non_sorry.txt
 │   └── warnings_unique.txt
 ├── CITATION.cff
-├── CouretUnification.lean
 ├── docs
 │   ├── 01_PATCH_CAYLEY.md
 │   ├── 03_CAHIER_CHARGES_EULER.md
@@ -501,4 +500,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-62 directories, 440 files
+62 directories, 439 files

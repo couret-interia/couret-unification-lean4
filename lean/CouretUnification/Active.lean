@@ -10,14 +10,19 @@ Contrairement à Frozen.lean, ce fichier PEUT échouer au build si un
 front casse temporairement. La CI doit traiter cet échec comme un
 warning, pas un blocage.
 
-## Statut (v35.9.1) — 9 sorries total
+## Statut (v38.5.1) — 18 sorries total
 
+- Logic/C3Weak                        [1 sorry  — RIGIDITÉ FAIBLE DU RÉSIDU]
+- Logic/EulerBridgeInfinite           [2 sorry  — COMPLÉTION EULÉRIENNE INFINIE]
 - Logic/L6RatioEstimateDerived        [1 sorry  — ANALYTIC ASSEMBLY]
 - Logic/L10NoGoTheorem                [2 sorry  — 1 CONCEPTUEL + 1 UPSTREAM]
+- Logic/H3/RouteC                     [1 sorry  — LOCK 3 / EXISTENCE OPÉRATEUR]
+- Logic/H3/Lemma7Residual             [1 sorry  — L7 / RÉSIDU SUR LIGNE CRITIQUE]
 - Logic/H3/SquarefreeSupport          [1 sorry  — OBSOLETE, hors chemin]
 - Logic/H3/SquarefreeDensity          [3 sorry  — ANALYTIC]
 - Logic/H3/MoebiusBridge              [1 sorry  — SNAPSHOT API]
 - AnalyticHorizon/Det2Transport       [1 sorry  — INSTANCIATION]
+- Analytic/GammaFactor                [4 sorry  — PONT ARCHIMÉDIEN / GAMMA]
 
 ## Règle d'importation
 
@@ -38,7 +43,7 @@ lake build CouretUnification
 ```
 
 Layer : Meta (aggregator)
-Sorry : 9
+Sorry : 18
 RHClaimed : false (hérité)
 -/
 
@@ -53,10 +58,19 @@ import CouretUnification.Logic.L6RatioEstimateDerived
 -- No-go théorème L10
 import CouretUnification.Logic.L10NoGoTheorem
 
+-- Logic : fronts actifs
+import CouretUnification.Logic.C3Weak
+import CouretUnification.Logic.EulerBridgeInfinite
+
 -- H3 : fronts actifs
+import CouretUnification.Logic.H3.RouteC
+import CouretUnification.Logic.H3.Lemma7Residual
 import CouretUnification.Logic.H3.SquarefreeSupport
 import CouretUnification.Logic.H3.SquarefreeDensity
 import CouretUnification.Logic.H3.MoebiusBridge
 
 -- AnalyticHorizon
 import CouretUnification.AnalyticHorizon.Det2Transport
+
+-- Analytic
+import CouretUnification.Analytic.GammaFactor

@@ -202,9 +202,10 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Core.SpectralMoments
        ./All.lean:58:import CouretUnification.Core.SpectralMoments
         ──        import CouretUnification.Logic.H3.RouteC
+       ./Active.lean:66:import CouretUnification.Logic.H3.RouteC
        ./All.lean:145:import CouretUnification.Logic.H3.RouteC
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
-       ./Active.lean:58:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Active.lean:69:import CouretUnification.Logic.H3.SquarefreeDensity
        ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
         ──        import CouretUnification.Core.TCAutoInverse
        ./All.lean:79:import CouretUnification.Core.TCAutoInverse
@@ -219,6 +220,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/RouteC.lean:8:import CouretUnification.Core.Arithmetic
        ./All.lean:146:import CouretUnification.Core.Arithmetic
         ──        import CouretUnification.Logic.C3Weak
+       ./Active.lean:62:import CouretUnification.Logic.C3Weak
        ./All.lean:218:import CouretUnification.Logic.C3Weak
        ./All.lean:248:import CouretUnification.Logic.C3Weak_Gram
         ──        import CouretUnification.Logic.H3.H3TestSpace
@@ -248,6 +250,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./SophieGermainUmbrella.lean:38:import CouretUnification.Empirical.SophieGermainExpected
        ./All.lean:229:import CouretUnification.Empirical.SophieGermainExpected
         ──        import CouretUnification.Analytic.GammaFactor
+       ./Active.lean:76:import CouretUnification.Analytic.GammaFactor
        ./All.lean:247:import CouretUnification.Analytic.GammaFactor
         ──        import CouretUnification.Core.CenteredEigenspace
        ./All.lean:64:import CouretUnification.Core.CenteredEigenspace
