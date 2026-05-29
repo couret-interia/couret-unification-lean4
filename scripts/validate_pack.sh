@@ -71,6 +71,8 @@ check "test -f lean/CouretUnification/Core/TraceRecurrence.lean" "Core/TraceRecu
 check "test -f lean/CouretUnification/Core/MersenneMod30.lean" "Core/MersenneMod30"
 check "test -f lean/CouretUnification/Core/CarlemanUniqueness.lean" "Core/CarlemanUniqueness"
 check "test -f lean/CouretUnification/Core/Classification63Detail.lean" "Core/Classification63Detail"
+check "test -f lean/CouretUnification/Core/QuadraticResonance.lean" "Core/QuadraticResonance"
+
 # Couche Finite / FiniteDefect
 check "test -f lean/CouretUnification/Finite/Foundations.lean" "Finite/Foundations"
 check "test -f lean/CouretUnification/FiniteDefect/T1_to_T7.lean" "FiniteDefect/T1_to_T7"

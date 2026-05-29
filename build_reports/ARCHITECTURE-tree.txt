@@ -258,6 +258,7 @@
 │   │   │   ├── OddDimComplexObstruction.lean
 │   │   │   ├── ParsevalL5.lean
 │   │   │   ├── Parseval.lean
+│   │   │   ├── QuadraticResonance.lean
 │   │   │   ├── README.md
 │   │   │   ├── SophieGermainHecke.lean
 │   │   │   ├── SophieGermain.lean
@@ -501,4 +502,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-62 directories, 440 files
+62 directories, 441 files

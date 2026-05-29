@@ -243,6 +243,7 @@ tree -P '*.lean' -I 'Attic' --gitignore --prune --filesfirst
         │   ├── OddDimComplexObstruction.lean
         │   ├── ParsevalL5.lean
         │   ├── Parseval.lean
+        │   ├── QuadraticResonance.lean
         │   ├── SophieGermainHecke.lean
         │   ├── SophieGermain.lean
         │   ├── SophieGermainMod30.lean

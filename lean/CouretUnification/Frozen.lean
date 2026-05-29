@@ -73,3 +73,6 @@ import CouretUnification.Logic.H3.CriticalLineTransferSpec
 import CouretUnification.Logic.TimeBridge.Basic
 import CouretUnification.Logic.TimeBridge.B2Calibration
 import CouretUnification.Logic.TimeBridge.ModularFlowSpec
+
+-- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
+import CouretUnification.Core.QuadraticResonance

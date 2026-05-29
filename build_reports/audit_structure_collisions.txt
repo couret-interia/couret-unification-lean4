@@ -159,6 +159,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/PhaseBCompositionCouretEta.lean:86:import CouretUnification.Core.Classification63Detail
        ./All.lean:57:import CouretUnification.Core.Classification63
        ./All.lean:91:import CouretUnification.Core.Classification63Detail
+       ./Core/QuadraticResonance.lean:1:import CouretUnification.Core.Classification63
        ./Core/DefectProjection.lean:1:import CouretUnification.Core.Classification63
        ./Core/Classification63Detail.lean:1:import CouretUnification.Core.Classification63
         ──        import CouretUnification.Core.Parseval
