@@ -64,9 +64,6 @@ Recherche : def / structure / inductive / abbrev / theorem
  ⚠ Core ──       2 unitsMod30
        ./Spectral/FiniteCore.lean:20:def unitsMod30 : Idx → ℤ
        ./Core/SpectralMoments.lean:29:def unitsMod30 : Fin 8 → Nat
- ⚠ Core ──       2 sum_char_eq_zero_of_ne_one
-       ./Core/CharacterSubgroupSums.lean:175:theorem sum_char_eq_zero_of_ne_one (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
-       ./Core/CharacterLemmas.lean:57:lemma sum_char_eq_zero_of_ne_one (χ : Char G) (hχ : χ ≠ 1) :
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
@@ -205,11 +202,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./All.lean:88:import CouretUnification.Core.ComponentSpectrum
         ──        import CouretUnification.Core.SpectralMoments
        ./All.lean:58:import CouretUnification.Core.SpectralMoments
-        ──        import CouretUnification.Core.CharacterSubgroupSums
-       ./All.lean:379:import CouretUnification.Core.CharacterSubgroupSums
-        ──        import CouretUnification.Core.CharacterLemmas
-       ./All.lean:166:import CouretUnification.Core.CharacterLemmas
-       ./Core/Characters30Bridge.lean:8:import CouretUnification.Core.CharacterLemmas
         ──        import CouretUnification.Logic.H3.RouteC
        ./Active.lean:66:import CouretUnification.Logic.H3.RouteC
        ./All.lean:145:import CouretUnification.Logic.H3.RouteC
@@ -282,8 +274,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        import CouretUnification.Core.FiniteOperator
        import CouretUnification.Core.ComponentSpectrum
        import CouretUnification.Core.SpectralMoments
-       import CouretUnification.Core.CharacterSubgroupSums
-       import CouretUnification.Core.CharacterLemmas
        import CouretUnification.Logic.H3.RouteC
        import CouretUnification.Logic.H3.SquarefreeDensity
        import CouretUnification.Core.TCAutoInverse
@@ -318,8 +308,6 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteOperator.lean
        ./Core/ComponentSpectrum.lean
        ./Core/SpectralMoments.lean
-       ./Core/CharacterSubgroupSums.lean
-       ./Core/CharacterLemmas.lean
        ./Logic/H3/RouteC.lean
        ./Logic/H3/SquarefreeDensity.lean
        ./Core/TCAutoInverse.lean
@@ -338,9 +326,9 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ═══ Synthèse ═══
 Identifiants doctrinaux répliqués     (whitelist) : 14
-Identifiants répliqués             hors whitelist : 27
-Identifiants répliqués     (total) hors whitelist : 57
-Fichiers identifiés hors whitelist avec répliques : 34 fichiers
+Identifiants répliqués             hors whitelist : 26
+Identifiants répliqués     (total) hors whitelist : 55
+Fichiers identifiés hors whitelist avec répliques : 32 fichiers
 
 [INFO] Cet audit est informatif, non bloquant.
        (Les vraies collisions intra-namespace sont refusées par Lean.)

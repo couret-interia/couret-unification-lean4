@@ -172,7 +172,7 @@ theorem trivial_on_ker_iff
     abélien fini. Chercher le lemme exact (cadre `MonoidHom G ℂˣ`) ; candidats :
     dériver de `AddChar.sum_eq_zero_of_ne_one` via l'équivalence caractères additifs ↔
     multiplicatifs, ou prouver par translation (∃ h₀, ξ h₀ ≠ 1 ⟹ ξ(h₀)·S = S ⟹ S = 0). -/
-theorem sum_char_eq_zero_of_ne_one (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
+theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
     ∑ x : G, (ξ x : ℂ) = 0 := by
   sorry
   -- ORTHOGONALITÉ GLOBALE. Résultat standard. Voir piste ci-dessus.
@@ -215,10 +215,10 @@ theorem sum_over_ker_eq_zero
         apply Finset.sum_congr rfl; intro x _; ring
     _ = (1/2) * (0 + 0) := by
         congr 1
-        rw [sum_char_eq_zero_of_ne_one ψ hψ1]
+        rw [sum_monoidHomChar_eq_zero ψ hψ1]
         have : ∑ x : G, ((χ x : ℂ) * (ψ x : ℂ)) = ∑ x : G, (((χ * ψ) x : ℂ)) := by
           apply Finset.sum_congr rfl; intro x _; simp [MonoidHom.mul_apply, Units.val_mul]
-        rw [this, sum_char_eq_zero_of_ne_one (χ * ψ) hχψ]
+        rw [this, sum_monoidHomChar_eq_zero (χ * ψ) hχψ]
     _ = 0 := by ring
 
 end CouretUnification.Core.CharacterSubgroupSums
