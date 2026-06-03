@@ -231,7 +231,8 @@ theorem sum_over_ker_eq_zero
     have hx_mul : (χ * ψ) x = 1 := by rw [h]; rfl
     rw [MonoidHom.mul_apply] at hx_mul
     -- hx_mul : χ x * ψ x = 1 dans ℂˣ ; donc ψ x = (χ x)⁻¹
-    have hψx : ψ x = (χ x)⁻¹ := (eq_inv_of_mul_eq_one_right hx_mul.symm)
+    have hψx : ψ x = (χ x)⁻¹ := by
+      rw [eq_inv_iff_mul_eq_one, mul_comm]; exact hx_mul
     -- (χ x)⁻¹ = χ x car (χ x)² = 1
     have hχx_inv : (χ x)⁻¹ = χ x := by
       apply Units.ext
