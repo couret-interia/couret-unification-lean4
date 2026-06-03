@@ -206,8 +206,19 @@ theorem sum_over_ker_eq_zero
   -- Étape 1 : somme sur ker = somme globale pondérée par l'indicatrice
   have step1 : ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ)
       = ∑ x : G, kerIndicatorC χ x * (ψ x : ℂ) := by
-    sorry  -- MÉCANIQUE : Finset.sum_filter / réindexation ker ↔ {x | x ∈ ker}.
-           -- kerIndicatorC vaut 1 sur ker, 0 ailleurs.
+    classical
+    simp only [kerIndicatorC]
+    -- (if x∈ker then 1 else 0) * ψx  =  if x∈ker then ψx else 0
+    have hpoint : ∀ x : G,
+        (if x ∈ χ.ker then (1:ℂ) else 0) * (ψ x : ℂ)
+          = if x ∈ χ.ker then (ψ x : ℂ) else 0 := by
+      intro x; by_cases hx : x ∈ χ.ker <;> simp [hx]
+    simp_rw [hpoint]
+    -- ∑_{univ} (if x∈ker then ψx else 0) = ∑_{x∈univ, x∈ker} ψx
+    rw [Finset.sum_ite_mem, Finset.univ_inter]
+    -- reste : ∑_{ker.carrier.toFinset} ψx = ∑_{univ.filter (·∈ker)} ψx
+    -- ces deux Finset sont égales
+    rfl
   -- Étape 2 : indicatrice = projecteur quadratique
   have step2 : ∀ x, kerIndicatorC χ x = quadraticProjectorC χ x := fun x =>
     (quadraticProjectorC_eq_kerIndicatorC χ hχ2 x).symm
