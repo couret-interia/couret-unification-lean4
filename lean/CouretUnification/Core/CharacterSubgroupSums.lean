@@ -182,7 +182,7 @@ theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
       have := MonoidHom.ext_iff.mp h x
       simpa [MonoidHom.comp_apply, Units.coeHom_apply] using this
     -- (ξ x : ℂ) = 1 = ((1 : ℂˣ) : ℂ), et la coercion ℂˣ → ℂ est injective
-    have : ξ x = 1 := Units.ext (by rw [hx1]; rfl)
+    have : ξ x = 1 := Units.ext (by rw [hx1, Units.val_one])
     exact this
   -- la somme coercée = somme du Char composé
   have : ∑ x : G, (ξ x : ℂ) = ∑ x : G, ((Units.coeHom ℂ).comp ξ) x := by
