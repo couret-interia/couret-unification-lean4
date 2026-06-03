@@ -1,3 +1,4 @@
+import CouretUnification.Core.CharacterLemmas
 import Mathlib.Tactic
 
 /-!
@@ -167,15 +168,26 @@ theorem trivial_on_ker_iff
 
 /-! ## §4. Somme nulle sur le noyau — VOIE PROJECTEUR -/
 
-/-- Orthogonalité globale : Σ_{x∈G} ξ(x) = 0 pour ξ : G →* ℂˣ non trivial.
-    PISTE Mathlib : résultat fondamental d'orthogonalité des caractères d'un groupe
-    abélien fini. Chercher le lemme exact (cadre `MonoidHom G ℂˣ`) ; candidats :
-    dériver de `AddChar.sum_eq_zero_of_ne_one` via l'équivalence caractères additifs ↔
-    multiplicatifs, ou prouver par translation (∃ h₀, ξ h₀ ≠ 1 ⟹ ξ(h₀)·S = S ⟹ S = 0). -/
+/-- Pont : somme nulle pour un caractère `G →* ℂˣ` non trivial,
+    en réutilisant `CharacterLemmas.sum_char_eq_zero_of_ne_one`. -/
 theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
     ∑ x : G, (ξ x : ℂ) = 0 := by
-  sorry
-  -- ORTHOGONALITÉ GLOBALE. Résultat standard. Voir piste ci-dessus.
+  -- composer ξ avec la coercion ℂˣ →* ℂ pour obtenir un Char G
+  have hcomp : ((Units.coeHom ℂ).comp ξ) ≠ 1 := by
+    intro h
+    apply hξ
+    -- (coeHom ∘ ξ) = 1  ⟹  ξ = 1, car la coercion ℂˣ →* ℂ est injective
+    ext x
+    have : (ξ x : ℂ) = 1 := by
+      have := MonoidHom.ext_iff.mp h x
+      simpa [MonoidHom.comp_apply, Units.coeHom_apply] using this
+    exact Units.ext this
+  -- la somme coercée = somme du Char composé
+  have : ∑ x : G, (ξ x : ℂ) = ∑ x : G, ((Units.coeHom ℂ).comp ξ) x := by
+    apply Finset.sum_congr rfl; intro x _
+    simp [MonoidHom.comp_apply, Units.coeHom_apply]
+  rw [this]
+  exact CouretUnification.Core.sum_char_eq_zero_of_ne_one _ hcomp
 
 /-- Σ_{x∈ker χ} ψ(x) = 0 pour ψ ∉ {1, χ}, par la VOIE PROJECTEUR.
 
