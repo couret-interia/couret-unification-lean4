@@ -218,7 +218,9 @@ theorem sum_over_ker_eq_zero
     rw [Finset.sum_ite_mem, Finset.univ_inter]
     -- reste : ∑_{ker.carrier.toFinset} ψx = ∑_{univ.filter (·∈ker)} ψx
     -- ces deux Finset sont égales
-    rfl
+    apply Finset.sum_congr _ (fun _ _ => rfl)
+    ext x
+    simp [Subgroup.mem_carrier, Set.mem_toFinset]
   -- Étape 2 : indicatrice = projecteur quadratique
   have step2 : ∀ x, kerIndicatorC χ x = quadraticProjectorC χ x := fun x =>
     (quadraticProjectorC_eq_kerIndicatorC χ hχ2 x).symm
