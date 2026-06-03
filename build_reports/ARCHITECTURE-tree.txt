@@ -233,6 +233,7 @@
 │   │   │   ├── CharacterLemmas.lean
 │   │   │   ├── Characters30Bridge.lean
 │   │   │   ├── Characters30.lean
+│   │   │   ├── CharacterSubgroupSums.lean
 │   │   │   ├── CharParity30.lean
 │   │   │   ├── CharPoly.lean
 │   │   │   ├── Classification63Detail.lean
@@ -507,4 +508,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 445 files
+63 directories, 446 files

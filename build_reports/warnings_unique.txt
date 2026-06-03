@@ -3,6 +3,9 @@ warning: lean/CouretUnification/Analytic/GammaFactor.lean:62:18: declaration use
 warning: lean/CouretUnification/Analytic/GammaFactor.lean:80:8: declaration uses `sorry`
 warning: lean/CouretUnification/Analytic/GammaFactor.lean:93:8: declaration uses `sorry`
 warning: lean/CouretUnification/AnalyticHorizon/Det2Transport.lean:64:8: declaration uses `sorry`
+warning: lean/CouretUnification/Core/CharacterSubgroupSums.lean:117:19: `push_neg` has been deprecated. Prefer using `push Not` instead.
+warning: lean/CouretUnification/Core/CharacterSubgroupSums.lean:171:8: declaration uses `sorry`
+warning: lean/CouretUnification/Core/CharacterSubgroupSums.lean:63:0: automatically included section variable(s) unused in theorem `CouretUnification.Core.CharacterSubgroupSums.char_val_eq_one_or_neg_one`:
 warning: lean/CouretUnification/Logic/C3Weak.lean:141:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/EulerBridgeInfinite.lean:107:6: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/EulerBridgeInfinite.lean:133:6: declaration uses `sorry`

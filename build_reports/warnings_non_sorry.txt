@@ -1,0 +1,2 @@
+warning: lean/CouretUnification/Core/CharacterSubgroupSums.lean:117:19: `push_neg` has been deprecated. Prefer using `push Not` instead.
+warning: lean/CouretUnification/Core/CharacterSubgroupSums.lean:63:0: automatically included section variable(s) unused in theorem `CouretUnification.Core.CharacterSubgroupSums.char_val_eq_one_or_neg_one`:

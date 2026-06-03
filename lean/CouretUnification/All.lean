@@ -375,6 +375,9 @@ import CouretUnification.ResGold
 -- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
 import CouretUnification.Core.QuadraticResonance
 
+-- v38.5.3 —
+import CouretUnification.Core.CharacterSubgroupSums
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.
