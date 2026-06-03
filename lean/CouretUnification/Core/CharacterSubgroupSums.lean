@@ -224,9 +224,18 @@ theorem sum_over_ker_eq_zero
   -- Étape 3 : χψ est non trivial
   have hχψ : (χ * ψ) ≠ 1 := by
     intro h
-    -- χ*ψ = 1 ⟹ ψ = χ⁻¹ = χ (ordre 2), contradiction avec ψ ≠ χ
     apply hψχ
-    sorry  -- MÉCANIQUE : de χ*ψ = 1 déduire ψ = χ⁻¹, puis χ⁻¹ = χ via hχ2.
+    -- de χ*ψ = 1 : ψ = χ⁻¹
+    have hψ_eq : ψ = χ⁻¹ := eq_inv_of_mul_eq_one_left h
+    -- χ⁻¹ = χ car (χ x)² = 1
+    have hχinv : χ⁻¹ = χ := by
+      ext x
+      simp only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val]
+      have hx := hχ2 x
+      rw [sq] at hx
+      -- but : (↑(χ x))⁻¹ = ↑(χ x), avec hx : ↑(χ x) * ↑(χ x) = 1
+      exact inv_eq_of_mul_eq_one_right hx
+    rw [hψ_eq, hχinv]
   -- Étape 4 : assemblage par orthogonalité globale
   calc ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ)
       = ∑ x : G, quadraticProjectorC χ x * (ψ x : ℂ) := by
