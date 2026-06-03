@@ -65,7 +65,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/FiniteCore.lean:20:def unitsMod30 : Idx → ℤ
        ./Core/SpectralMoments.lean:29:def unitsMod30 : Fin 8 → Nat
  ⚠ Core ──       2 sum_char_eq_zero_of_ne_one
-       ./Core/CharacterSubgroupSums.lean:171:theorem sum_char_eq_zero_of_ne_one
+       ./Core/CharacterSubgroupSums.lean:175:theorem sum_char_eq_zero_of_ne_one (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
        ./Core/CharacterLemmas.lean:57:lemma sum_char_eq_zero_of_ne_one (χ : Char G) (hχ : χ ≠ 1) :
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=

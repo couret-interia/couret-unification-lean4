@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Tactic
 
 /-!
 # Sommes de caractères sur un sous-groupe (cas ordre 2)
@@ -59,6 +59,7 @@ theorem unit_sq_eq_one_imp (z : ℂˣ) (h : (z : ℂ) ^ 2 = 1) :
   have h2 : (z : ℂ) * (z : ℂ) = 1 := by rw [← sq]; exact h
   exact mul_self_eq_one_iff.mp h2
 
+omit [Fintype G] [DecidableEq G] in
 /-- Un caractère d'ordre 2 prend ses valeurs dans {1, −1}. -/
 theorem char_val_eq_one_or_neg_one
     (χ : G →* ℂˣ) (hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (x : G) :
@@ -79,6 +80,7 @@ noncomputable def quadraticProjectorC (χ : G →* ℂˣ) (x : G) : ℂ :=
 noncomputable def kerIndicatorC (χ : G →* ℂˣ) (x : G) : ℂ :=
   if x ∈ χ.ker then 1 else 0
 
+omit [Fintype G] [DecidableEq G] in
 /-- **Projecteur quadratique = indicatrice du noyau.**
     x ∈ ker χ ⟹ χx = 1 ⟹ P_χ(x) = ½(1+1) = 1 = 1_A(x).
     x ∉ ker χ ⟹ χx = −1 (ordre 2) ⟹ P_χ(x) = ½(1−1) = 0 = 1_A(x). -/
@@ -90,7 +92,7 @@ theorem quadraticProjectorC_eq_kerIndicatorC
   by_cases hx : x ∈ χ.ker
   · -- cas x ∈ ker χ : χ x = 1
     have hχx_units : χ x = 1 := by simpa [MonoidHom.mem_ker] using hx
-    have hχx : (χ x : ℂ) = 1 := by exact_mod_cast congrArg Units.val hχx_units
+    have hχx : (χ x : ℂ) = 1 := by rw [hχx_units]; simp
     rw [if_pos hx, hχx]; norm_num
   · -- cas x ∉ ker χ : χ x = -1
     have hχx_ne_one : (χ x : ℂ) ≠ 1 := by
@@ -106,6 +108,7 @@ NOTE D'ARCHITECTURE : depuis l'adoption de la VOIE PROJECTEUR pour
 Il est conservé comme résultat structurel autonome (caractérisation des caractères
 triviaux sur ker χ) et pour documenter la dualité ordre 2. -/
 
+omit [DecidableEq G] in
 /-- Pour χ d'ordre 2 non trivial, ψ est trivial sur ker χ ⟺ ψ ∈ {1, χ}.
     Preuve directe pointwise (sans QuotientGroup). -/
 theorem trivial_on_ker_iff
@@ -114,7 +117,7 @@ theorem trivial_on_ker_iff
   constructor
   · intro hψA
     obtain ⟨g, hg⟩ : ∃ g, χ g ≠ 1 := by
-      by_contra h; push_neg at h; exact hχ1 (MonoidHom.ext h)
+      by_contra h; push Not at h; exact hχ1 (MonoidHom.ext h)
     have hχg : (χ g : ℂ) = -1 := by
       rcases char_val_eq_one_or_neg_one χ hχ2 g with h1 | hm1
       · exact absurd (Units.ext h1) hg
@@ -156,7 +159,8 @@ theorem trivial_on_ker_iff
       rcases char_val_eq_one_or_neg_one χ hχ2 x with hx | hx
       · rw [key x hx]; exact (Units.ext hx.symm)
       · rw [key2 x hx]
-        exact Units.ext (hneg.trans hχg.symm)
+        -- ψ x = ψ g = -1 (hneg) et χ x = -1 (hx) ⟹ ψ x = χ x
+        exact Units.ext (hneg.trans hx.symm)
   · rintro (rfl | rfl) x hx
     · rfl
     · rwa [MonoidHom.mem_ker] at hx
@@ -168,8 +172,7 @@ theorem trivial_on_ker_iff
     abélien fini. Chercher le lemme exact (cadre `MonoidHom G ℂˣ`) ; candidats :
     dériver de `AddChar.sum_eq_zero_of_ne_one` via l'équivalence caractères additifs ↔
     multiplicatifs, ou prouver par translation (∃ h₀, ξ h₀ ≠ 1 ⟹ ξ(h₀)·S = S ⟹ S = 0). -/
-theorem sum_char_eq_zero_of_ne_one
-    (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
+theorem sum_char_eq_zero_of_ne_one (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
     ∑ x : G, (ξ x : ℂ) = 0 := by
   sorry
   -- ORTHOGONALITÉ GLOBALE. Résultat standard. Voir piste ci-dessus.
@@ -206,9 +209,9 @@ theorem sum_over_ker_eq_zero
         rw [step1]; exact Finset.sum_congr rfl (fun x _ => by rw [step2])
     _ = ∑ x : G, ((1 + (χ x : ℂ)) / 2) * (ψ x : ℂ) := by
         apply Finset.sum_congr rfl; intro x _
-        unfold quadraticProjectorC charValC
+        unfold quadraticProjectorC charValC; ring
     _ = (1/2) * (∑ x : G, (ψ x : ℂ) + ∑ x : G, ((χ x : ℂ) * (ψ x : ℂ))) := by
-        rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+        rw [mul_add, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
         apply Finset.sum_congr rfl; intro x _; ring
     _ = (1/2) * (0 + 0) := by
         congr 1
