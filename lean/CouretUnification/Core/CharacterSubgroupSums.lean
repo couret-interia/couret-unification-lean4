@@ -176,14 +176,14 @@ theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
   have hcomp : ((Units.coeHom ℂ).comp ξ) ≠ 1 := by
     intro h
     apply hξ
-    -- (coeHom ∘ ξ) = 1  ⟹  ξ = 1, car la coercion ℂˣ →* ℂ est injective
     ext x
+    -- but : ξ x = (1 : G →* ℂˣ) x = 1 ; on prouve via la coercion injective
     have hx1 : (ξ x : ℂ) = 1 := by
       have := MonoidHom.ext_iff.mp h x
       simpa [MonoidHom.comp_apply, Units.coeHom_apply] using this
-    -- (ξ x : ℂ) = 1 = ((1 : ℂˣ) : ℂ), et la coercion ℂˣ → ℂ est injective
-    have : ξ x = 1 := Units.ext (by rw [hx1, Units.val_one])
-    exact this
+    -- (ξ x : ℂ) = 1 = ↑(1:ℂˣ) ⟹ ξ x = 1 par injectivité de la coercion ℂˣ→ℂ
+    rw [MonoidHom.one_apply]
+    exact Units.ext (by rw [hx1, Units.val_one])
   -- la somme coercée = somme du Char composé
   have : ∑ x : G, (ξ x : ℂ) = ∑ x : G, ((Units.coeHom ℂ).comp ξ) x := by
     apply Finset.sum_congr rfl; intro x _
@@ -214,13 +214,13 @@ theorem sum_over_ker_eq_zero
           = if x ∈ χ.ker then (ψ x : ℂ) else 0 := by
       intro x; by_cases hx : x ∈ χ.ker <;> simp [hx]
     simp_rw [hpoint]
-    -- ∑_{univ} (if x∈ker then ψx else 0) = ∑_{x∈univ, x∈ker} ψx
-    rw [Finset.sum_ite_mem, Finset.univ_inter]
+    -- ∑_{univ} (if x∈ker then ψx else 0) = ∑_{univ.filter (·∈ker)} ψx
+    rw [← Finset.sum_filter]
     -- reste : ∑_{ker.carrier.toFinset} ψx = ∑_{univ.filter (·∈ker)} ψx
-    -- ces deux Finset sont égales
     apply Finset.sum_congr _ (fun _ _ => rfl)
+    -- les deux Finsets coïncident
     ext x
-    simp [Subgroup.mem_carrier, Set.mem_toFinset]
+    simp [Set.mem_toFinset]
   -- Étape 2 : indicatrice = projecteur quadratique
   have step2 : ∀ x, kerIndicatorC χ x = quadraticProjectorC χ x := fun x =>
     (quadraticProjectorC_eq_kerIndicatorC χ hχ2 x).symm
