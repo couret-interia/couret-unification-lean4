@@ -183,7 +183,7 @@ theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
       simpa [MonoidHom.comp_apply, Units.coeHom_apply] using this
     -- (ξ x : ℂ) = 1 = ↑(1:ℂˣ) ⟹ ξ x = 1 par injectivité de la coercion ℂˣ→ℂ
     rw [MonoidHom.one_apply]
-    exact Units.ext (by rw [hx1, Units.val_one])
+    exact Units.ext (by simp [hx1])
   -- la somme coercée = somme du Char composé
   have : ∑ x : G, (ξ x : ℂ) = ∑ x : G, ((Units.coeHom ℂ).comp ξ) x := by
     apply Finset.sum_congr rfl; intro x _
