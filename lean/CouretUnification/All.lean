@@ -375,7 +375,7 @@ import CouretUnification.ResGold
 -- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
 import CouretUnification.Core.QuadraticResonance
 
--- v38.5.3 —
+-- v38.5.3 — Sommes de caractères sur sous-groupe (ordre 2), moteur du défaut ponctuel — [D-formal]
 import CouretUnification.Core.CharacterSubgroupSums
 
 -- TODO v38.1+ : une fois les TODO FCI levés, activer

@@ -7,11 +7,9 @@ import Mathlib.Tactic
 Couret–Unification — couche abstraite, étage B.
 Préalable au lemme du défaut ponctuel (`PointDefectLemma.lean`).
 
-## STATUT : [P-scaffold] — NON COMPILÉ côté rédaction (pas d'environnement Lean).
-Objectif visé : 0 sorry. Les `sorry` résiduels sont des pas MÉCANIQUES ou des appels
-à l'orthogonalité globale (résultat Mathlib standard) ; ils ne cachent aucun trou
-conceptuel. Le premier `lake build` de Thomas sert de révélateur pour la syntaxe
-Mathlib (noms de lemmes, coercions ℂˣ→ℂ, décidabilité de l'appartenance au noyau).
+## STATUT : [D-formal] — compilé, 0 sorry (lake build, Lean v4.29.1, Mathlib v4.29.1).
+Cadre kernel : preuve formelle (pas de `native_decide`). Aucun ajout d'axiome.
+Promotion [P-scaffold] → [D-formal] effective au build du 3 juin 2026.
 
 ## Contenu
 
@@ -23,6 +21,11 @@ Mathlib (noms de lemmes, coercions ℂˣ→ℂ, décidabilité de l'appartenance
 - `sum_over_ker_eq_zero` : Σ_{x∈ker χ} ψ(x) = 0 pour ψ ∉ {1, χ}, par la VOIE PROJECTEUR
   (somme globale pondérée → orthogonalité globale), plus propre que la translation.
 
+## Dépendances internes
+
+- `sum_over_ker_eq_zero` réutilise `CharacterLemmas.sum_char_eq_zero_of_ne_one`
+  (orthogonalité globale, déjà [D] dans le dépôt) via la coercion `ℂˣ →* ℂ`.
+
 ## Choix de preuve (arbitré 3 juin 2026)
 
 Deux décisions :
@@ -30,9 +33,8 @@ Deux décisions :
    donne la dichotomie G = ker χ ⊔ complément gratuitement).
 2. `sum_over_ker_eq_zero` : VOIE PROJECTEUR. On écrit Σ_{x∈A} ψ = ½ Σ_G (1+χ)ψ
    = ½(Σ_G ψ + Σ_G χψ) = 0, où χψ est non trivial car χ⁻¹ = χ et ψ ≠ χ. Le cœur
-   devient l'orthogonalité GLOBALE (Σ_G d'un caractère non trivial = 0), résultat
-   Mathlib standard — au lieu d'une manipulation de Finset de sous-groupe par
-   translation. Vérifié numériquement : pour ψ ∉ {1,χ}, Σ_G ψ = Σ_G χψ = 0.
+   est l'orthogonalité GLOBALE (Σ_G d'un caractère non trivial = 0), réutilisée du
+   dépôt — au lieu d'une manipulation de Finset de sous-groupe par translation.
 
 ## Cadre
 
@@ -196,7 +198,7 @@ theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
               = ½ (0 + 0) = 0.
     χψ non trivial car χ⁻¹ = χ (ordre 2) et ψ ≠ χ. -/
 theorem sum_over_ker_eq_zero
-    (χ : G →* ℂˣ) (hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (hχ1 : χ ≠ 1)
+    (χ : G →* ℂˣ) (hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (_hχ1 : χ ≠ 1)
     (ψ : G →* ℂˣ) (hψ1 : ψ ≠ 1) (hψχ : ψ ≠ χ) :
     ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ) = 0 := by
   classical
