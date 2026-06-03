@@ -225,17 +225,22 @@ theorem sum_over_ker_eq_zero
   have hχψ : (χ * ψ) ≠ 1 := by
     intro h
     apply hψχ
-    -- de χ*ψ = 1 : ψ = χ⁻¹
-    have hψ_eq : ψ = χ⁻¹ := eq_inv_of_mul_eq_one_left h
-    -- χ⁻¹ = χ car (χ x)² = 1
-    have hχinv : χ⁻¹ = χ := by
-      ext x
-      simp only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val]
-      have hx := hχ2 x
-      rw [sq] at hx
-      -- but : (↑(χ x))⁻¹ = ↑(χ x), avec hx : ↑(χ x) * ↑(χ x) = 1
-      exact inv_eq_of_mul_eq_one_right hx
-    rw [hψ_eq, hχinv]
+    -- prouver ψ = χ point par point
+    ext x
+    -- de (χ*ψ) = 1 : χ x * ψ x = 1, donc ψ x = (χ x)⁻¹
+    have hx_mul : (χ * ψ) x = 1 := by rw [h]; rfl
+    rw [MonoidHom.mul_apply] at hx_mul
+    -- hx_mul : χ x * ψ x = 1 dans ℂˣ ; donc ψ x = (χ x)⁻¹
+    have hψx : ψ x = (χ x)⁻¹ := by
+      rw [← hx_mul]; group
+    -- (χ x)⁻¹ = χ x car (χ x)² = 1
+    have hχx_inv : (χ x)⁻¹ = χ x := by
+      apply Units.ext
+      rw [Units.val_inv_eq_inv_val]
+      have hx2 : (χ x : ℂ) * (χ x : ℂ) = 1 := by
+        have := hχ2 x; rw [sq] at this; exact this
+      exact inv_eq_of_mul_eq_one_right hx2
+    rw [hψx, hχx_inv]
   -- Étape 4 : assemblage par orthogonalité globale
   calc ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ)
       = ∑ x : G, quadraticProjectorC χ x * (ψ x : ℂ) := by
