@@ -252,6 +252,7 @@
 │   │   │   ├── FiniteOperator.lean
 │   │   │   ├── FormuleLk.lean
 │   │   │   ├── Fourier30.lean
+│   │   │   ├── G30Classification.lean
 │   │   │   ├── HarmonicCertificate.lean
 │   │   │   ├── IntegralSpectrum.lean
 │   │   │   ├── InvariantE.lean
@@ -509,4 +510,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 447 files
+63 directories, 448 files

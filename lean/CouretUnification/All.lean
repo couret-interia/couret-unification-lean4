@@ -379,6 +379,8 @@ import CouretUnification.Core.QuadraticResonance
 import CouretUnification.Core.CharacterSubgroupSums
 -- v38.5.3 — Loi d'annihilation globale sur un espace arbitraire
 import CouretUnification.Core.PointDefectLemma
+-- v38.5.3 — Classification spectrale finie des triplets de G₃₀
+import CouretUnification.Core.G30Classification
 
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer

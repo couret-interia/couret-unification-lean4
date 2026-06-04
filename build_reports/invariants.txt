@@ -162,6 +162,8 @@ lean/CouretUnification/Core/CayleySpectrum.lean:264:example : RHClaimed = false 
 lean/CouretUnification/Core/FiniteCore.lean:243:def RHClaimed : Bool := false
 lean/CouretUnification/Core/FiniteCore.lean:246:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/Core/QuadraticResonance.lean:271:    Invariants préservés : RHClaimed = false. ScopeExpansionClaimed = false.
+lean/CouretUnification/Core/G30Classification.lean:257:Selon la convention de fin de fichier du dépôt (`RHClaimed_false_AlgebraTC : True := trivial`),
+lean/CouretUnification/Core/G30Classification.lean:266:Invariants préservés : RHClaimed = false. ScopeExpansionClaimed = false.
 lean/CouretUnification/Core/SophieGermainHecke.lean:26:RHClaimed = false.
 lean/CouretUnification/Core/CharacterSubgroupSums.lean:44:`RHClaimed = false. ScopeExpansionClaimed = false.`
 lean/CouretUnification/Core/CenteredCoordinates.lean:28:    • RHClaimed = false (invariant préservé via import Core.U30).
