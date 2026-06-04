@@ -51,7 +51,9 @@ theorem energy_secondary_eq_one
     rw [kerFinset]; exact sum_over_ker_eq_zero χ hχ2 hχ1 ψ hψ1 hψχ
   -- d'où Σ_T ψ = −ψ a₀
   have hT : ∑ x ∈ defectFinset χ a₀, (ψ x : ℂ) = -(ψ a₀ : ℂ) := by
-    have := hsplit; rw [hzero] at this; linarith [this]
+    have h := hsplit; rw [hzero] at h
+    -- h : 0 = Σ_T ψ + ψ a₀  ⟹  Σ_T ψ = −ψ a₀
+    linear_combination -h
   rw [hT, Complex.normSq_neg]
   -- |ψ a₀|² = 1 : ψ a₀ unité de ℂ donc normSq = 1
   sorry  -- normSq d'une racine de l'unité = 1 ; voir piste ci-dessous
@@ -80,7 +82,9 @@ theorem energy_dominant
     have hsplit : ∑ x ∈ kerFinset χ, (χ x : ℂ)
         = (∑ x ∈ defectFinset χ a₀, (χ x : ℂ)) + (χ a₀ : ℂ) := by
       rw [defectFinset, Finset.sum_erase_add _ _ ha₀mem]
-    rw [hsumK, ha₀one] at hsplit; linarith [hsplit]
+    rw [hsumK, ha₀one] at hsplit
+    -- hsplit : ↑card = Σ_T χ + 1  ⟹  Σ_T χ = ↑card − 1
+    linear_combination -hsplit
   rw [hsumT]
   -- normSq d'un réel (card − 1) = (card − 1)²
   sorry  -- normSq (↑(card) − 1 : ℂ) = (card − 1)² ; voir piste ci-dessous
