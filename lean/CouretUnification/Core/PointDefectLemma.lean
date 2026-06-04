@@ -99,6 +99,6 @@ theorem energy_dominant
   -- (↑card − 1) est réel ; normSq d'un réel = son carré
   have hre : ((kerFinset χ).card : ℂ) - 1 = ((((kerFinset χ).card : ℝ) - 1 : ℝ) : ℂ) := by
     push_cast; ring
-  rw [hre, Complex.normSq_ofReal]
+  rw [hre, Complex.normSq_ofReal]; ring
 
 end CouretUnification.Core.PointDefectLemma
