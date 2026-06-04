@@ -55,17 +55,21 @@ theorem energy_secondary_eq_one
     -- h : 0 = Σ_T ψ + ψ a₀  ⟹  Σ_T ψ = −ψ a₀
     linear_combination -h
   rw [hT, Complex.normSq_neg]
-  -- ψ a₀ est une racine de l'unité (G fini), donc de module 1
-  have hord : ψ a₀ ^ (Fintype.card G) = 1 := by
+  -- ψ a₀ ^ card = 1  (G fini ⟹ a₀ ^ card = 1, puis map)
+  have hord : (ψ a₀) ^ (Fintype.card G) = 1 := by
     rw [← map_pow]
-    have : a₀ ^ (Fintype.card G) = 1 := by
-      simpa using pow_card_eq_one (x := a₀)
-    rw [this, map_one]
-  -- une unité d'ordre fini a une norme 1
-  have hnorm : ‖(ψ a₀ : ℂ)‖ = 1 :=
-    Complex.normSq_eq_norm_sq
-      (by rw [← Units.val_pow_eq_pow_val, hord, Units.val_one]) (Fintype.card_pos.ne')
-  -- normSq z = ‖z‖²
+    have hcard : a₀ ^ (Fintype.card G) = 1 := pow_card_eq_one
+    rw [hcard, map_one]
+  -- d'où ‖ψ a₀‖ ^ card = 1 dans ℝ
+  have hnpow : ‖(ψ a₀ : ℂ)‖ ^ (Fintype.card G) = 1 := by
+    rw [← norm_pow, ← Units.val_pow_eq_pow_val, hord, Units.val_one, norm_one]
+  -- ‖ψ a₀‖ = 1  (réel ≥ 0 dont une puissance non nulle vaut 1)
+  have hnorm : ‖(ψ a₀ : ℂ)‖ = 1 := by
+    have hpos : 0 < Fintype.card G := Fintype.card_pos
+    nlinarith [norm_nonneg (ψ a₀ : ℂ), hnpow,
+               pow_lt_one₀ (norm_nonneg (ψ a₀ : ℂ)),
+               one_lt_pow_iff_of_nonneg (norm_nonneg (ψ a₀ : ℂ))]
+  -- normSq z = ‖z‖² = 1
   rw [Complex.normSq_eq_norm_sq, hnorm, one_pow]
 
 /-- Énergie du défaut ponctuel sur χ : vaut (|ker χ| − 1)². -/
