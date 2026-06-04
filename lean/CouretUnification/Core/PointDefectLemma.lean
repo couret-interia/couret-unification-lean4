@@ -70,7 +70,7 @@ theorem energy_secondary_eq_one
 
 /-- Énergie du défaut ponctuel sur χ : vaut (|ker χ| − 1)². -/
 theorem energy_dominant
-    (χ : G →* ℂˣ) (hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (hχ1 : χ ≠ 1)
+    (χ : G →* ℂˣ) (_hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (_hχ1 : χ ≠ 1)
     (a₀ : G) (ha₀ : a₀ ∈ χ.ker) :
     Complex.normSq (∑ x ∈ defectFinset χ a₀, (χ x : ℂ))
       = (((kerFinset χ).card : ℝ) - 1) ^ 2 := by
