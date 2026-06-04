@@ -11,8 +11,8 @@ Couret–Unification — couche abstraite, étage C.
 SENS DIRECT uniquement (mécanisme général). La réciproque (dominance ⟹ structure
 de fibre) est spécifique à chaque groupe, hors de ce fichier.
 
-Statut visé : [D-formal, abstract] après lake build. Dépend de
-`CharacterSubgroupSums.sum_over_ker_eq_zero` (déjà [D-formal]).
+Statut : [D-formal, abstract].
+Dépend de `CharacterSubgroupSums.sum_over_ker_eq_zero`.
 
 `RHClaimed = false. ScopeExpansionClaimed = false.`
 -/

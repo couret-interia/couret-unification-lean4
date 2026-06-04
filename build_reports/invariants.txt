@@ -141,6 +141,7 @@ lean/CouretUnification/All.lean:209:-- RHClaimed = false. Aucun sorry consommé.
 lean/CouretUnification/Core/Arithmetic.lean:10:RHClaimed = false. Dédié à Bernard Couret (1928–1999).
 lean/CouretUnification/Core/Arithmetic.lean:207:def RHClaimed : Bool := false
 lean/CouretUnification/Core/Arithmetic.lean:208:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/PointDefectLemma.lean:17:`RHClaimed = false. ScopeExpansionClaimed = false.`
 lean/CouretUnification/Core/SophieGermainTowerLift.lean:41:identité analytique globale. Les invariants `RHClaimed = false`,
 lean/CouretUnification/Core/SophieGermainTowerLift.lean:42:`HilbertPolyaClaimed = false` et `L7Established = false` sont préservés.
 lean/CouretUnification/Core/SophieGermainTowerLift.lean:250:  * `RHClaimed = false`

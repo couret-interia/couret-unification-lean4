@@ -264,6 +264,7 @@
 │   │   │   ├── OddDimComplexObstruction.lean
 │   │   │   ├── ParsevalL5.lean
 │   │   │   ├── Parseval.lean
+│   │   │   ├── PointDefectLemma.lean
 │   │   │   ├── QuadraticResonance.lean
 │   │   │   ├── README.md
 │   │   │   ├── SophieGermainHecke.lean
@@ -508,4 +509,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 446 files
+63 directories, 447 files
