@@ -66,10 +66,17 @@ theorem energy_secondary_eq_one
   -- ‖ψ a₀‖ = 1  (réel ≥ 0 dont une puissance non nulle vaut 1)
   have hnorm : ‖(ψ a₀ : ℂ)‖ = 1 := by
     have hpos : 0 < Fintype.card G := Fintype.card_pos
-    nlinarith [norm_nonneg (ψ a₀ : ℂ), hnpow,
-               pow_lt_one₀ (norm_nonneg (ψ a₀ : ℂ)),
-               one_lt_pow_iff_of_nonneg (norm_nonneg (ψ a₀ : ℂ))]
-  -- normSq z = ‖z‖² = 1
+    have hnn : 0 ≤ ‖(ψ a₀ : ℂ)‖ := norm_nonneg _
+    rcases lt_trichotomy ‖(ψ a₀ : ℂ)‖ 1 with h | h | h
+    · -- x < 1 ⟹ xⁿ < 1, contredit hnpow
+      exact absurd hnpow (by
+        have := pow_lt_one₀ hnn h hpos.ne'
+        linarith)
+    · exact h
+    · -- x > 1 ⟹ xⁿ > 1, contredit hnpow
+      exact absurd hnpow (by
+        have := one_lt_pow₀ h hpos.ne'
+        linarith)
   rw [Complex.normSq_eq_norm_sq, hnorm, one_pow]
 
 /-- Énergie du défaut ponctuel sur χ : vaut (|ker χ| − 1)². -/
