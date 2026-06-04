@@ -377,6 +377,8 @@ import CouretUnification.Core.QuadraticResonance
 
 -- v38.5.3 — Sommes de caractères sur sous-groupe (ordre 2), moteur du défaut ponctuel — [D-formal]
 import CouretUnification.Core.CharacterSubgroupSums
+-- v38.5.3 — Loi d'annihilation globale sur un espace arbitraire
+import CouretUnification.Core.PointDefectLemma
 
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer

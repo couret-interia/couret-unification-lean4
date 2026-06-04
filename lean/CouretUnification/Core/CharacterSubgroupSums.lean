@@ -200,10 +200,10 @@ theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
 theorem sum_over_ker_eq_zero
     (χ : G →* ℂˣ) (hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (_hχ1 : χ ≠ 1)
     (ψ : G →* ℂˣ) (hψ1 : ψ ≠ 1) (hψχ : ψ ≠ χ) :
-    ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ) = 0 := by
+    ∑ x ∈ Finset.univ.filter (· ∈ χ.ker), (ψ x : ℂ) = 0 := by
   classical
   -- Étape 1 : somme sur ker = somme globale pondérée par l'indicatrice
-  have step1 : ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ)
+  have step1 : ∑ x ∈ Finset.univ.filter (· ∈ χ.ker), (ψ x : ℂ)
       = ∑ x : G, kerIndicatorC χ x * (ψ x : ℂ) := by
     classical
     simp only [kerIndicatorC]
@@ -215,11 +215,6 @@ theorem sum_over_ker_eq_zero
     simp_rw [hpoint]
     -- ∑_{univ} (if x∈ker then ψx else 0) = ∑_{univ.filter (·∈ker)} ψx
     rw [← Finset.sum_filter]
-    -- reste : ∑_{ker.carrier.toFinset} ψx = ∑_{univ.filter (·∈ker)} ψx
-    apply Finset.sum_congr _ (fun _ _ => rfl)
-    -- les deux Finsets coïncident
-    ext x
-    simp [Set.mem_toFinset]
   -- Étape 2 : indicatrice = projecteur quadratique
   have step2 : ∀ x, kerIndicatorC χ x = quadraticProjectorC χ x := fun x =>
     (quadraticProjectorC_eq_kerIndicatorC χ hχ2 x).symm
@@ -244,7 +239,7 @@ theorem sum_over_ker_eq_zero
       exact inv_eq_of_mul_eq_one_right hx2
     rw [hψx, hχx_inv]
   -- Étape 4 : assemblage par orthogonalité globale
-  calc ∑ x ∈ (χ.ker : Subgroup G).carrier.toFinset, (ψ x : ℂ)
+  calc ∑ x ∈ Finset.univ.filter (· ∈ χ.ker), (ψ x : ℂ)
       = ∑ x : G, quadraticProjectorC χ x * (ψ x : ℂ) := by
         rw [step1]; exact Finset.sum_congr rfl (fun x _ => by rw [step2])
     _ = ∑ x : G, ((1 + (χ x : ℂ)) / 2) * (ψ x : ℂ) := by
