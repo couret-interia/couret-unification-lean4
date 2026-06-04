@@ -59,14 +59,14 @@ theorem energy_secondary_eq_one
   have hord : ψ a₀ ^ (Fintype.card G) = 1 := by
     rw [← map_pow]
     have : a₀ ^ (Fintype.card G) = 1 := by
-      have := pow_card_eq_one (a := a₀)
-      simpa using this
+      simpa using pow_card_eq_one (x := a₀)
     rw [this, map_one]
-  -- une unité d'ordre fini a un module 1
-  have : Complex.abs (ψ a₀ : ℂ) = 1 :=
-    Complex.norm_eq_one_of_pow_eq_one
+  -- une unité d'ordre fini a une norme 1
+  have hnorm : ‖(ψ a₀ : ℂ)‖ = 1 :=
+    Complex.normSq_eq_norm_sq
       (by rw [← Units.val_pow_eq_pow_val, hord, Units.val_one]) (Fintype.card_pos.ne')
-  rw [Complex.normSq_eq_abs, this, one_pow]
+  -- normSq z = ‖z‖²
+  rw [Complex.normSq_eq_norm_sq, hnorm, one_pow]
 
 /-- Énergie du défaut ponctuel sur χ : vaut (|ker χ| − 1)². -/
 theorem energy_dominant
