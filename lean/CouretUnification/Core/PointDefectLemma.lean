@@ -55,8 +55,18 @@ theorem energy_secondary_eq_one
     -- h : 0 = Σ_T ψ + ψ a₀  ⟹  Σ_T ψ = −ψ a₀
     linear_combination -h
   rw [hT, Complex.normSq_neg]
-  -- |ψ a₀|² = 1 : ψ a₀ unité de ℂ donc normSq = 1
-  sorry  -- normSq d'une racine de l'unité = 1 ; voir piste ci-dessous
+  -- ψ a₀ est une racine de l'unité (G fini), donc de module 1
+  have hord : ψ a₀ ^ (Fintype.card G) = 1 := by
+    rw [← map_pow]
+    have : a₀ ^ (Fintype.card G) = 1 := by
+      have := pow_card_eq_one (a := a₀)
+      simpa using this
+    rw [this, map_one]
+  -- une unité d'ordre fini a un module 1
+  have : Complex.abs (ψ a₀ : ℂ) = 1 :=
+    Complex.norm_eq_one_of_pow_eq_one
+      (by rw [← Units.val_pow_eq_pow_val, hord, Units.val_one]) (Fintype.card_pos.ne')
+  rw [Complex.normSq_eq_abs, this, one_pow]
 
 /-- Énergie du défaut ponctuel sur χ : vaut (|ker χ| − 1)². -/
 theorem energy_dominant
@@ -86,7 +96,9 @@ theorem energy_dominant
     -- hsplit : ↑card = Σ_T χ + 1  ⟹  Σ_T χ = ↑card − 1
     linear_combination -hsplit
   rw [hsumT]
-  -- normSq d'un réel (card − 1) = (card − 1)²
-  sorry  -- normSq (↑(card) − 1 : ℂ) = (card − 1)² ; voir piste ci-dessous
+  -- (↑card − 1) est réel ; normSq d'un réel = son carré
+  have hre : ((kerFinset χ).card : ℂ) - 1 = ((((kerFinset χ).card : ℝ) - 1 : ℝ) : ℂ) := by
+    push_cast; ring
+  rw [hre, Complex.normSq_ofReal]
 
 end CouretUnification.Core.PointDefectLemma
