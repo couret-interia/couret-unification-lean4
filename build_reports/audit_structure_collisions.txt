@@ -197,6 +197,8 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/ExceptionalTriplets.lean:1:import CouretUnification.Core.Mod30
         ──        import CouretUnification.Core.G30Classification
        ./All.lean:383:import CouretUnification.Core.G30Classification
+       ./All.lean:385:import CouretUnification.Core.G30ClassificationFromPointDefect
+       ./Core/G30ClassificationFromPointDefect.lean:2:import CouretUnification.Core.G30Classification
         ──        import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
        ./Logic/ExplicitFormula/ExplicitFormulaBridge.lean:66:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
        ./All.lean:314:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation

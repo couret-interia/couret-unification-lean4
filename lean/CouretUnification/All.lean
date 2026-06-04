@@ -381,6 +381,8 @@ import CouretUnification.Core.CharacterSubgroupSums
 import CouretUnification.Core.PointDefectLemma
 -- v38.5.3 — Classification spectrale finie des triplets de G₃₀
 import CouretUnification.Core.G30Classification
+-- v38.5.3 — Spécialisation à G₃₀ (|T|=3, fibres d'ordre 4 de taille 2).
+import CouretUnification.Core.G30ClassificationFromPointDefect
 
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
