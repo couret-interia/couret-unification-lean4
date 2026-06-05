@@ -133,6 +133,11 @@
 │   ├── warnings_non_sorry.txt
 │   └── warnings_unique.txt
 ├── CITATION.cff
+├── docbuild
+│   ├── lakefile.toml
+│   ├── lake-manifest.json
+│   ├── lean-toolchain
+│   └── README.md
 ├── docs
 │   ├── 01_PATCH_CAYLEY.md
 │   ├── 03_CAHIER_CHARGES_EULER.md
@@ -502,4 +507,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-62 directories, 441 files
+63 directories, 445 files
