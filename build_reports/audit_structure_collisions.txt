@@ -196,6 +196,8 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/SophieGermainHecke.lean:29:import CouretUnification.Core.Mod30
        ./Core/ExceptionalTriplets.lean:1:import CouretUnification.Core.Mod30
         ──        import CouretUnification.Core.G30Classification
+       ./Frozen.lean:83:import CouretUnification.Core.G30Classification
+       ./Frozen.lean:84:import CouretUnification.Core.G30ClassificationFromPointDefect
        ./All.lean:383:import CouretUnification.Core.G30Classification
        ./All.lean:385:import CouretUnification.Core.G30ClassificationFromPointDefect
        ./Core/G30ClassificationFromPointDefect.lean:2:import CouretUnification.Core.G30Classification

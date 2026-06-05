@@ -169,7 +169,7 @@ lean/CouretUnification/Core/CharacterSubgroupSums.lean:44:`RHClaimed = false. Sc
 lean/CouretUnification/Core/CenteredCoordinates.lean:28:    • RHClaimed = false (invariant préservé via import Core.U30).
 lean/CouretUnification/Core/CenteredCoordinates.lean:142:    RHClaimed = false := rh_not_claimed
 lean/CouretUnification/Core/LMFDBAlignment.lean:18:  RHClaimed = false.
-lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:52:`RHClaimed = false`.
+lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:53:`RHClaimed = false`.
 lean/CouretUnification/Core/Characters30Bridge.lean:3:  0 sorry. RHClaimed = false.
 lean/CouretUnification/Core/README.md:16:`RHClaimed = false`. Aucune revendication globale n'est portée par ce
 lean/CouretUnification/FCI/CausalSupportImmunity.lean:42:  RHClaimed = false.
