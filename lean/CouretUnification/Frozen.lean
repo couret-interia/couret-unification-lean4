@@ -76,3 +76,9 @@ import CouretUnification.Logic.TimeBridge.ModularFlowSpec
 
 -- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
 import CouretUnification.Core.QuadraticResonance
+
+-- v38.5.3 — Couche abstraite défaut ponctuel + classification finie G₃₀
+import CouretUnification.Core.CharacterSubgroupSums               -- [D-formal, abstract]
+import CouretUnification.Core.PointDefectLemma                    -- [D-formal, abstract]
+import CouretUnification.Core.G30Classification                   -- [D-computational, local]
+import CouretUnification.Core.G30ClassificationFromPointDefect    -- [D-formal, local bridge]
