@@ -233,6 +233,7 @@
 │   │   │   ├── CharacterLemmas.lean
 │   │   │   ├── Characters30Bridge.lean
 │   │   │   ├── Characters30.lean
+│   │   │   ├── CharacterSubgroupSums.lean
 │   │   │   ├── CharParity30.lean
 │   │   │   ├── CharPoly.lean
 │   │   │   ├── Classification63Detail.lean
@@ -251,6 +252,8 @@
 │   │   │   ├── FiniteOperator.lean
 │   │   │   ├── FormuleLk.lean
 │   │   │   ├── Fourier30.lean
+│   │   │   ├── G30ClassificationFromPointDefect.lean
+│   │   │   ├── G30Classification.lean
 │   │   │   ├── HarmonicCertificate.lean
 │   │   │   ├── IntegralSpectrum.lean
 │   │   │   ├── InvariantE.lean
@@ -263,6 +266,7 @@
 │   │   │   ├── OddDimComplexObstruction.lean
 │   │   │   ├── ParsevalL5.lean
 │   │   │   ├── Parseval.lean
+│   │   │   ├── PointDefectLemma.lean
 │   │   │   ├── QuadraticResonance.lean
 │   │   │   ├── README.md
 │   │   │   ├── SophieGermainHecke.lean
@@ -507,4 +511,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 445 files
+63 directories, 449 files

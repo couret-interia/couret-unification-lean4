@@ -141,6 +141,7 @@ lean/CouretUnification/All.lean:209:-- RHClaimed = false. Aucun sorry consommé.
 lean/CouretUnification/Core/Arithmetic.lean:10:RHClaimed = false. Dédié à Bernard Couret (1928–1999).
 lean/CouretUnification/Core/Arithmetic.lean:207:def RHClaimed : Bool := false
 lean/CouretUnification/Core/Arithmetic.lean:208:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/PointDefectLemma.lean:17:`RHClaimed = false. ScopeExpansionClaimed = false.`
 lean/CouretUnification/Core/SophieGermainTowerLift.lean:41:identité analytique globale. Les invariants `RHClaimed = false`,
 lean/CouretUnification/Core/SophieGermainTowerLift.lean:42:`HilbertPolyaClaimed = false` et `L7Established = false` sont préservés.
 lean/CouretUnification/Core/SophieGermainTowerLift.lean:250:  * `RHClaimed = false`
@@ -161,10 +162,14 @@ lean/CouretUnification/Core/CayleySpectrum.lean:264:example : RHClaimed = false 
 lean/CouretUnification/Core/FiniteCore.lean:243:def RHClaimed : Bool := false
 lean/CouretUnification/Core/FiniteCore.lean:246:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/Core/QuadraticResonance.lean:271:    Invariants préservés : RHClaimed = false. ScopeExpansionClaimed = false.
+lean/CouretUnification/Core/G30Classification.lean:257:Selon la convention de fin de fichier du dépôt (`RHClaimed_false_AlgebraTC : True := trivial`),
+lean/CouretUnification/Core/G30Classification.lean:266:Invariants préservés : RHClaimed = false. ScopeExpansionClaimed = false.
 lean/CouretUnification/Core/SophieGermainHecke.lean:26:RHClaimed = false.
+lean/CouretUnification/Core/CharacterSubgroupSums.lean:44:`RHClaimed = false. ScopeExpansionClaimed = false.`
 lean/CouretUnification/Core/CenteredCoordinates.lean:28:    • RHClaimed = false (invariant préservé via import Core.U30).
 lean/CouretUnification/Core/CenteredCoordinates.lean:142:    RHClaimed = false := rh_not_claimed
 lean/CouretUnification/Core/LMFDBAlignment.lean:18:  RHClaimed = false.
+lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:53:`RHClaimed = false`.
 lean/CouretUnification/Core/Characters30Bridge.lean:3:  0 sorry. RHClaimed = false.
 lean/CouretUnification/Core/README.md:16:`RHClaimed = false`. Aucune revendication globale n'est portée par ce
 lean/CouretUnification/FCI/CausalSupportImmunity.lean:42:  RHClaimed = false.

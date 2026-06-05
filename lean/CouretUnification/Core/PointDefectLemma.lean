@@ -1,0 +1,115 @@
+import CouretUnification.Core.CharacterSubgroupSums
+import Mathlib.Tactic
+
+/-!
+# Lemme du défaut ponctuel (abstrait)
+
+Couret–Unification — couche abstraite, étage C.
+∀ G abélien fini, χ ordre 2, A = ker χ, a₀ ∈ A, T = A \ {a₀} :
+  E_χ = (|A|−1)², E_ψ = 1 pour ψ ∉ {1, χ}.
+
+SENS DIRECT uniquement (mécanisme général). La réciproque (dominance ⟹ structure
+de fibre) est spécifique à chaque groupe, hors de ce fichier.
+
+Statut : [D-formal, abstract].
+Dépend de `CharacterSubgroupSums.sum_over_ker_eq_zero`.
+
+`RHClaimed = false. ScopeExpansionClaimed = false.`
+-/
+
+namespace CouretUnification.Core.PointDefectLemma
+
+open scoped BigOperators
+open CouretUnification.Core.CharacterSubgroupSums
+
+variable {G : Type*} [CommGroup G] [Fintype G] [DecidableEq G]
+
+/-- Le Finset du noyau de χ (convention `univ.filter`, alignée sur CharacterSubgroupSums). -/
+noncomputable def kerFinset (χ : G →* ℂˣ) : Finset G :=
+  Finset.univ.filter (· ∈ χ.ker)
+
+/-- Le défaut ponctuel T = ker χ \ {a₀}. -/
+noncomputable def defectFinset (χ : G →* ℂˣ) (a₀ : G) : Finset G :=
+  (kerFinset χ).erase a₀
+
+/-- Énergie du défaut ponctuel sur ψ ∉ {1, χ} : vaut 1.
+    Σ_T ψ = Σ_{ker} ψ − ψ a₀ = 0 − ψ a₀ ; |−ψ a₀|² = 1. -/
+theorem energy_secondary_eq_one
+    (χ : G →* ℂˣ) (hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (hχ1 : χ ≠ 1)
+    (a₀ : G) (ha₀ : a₀ ∈ χ.ker)
+    (ψ : G →* ℂˣ) (hψ1 : ψ ≠ 1) (hψχ : ψ ≠ χ) :
+    Complex.normSq (∑ x ∈ defectFinset χ a₀, (ψ x : ℂ)) = 1 := by
+  classical
+  have ha₀mem : a₀ ∈ kerFinset χ := by
+    rw [kerFinset, Finset.mem_filter]; exact ⟨Finset.mem_univ _, ha₀⟩
+  -- Σ_{ker} ψ = Σ_T ψ + ψ a₀
+  have hsplit : ∑ x ∈ kerFinset χ, (ψ x : ℂ)
+      = (∑ x ∈ defectFinset χ a₀, (ψ x : ℂ)) + (ψ a₀ : ℂ) := by
+    rw [defectFinset, Finset.sum_erase_add _ _ ha₀mem]
+  -- Σ_{ker} ψ = 0
+  have hzero : ∑ x ∈ kerFinset χ, (ψ x : ℂ) = 0 := by
+    rw [kerFinset]; exact sum_over_ker_eq_zero χ hχ2 hχ1 ψ hψ1 hψχ
+  -- d'où Σ_T ψ = −ψ a₀
+  have hT : ∑ x ∈ defectFinset χ a₀, (ψ x : ℂ) = -(ψ a₀ : ℂ) := by
+    have h := hsplit; rw [hzero] at h
+    -- h : 0 = Σ_T ψ + ψ a₀  ⟹  Σ_T ψ = −ψ a₀
+    linear_combination -h
+  rw [hT, Complex.normSq_neg]
+  -- ψ a₀ ^ card = 1  (G fini ⟹ a₀ ^ card = 1, puis map)
+  have hord : (ψ a₀) ^ (Fintype.card G) = 1 := by
+    rw [← map_pow]
+    have hcard : a₀ ^ (Fintype.card G) = 1 := pow_card_eq_one
+    rw [hcard, map_one]
+  -- d'où ‖ψ a₀‖ ^ card = 1 dans ℝ
+  have hnpow : ‖(ψ a₀ : ℂ)‖ ^ (Fintype.card G) = 1 := by
+    rw [← norm_pow, ← Units.val_pow_eq_pow_val, hord, Units.val_one, norm_one]
+  -- ‖ψ a₀‖ = 1  (réel ≥ 0 dont une puissance non nulle vaut 1)
+  have hnorm : ‖(ψ a₀ : ℂ)‖ = 1 := by
+    have hpos : 0 < Fintype.card G := Fintype.card_pos
+    have hnn : 0 ≤ ‖(ψ a₀ : ℂ)‖ := norm_nonneg _
+    rcases lt_trichotomy ‖(ψ a₀ : ℂ)‖ 1 with h | h | h
+    · -- x < 1 ⟹ xⁿ < 1, contredit hnpow
+      exact absurd hnpow (by
+        have := pow_lt_one₀ hnn h hpos.ne'
+        linarith)
+    · exact h
+    · -- x > 1 ⟹ xⁿ > 1, contredit hnpow
+      exact absurd hnpow (by
+        have := one_lt_pow₀ h hpos.ne'
+        linarith)
+  rw [Complex.normSq_eq_norm_sq, hnorm, one_pow]
+
+/-- Énergie du défaut ponctuel sur χ : vaut (|ker χ| − 1)². -/
+theorem energy_dominant
+    (χ : G →* ℂˣ) (_hχ2 : ∀ x, (χ x : ℂ) ^ 2 = 1) (_hχ1 : χ ≠ 1)
+    (a₀ : G) (ha₀ : a₀ ∈ χ.ker) :
+    Complex.normSq (∑ x ∈ defectFinset χ a₀, (χ x : ℂ))
+      = (((kerFinset χ).card : ℝ) - 1) ^ 2 := by
+  classical
+  have ha₀mem : a₀ ∈ kerFinset χ := by
+    rw [kerFinset, Finset.mem_filter]; exact ⟨Finset.mem_univ _, ha₀⟩
+  -- χ x = 1 pour x ∈ ker
+  have hone : ∀ x ∈ kerFinset χ, (χ x : ℂ) = 1 := by
+    intro x hx
+    rw [kerFinset, Finset.mem_filter, MonoidHom.mem_ker] at hx
+    have := hx.2
+    rw [this, Units.val_one]
+  -- Σ_{ker} χ = |ker|
+  have hsumK : ∑ x ∈ kerFinset χ, (χ x : ℂ) = (kerFinset χ).card := by
+    rw [Finset.sum_congr rfl hone, Finset.sum_const, nsmul_eq_mul, mul_one]
+  have ha₀one : (χ a₀ : ℂ) = 1 := hone a₀ ha₀mem
+  -- Σ_T χ = |ker| − 1
+  have hsumT : ∑ x ∈ defectFinset χ a₀, (χ x : ℂ) = (kerFinset χ).card - 1 := by
+    have hsplit : ∑ x ∈ kerFinset χ, (χ x : ℂ)
+        = (∑ x ∈ defectFinset χ a₀, (χ x : ℂ)) + (χ a₀ : ℂ) := by
+      rw [defectFinset, Finset.sum_erase_add _ _ ha₀mem]
+    rw [hsumK, ha₀one] at hsplit
+    -- hsplit : ↑card = Σ_T χ + 1  ⟹  Σ_T χ = ↑card − 1
+    linear_combination -hsplit
+  rw [hsumT]
+  -- (↑card − 1) est réel ; normSq d'un réel = son carré
+  have hre : ((kerFinset χ).card : ℂ) - 1 = ((((kerFinset χ).card : ℝ) - 1 : ℝ) : ℂ) := by
+    push_cast; ring
+  rw [hre, Complex.normSq_ofReal]; ring
+
+end CouretUnification.Core.PointDefectLemma

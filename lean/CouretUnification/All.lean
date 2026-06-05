@@ -375,6 +375,15 @@ import CouretUnification.ResGold
 -- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
 import CouretUnification.Core.QuadraticResonance
 
+-- v38.5.3 — Sommes de caractères sur sous-groupe (ordre 2), moteur du défaut ponctuel — [D-formal]
+import CouretUnification.Core.CharacterSubgroupSums
+-- v38.5.3 — Loi d'annihilation globale sur un espace arbitraire
+import CouretUnification.Core.PointDefectLemma
+-- v38.5.3 — Classification spectrale finie des triplets de G₃₀
+import CouretUnification.Core.G30Classification
+-- v38.5.3 — Spécialisation à G₃₀ (|T|=3, fibres d'ordre 4 de taille 2).
+import CouretUnification.Core.G30ClassificationFromPointDefect
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.

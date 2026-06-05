@@ -213,6 +213,7 @@ tree -P '*.lean' -I 'Attic' --gitignore --prune --filesfirst
         │   ├── CharacterLemmas.lean
         │   ├── Characters30Bridge.lean
         │   ├── Characters30.lean
+        │   ├── CharacterSubgroupSums.lean
         │   ├── CharParity30.lean
         │   ├── CharPoly.lean
         │   ├── Classification63Detail.lean
@@ -231,6 +232,8 @@ tree -P '*.lean' -I 'Attic' --gitignore --prune --filesfirst
         │   ├── FiniteOperator.lean
         │   ├── FormuleLk.lean
         │   ├── Fourier30.lean
+        │   ├── G30ClassificationFromPointDefect.lean
+        │   ├── G30Classification.lean
         │   ├── HarmonicCertificate.lean
         │   ├── IntegralSpectrum.lean
         │   ├── InvariantE.lean
@@ -243,6 +246,7 @@ tree -P '*.lean' -I 'Attic' --gitignore --prune --filesfirst
         │   ├── OddDimComplexObstruction.lean
         │   ├── ParsevalL5.lean
         │   ├── Parseval.lean
+        │   ├── PointDefectLemma.lean
         │   ├── QuadraticResonance.lean
         │   ├── SophieGermainHecke.lean
         │   ├── SophieGermain.lean
