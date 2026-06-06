@@ -10,10 +10,7 @@ open Finset
 
 noncomputable section
 
-namespace CouretUnification
-namespace Logic
-namespace H3
-namespace L10Bridge
+namespace CouretUnification.Logic.H3.L10Bridge
 
 variable {X : Type*} [Fintype X]
 
@@ -21,12 +18,15 @@ variable {X : Type*} [Fintype X]
 -- §1. Définitions fondamentales
 -- ═══════════════════════════════════════════════════════════
 
+/-- Produit scalaire `L²` normalisé sur un type fini `X`. -/
 def l2Inner (f g : X → ℂ) : ℂ :=
   ((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)
 
+/-- Norme `L²` au carré, définie comme la partie réelle de `l2Inner f f`. -/
 def l2NormSq (f : X → ℂ) : ℝ :=
   (l2Inner f f).re
 
+/-- Norme `L²` associée à `l2NormSq`. -/
 def l2Norm (f : X → ℂ) : ℝ :=
   Real.sqrt (l2NormSq f)
 
@@ -34,16 +34,19 @@ def l2Norm (f : X → ℂ) : ℝ :=
 -- §2. Propriétés de l2Inner
 -- ═══════════════════════════════════════════════════════════
 
+/-- Linéarité de `l2Inner` en son premier argument. -/
 lemma l2Inner_add_left (f g h : X → ℂ) :
     l2Inner (f + g) h = l2Inner f h + l2Inner g h := by
   unfold l2Inner
   simp [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]
 
+/-- Additivité de `l2Inner` en son second argument. -/
 lemma l2Inner_add_right (f g h : X → ℂ) :
     l2Inner f (g + h) = l2Inner f g + l2Inner f h := by
   unfold l2Inner
   simp [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/-- Compatibilité de `l2Inner` avec la multiplication scalaire à gauche. -/
 lemma l2Inner_smul_left (c : ℂ) (f g : X → ℂ) :
     l2Inner (c • f) g = c * l2Inner f g := by
   unfold l2Inner
@@ -59,6 +62,8 @@ lemma l2Inner_smul_left (c : ℂ) (f g : X → ℂ) :
     _ = c * (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
           ring
 
+/-- Compatibilité de `l2Inner` avec la multiplication scalaire à droite,
+avec conjugaison du scalaire. -/
 lemma l2Inner_smul_right (c : ℂ) (f g : X → ℂ) :
     l2Inner f (c • g) = (star c) * l2Inner f g := by
   unfold l2Inner
@@ -78,6 +83,7 @@ lemma l2Inner_smul_right (c : ℂ) (f g : X → ℂ) :
         (((Fintype.card X : ℂ)⁻¹) * ∑ x : X, f x * (starRingEnd ℂ) (g x)) := by
           ring
 
+/-- Scission de `l2Inner` selon une décomposition `main = diag + off`. -/
 lemma l2Inner_split (main diag off Psi : X → ℂ)
     (hsplit : ∀ x, main x = diag x + off x) :
     l2Inner main Psi = l2Inner diag Psi + l2Inner off Psi := by
@@ -85,19 +91,20 @@ lemma l2Inner_split (main diag off Psi : X → ℂ)
   rw [hmain, l2Inner_add_left]
 
 -- ═══════════════════════════════════════════════════════════
--- §2b. Conjugate symmetry
+-- §2b. Symétrie hermitienne
 -- ═══════════════════════════════════════════════════════════
 
-/-- Conjugate symmetry: l2Inner g f = star (l2Inner f g). -/
+/-- Symétrie hermitienne : l2Inner g f = star (l2Inner f g). -/
 lemma l2Inner_conj_symm (f g : X → ℂ) :
     l2Inner g f = star (l2Inner f g) := by
   unfold l2Inner
   simp [mul_comm]
 
 -- ═══════════════════════════════════════════════════════════
--- §2c. Scaling + non-négativité
+-- §2c. Mise à l’échelle + non-négativité
 -- ═══════════════════════════════════════════════════════════
 
+/-- Comportement de `l2NormSq` sous multiplication par le scalaire réel `ρ^d`. -/
 lemma l2NormSq_smul_real_pow (ρ : ℝ) (d : ℕ) (f : X → ℂ) :
     l2NormSq (((ρ : ℂ) ^ d) • f) = (ρ ^ (2 * d)) * l2NormSq f := by
   unfold l2NormSq
@@ -112,6 +119,7 @@ lemma l2NormSq_smul_real_pow (ρ : ℝ) (d : ℕ) (f : X → ℂ) :
   rw [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
   ring
 
+/-- Non-négativité de la norme `L²` au carré. -/
 lemma l2NormSq_nonneg (f : X → ℂ) : 0 ≤ l2NormSq f := by
   unfold l2NormSq l2Inner
   have hsum :
@@ -136,22 +144,31 @@ variable [DecidableEq X]
 -- §3. Structure de décomposition par couches
 -- ═══════════════════════════════════════════════════════════
 
+/-- Structure abstraite de décomposition orthogonale par couches finies. -/
 structure LayerDecomposition (X : Type*) [Fintype X] [DecidableEq X] where
+  /-- Projection de `f` sur la couche `d`. -/
   layer : ℕ → (X → ℂ) → (X → ℂ)
+  /-- Support fini des couches non nulles de `f`. -/
   support : (X → ℂ) → Finset ℕ
+  /-- Hors du support, la couche est nulle. -/
   support_spec : ∀ f d, d ∉ support f → layer d f = 0
+  /-- Reconstruction de `f` comme somme de ses couches. -/
   reconstruction : ∀ f, f = ∑ d ∈ support f, layer d f
+  /-- Orthogonalité des couches distinctes. -/
   orthogonal : ∀ f {d e : ℕ}, d ≠ e →
     l2Inner (layer d f) (layer e f) = 0
+  /-- Théorème de Pythagore abstrait pour une famille orthogonale finie. -/
   pythagorean_general : ∀ (S : Finset ℕ) (g : ℕ → (X → ℂ)),
     (∀ d ∈ S, ∀ e ∈ S, d ≠ e → l2Inner (g d) (g e) = 0) →
     l2NormSq (∑ d ∈ S, g d) = ∑ d ∈ S, l2NormSq (g d)
 
 variable (LD : LayerDecomposition X)
 
+/-- Projection basse : somme des couches de degré `d ≤ d0`. -/
 def lowProj (d0 : ℕ) (f : X → ℂ) : X → ℂ :=
   ∑ d ∈ (LD.support f).filter fun d => d ≤ d0, LD.layer d f
 
+/-- Opérateur de bruit : chaque couche `d` est pondérée par `ρ^d`. -/
 def noiseOp (ρ : ℝ) (f : X → ℂ) : X → ℂ :=
   ∑ d ∈ LD.support f, ((ρ : ℂ) ^ d) • LD.layer d f
 
@@ -159,53 +176,80 @@ def noiseOp (ρ : ℝ) (f : X → ℂ) : X → ℂ :=
 -- §4. Structures pour le bridge
 -- ═══════════════════════════════════════════════════════════
 
+/-- Décomposition d’un terme principal en partie diagonale et hors-diagonale. -/
 structure DiagOffSplit (main diag off : X → ℂ) where
+  /-- Égalité ponctuelle `main = diag + off`. -/
   sum_eq : ∀ x, main x = diag x + off x
 
+/-- Données quantitatives du certificat de bridge. -/
 structure CertificateData where
+  /-- Partie diagonale. -/
   diag : X → ℂ
+  /-- Partie hors-diagonale. -/
   off  : X → ℂ
+  /-- Fonction test. -/
   Psi  : X → ℂ
+  /-- Borne de norme pour `Psi`. -/
   B : ℝ
+  /-- Taille minimale du couplage diagonal. -/
   beta : ℝ
+  /-- Paramètre de contrôle du terme hors-diagonal. -/
   lambda : ℝ
+  /-- Positivité de `B`. -/
   hB_pos : 0 < B
+  /-- Positivité de `beta`. -/
   hbeta_pos : 0 < beta
+  /-- Non-négativité de `lambda`. -/
   hlambda_nonneg : 0 ≤ lambda
+  /-- Borne `l2Norm Psi ≤ B`. -/
   hnorm : l2Norm Psi ≤ B
+  /-- Borne inférieure diagonale. -/
   hbeta_bound : beta ≤ ‖l2Inner diag Psi‖
+  /-- Borne supérieure hors-diagonale. -/
   hgamma_bound : ‖l2Inner off Psi‖ ≤ lambda * beta
+  /-- Condition stricte `lambda < 1`. -/
   hlambda_lt_one : lambda < 1
 
+/-- Données de régularité/filtrage pour le cadre HC. -/
 structure HCData where
+  /-- Exposant `p`. -/
   p : ℝ
+  /-- Paramètre `rho`. -/
   rho : ℝ
+  /-- Borne inférieure `1 < p`. -/
   hp_lower : 1 < p
+  /-- Borne supérieure `p ≤ 2`. -/
   hp_upper : p ≤ 2
+  /-- Positivité de `rho`. -/
   hrho_pos : 0 < rho
+  /-- Borne supérieure `rho ≤ 1`. -/
   hrho_upper : rho ≤ 1
 
 -- ═══════════════════════════════════════════════════════════
 -- §5. Théorèmes délégués
 -- ═══════════════════════════════════════════════════════════
 
+/-- Orthogonalité des couches distinctes, déléguée à `LD`. -/
 theorem layer_orthogonal (f : X → ℂ) {d e : ℕ} (hde : d ≠ e) :
     l2Inner (LD.layer d f) (LD.layer e f) = 0 :=
   LD.orthogonal f hde
 
+/-- Une couche hors du support est nulle, délégué à `LD`. -/
 theorem layer_eq_zero_of_not_mem_support (f : X → ℂ) (d : ℕ)
     (hd : d ∉ LD.support f) :
     LD.layer d f = 0 :=
   LD.support_spec f d hd
 
+/-- Reconstruction de `f` comme somme de ses couches, déléguée à `LD`. -/
 theorem sum_layers_eq (f : X → ℂ) :
     f = ∑ d ∈ LD.support f, LD.layer d f :=
   LD.reconstruction f
 
 -- ═══════════════════════════════════════════════════════════
--- §6. FERMÉ : Pythagorean pour noiseOp et lowProj
+-- §6. FERMÉ : Pythagore pour noiseOp et lowProj
 -- ═══════════════════════════════════════════════════════════
 
+/-- Les couches pondérées de `noiseOp` restent orthogonales. -/
 lemma noise_layers_orthogonal (ρ : ℝ) (f : X → ℂ) (d e : ℕ)
     (hde : d ≠ e) :
     l2Inner (((ρ : ℂ) ^ d) • LD.layer d f)
@@ -214,6 +258,7 @@ lemma noise_layers_orthogonal (ρ : ℝ) (f : X → ℂ) (d e : ℕ)
   rw [LD.orthogonal f hde]
   simp
 
+/-- Formule de Pythagore pour la norme au carré de `noiseOp`. -/
 theorem l2NormSq_noiseOp (ρ : ℝ) (f : X → ℂ) :
     l2NormSq (noiseOp LD ρ f)
       = ∑ d ∈ LD.support f, (ρ ^ (2 * d)) * l2NormSq (LD.layer d f) := by
@@ -224,6 +269,7 @@ theorem l2NormSq_noiseOp (ρ : ℝ) (f : X → ℂ) :
   ext d
   exact l2NormSq_smul_real_pow ρ d (LD.layer d f)
 
+/-- Formule de Pythagore pour la norme au carré de `lowProj`. -/
 theorem l2NormSq_lowProj (d0 : ℕ) (f : X → ℂ) :
     l2NormSq (lowProj LD d0 f)
       = ∑ d ∈ (LD.support f).filter fun d => d ≤ d0,
@@ -237,9 +283,9 @@ theorem l2NormSq_lowProj (d0 : ℕ) (f : X → ℂ) :
 -- ═══════════════════════════════════════════════════════════
 
 omit [DecidableEq X] in
-/-- Identifies the compact normalized inner product `l2Inner`
-with the weighted inner product `wInner` using `cWeight`,
-with arguments flipped to match the conjugate convention. -/
+/-- Identifie le produit scalaire normalisé compact `l2Inner`
+au produit scalaire pondéré `wInner` utilisant `cWeight`,
+avec arguments inversés pour respecter la convention de conjugaison. -/
 lemma l2Inner_eq_wInner_cWeight_flip (f g : X → ℂ) :
     l2Inner f g = RCLike.wInner (𝕜 := ℂ) RCLike.cWeight g f := by
   unfold l2Inner
@@ -255,8 +301,8 @@ lemma l2Inner_eq_wInner_cWeight_flip (f g : X → ℂ) :
   simp [NNRat.smul_def]
 
 omit [DecidableEq X] in
-/-- Expresses `l2NormSq` as the normalized squared norm
-of `WithLp.toLp 2 f`. -/
+/-- Exprime `l2NormSq` comme norme au carré normalisée
+de `WithLp.toLp 2 f`. -/
 lemma l2NormSq_eq_scaled_norm_sq (f : X → ℂ) :
     l2NormSq f = ((Fintype.card X : ℝ)⁻¹) * ‖WithLp.toLp 2 f‖ ^ 2 := by
   unfold l2NormSq
@@ -266,7 +312,7 @@ lemma l2NormSq_eq_scaled_norm_sq (f : X → ℂ) :
   simp [NNRat.smul_def, Complex.mul_re, pow_two]
 
 omit [DecidableEq X] in
-/-- Closed form for `l2Norm` in terms of the standard finite `L2` norm. -/
+/-- Forme fermée de `l2Norm` en fonction de la norme finie `L2` standard. -/
 lemma l2Norm_eq_scaled_norm (f : X → ℂ) :
     l2Norm f = Real.sqrt ((Fintype.card X : ℝ)⁻¹) * ‖WithLp.toLp 2 f‖ := by
   unfold l2Norm
@@ -281,8 +327,8 @@ lemma l2Norm_eq_scaled_norm (f : X → ℂ) :
   rw [hs, Real.sqrt_sq_eq_abs, abs_of_nonneg h2]
 
 omit [DecidableEq X] in
-/-- Finite-dimensional Cauchy–Schwarz inequality for `l2Inner`,
-reduced to the standard `WithLp` inner product. -/
+/-- Inégalité de Cauchy-Schwarz en dimension finie pour `l2Inner`,
+réduite au produit scalaire standard `WithLp`. -/
 lemma cauchy_schwarz_l2 (f g : X → ℂ) :
     ‖l2Inner f g‖ ≤ l2Norm f * l2Norm g := by
   rw [l2Inner_eq_wInner_cWeight_flip]
@@ -335,9 +381,9 @@ lemma cauchy_schwarz_l2 (f g : X → ℂ) :
 -- ═══════════════════════════════════════════════════════════
 
 omit [DecidableEq X] in
-/-- Bridge theorem. CLOSED.
-    Uses: l2Inner_split, reverse triangle (norm_add_le + norm_neg),
-    Cauchy-Schwarz, sq_le_sq', Real.sq_sqrt, l2NormSq_nonneg. -/
+/-- Théorème de bridge. FERMÉ.
+    Utilise : `l2Inner_split`, triangle inversé (`norm_add_le` + `norm_neg`),
+    Cauchy-Schwarz, `sq_le_sq'`, `Real.sq_sqrt`, `l2NormSq_nonneg`. -/
 theorem bridge_lower_bound
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -387,6 +433,7 @@ theorem bridge_lower_bound
 -- ═══════════════════════════════════════════════════════════
 
 omit [DecidableEq X] in
+/-- Version normalisée du bridge lorsque `B = 1`. -/
 theorem bridge_lower_bound_normalized
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -399,6 +446,8 @@ theorem bridge_lower_bound_normalized
   exact h
 
 omit [DecidableEq X] in
+/-- Corollaire demi-contrôle : si `B = 1` et `lambda ≤ 1/2`,
+alors `beta²/4 ≤ l2NormSq main`. -/
 theorem bridge_lower_bound_half
     (main : X → ℂ)
     (CD : CertificateData (X := X))
@@ -413,10 +462,10 @@ theorem bridge_lower_bound_half
 -- Garde épistémique
 -- ═══════════════════════════════════════════════════════════
 
+/-- Drapeau doctrinal : aucune revendication RH dans ce fichier. -/
 def RHClaimed : Bool := false
+
+/-- Vérification du drapeau doctrinal. -/
 theorem rh_not_claimed : RHClaimed = false := rfl
 
-end L10Bridge
-end H3
-end Logic
-end CouretUnification
+end CouretUnification.Logic.H3.L10Bridge

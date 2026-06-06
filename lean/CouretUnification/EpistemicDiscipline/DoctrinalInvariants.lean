@@ -29,8 +29,7 @@
 ================================================================================
 -/
 
-namespace CouretUnification
-namespace EpistemicDiscipline
+namespace CouretUnification.EpistemicDiscipline
 
 /-- Statuts épistémiques utilisés dans le programme. -/
 inductive TruthStatus where
@@ -58,15 +57,15 @@ deriving Repr, DecidableEq
   Doctrine centrale v37
 ================================================================================
 
-  Truth status and architectural position are distinct.
+  Le statut de vérité et la position architecturale sont distincts.
 
-  A theorem can be locally proved without being part of Frozen Core.
-  In particular:
+  Un théorème peut être prouvé localement sans appartenir au Frozen Core.
+  En particulier :
 
-      [P] local ≠ Frozen Core automatically.
+      [P] local ≠ Frozen Core automatiquement.
 
-  Residue/* may contain local finite proofs while remaining
-  architecturally Active.
+  Residue/* peut contenir des preuves finies locales tout en restant
+  architecturalement Active.
 -/
 
 /-- `[P]` local n'implique pas automatiquement Frozen Core. -/
@@ -111,6 +110,7 @@ def FiniteCoreClosesAnalyticBridge : Bool := false
 def ClosureTCTruthStatus : TruthStatus :=
   TruthStatus.provedLocal
 
+/-- Couche architecturale du module `ClosureTC`. -/
 def ClosureTCArchitecturalLayer : ArchitecturalLayer :=
   ArchitecturalLayer.active
 
@@ -118,6 +118,7 @@ def ClosureTCArchitecturalLayer : ArchitecturalLayer :=
 def CycleCosetTruthStatus : TruthStatus :=
   TruthStatus.provedLocal
 
+/-- Couche architecturale du module `CycleCoset`. -/
 def CycleCosetArchitecturalLayer : ArchitecturalLayer :=
   ArchitecturalLayer.active
 
@@ -126,6 +127,7 @@ def CycleCosetArchitecturalLayer : ArchitecturalLayer :=
 def IsospectralityTruthStatus : TruthStatus :=
   TruthStatus.theoremTarget
 
+/-- Couche architecturale de l'isospectralité amputée. -/
 def IsospectralityArchitecturalLayer : ArchitecturalLayer :=
   ArchitecturalLayer.active
 
@@ -134,6 +136,7 @@ def IsospectralityArchitecturalLayer : ArchitecturalLayer :=
 def CryptoAuditTruthStatus : TruthStatus :=
   TruthStatus.conditional
 
+/-- Couche architecturale de l'audit cryptographique. -/
 def CryptoAuditArchitecturalLayer : ArchitecturalLayer :=
   ArchitecturalLayer.active
 
@@ -152,70 +155,90 @@ def PhiXiAllowsRHClaim : Bool :=
 ================================================================================
 -/
 
+/-- Le statut de vérité local ne force pas une promotion architecturale Frozen. -/
 theorem truth_status_not_architectural_freeze :
     TruthStatusImpliesFrozen = false := by
   rfl
 
+/-- Les apports v35/v36 ne grossissent pas le Frozen Core v37. -/
 theorem v35_does_not_expand_frozen_core :
     FrozenCoreAugmentedByV35 = false := by
   rfl
 
+/-- La couche `Residue/` est bien maintenue en statut architectural Active. -/
 theorem residue_layer_is_active :
     ResidueLayerArchitecturalStatus = ArchitecturalLayer.active := by
   rfl
 
+/-- Vérification doctrinale. -/
 theorem rh_claimed_false :
     RHClaimed = false := by
   rfl
 
+/-- Le pont det₂ ↔ ξ n'est pas déclaré fermé. -/
 theorem det2_xi_bridge_not_closed :
     Det2XiBridgeClosed = false := by
   rfl
 
+/-- Le matching global des zéros n'est pas déclaré fermé. -/
 theorem global_zero_matching_not_closed :
     GlobalZeroMatchingClosed = false := by
   rfl
 
+/-- H3 n'est pas déclaré fermé. -/
 theorem h3_not_closed :
     H3Closed = false := by
   rfl
 
+/-- Une projection d'audit ne constitue pas une preuve de compromission. -/
 theorem audit_projection_not_compromise_proof :
     AuditProjectionImpliesCompromiseProof = false := by
   rfl
 
+/-- λ n'est pas promue constante spectrale RH universelle. -/
 theorem lambda_not_universal_rh_spectral_constant :
     LambdaIsUniversalRHSpectralConstant = false := by
   rfl
 
+/-- Le noyau fini ne ferme pas le pont analytique. -/
 theorem finite_core_does_not_close_analytic_bridge :
     FiniteCoreClosesAnalyticBridge = false := by
   rfl
 
+/-- Scission de statut pour `ClosureTC` :
+    prouvé localement, mais architecturalement Active. -/
 theorem closure_tc_status_split :
     ClosureTCTruthStatus = TruthStatus.provedLocal ∧
     ClosureTCArchitecturalLayer = ArchitecturalLayer.active := by
   refine ⟨?_, ?_⟩ <;> rfl
 
+/-- Scission de statut pour `CycleCoset` :
+    prouvé localement, mais architecturalement Active. -/
 theorem cycle_coset_status_split :
     CycleCosetTruthStatus = TruthStatus.provedLocal ∧
     CycleCosetArchitecturalLayer = ArchitecturalLayer.active := by
   refine ⟨?_, ?_⟩ <;> rfl
 
+/-- Scission de statut pour l'isospectralité amputée :
+    cible théorème, mais encore Active. -/
 theorem isospectrality_status_split :
     IsospectralityTruthStatus = TruthStatus.theoremTarget ∧
     IsospectralityArchitecturalLayer = ArchitecturalLayer.active := by
   refine ⟨?_, ?_⟩ <;> rfl
 
+/-- Scission de statut pour l'audit cryptographique :
+    conditionnel, et architecturalement Active. -/
 theorem crypto_audit_status_split :
     CryptoAuditTruthStatus = TruthStatus.conditional ∧
     CryptoAuditArchitecturalLayer = ArchitecturalLayer.active := by
   refine ⟨?_, ?_⟩ <;> rfl
 
+/-- Le comparateur Hilbert–Pólya reste situé dans l'horizon analytique. -/
 theorem hp_sigma_kernel_in_analytic_horizon :
     HPSigmaKernelLayer = ArchitecturalLayer.analyticHorizon := by
   rfl
 
+/-- Le comparateur Φξ n'autorise pas de revendication RH. -/
 theorem phi_xi_does_not_allow_rh_claim :
     PhiXiAllowsRHClaim = false := by
   rfl
@@ -248,5 +271,4 @@ theorem v35_v36_v37_doctrinal_consistency :
     PhiXiAllowsRHClaim = false := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rfl
 
-end EpistemicDiscipline
-end CouretUnification
+end CouretUnification.EpistemicDiscipline

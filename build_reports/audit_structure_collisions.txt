@@ -33,59 +33,59 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/FiniteCore.lean:42:abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
        ./Residue/ClosureTC.lean:56:def TC : Finset Z30 := {1, 11, 29}
         ──       4 normSq
-       ./Finite/Foundations.lean:67:def normSq (f : Sig) : ℚ := dot f f
-       ./Spectral/T2Gap.lean:39:def normSq (x : CoerciveSector) : ℝ := x.1.normSq
-       ./Spectral/FiniteCore.lean:104:def normSq (x : Vec) : ℝ :=
-       ./Spectral/FiniteCore.lean:123:def normSq (x : Centered8) : ℝ := FiniteCore.normSq x.1
+       ./Finite/Foundations.lean:66:def normSq (f : Sig) : ℚ := dot f f
+       ./Spectral/T2Gap.lean:38:def normSq (x : CoerciveSector) : ℝ := x.1.normSq
+       ./Spectral/FiniteCore.lean:106:def normSq (x : Vec) : ℝ :=  dot x x
+       ./Spectral/FiniteCore.lean:124:def normSq (x : Centered8) : ℝ := FiniteCore.normSq x.1
  ⚠ Core ──       3 parsevalMass
-       ./Core/Classification63.lean:122:def parsevalMass (mask : Nat) : Nat :=
+       ./Core/Classification63.lean:121:def parsevalMass (mask : Nat) : Nat := (List.finRange 8).foldl
        ./Core/Parseval.lean:7:def parsevalMass : Nat := TCParsevalMass
        ./Core/ParsevalL5.lean:76:def parsevalMass (q : Nat) : Nat := Nat.totient q * tcCoprime q
         ──       3 normSq_nonneg
-       ./Spectral/T2Gap.lean:44:theorem normSq_nonneg (x : CoerciveSector) : 0 ≤ x.normSq := by
-       ./Spectral/FiniteCore.lean:111:theorem normSq_nonneg (x : Vec) : 0 ≤ normSq x := by
-       ./Spectral/FiniteCore.lean:127:theorem normSq_nonneg (x : Centered8) : 0 ≤ x.normSq := by
+       ./Spectral/T2Gap.lean:43:theorem normSq_nonneg (x : CoerciveSector) : 0 ≤ x.normSq := by
+       ./Spectral/FiniteCore.lean:112:theorem normSq_nonneg (x : Vec) : 0 ≤ normSq x := by
+       ./Spectral/FiniteCore.lean:130:theorem normSq_nonneg (x : Centered8) : 0 ≤ x.normSq := by
  ⚠ Core ──       3 Idx
        ./Spectral/FiniteCore.lean:15:abbrev Idx := Fin 8
        ./Core/CayleySpectrum.lean:46:abbrev Idx := Fin 8
        ./Core/Mod30.lean:8:abbrev Idx := Fin 8
  ⚠ Core ──       3 energy
-       ./Spectral/T2Gap.lean:42:def energy (x : CoerciveSector) : ℝ := quadratic x.1.1
+       ./Spectral/T2Gap.lean:41:def energy (x : CoerciveSector) : ℝ := quadratic x.1.1
        ./Core/G30Classification.lean:137:def energy (T : List (Fin 8)) (χ : QuadCharIdx) : Int :=
        ./Core/ParsevalL5.lean:93:noncomputable def energy (q : Nat) : ℚ := (parsevalMass q : ℚ) / (Nat.totient q : ℚ)
         ──       2 ZeroShellData
        ./Logic/ExplicitFormula/ZeroSideObligation.lean:41:structure ZeroShellData where
        ./AnalyticHorizon/ZeroCountingCertificate.lean:40:structure ZeroShellData where
  ⚠ Core ──       2 Vec
-       ./Spectral/FiniteCore.lean:16:abbrev Vec := Idx → ℝ
+       ./Spectral/FiniteCore.lean:18:abbrev Vec := Idx → ℝ
        ./Core/FiniteOperator.lean:12:abbrev Vec := Idx → ℂ
  ⚠ Core ──       2 v1b
-       ./Core/ComponentSpectrum.lean:83:def v1b : V4 := ![0, 0, 1, -1]
+       ./Core/ComponentSpectrum.lean:82:def v1b : V4 := ![0, 0, 1, -1]
        ./Core/CayleySpectrum.lean:185:def v1b : IVec := ![0, 1, 0, -1, 0, 1, 0, -1]
  ⚠ Core ──       2 v1a
-       ./Core/ComponentSpectrum.lean:82:def v1a : V4 := ![1, -1, 0, 0]
+       ./Core/ComponentSpectrum.lean:81:def v1a : V4 := ![1, -1, 0, 0]
        ./Core/CayleySpectrum.lean:182:def v1a : IVec := ![1, 0, -1, 0, 1, 0, -1, 0]
  ⚠ Core ──       2 unitsMod30
-       ./Spectral/FiniteCore.lean:20:def unitsMod30 : Idx → ℤ
-       ./Core/SpectralMoments.lean:29:def unitsMod30 : Fin 8 → Nat
+       ./Spectral/FiniteCore.lean:24:def unitsMod30 : Idx → ℤ
+       ./Core/SpectralMoments.lean:27:def unitsMod30 : Fin 8 → Nat
         ──       2 squarefreeCount
-       ./Logic/H3/RouteC.lean:119:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
+       ./Logic/H3/RouteC.lean:120:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
        ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
  ⚠ Core ──       2 QuadCharIdx
        ./Core/QuadraticResonance.lean:120:abbrev QuadCharIdx := Fin 2 × Fin 4
        ./Core/G30Classification.lean:104:abbrev QuadCharIdx := Fin 2 × Fin 4
  ⚠ Core ──       2 oneVec
-       ./Spectral/FiniteCore.lean:74:def oneVec : Vec := fun _ => 1
+       ./Spectral/FiniteCore.lean:80:def oneVec : Vec := fun _ => 1
        ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
  ⚠ Core ──       2 nineteen_not_in_TC
-       ./Core/TCAutoInverse.lean:24:theorem nineteen_not_in_TC : 19 ≠ 1 ∧ 19 ≠ 11 ∧ 19 ≠ 29 := by omega
+       ./Core/TCAutoInverse.lean:23:theorem nineteen_not_in_TC : 19 ≠ 1 ∧ 19 ≠ 11 ∧ 19 ≠ 29 := by omega
        ./Residue/ClosureTC.lean:91:theorem nineteen_not_in_TC :
  ⚠ Core ──       2 negOneG30
        ./Logic/H3/FiniteSpectralAPI.lean:15:abbrev negOneG30 : G30 := u29
        ./Core/CharParity30.lean:5:def negOneG30 : G30 := -1
  ⚠ Core ──       2 kappa
-       ./Spectral/T2Gap.lean:54:def kappa : ℝ := 2
-       ./Core/Arithmetic.lean:194:noncomputable def kappa (q : ℕ) : ℝ := Real.sqrt (kappaSq q)
+       ./Spectral/T2Gap.lean:53:def kappa : ℝ := 2
+       ./Core/Arithmetic.lean:199:noncomputable def kappa (q : ℕ) : ℝ := Real.sqrt (kappaSq q)
         ──       2 H3TestFunction
        ./Logic/C3Weak.lean:56:structure H3TestFunction where
        ./Logic/C3Weak.lean:73:noncomputable def H3TestFunction.mulConj (f g : H3TestFunction) : H3TestFunction where
@@ -104,10 +104,10 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Empirical/SophieGermainExpected.lean:171:def empirical_statement : Statement := {
         ──       2 E
        ./Logic/ChiralityFinite.lean:61:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
-       ./Logic/H3/RouteC.lean:505:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
+       ./Logic/H3/RouteC.lean:509:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
         ──       2 dot
-       ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ :=
-       ./Spectral/FiniteCore.lean:100:def dot (x y : Vec) : ℝ :=
+       ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ := (List.finRange 8).foldl (fun acc i => acc + f i * g i) 0
+       ./Spectral/FiniteCore.lean:103:def dot (x y : Vec) : ℝ := ∑ i, x i * y i
  ⚠ Core ──       2 crt_decomposition_correct
        ./Core/QuadraticResonance.lean:108:def crt_decomposition_correct : Bool :=
        ./Core/G30Classification.lean:87:def crt_decomposition_correct : Bool :=
@@ -118,11 +118,11 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Analytic/GammaFactor.lean:41:def charParity : CharIdx → Bool := fun _ => true
        ./Core/CharParity30.lean:27:noncomputable def charParity (χ : CharIdx) : Bool :=
  ⚠ Core ──       2 altVec_centered
-       ./Spectral/FiniteCore.lean:132:theorem altVec_centered : ∑ i, altVec i = 0 := by
-       ./Core/CenteredEigenspace.lean:27:theorem altVec_centered : vsum v3b = 0 := by native_decide
+       ./Spectral/FiniteCore.lean:136:theorem altVec_centered : ∑ i, altVec i = 0 := by
+       ./Core/CenteredEigenspace.lean:28:theorem altVec_centered : vsum v3b = 0 := by native_decide
         ──       2 altVec
-       ./Finite/Foundations.lean:105:abbrev altVec : Sig := chi5
-       ./Spectral/FiniteCore.lean:77:def altVec : Vec
+       ./Finite/Foundations.lean:104:abbrev altVec : Sig := chi5
+       ./Spectral/FiniteCore.lean:83:def altVec : Vec
  ⚠ Core ──       2 admissibleResidues
        ./Core/FiniteCore.lean:31:abbrev admissibleResidues : Finset (ZMod 30) := CouretUnification.Core.U30
        ./Core/Mod30.lean:10:def admissibleResidues : List Nat := [1, 7, 11, 13, 17, 19, 23, 29]

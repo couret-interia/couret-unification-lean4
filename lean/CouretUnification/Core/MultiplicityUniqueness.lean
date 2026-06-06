@@ -1,25 +1,24 @@
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace MultiplicityUniqueness
+namespace CouretUnification.Core.MultiplicityUniqueness
 
 /-!
 # Unicité des multiplicités spectrales
 
-The system:
+Le système :
   a + b + c = 8      (dimension)
   3a + b − c = 8     (Tr A)
   9a + b + c = 24    (Tr A²)
 
-has the unique solution a = 2, b = 4, c = 2.
+possède pour unique solution a = 2, b = 4, c = 2.
 
-This is the algebraic backbone of the spectral determination:
-given eigenvalues ⊆ {3, 1, −1}, the traces Tr(A) and Tr(A²)
-uniquely fix all multiplicities.
+C’est l’ossature algébrique de la détermination spectrale :
+étant donné des valeurs propres incluses dans {3, 1, −1}, les traces
+Tr(A) et Tr(A²) fixent de manière unique toutes les multiplicités.
 -/
 
 /--
-**Existence**: (2, 4, 2) is a solution.
+**Existence** : (2, 4, 2) est une solution.
 -/
 theorem mult_solution :
     2 + 4 + 2 = 8 ∧
@@ -27,7 +26,7 @@ theorem mult_solution :
     9 * 2 + 4 + 2 = 24 := by omega
 
 /--
-**Uniqueness**: any solution equals (2, 4, 2).
+**Unicité** : toute solution est égale à (2, 4, 2).
 -/
 theorem mult_unique (a b c : Int)
     (h1 : a + b + c = 8)
@@ -36,14 +35,13 @@ theorem mult_unique (a b c : Int)
     a = 2 ∧ b = 4 ∧ c = 2 := by omega
 
 /--
-**Packaged**: the multiplicities of Spec(A) = {3ᵃ, 1ᵇ, (−1)ᶜ}
-are uniquely determined by dim = 8, Tr(A) = 8, Tr(A²) = 24.
+**Version empaquetée** : les multiplicités de Spec(A) = {3ᵃ, 1ᵇ, (−1)ᶜ}
+sont déterminées de manière unique par dim = 8, Tr(A) = 8, Tr(A²) = 24.
 -/
 theorem mult_unique_nat (a b c : Nat)
     (h1 : a + b + c = 8)
-    (h2 : 3 * a + b + 8 = 8 + c + 8)  -- rewritten to avoid subtraction on Nat
+    (h2 : 3 * a + b + 8 = 8 + c + 8)  -- réécrit pour éviter la soustraction sur Nat
     (h3 : 9 * a + b + c = 24) :
     a = 2 ∧ b = 4 ∧ c = 2 := by omega
 
-end MultiplicityUniqueness
-end CouretUnification.Core
+end CouretUnification.Core.MultiplicityUniqueness

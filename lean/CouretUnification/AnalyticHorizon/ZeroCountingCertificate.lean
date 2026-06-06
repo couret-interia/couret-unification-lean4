@@ -6,66 +6,66 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 /-!
 # ZeroCountingCertificate.lean
 
-Active layer. Conditional certificate for the Riemann-von Mangoldt
-style shell-counting obligation on the zero side.
+Couche active. Certificat conditionnel pour l’obligation de comptage
+par coquilles, de style Riemann-von Mangoldt, du côté des zéros.
 
-This file does not prove Riemann-von Mangoldt. It does not identify
-the abstract `Zero` type with the zeros of zeta. It records the
-typed shape of the counting obligation.
+Ce fichier ne prouve pas Riemann-von Mangoldt. Il n’identifie pas
+le type abstrait `Zero` avec les zéros de zêta. Il enregistre la
+forme typée de l’obligation de comptage.
 
-It also exposes the canonical wrapper `ZeroSideSummabilityCertificate`
-under which the audit and the torsion-zero interface refer to the
-classical zero-counting obligation.
+Il expose aussi l’enveloppe canonique `ZeroSideSummabilityCertificate`,
+sous laquelle l’audit et l’interface de torsion-zéro se réfèrent à
+l’obligation classique de comptage des zéros.
 
-Doctrine:
-- no RH claim;
-- no Hilbert-Polya claim;
-- no proof of Riemann-von Mangoldt;
-- no closed explicit formula claim;
-- the obligation is localized and conditional; it is not paid.
+Doctrine :
+- aucune revendication RH ;
+- aucune revendication Hilbert-Polya ;
+- aucune preuve de Riemann-von Mangoldt ;
+- aucune revendication de formule explicite fermée ;
+- l’obligation est localisée et conditionnelle ; elle n’est pas acquittée.
 
-This file is a contract, not a theorem.
+Ce fichier est un contrat, non un théorème.
 -/
 
 namespace CouretUnification.AnalyticHorizon
 
-/-- Abstract spectral data.
+/-- Données spectrales abstraites.
 
-`Zero` is an abstract type. `gamma` is the ordinate function.
-`zerosInShell k` is the set of zeros whose ordinate falls in some
-implicit shell of level `k`.
+`Zero` est un type abstrait. `gamma` est la fonction d’ordonnée.
+`zerosInShell k` est l’ensemble des zéros dont l’ordonnée tombe dans une
+coquille implicite de niveau `k`.
 
-No assertion is made that `Zero` is the type of zeros of the
-Riemann zeta function; this is ONLY a typed receptacle. -/
+Aucune assertion n’est faite selon laquelle `Zero` serait le type des zéros
+de la fonction zêta de Riemann ; c’est UNIQUEMENT un réceptacle typé. -/
 structure ZeroShellData where
   Zero : Type
   gamma : Zero → ℝ
   zerosInShell : ℕ → Finset Zero
 
-/-- Conditional certificate for shell-counting.
+/-- Certificat conditionnel pour le comptage par coquilles.
 
-The obligation is that the number of zeros in shell `k` grows at
-most logarithmically in `k`. This is the typed shape of
-Riemann-von Mangoldt. It is not proved here. -/
+L’obligation est que le nombre de zéros dans la coquille `k` croisse au plus
+logarithmiquement en `k`. C’est la forme typée de Riemann-von Mangoldt.
+Elle n’est pas prouvée ici. -/
 structure ZeroCountingCertificate where
   data : ZeroShellData
   zeroSideSummable :
     ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ,
       ((data.zerosInShell k).card : ℝ) ≤ C * Real.log ((k : ℝ) + 3)
 
-/-- Canonical wrapper exposed as the Active "ZeroSide summability"
-interface.
+/-- Enveloppe canonique exposée comme interface active de sommabilité
+du « côté zéro ».
 
-This is the type referenced by `ActiveLayerFullAudit` and by
-`TorsionZeroInterfaceCertificate.zeroSide`. The wrapper holds the
-underlying classical certificate without altering it. -/
+C’est le type référencé par `ActiveLayerFullAudit` et par
+`TorsionZeroInterfaceCertificate.zeroSide`. L’enveloppe contient le
+certificat classique sous-jacent sans le modifier. -/
 structure ZeroSideSummabilityCertificate where
   zeroCounting : ZeroCountingCertificate
 
 namespace ZeroSideSummabilityCertificate
 
-/-- Forwarding accessor: the summability obligation lives in the
-inner classical certificate. -/
+/-- Accesseur par transfert : l’obligation de sommabilité vit dans le
+certificat classique interne. -/
 def zeroSideSummable (cert : ZeroSideSummabilityCertificate) :
     ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ,
       ((cert.zeroCounting.data.zerosInShell k).card : ℝ)
@@ -75,36 +75,36 @@ def zeroSideSummable (cert : ZeroSideSummabilityCertificate) :
 end ZeroSideSummabilityCertificate
 
 /- ══════════════════════════════════════════════════════════════
-   Doctrinal flags.
+   Drapeaux doctrinaux.
    ══════════════════════════════════════════════════════════════ -/
 
-/-- The zero side is NOT declared closed by this certificate. -/
+/-- Le côté zéro n’est PAS déclaré fermé par ce certificat. -/
 def ZeroSideClosedFromZeroCountingCertificate : Bool := false
 
-/-- Riemann-von Mangoldt is NOT claimed proved by this certificate. -/
+/-- Riemann-von Mangoldt n’est PAS revendiqué comme prouvé par ce certificat. -/
 def RiemannVonMangoldtClaimedFromCertificate : Bool := false
 
-/-- No RH consequence is exported. -/
+/-- Aucune conséquence RH n’est exportée. -/
 def RHFromZeroCountingCertificate : Bool := false
 
-/-- No Hilbert-Polya consequence is exported. -/
+/-- Aucune conséquence Hilbert-Polya n’est exportée. -/
 def HilbertPolyaFromZeroCountingCertificate : Bool := false
 
-/-- No explicit formula closure is exported. -/
+/-- Aucune clôture de formule explicite n’est exportée. -/
 def ExplicitFormulaClosedFromZeroCountingCertificate : Bool := false
 
 /- ══════════════════════════════════════════════════════════════
-   Tautological accessors.
+   Accesseurs tautologiques.
    ══════════════════════════════════════════════════════════════ -/
 
-/-- Tautological access to the classical shell-counting obligation. -/
+/-- Accès tautologique à l’obligation classique de comptage par coquilles. -/
 theorem zeroCounting_has_log_shell_bound
     (cert : ZeroCountingCertificate) :
     ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ,
       ((cert.data.zerosInShell k).card : ℝ) ≤ C * Real.log ((k : ℝ) + 3) :=
   cert.zeroSideSummable
 
-/-- Tautological access to the wrapped summability certificate. -/
+/-- Accès tautologique au certificat enveloppé de sommabilité. -/
 theorem zeroSideSummability_has_log_shell_bound
     (cert : ZeroSideSummabilityCertificate) :
     ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ,

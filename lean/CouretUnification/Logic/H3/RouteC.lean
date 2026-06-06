@@ -47,24 +47,24 @@ namespace CouretUnification.Logic.H3.RouteC
 -- §1. Recollement avec l'arithmétique réelle
 -- ═══════════════════════════════════════════════════════════
 
-/-- Euler's totient, imported from `Arithmetic.lean`. -/
+/-- Indicatrice d’Euler, importée depuis `Arithmetic.lean`. -/
 noncomputable abbrev phi : ℕ → ℝ := CouretUnification.Arithmetic.phi
 
-/-- Restricted second moment `K(q)`, imported from `Arithmetic.lean`. -/
+/-- Second moment restreint `K(q)`, importé depuis `Arithmetic.lean`. -/
 noncomputable abbrev K : ℕ → ℝ := CouretUnification.Arithmetic.K
 
-/-- Normalized second moment `κ(q)² = K(q)/φ(q)`. -/
+/-- Second moment normalisé `κ(q)² = K(q)/φ(q)`. -/
 noncomputable abbrev kappaSq : ℕ → ℝ := CouretUnification.Arithmetic.kappaSq
 
 /-- `κ(q) = √(K(q)/φ(q))`. -/
 noncomputable abbrev kappa : ℕ → ℝ := CouretUnification.Arithmetic.kappa
 
-/-- Primorial tower. Placeholder — TODO: canonise via ordered primes. -/
+/-- Tour primorielle. Placeholder — TODO : canoniser via les nombres premiers ordonnés. -/
 def primorial : ℕ → ℕ
   | 0 => 1
   | n + 1 => primorial n * (Nat.minFac (primorial n + 1))
 
-/-- Positivity of the primorial tower. -/
+/-- Positivité de la tour primorielle. -/
 theorem primorial_pos (n : ℕ) : 0 < primorial n := by
   induction n with
   | zero => simp [primorial]
@@ -72,11 +72,12 @@ theorem primorial_pos (n : ℕ) : 0 < primorial n := by
     unfold primorial
     exact Nat.mul_pos ih (Nat.minFac_pos _)
 
-/-- Positivity of `φ(primorial n)`. -/
+/-- Positivité de `φ(primorial n)`. -/
 theorem phi_primorial_pos (n : ℕ) : 0 < phi (primorial n) := by
   unfold phi CouretUnification.Arithmetic.phi
   exact Nat.cast_pos.mpr ((Nat.totient_pos).mpr (primorial_pos n))
 
+/-- Non-négativité de `φ(primorial n)`, déduite de sa positivité. -/
 theorem phi_primorial_nonneg (n : ℕ) : 0 ≤ phi (primorial n) :=
   le_of_lt (phi_primorial_pos n)
 
@@ -84,12 +85,12 @@ theorem phi_primorial_nonneg (n : ℕ) : 0 ≤ phi (primorial n) :=
 -- §2. Décomposition analytique
 -- ═══════════════════════════════════════════════════════════
 
-/-- `S1(q) = Σ_{1 ≤ n ≤ q} M(n)²` — unrestricted second moment of Mertens. -/
+/-- `S1(q) = Σ_{1 ≤ n ≤ q} M(n)²` — second moment non restreint de Mertens. -/
 noncomputable def S1 (q : ℕ) : ℝ :=
   Finset.sum (Finset.range (q + 1))
     (fun n => if 0 < n then ((Arithmetic.mertens n : ℤ) : ℝ) ^ 2 else 0)
 
-/-- `S1(q) ≥ 0` — sum of squares. -/
+/-- `S1(q) ≥ 0` — somme de carrés. -/
 theorem S1_nonneg (q : ℕ) : 0 ≤ S1 q := by
   unfold S1
   apply Finset.sum_nonneg
@@ -106,7 +107,7 @@ noncomputable def MainTerm (q : ℕ) : ℝ :=
 noncomputable def ErrorTerm (q : ℕ) : ℝ :=
   K q - MainTerm q
 
-/-- Tautological decomposition: `K = MainTerm + ErrorTerm`. -/
+/-- Décomposition tautologique : `K = MainTerm + ErrorTerm`. -/
 theorem K_decomposition (q : ℕ) : K q = MainTerm q + ErrorTerm q := by
   unfold ErrorTerm; ring
 
@@ -114,11 +115,12 @@ theorem K_decomposition (q : ℕ) : K q = MainTerm q + ErrorTerm q := by
 -- §3. Squarefree count (via la vraie définition Mathlib)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Number of squarefree integers in `{1, …, q}`.
-    Uses Mathlib's `Squarefree` predicate. -/
+/-- Nombre d’entiers squarefree dans `{1, …, q}`.
+    Utilise le prédicat `Squarefree` de Mathlib. -/
 noncomputable def squarefreeCount (q : ℕ) : ℝ :=
   (((Finset.Icc 1 q).filter (fun n => Squarefree n)).card : ℕ)
 
+/-- Le nombre d’entiers squarefree est non négatif. -/
 theorem squarefreeCount_nonneg (q : ℕ) : 0 ≤ squarefreeCount q := by
   unfold squarefreeCount
   positivity
@@ -127,15 +129,16 @@ theorem squarefreeCount_nonneg (q : ℕ) : 0 ≤ squarefreeCount q := by
 -- §3bis. Route Mertens : badSquareCount et union bound
 -- ═══════════════════════════════════════════════════════════
 
-/-- Number of NON-squarefree integers in `{1, …, q}`. -/
+/-- Nombre d’entiers NON-squarefree dans `{1, …, q}`. -/
 noncomputable def badSquareCount (q : ℕ) : ℝ :=
   (((Finset.Icc 1 q).filter fun n => ¬ Squarefree n).card : ℕ)
 
+/-- Le nombre d’entiers non-squarefree est non négatif. -/
 theorem badSquareCount_nonneg (q : ℕ) : 0 ≤ badSquareCount q := by
   unfold badSquareCount
   positivity
 
-/-- Every integer in `{1, …, q}` is either squarefree or non-squarefree. -/
+/-- Tout entier de `{1, …, q}` est soit squarefree, soit non-squarefree. -/
 theorem squarefreeCount_add_badSquareCount (q : ℕ) :
     squarefreeCount q + badSquareCount q = (q : ℝ) := by
   unfold squarefreeCount badSquareCount
@@ -427,12 +430,12 @@ private lemma sum_inv_sq_Icc_le (q : ℕ) :
                     norm_num
       · simp
 
-/-- `sum_div_sq_le_three_quarters` — CLOSED via `nat_div_cast_le`
-and `sum_inv_sq_Icc_le`. -/
+/-- `sum_div_sq_le_three_quarters` — FERMÉ via `nat_div_cast_le`
+et `sum_inv_sq_Icc_le`. -/
 theorem sum_div_sq_le_three_quarters (q : ℕ) :
     Finset.sum (Finset.Icc 2 q) (fun m => ((q / (m ^ 2 : ℕ) : ℕ) : ℝ))
       ≤ (3 / 4 : ℝ) * (q : ℝ) := by
-  -- Step 1: pointwise ⌊q/m²⌋ ≤ q/m² via nat_div_cast_le
+  -- Étape 1 : borne ponctuelle ⌊q/m²⌋ ≤ q/m² via nat_div_cast_le
   have h1 : Finset.sum (Finset.Icc 2 q) (fun m => ((q / (m ^ 2 : ℕ) : ℕ) : ℝ))
       ≤ Finset.sum (Finset.Icc 2 q) (fun m => (q : ℝ) / ((m : ℝ) ^ 2)) := by
     apply Finset.sum_le_sum
@@ -441,7 +444,7 @@ theorem sum_div_sq_le_three_quarters (q : ℕ) :
     have hm2_pos : 0 < m ^ 2 := by positivity
     have h := nat_div_cast_le q (m ^ 2) hm2_pos
     rwa [Nat.cast_pow] at h
-  -- Step 2: factor out q from the sum
+  -- Étape 2 : factorisation de q hors de la somme
   have h2 :
       Finset.sum (Finset.Icc 2 q) (fun m => (q : ℝ) / ((m : ℝ) ^ 2))
         =
@@ -456,7 +459,7 @@ theorem sum_div_sq_le_three_quarters (q : ℕ) :
       _ =
         (q : ℝ) * Finset.sum (Finset.Icc 2 q) (fun m => (1 : ℝ) / ((m : ℝ) ^ 2)) := by
           rw [Finset.mul_sum]
-  -- Step 3: combine
+  -- Étape 3 : combinaison
   calc Finset.sum (Finset.Icc 2 q) (fun m => ((q / (m ^ 2 : ℕ) : ℕ) : ℝ))
       ≤ Finset.sum (Finset.Icc 2 q) (fun m => (q : ℝ) / ((m : ℝ) ^ 2)) := h1
     _ = (q : ℝ) * Finset.sum (Finset.Icc 2 q) (fun m => (1 : ℝ) / ((m : ℝ) ^ 2)) := h2
@@ -464,8 +467,8 @@ theorem sum_div_sq_le_three_quarters (q : ℕ) :
         exact mul_le_mul_of_nonneg_left (sum_inv_sq_Icc_le q) (by positivity : 0 ≤ (q : ℝ))
     _ = (3 / 4) * (q : ℝ) := by ring
 
-/-- `badSquareCount_union_bound` — closed via the two sub-locks above,
-with explicit constant `C = 3/4`. -/
+/-- `badSquareCount_union_bound` — fermé via les deux sous-verrous ci-dessus,
+avec constante explicite `C = 3/4`. -/
 theorem badSquareCount_union_bound :
     ∃ C : ℝ, 0 ≤ C ∧ C < 1 ∧
       ∀ q : ℕ, badSquareCount q ≤ C * (q : ℝ) := by
@@ -475,8 +478,8 @@ theorem badSquareCount_union_bound :
     (badSquareCount_le_sum_div_sq q)
     (sum_div_sq_le_three_quarters q)
 
-/-- Closed algebraic recombination: sublinear badSquareCount implies
-linear lower bound on squarefreeCount. -/
+/-- Recombinaison algébrique fermée : une borne sous-linéaire de `badSquareCount`
+implique une borne linéaire inférieure sur `squarefreeCount`. -/
 theorem squarefreeCount_linear_global_from_union_bound
     (h : ∃ C : ℝ, 0 ≤ C ∧ C < 1 ∧
       ∀ q : ℕ, badSquareCount q ≤ C * (q : ℝ)) :
@@ -489,7 +492,7 @@ theorem squarefreeCount_linear_global_from_union_bound
   have hb := hbound q
   linarith
 
-/-- `squarefreeCount_linear_global` closed via the union bound. -/
+/-- `squarefreeCount_linear_global` fermé via la borne d’union. -/
 theorem squarefreeCount_linear_global :
     ∃ α : ℝ, 0 < α ∧
       ∀ q : ℕ, α * (q : ℝ) ≤ squarefreeCount q :=
@@ -499,11 +502,13 @@ theorem squarefreeCount_linear_global :
 -- §4. Décomposition structurelle de l'erreur
 -- ═══════════════════════════════════════════════════════════
 
-/-- Placeholder single-piece decomposition of the error. -/
+/-- Décomposition placeholder en une seule pièce de l’erreur. -/
 def ErrorPieces (_q : ℕ) : Finset ℕ := {0}
 
+/-- Pièce d’erreur associée à `q` et à l’indice `_d`. -/
 noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
 
+/-- Décomposition tautologique de `ErrorTerm` comme somme des pièces d’erreur. -/
 theorem errorTerm_decomposition (q : ℕ) :
     ErrorTerm q = Finset.sum (ErrorPieces q) (fun d => E q d) := by
   simp [ErrorPieces, E]
@@ -512,6 +517,8 @@ theorem errorTerm_decomposition (q : ℕ) :
 -- §5. Verrous analytiques minimaux
 -- ═══════════════════════════════════════════════════════════
 
+/-- Une étape non nulle de la marche est contrôlée par la somme des carrés
+des deux positions adjacentes. -/
 private lemma step_indicator_le_sqsum_pair
     (A : ℕ → ℤ) (n : ℕ) :
     (if A (n + 1) ≠ A n then (1 : ℝ) else 0)
@@ -649,6 +656,8 @@ private lemma walk_stepCount_le_two_sqsum
     _ = 2 * Finset.sum (Finset.Icc 1 q) g := by
           ring
 
+/-- Forme renversée de la borne de marche :
+la somme des carrés contrôle au moins la moitié du nombre de pas non nuls. -/
 private lemma walk_sqsum_lower_half
     (A : ℕ → ℤ) (hA0 : A 0 = 0) (q : ℕ) :
     (1 / 2 : ℝ) *
@@ -761,7 +770,7 @@ theorem S1_lower_from_squarefree :
   rw [← S1_eq_sum_Icc q] at hwalk
   exact hwalk
 
-/-- **Analytical lock (Route C)** — `θ < 1` control on the error pieces. -/
+/-- **Verrou analytique (Route C)** — contrôle `θ < 1` des pièces d’erreur. -/
 theorem routeC_error_control :
     ∃ n₀ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
       ∀ n : ℕ, n₀ ≤ n →
@@ -774,7 +783,7 @@ theorem routeC_error_control :
 -- §6. Recollements algébriques (fermés)
 -- ═══════════════════════════════════════════════════════════
 
-/-- Specialisation of the global squarefree bound to the primorial tower. -/
+/-- Spécialisation de la borne globale squarefree à la tour primorielle. -/
 theorem squarefreeCount_linear_on_primorial :
     ∃ n₀ : ℕ, ∃ α : ℝ, 0 < α ∧
       ∀ n : ℕ, n₀ ≤ n →
@@ -782,7 +791,7 @@ theorem squarefreeCount_linear_on_primorial :
   obtain ⟨α, hα, hsq⟩ := squarefreeCount_linear_global
   exact ⟨0, α, hα, fun n _ => hsq (primorial n)⟩
 
-/-- Front 1 recombination: squarefree sub-locks → `S1 ≫ q`. -/
+/-- Recombinaison Front 1 : sous-verrous squarefree → `S1 ≫ q`. -/
 theorem S1_linear_on_primorial_from_squarefree
     (h1 : ∃ β : ℝ, 0 < β ∧
       ∀ q : ℕ, β * squarefreeCount q ≤ S1 q)
@@ -799,6 +808,7 @@ theorem S1_linear_on_primorial_from_squarefree
   have hS := hβq (primorial n)
   nlinarith [mul_le_mul_of_nonneg_left hsq (le_of_lt hβ)]
 
+/-- Croissance linéaire de `S1` le long de la tour primorielle. -/
 theorem S1_linear_on_primorial :
     ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
       ∀ n : ℕ, n₀ ≤ n → A * (primorial n : ℝ) ≤ S1 (primorial n) :=
@@ -810,6 +820,7 @@ theorem S1_linear_on_primorial :
 -- §7. Verrous Route C classiques, fermés
 -- ═══════════════════════════════════════════════════════════
 
+/-- Borne inférieure du terme principal le long de la tour primorielle. -/
 theorem routeC_main_lower :
     ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
       ∀ n : ℕ, n₀ ≤ n → A * phi (primorial n) ≤ MainTerm (primorial n) := by
@@ -823,6 +834,7 @@ theorem routeC_main_lower :
   rw [div_mul_eq_mul_div, le_div_iff₀ hq]
   nlinarith [mul_le_mul_of_nonneg_left hS hphi_nn]
 
+/-- Borne supérieure de l’erreur, obtenue depuis le verrou `routeC_error_control`. -/
 theorem routeC_error_upper :
     ∃ n₀ : ℕ, ∃ θ : ℝ, θ < 1 ∧ 0 ≤ θ ∧
       ∀ n : ℕ, n₀ ≤ n →
@@ -842,6 +854,8 @@ theorem routeC_error_upper :
 -- §8. Recollement Route C
 -- ═══════════════════════════════════════════════════════════
 
+/-- Recollement Route C : borne principale positive + erreur contrôlée
+impliquent une borne inférieure positive sur `K`. -/
 theorem routeC_from_main_error
     (hmain : ∃ n₀ : ℕ, ∃ A : ℝ, 0 < A ∧
       ∀ n : ℕ, n₀ ≤ n → A * phi (primorial n) ≤ MainTerm (primorial n))
@@ -866,13 +880,13 @@ theorem routeC_from_main_error
 -- §9. Chaîne complète (A) → (B) → (C)
 -- ═══════════════════════════════════════════════════════════
 
-/-- (A) Central Route C statement. -/
+/-- (A) Énoncé central de la Route C. -/
 theorem routeC_explicit_core :
     ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n) :=
   routeC_from_main_error routeC_main_lower routeC_error_upper
 
-/-- (B) From K/φ lower bound to κ lower bound. -/
+/-- (B) Passage d’une borne inférieure sur K/φ à une borne inférieure sur κ. -/
 theorem kappa_explicit_bound
     (hmain : ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n)) :
@@ -887,7 +901,7 @@ theorem kappa_explicit_bound
   have hphi : 0 < phi (primorial n) := phi_primorial_pos n
   exact (le_div_iff₀ hphi).mpr (hK n hn)
 
-/-- (C) Eventual positivity of κ along the primorial tower. -/
+/-- (C) Positivité éventuelle de κ le long de la tour primorielle. -/
 theorem kappa_eventually_pos
     (hmain : ∃ n₀ : ℕ, ∃ c : ℝ, 0 < c ∧
       ∀ n : ℕ, n₀ ≤ n → c * phi (primorial n) ≤ K (primorial n)) :
@@ -896,7 +910,7 @@ theorem kappa_eventually_pos
   obtain ⟨n₀, lam, hlam, hbound⟩ := kappa_explicit_bound hmain
   exact ⟨lam, hlam, Filter.eventually_atTop.mpr ⟨n₀, hbound⟩⟩
 
-/-- Full Route C conclusion. -/
+/-- Conclusion complète de la Route C. -/
 theorem kappa_pos_from_routeC :
     ∃ lam : ℝ, 0 < lam ∧
       ∀ᶠ n in Filter.atTop, lam ≤ kappa (primorial n) :=
@@ -906,7 +920,10 @@ theorem kappa_pos_from_routeC :
 -- §10. Gouvernance
 -- ═══════════════════════════════════════════════════════════
 
+/-- Drapeau doctrinal : aucune revendication RH dans ce fichier. -/
 def RHClaimed : Bool := false
+
+/-- Vérification du drapeau doctrinal. -/
 theorem rh_not_claimed : RHClaimed = false := rfl
 
 end CouretUnification.Logic.H3.RouteC

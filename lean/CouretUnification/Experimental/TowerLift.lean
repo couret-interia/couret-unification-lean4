@@ -14,9 +14,10 @@ import CouretUnification.Experimental.TowerLift.ToyModelSpec
 
 namespace CouretUnification.Experimental.TowerLift
 
+/-- Drapeau minimal indiquant que l’ombrelle expérimentale TowerLift est chargée. -/
 def loaded : Bool := true
 
-def status : String :=
-  "[Experimental] toy models and executable numerical checks"
+/-- Statut doctrinal de cette ombrelle : expérimental, non démonstratif `[D]`. -/
+def status : String := "[Experimental] toy models and executable numerical checks"
 
 end CouretUnification.Experimental.TowerLift

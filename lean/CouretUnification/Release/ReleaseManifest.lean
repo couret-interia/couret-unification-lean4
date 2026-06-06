@@ -10,121 +10,121 @@ import CouretUnification.AnalyticHorizon.ActiveLayerFullAudit
 /-!
 # ReleaseManifest.lean
 
-Canonical release manifest for the v36 jurisdiction.
+Manifeste canonique de publication pour la juridiction v36.
 
-This file freezes the doctrinal status of the architecture. It
-introduces no new mathematics. It defines the exact boundaries
-between the Frozen core and the conditional Active certificates,
-and is the single point of truth queried by the CI linter.
+Ce fichier fige le statut doctrinal de l’architecture. Il
+n’introduit aucune nouvelle mathématique. Il définit les frontières
+exactes entre le noyau Frozen et les certificats conditionnels Active,
+et constitue le point unique de vérité interrogé par le linter CI.
 
-## What v36 IS:
-- a proof jurisdiction;
-- a Frozen core (PrimeSide, TraceObject, Bridge contract);
-- an Active layer of typed conditional certificates;
-- a strict separation between the two.
+## Ce qu’EST v36 :
+- une juridiction de preuve ;
+- un noyau Frozen (`PrimeSide`, `TraceObject`, contrat `Bridge`) ;
+- une couche Active de certificats conditionnels typés ;
+- une séparation stricte entre les deux.
 
-## What v36 is NOT:
-- a proof of the Riemann Hypothesis;
-- a proof of any Hilbert-Polya operator;
-- a closure of the explicit formula;
-- a determinant identity proof;
-- a reinterpretation of nu_eff as measurement noise;
-- an export of any RH consequence.
+## Ce que v36 N’EST PAS :
+- une preuve de l’hypothèse de Riemann ;
+- une preuve d’un quelconque opérateur de Hilbert-Polya ;
+- une clôture de la formule explicite ;
+- une preuve d’identité déterminantielle ;
+- une réinterprétation de nu_eff comme bruit de mesure ;
+- un export d’une quelconque conséquence RH.
 -/
 
 namespace CouretUnification.Release
 
 /- ══════════════════════════════════════════════════════════════
-   DOCTRINAL CORE
+   NOYAU DOCTRINAL
    ══════════════════════════════════════════════════════════════ -/
 
-/-- v36 is a proof jurisdiction, not a mathematical proof. -/
+/-- v36 est une juridiction de preuve, non une preuve mathématique. -/
 def v36_is_proof_jurisdiction : Bool := true
 
 /- ══════════════════════════════════════════════════════════════
-   CLAIM PREVENTION (all `false` by construction)
+   PRÉVENTION DES REVENDICATIONS (tous `false` par construction)
    ══════════════════════════════════════════════════════════════ -/
 
-/-- The Riemann Hypothesis is NOT claimed. -/
+/-- L’hypothèse de Riemann n’est PAS revendiquée. -/
 def RHClaimed_v36 : Bool := false
 
-/-- Hilbert-Polya is NOT claimed. -/
+/-- Hilbert-Polya n’est PAS revendiqué. -/
 def HilbertPolyaClaimed_v36 : Bool := false
 
-/-- Spectral coincidence is NOT claimed. -/
+/-- La coïncidence spectrale n’est PAS revendiquée. -/
 def SpectralCoincidenceClaimed_v36 : Bool := false
 
-/-- The explicit formula is NOT closed. -/
+/-- La formule explicite n’est PAS fermée. -/
 def ExplicitFormulaClosed_v36 : Bool := false
 
-/-- No determinantal identity is claimed. -/
+/-- Aucune identité déterminantielle n’est revendiquée. -/
 def Det2IdentityClaimed_v36 : Bool := false
 
-/-- Riemann-von Mangoldt is NOT claimed. -/
+/-- Riemann-von Mangoldt n’est PAS revendiqué. -/
 def RiemannVonMangoldtClaimed_v36 : Bool := false
 
-/-- The Candidate C (Bost-Connes mod 30) is NOT claimed resolved. -/
+/-- Le Candidat C (Bost-Connes mod 30) n’est PAS revendiqué comme résolu. -/
 def CandidateCClaimed_v36 : Bool := false
 
-/-- The Soin "mother theorem" is NOT claimed. -/
+/-- Le « théorème mère » de Soin n’est PAS revendiqué. -/
 def MotherTheoremClaimed_v36 : Bool := false
 
 /- ══════════════════════════════════════════════════════════════
-   STRUCTURAL DOCTRINE (preservation flags — `true` by design)
+   DOCTRINE STRUCTURELLE (drapeaux de préservation — `true` par conception)
    ══════════════════════════════════════════════════════════════ -/
 
-/-- Frozen core is structurally separated from Active certificates. -/
+/-- Le noyau Frozen est structurellement séparé des certificats Active. -/
 def FrozenActiveSeparation_v36 : Bool := true
 
-/-- The PrimeSide has the first effective Frozen closure. -/
+/-- Le PrimeSide possède la première clôture Frozen effective. -/
 def PrimeSideClosureAvailable_v36 : Bool := true
 
-/-- Analytic, spectral, determinantal, torsion, and pullback debts
-    all remain unpaid Active obligations. -/
+/-- Les dettes analytiques, spectrales, déterminantielles, de torsion
+    et de pullback restent toutes des obligations Active non acquittées. -/
 def AnalyticDebtsRemain_v36 : Bool := true
 
 /- ══════════════════════════════════════════════════════════════
-   TORSION DOCTRINE
+   DOCTRINE DE LA TORSION
    ══════════════════════════════════════════════════════════════ -/
 
-/-- The empirical gap nu_eff is structural torsion, NOT noise. -/
+/-- L’écart empirique nu_eff est une torsion structurelle, PAS un bruit. -/
 def TorsionIsNoise_v36 : Bool := false
 
-/-- The torsion does NOT move zeros. -/
+/-- La torsion ne déplace PAS les zéros. -/
 def TorsionMovesZeros_v36 : Bool := false
 
-/-- The torsion changes only the observation clock.
+/-- La torsion ne change que l’horloge d’observation.
 
-    Deliberately `true` — this is the doctrinal verrou. -/
+    Délibérément `true` — c’est le verrou doctrinal. -/
 def TorsionChangesClockOnly_v36 : Bool := true
 
-/-- The negative empirical result is preserved.
+/-- Le résultat empirique négatif est préservé.
 
-    Deliberately `true` — preservation of the open obligation. -/
+    Délibérément `true` — préservation de l’obligation ouverte. -/
 def NuEffNegativeResultPreserved_v36 : Bool := true
 
 /- ══════════════════════════════════════════════════════════════
-   PULLBACK DOCTRINE
+   DOCTRINE DU PULLBACK
    ══════════════════════════════════════════════════════════════ -/
 
-/-- Zero-counting under the torsion clock remains an unpaid obligation. -/
+/-- Le comptage des zéros sous l’horloge de torsion reste une obligation non acquittée. -/
 def ZeroCountingPulledBackClaimedClosed_v36 : Bool := false
 
-/-- Riemann-von Mangoldt is NOT claimed from the torsion transfer. -/
+/-- Riemann-von Mangoldt n’est PAS revendiqué à partir du transfert de torsion. -/
 def RiemannVonMangoldtFromTorsionTransfer_v36 : Bool := false
 
-/-- ZeroSide is NOT closed from the torsion transfer. -/
+/-- ZeroSide n’est PAS fermé à partir du transfert de torsion. -/
 def ZeroSideClosedFromTorsionTransfer_v36 : Bool := false
 
 /- ══════════════════════════════════════════════════════════════
-   CANDIDATE C / SOIN INTERFACES (annexed open obligations)
+   INTERFACES CANDIDAT C / SOIN (obligations ouvertes annexées)
    ══════════════════════════════════════════════════════════════ -/
 
-/-- Candidate C remains an annexed prospective open obligation. -/
+/-- Le Candidat C reste une obligation ouverte prospective annexée. -/
 def CandidateCRemainsAnnexed_v36 : Bool := true
 
-/-- Soin interface is open as a typed contract; no axis is a proved
-    instance of the functor. -/
+/-- L’interface Soin est ouverte comme contrat typé ; aucun axe n’est une
+    instance prouvée du foncteur. -/
 def SoinInterfaceRemainsOpen_v36 : Bool := true
 
 end CouretUnification.Release

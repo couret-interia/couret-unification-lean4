@@ -8,7 +8,7 @@ lean/CouretUnification/Logic/EulerBridgeInfinite.lean:107:6: declaration uses `s
 lean/CouretUnification/Logic/EulerBridgeInfinite.lean:133:6: declaration uses `sorry`
 lean/CouretUnification/Logic/H3/Lemma7Residual.lean:6:8: declaration uses `sorry`
 lean/CouretUnification/Logic/H3/MoebiusBridge.lean:73:6: declaration uses `sorry`
-lean/CouretUnification/Logic/H3/RouteC.lean:765:8: declaration uses `sorry`
+lean/CouretUnification/Logic/H3/RouteC.lean:774:8: declaration uses `sorry`
 lean/CouretUnification/Logic/H3/SquarefreeDensity.lean:232:6: declaration uses `sorry`
 lean/CouretUnification/Logic/H3/SquarefreeDensity.lean:245:8: declaration uses `sorry`
 lean/CouretUnification/Logic/H3/SquarefreeDensity.lean:254:8: declaration uses `sorry`

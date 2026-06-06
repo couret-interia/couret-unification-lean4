@@ -24,56 +24,57 @@ Le passage complet J² = −I ⟹ det(J)² = (−1)ⁿ nécessiterait
 `Matrix.det_mul` et `Matrix.det_neg` de Mathlib, non invoqués ici.
 
 **Validité** : sur tout anneau ordonné (ℤ, ℝ, corps réel clos).
-Contre-exemple sur F₂ : en dim 1, J = [1] donne J² = I = −I.
+Contre-exemple sur F₂ : en dimension 1, J = [1] donne J² = I = −I.
 
 Appliqué aux sous-ensembles impairs de (ℤ/30ℤ)× :
   |TC| = 3, |V₅| = 5 ⟹ pas de structure complexe réelle.
 -/
 
 -- ═══════════════════════════════════════════
--- Core scalar obstruction
+-- Noyau scalaire de l’obstruction
 -- ═══════════════════════════════════════════
 
-/-- General form: any odd n obstructs. -/
+/-- Forme générale : toute dimension impaire crée une obstruction. -/
 theorem odd_dim_obstructs (n : Nat) (hn : ∃ k, n = 2 * k + 1) :
     ¬ ∃ d : Int, d * d = (-1 : Int) ^ n := by
   obtain ⟨k, rfl⟩ := hn
   exact no_square_root_neg_one_odd k
 
 -- ═══════════════════════════════════════════
--- Application: subsets of (ℤ/30ℤ)× (Aliases)
+-- Application : sous-ensembles de (ℤ/30ℤ)× (alias)
 -- ═══════════════════════════════════════════
 
-/-- Determinant obstruction for dim 5 (V₅). Alias of `no_symplectic_dim5`. -/
+/-- Obstruction déterminantale en dimension 5 (V₅). Alias de `no_symplectic_dim5`. -/
 theorem obstruction_dim5 :
     ¬ ∃ d : Int, d * d = (-1 : Int) ^ 5 := no_symplectic_dim5
 
-/-- Determinant obstruction for dim 3 (TC). Alias of `no_symplectic_TC`. -/
+/-- Obstruction déterminantale en dimension 3 (TC). Alias de `no_symplectic_TC`. -/
 theorem obstruction_dim3 :
     ¬ ∃ d : Int, d * d = (-1 : Int) ^ 3 := no_symplectic_TC
 
-/-- Determinant obstruction for dim 1. Alias of `no_symplectic_dim1`. -/
+/-- Obstruction déterminantale en dimension 1. Alias de `no_symplectic_dim1`. -/
 theorem obstruction_dim1 :
     ¬ ∃ d : Int, d * d = (-1 : Int) ^ 1 := no_symplectic_dim1
 
 /-!
-## Summary
+## Synthèse
 
-**What this file proves (scalar core):**
-  ¬ ∃ d : ℤ, d² = (−1)ⁿ  for every odd n.
+**Ce que ce fichier prouve (noyau scalaire) :**
+  ¬ ∃ d : ℤ, d² = (−1)ⁿ  pour tout n impair.
 
-**What this implies (informally, via det(J²) = det(J)² and det(−I) = (−1)ⁿ):**
-  No real or integer matrix J of odd size satisfies J² = −I.
+**Ce que cela implique (informellement, via det(J²) = det(J)² et det(−I) = (−1)ⁿ) :**
+  Aucune matrice réelle ou entière J de taille impaire ne satisfait J² = −I.
 
-**What this does NOT formalize:**
-  The matrix-level passage det(J²) = det(J)², which would require
-  Matrix.det_mul from Mathlib.
+**Ce que ce fichier ne formalise PAS :**
+  Le passage matriciel det(J²) = det(J)², qui nécessiterait
+  `Matrix.det_mul` depuis Mathlib.
 
-**Scope:** Valid over ℤ, ℝ, and any ordered ring where squares are ≥ 0.
-Not valid over F₂ or ℂ.
+**Portée :** valable sur ℤ, ℝ, et tout anneau ordonné où les carrés sont ≥ 0.
+Non valable sur F₂ ni sur ℂ.
 
-**Application:** Odd-cardinality subsets of (ℤ/30ℤ)× — including TC (|TC|=3)
-and V₅ (|V₅|=5) — cannot carry a real complex structure J² = −I.
+**Application :** les sous-ensembles de cardinal impair de (ℤ/30ℤ)× — notamment
+TC (|TC|=3) et V₅ (|V₅|=5) — ne peuvent pas porter une structure complexe réelle
+J² = −I.
 -/
 
 end CouretUnification.Core.OddDimComplexObstruction

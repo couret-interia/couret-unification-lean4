@@ -1,101 +1,100 @@
 import CouretUnification.Core.CayleySpectrum
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace CayleyConnected
+namespace CouretUnification.Core.CayleyConnected
 
 /-!
 # Le graphe de Cayley Cay(G₃₀, TC) est DÉCONNECTÉ
 
-**Correction** : la synthèse affirmait la connexité. C'est faux.
+**Correction** : la synthèse affirmait la connexité. C’est faux.
 
-The generators TC = {1, 11, 29} in CRT coordinates on C₂ × C₄ are
-(0,0), (1,2), (1,0). All have even C₄ coordinate. Therefore
-left-multiplication by any generator preserves C₄ parity.
+Les générateurs TC = {1, 11, 29}, en coordonnées CRT sur C₂ × C₄, sont
+(0,0), (1,2), (1,0). Tous ont une coordonnée C₄ paire. Par conséquent,
+la multiplication à gauche par n’importe quel générateur préserve la parité C₄.
 
-The graph has exactly 2 connected components:
-  - Even: {0, 2, 4, 6} = residues {1, 11, 17, 23}
-  - Odd:  {1, 3, 5, 7} = residues {7, 13, 19, 29}
+Le graphe possède exactement 2 composantes connexes :
+  - Paire :   {0, 2, 4, 6} = résidus {1, 11, 17, 23}
+  - Impaire : {1, 3, 5, 7} = résidus {7, 13, 19, 29}
 
-This is consistent with Perron-Frobenius: ρ = 3 has multiplicity 2,
-which is impossible for a connected (irreducible) non-negative matrix.
+Ceci est cohérent avec Perron-Frobenius : ρ = 3 a multiplicité 2,
+ce qui est impossible pour une matrice non négative connexe (irréductible).
 -/
 
 open CayleySpectrum
 
 -- ═══════════════════════════════════════════
--- The graph is bipartite: even ↔ odd indices
+-- Le graphe est séparé par parité : indices pairs et impairs ne communiquent pas
 -- ═══════════════════════════════════════════
 
-/-- A maps even-index vectors to even-index vectors. -/
+/-- A envoie les vecteurs supportés sur les indices pairs vers les indices pairs. -/
 def evenVec (v : IVec) : Bool :=
   v 1 == 0 ∧ v 3 == 0 ∧ v 5 == 0 ∧ v 7 == 0
 
-/-- A maps odd-index vectors to odd-index vectors. -/
+/-- A envoie les vecteurs supportés sur les indices impairs vers les indices impairs. -/
 def oddVec (v : IVec) : Bool :=
   v 0 == 0 ∧ v 2 == 0 ∧ v 4 == 0 ∧ v 6 == 0
 
-/-- No edge from any even index to any odd index. -/
+/-- Aucune arête ne relie un indice pair à un indice impair. -/
 theorem no_cross_edges :
     (List.finRange 8).all (fun i =>
       (List.finRange 8).all (fun j =>
-        -- if i is even and j is odd (or vice versa), A[i,j] = 0
+        -- si i est pair et j impair (ou inversement), alors A[i,j] = 0
         (i.1 % 2 != j.1 % 2) → A i j == 0)) = true := by
   native_decide
 
 -- ═══════════════════════════════════════════
--- Each component IS connected (diameter ≤ 3 within component)
+-- Chaque composante EST connexe (diamètre ≤ 3 dans la composante)
 -- ═══════════════════════════════════════════
 
-/-- Restriction of A to even indices {0,2,4,6}. -/
+/-- Restriction de A aux indices pairs {0,2,4,6}. -/
 def Aeven : Fin 4 → Fin 4 → Int
-  | ⟨0, _⟩ => ![1, 0, 1, 1]   -- row 0: A[0,0], A[0,2], A[0,4], A[0,6]
-  | ⟨1, _⟩ => ![0, 1, 1, 1]   -- row 2
-  | ⟨2, _⟩ => ![1, 1, 1, 0]   -- row 4
-  | ⟨3, _⟩ => ![1, 1, 0, 1]   -- row 6
+  | ⟨0, _⟩ => ![1, 0, 1, 1]   -- ligne 0 : A[0,0], A[0,2], A[0,4], A[0,6]
+  | ⟨1, _⟩ => ![0, 1, 1, 1]   -- ligne 2
+  | ⟨2, _⟩ => ![1, 1, 1, 0]   -- ligne 4
+  | ⟨3, _⟩ => ![1, 1, 0, 1]   -- ligne 6
 
-/-- Restriction of A to odd indices {1,3,5,7}. -/
+/-- Restriction de A aux indices impairs {1,3,5,7}. -/
 def Aodd : Fin 4 → Fin 4 → Int
-  | ⟨0, _⟩ => ![1, 0, 1, 1]   -- row 1: A[1,1], A[1,3], A[1,5], A[1,7]
-  | ⟨1, _⟩ => ![0, 1, 1, 1]   -- row 3
-  | ⟨2, _⟩ => ![1, 1, 1, 0]   -- row 5
-  | ⟨3, _⟩ => ![1, 1, 0, 1]   -- row 7
+  | ⟨0, _⟩ => ![1, 0, 1, 1]   -- ligne 1 : A[1,1], A[1,3], A[1,5], A[1,7]
+  | ⟨1, _⟩ => ![0, 1, 1, 1]   -- ligne 3
+  | ⟨2, _⟩ => ![1, 1, 1, 0]   -- ligne 5
+  | ⟨3, _⟩ => ![1, 1, 0, 1]   -- ligne 7
 
-/-- Verify the restrictions are correct. -/
+/-- Vérifie que les restrictions sont correctes. -/
 theorem Aeven_correct_00 : Aeven 0 0 = A 0 0 := by native_decide
 theorem Aeven_correct_01 : Aeven 0 1 = A 0 2 := by native_decide
 theorem Aeven_correct_02 : Aeven 0 2 = A 0 4 := by native_decide
 theorem Aeven_correct_03 : Aeven 0 3 = A 0 6 := by native_decide
 
-/-- 4×4 matrix multiplication. -/
+/-- Multiplication matricielle 4×4. -/
 def mm4 (M N : Fin 4 → Fin 4 → Int) : Fin 4 → Fin 4 → Int :=
   fun i j => (List.finRange 4).foldl (fun acc k => acc + M i k * N k j) 0
 
-/-- Check all entries ≥ 1 for 4×4 matrix. -/
+/-- Vérifie que toutes les entrées d’une matrice 4×4 sont ≥ 1. -/
 def allPos4 (M : Fin 4 → Fin 4 → Int) : Bool :=
   (List.finRange 4).all fun i =>
     (List.finRange 4).all fun j => M i j ≥ 1
 
-/-- Aeven² has all positive entries: the even component is connected. -/
+/-- Aeven² a toutes ses entrées strictement positives : la composante paire est connexe. -/
 theorem even_component_connected : allPos4 (mm4 Aeven Aeven) = true := by
   native_decide
 
-/-- Aodd² has all positive entries: the odd component is connected. -/
+/-- Aodd² a toutes ses entrées strictement positives : la composante impaire est connexe. -/
 theorem odd_component_connected : allPos4 (mm4 Aodd Aodd) = true := by
   native_decide
 
-/-- Diameter within each component is exactly 2. -/
+/-- Le diamètre à l’intérieur de chaque composante est au plus 2. -/
 theorem even_diameter_le_2 : allPos4 (mm4 Aeven Aeven) = true := even_component_connected
 theorem odd_diameter_le_2 : allPos4 (mm4 Aodd Aodd) = true := odd_component_connected
 
 -- ═══════════════════════════════════════════
--- Perron-Frobenius consistency
+-- Cohérence avec Perron-Frobenius
 -- ═══════════════════════════════════════════
 
 /--
-The dominant eigenvalue ρ = 3 has multiplicity 2 (from CayleySpectrum).
-For an irreducible (connected) non-negative matrix, the Perron root
-has multiplicity 1. Therefore A is reducible (graph disconnected).
+La valeur propre dominante ρ = 3 a multiplicité 2 (d’après CayleySpectrum).
+Pour une matrice non négative irréductible (connexe), la racine de Perron
+a multiplicité 1. Donc A est réductible (graphe déconnecté).
 -/
 theorem dominant_multiplicity_2 :
     2 * (3:Int)^1 + 4 * 1 + 2 * (-1) = 8 ∧
@@ -103,21 +102,21 @@ theorem dominant_multiplicity_2 :
   constructor <;> norm_num
 
 /-!
-## Summary — CORRECTION of the synthesis
+## Synthèse — CORRECTION de la synthèse
 
-The synthesis claimed: "Connexité : le graphe de Cayley Cay(G₃₀, TC) est connexe."
+La synthèse affirmait : « Connexité : le graphe de Cayley Cay(G₃₀, TC) est connexe. »
 
-**This is false.** The graph has exactly 2 connected components:
-  - {1, 11, 17, 23} (even C₄ parity)
-  - {7, 13, 19, 29}  (odd C₄ parity)
+**C’est faux.** Le graphe possède exactement 2 composantes connexes :
+  - {1, 11, 17, 23} (parité C₄ paire)
+  - {7, 13, 19, 29}  (parité C₄ impaire)
 
-Each component is connected with diameter ≤ 2.
+Chaque composante est connexe, avec un diamètre ≤ 2.
 
-Root cause: all generators in TC = {1, 11, 29} have even C₄ coordinate
-in the CRT decomposition G₃₀ ≅ C₂ × C₄, so C₄ parity is an invariant.
+Cause profonde : tous les générateurs de TC = {1, 11, 29} ont une coordonnée C₄ paire
+dans la décomposition CRT G₃₀ ≅ C₂ × C₄ ; la parité C₄ est donc un invariant.
 
-This is consistent with mult(ρ=3) = 2 (Perron-Frobenius: connected ⟹ mult = 1).
+Ceci est cohérent avec mult(ρ=3) = 2
+(Perron-Frobenius : connexe ⟹ mult = 1).
 -/
 
-end CayleyConnected
-end CouretUnification.Core
+end CouretUnification.Core.CayleyConnected

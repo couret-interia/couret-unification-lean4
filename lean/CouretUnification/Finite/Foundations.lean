@@ -60,8 +60,7 @@ Produit scalaire discret sur `Sig`.
 Lecture :
 `dot f g = Σ_i f(i) g(i)`.
 -/
-def dot (f g : Sig) : ℚ :=
-  (List.finRange 8).foldl (fun acc i => acc + f i * g i) 0
+def dot (f g : Sig) : ℚ := (List.finRange 8).foldl (fun acc i => acc + f i * g i) 0
 
 /-- Norme quadratique discrète : `‖f‖² = ⟨f,f⟩`. -/
 def normSq (f : Sig) : ℚ := dot f f
