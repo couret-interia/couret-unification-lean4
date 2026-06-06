@@ -20,7 +20,6 @@ lean/CouretUnification/Logic/FEnriched30.lean:151:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/FEnriched30.lean:152:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/CriticalLineTransferSpec.lean:10:  - RHClaimed = false
 lean/CouretUnification/Logic/EulerBridgeInfiniteReal.lean:10:  - RHClaimed = false
-lean/CouretUnification/Logic/EulerBridgeInfinite.lean:11:  - RHClaimed = false
 lean/CouretUnification/Logic/Doctrine.lean:12:  1. L'invariant `RHClaimed = false`, vérifié statiquement par `rfl`.
 lean/CouretUnification/Logic/Doctrine.lean:21:  example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/Doctrine.lean:35:def RHClaimed : Bool := false

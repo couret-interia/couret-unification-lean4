@@ -4,8 +4,6 @@ warning: lean/CouretUnification/Analytic/GammaFactor.lean:80:8: declaration uses
 warning: lean/CouretUnification/Analytic/GammaFactor.lean:93:8: declaration uses `sorry`
 warning: lean/CouretUnification/AnalyticHorizon/Det2Transport.lean:64:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/C3Weak.lean:141:8: declaration uses `sorry`
-warning: lean/CouretUnification/Logic/EulerBridgeInfinite.lean:107:6: declaration uses `sorry`
-warning: lean/CouretUnification/Logic/EulerBridgeInfinite.lean:133:6: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/Lemma7Residual.lean:6:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/MoebiusBridge.lean:73:6: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/RouteC.lean:774:8: declaration uses `sorry`

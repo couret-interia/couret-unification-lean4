@@ -1,14 +1,12 @@
 /-
-# Logic/EulerBridgeInfinite.lean — E3/E4 via Mathlib EulerProduct (v35.7.1)
+# Logic/EulerBridgeInfinite.lean — E3/E4 via Mathlib EulerProduct (v38.5.5)
 
 ## Statut épistémique
 
   - Couche : Logic
-  - Statut : [B] partiellement prouvé. Le théorème final
-             `squarefree_limit_eq_euler_product` est établi modulo deux
-             sorries `[API-LOCAL]` clairement isolés.
-  - sorryCount : 2 (E4.2 et E3.1, et nulle part ailleurs)
-  - RHClaimed = false
+  - Statut : [D] prouvé.
+  - sorryCount : 0
+  - RHClaimed : false
 
 ## Refactoring v35.7.1
 
@@ -16,8 +14,8 @@ Cette version remplace la précédente par un découpage plus serré, avec
 lemmes numérotés selon la structure conceptuelle :
 
   - E4.1 : annulation locale sur les puissances premières élevées (trivial, 0 sorry)
-  - E4.2 : facteur local squarefree `∑' e, f(p^e) = 1 + f p`     ← sorry API
-  - E3.1 : comparaison abstraite par majorant sommable           ← sorry API
+  - E4.2 : facteur local squarefree `∑' e, f(p^e) = 1 + f p`     ← [PROVED]
+  - E3.1 : comparaison abstraite par majorant sommable           ← [PROVED]
   - E3.2 : majoration pratique par p-série décalée (preuve complète)
   - e4_bridge_tprod : pont EulerProduct standard (preuve complète)
   - squarefree_limit_eq_euler_product : théorème final (preuve complète)
@@ -57,9 +55,7 @@ noncomputable section
 open scoped BigOperators
 open Classical
 
-namespace CouretUnification
-namespace Logic
-namespace EulerBridgeInfinite
+namespace CouretUnification.Logic.EulerBridgeInfinite
 
 open CouretUnification.Meta
 
@@ -97,53 +93,59 @@ section Analytic
 
 variable {R : Type*} [NormedCommRing R] [CompleteSpace R]
 
-/-- **[B] E4.2 : facteur local squarefree.**
+omit [CompleteSpace R] in
+/-- **[D] E4.2 : facteur local squarefree.**
 
     Pour `f` squarefree-supportée avec `f 1 = 1`, on a
         `∑' e, f (p^e) = 1 + f p`.
 
-    Preuve conceptuelle : termes `e=0` (= 1) + `e=1` (= f p) + queue nulle.
-    Le sorry est un frottement API sur la décomposition de `tsum`. -/
+    Preuve conceptuelle : termes `e=0` (= 1) + `e=1` (= f p) + queue nulle. -/
 lemma e4_2_prime_pow_tsum_eq_one_add
     (f : ℕ → R)
     (hf1 : f 1 = 1)
     (hsf : SquarefreeSupportLike f)
     {p : ℕ} (hp : Nat.Prime p) :
     (∑' e : ℕ, f (p ^ e)) = 1 + f p := by
-  -- [API-LOCAL] Stratégie : décomposer ∑' e en (e=0) + (e=1) + (queue e≥2).
-  -- Schéma cible :
-  --   (∑' e, f (p^e))
-  --     = f (p^0) + ∑' e, if e = 0 then 0 else f (p^e)   -- tsum_eq_add_tsum_ite'
-  --     = 1 + (f (p^1) + 0)                              -- hf1, hsf
-  --     = 1 + f p                                        -- pow_one
-  --
-  -- TRY THIS NAME IF SNAPSHOT FAILS sur la décomposition tsum :
-  --   tsum_eq_add_tsum_ite'         (extraire un terme à index donné)
-  --   tsum_ite_eq                    (terme isolé)
-  --   tsum_eq_sum                    (si on prouve support fini)
-  --   Summable.tsum_eq_add_tsum_ite' (forme méthode)
-  sorry
+  classical
+  calc
+    (∑' e : ℕ, f (p ^ e))
+        = Finset.sum ({0, 1} : Finset ℕ) (fun e => f (p ^ e)) := by
+            exact tsum_eq_sum
+              (f := fun e : ℕ => f (p ^ e))
+              (s := ({0, 1} : Finset ℕ))
+              (by
+                intro e he
+                have he0 : e ≠ 0 := by
+                  intro h
+                  exact he (by simp [h])
+                have he1 : e ≠ 1 := by
+                  intro h
+                  exact he (by simp [h])
+                have he2 : 2 ≤ e := by
+                  omega
+                exact hsf hp he2)
+    _ = 1 + f p := by
+            simp [hf1]
 
 /-! ## Section 3 — Lemmes E3 (sommabilité analytique) -/
 
-/-- **[B] E3.1 : comparaison abstraite par un majorant sommable.**
+omit [CompleteSpace R] in
+/-- **[A] E3.1 : comparaison abstraite par un majorant sommable.**
 
     Si `‖f n‖ ≤ majorant n` avec `majorant ≥ 0` et `Summable majorant`,
     alors `Summable (fun n => ‖f n‖)`. -/
 lemma e3_1_summable_norm_of_domination
     (f : ℕ → R) (majorant : ℕ → ℝ)
-    (h_nonneg : ∀ n, 0 ≤ majorant n)
+    (_h_nonneg : ∀ n, 0 ≤ majorant n)
     (h_le : ∀ n, ‖f n‖ ≤ majorant n)
     (h_majorant : Summable majorant) :
     Summable (fun n : ℕ => ‖f n‖) := by
-  -- [API-LOCAL] Le nom exact du lemme de comparaison varie selon snapshot.
-  -- TRY THIS NAME IF SNAPSHOT FAILS :
-  --   Summable.of_nonneg_of_le         (variante Mathlib4 récente)
-  --   summable_of_nonneg_of_le         (forme historique, peut survivre)
-  --   Summable.of_norm_bounded_eventually
-  --   h_majorant.of_nonneg_of_le ...   (forme méthode)
-  sorry
+  exact Summable.of_nonneg_of_le
+    (fun n => norm_nonneg (f n))
+    h_le
+    h_majorant
 
+omit [CompleteSpace R] in
 /-- **[A] E3.2 : majoration pratique par p-série décalée.**
 
     Si `‖f n‖ ≤ C / |n + a|^σ` avec `σ > 1` et `a ≥ 0`,
@@ -158,10 +160,6 @@ lemma e3_2_summable_norm_of_nat_add_rpow_bound
     (_ha : 0 ≤ a)
     (hbound : ∀ n, ‖f n‖ ≤ C / |(n : ℝ) + a| ^ σ) :
     Summable (fun n : ℕ => ‖f n‖) := by
-  -- TRY THIS NAME IF SNAPSHOT FAILS sur Real.summable_one_div_nat_add_rpow :
-  --   Real.summable_one_div_nat_rpow         (sans décalage a)
-  --   NNReal.summable_one_div_rpow           (variante NNReal)
-  --   summable_nat_rpow_inv                  (forme inversée)
   have hbase : Summable (fun n : ℕ => 1 / |(n : ℝ) + a| ^ σ) :=
     (Real.summable_one_div_nat_add_rpow a σ).mpr hσ
   have hscaled : Summable (fun n : ℕ => C * (1 / |(n : ℝ) + a| ^ σ)) :=
@@ -188,14 +186,11 @@ theorem e4_bridge_tprod
     (hsum : Summable (fun n : ℕ => ‖f n‖))
     (hf0 : f 0 = 0) :
     (∏' p : Nat.Primes, ∑' e : ℕ, f ((p : ℕ) ^ e)) = ∑' n : ℕ, f n := by
-  -- TRY THIS NAME IF SNAPSHOT FAILS :
-  --   EulerProduct.eulerProduct_tprod         (nom canonique attendu)
-  --   ArithmeticFunction.LSeries...           (route alternative LSeries)
   simpa using EulerProduct.eulerProduct_tprod hf1 @hmul hsum hf0
 
 /-! ## Section 5 — Théorème final E3/E4 -/
 
-/-- **[B] E3+E4 final : produit eulérien linéarisé dans le cas squarefree.**
+/-- **[D] E3+E4 final : produit eulérien linéarisé dans le cas squarefree.**
 
     Si `f` est squarefree-supportée, multiplicative sur coprimes, normée
     sommable, avec `f 0 = 0` et `f 1 = 1`, alors
@@ -221,18 +216,6 @@ theorem squarefree_limit_eq_euler_product
     _ = ∑' n : ℕ, f n := by
           simpa using e4_bridge_tprod f hf1 @hmul hsum hf0
 
-/-! ## Section 6 — Catalogue des sorries -/
-
-/-- Liste explicite des sorries et de leurs résolutions probables. -/
-def remaining_sorries_catalog : List (String × String) := [
-  ("e4_2_prime_pow_tsum_eq_one_add",
-   "[API-LOCAL] Décomposition tsum (e=0) + (e=1) + (queue=0). " ++
-   "Candidats : tsum_eq_add_tsum_ite', tsum_eq_sum (support fini)."),
-  ("e3_1_summable_norm_of_domination",
-   "[API-LOCAL] Comparaison série positive ≤ série sommable. " ++
-   "Candidats : Summable.of_nonneg_of_le, summable_of_nonneg_of_le.")
-]
-
 end Analytic
 
 /-! ## Section 7 — Identité doctrinale -/
@@ -240,42 +223,10 @@ end Analytic
 def fileIdentity : CouretUnification.Meta.FileIdentity where
   filename := "CouretUnification/Logic/EulerBridgeInfinite.lean"
   layer := CouretUnification.Meta.Layer.B
-  status := CouretUnification.Meta.Status.conditional
-  sorryCount := 2
+  status := CouretUnification.Meta.Status.proved
+  sorryCount := 0
   rhClaimed := false
 
 example : fileIdentity.rhClaimed = false := rfl
 
-/-! ## Notes finales
-
-1. **Cœur mathématique propre du fichier** :
-   - E4.2 (couture locale squarefree) — 1 sorry API
-   - E3.1 (comparaison séries)        — 1 sorry API
-   Tout le reste est wrapping de Mathlib ou preuve complète.
-
-2. **Gain v35.7 → v35.7.1** : passage de 3 sorries à 2.
-   Le `summable_prime_powers_of_squarefree` de v35.7 est éliminé
-   parce qu'il n'est pas nécessaire dans la chaîne principale.
-
-3. **Pour Thomas** :
-   - E3.2 et `e4_bridge_tprod` doivent passer vert sans intervention.
-   - `squarefree_limit_eq_euler_product` compile par construction
-     (les deux sorries ci-dessus sont acceptés par Lean).
-   - Test décisif : E4.2 et E3.1. Les noms Mathlib alternatifs
-     sont commentés `-- TRY THIS NAME IF SNAPSHOT FAILS`.
-
-4. **Aucune dépendance à RH** : théorème classique, indépendant.
-
-5. **Aucune dépendance à `Speculative/`** : ne consomme aucune analogie
-   MTF/Lyapunov.
-
-6. **Ordre de build recommandé** :
-       lake build CouretUnification.Logic.H3.SquarefreeSupport
-       lake build CouretUnification.Logic.EulerBridgeInfinite
-       lake build CouretUnification.Logic.C3Weak
-       lake build CouretUnification.Logic.CriticalLineTransferSpec
--/
-
-end EulerBridgeInfinite
-end Logic
-end CouretUnification
+end CouretUnification.Logic.EulerBridgeInfinite
