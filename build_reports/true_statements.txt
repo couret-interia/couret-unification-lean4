@@ -3,7 +3,7 @@ lean/CouretUnification/Logic/ExplicitFormula/ExplicitFormulaBridge.lean:106:    
 lean/CouretUnification/Logic/H3/CriticalLineTransferSpec.lean:76:theorem mellin_inversion_public_anchor : True := by trivial
 lean/CouretUnification/Logic/H3/C3Weak.lean:127:theorem RHClaimed_false_guard : True := trivial
 lean/CouretUnification/Logic/H3/AlgebraTC.lean:419:theorem RHClaimed_false_AlgebraTC : True := trivial
-lean/CouretUnification/Logic/H3/MoebiusBridge.lean:91:theorem LSeries_mu_at_two_project_target : True := by
+lean/CouretUnification/Logic/H3/MoebiusBridge.lean:93:theorem LSeries_mu_at_two_project_target : True := by
 lean/CouretUnification/Logic/H3/HPCertificate.lean:57:theorem RH_not_claimed_in_this_module : True := trivial
 lean/CouretUnification/Active/TraceObjectEnriched.lean:154:    (_T : EnrichedTraceObject) : True := by
 lean/CouretUnification/Active/TraceObjectEnriched.lean:159:    (_T : EnrichedTraceObject) : True := by

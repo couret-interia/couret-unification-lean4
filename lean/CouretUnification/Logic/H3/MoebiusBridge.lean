@@ -7,9 +7,9 @@ Front : pont public Möbius ↔ L-séries.
 Statut
 ------
 - Layer      : Logic / H3
-- Status     : active
+- Status     : [D] proved
 - RHClaimed  : false
-- sorryCount : 1
+- sorryCount : 0
 
 Inventaire local
 ----------------
@@ -68,11 +68,13 @@ open ArithmeticFunction
     Mathématiquement : `|μ(n)| ≤ 1`, donc `|μ(n) / n^2| ≤ 1 / n^2`,
     et la p-série de degré 2 est sommable.
 
-    Ce lemme reste volontairement localisé comme unique dette snapshot :
-    seul le nom/API exact de la preuve Mathlib dépend encore de la version. -/
+    Fermeture via le pivot Mathlib :
+    `ArithmeticFunction.LSeriesSummable_moebius_iff`. -/
 lemma moebius_LSeriesSummable_two :
     LSeriesSummable (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ)) (2 : ℂ) := by
-  sorry
+  exact
+    (ArithmeticFunction.LSeriesSummable_moebius_iff (s := (2 : ℂ))).mpr
+      (by norm_num)
 
 /-- Bridge-01. Convolution arithmétique = produit des L-séries. -/
 lemma arithmetic_convolution_bridge
