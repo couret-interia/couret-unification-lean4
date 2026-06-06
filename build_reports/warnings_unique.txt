@@ -12,7 +12,6 @@ warning: lean/CouretUnification/Logic/H3/RouteC.lean:774:8: declaration uses `so
 warning: lean/CouretUnification/Logic/H3/SquarefreeDensity.lean:232:6: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/SquarefreeDensity.lean:245:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/SquarefreeDensity.lean:254:8: declaration uses `sorry`
-warning: lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:71:6: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L10NoGoTheorem.lean:206:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L10NoGoTheorem.lean:63:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L6RatioEstimateDerived.lean:66:8: declaration uses `sorry`

@@ -1,31 +1,47 @@
 /-
-Couret-Unification — v35.8.6
+Couret-Unification — v38.5.4
 Logic/H3/SquarefreeSupport.lean
 
-Front B : Glue combinatoire sur support squarefree premier.
+Front B : glue combinatoire sur support squarefree premier.
 Théorème central B-04 : somme-produit fini (base d'Euler local).
 
-Status     : B-04 fermé (sum_powerset_insert)
-             B-02 sorry [OBSOLETE]     — non utilisé par B-04
+Status     : [D] (B-00 à B-06 fermés)
 Layer      : Gold (Combinatorial)
 Doctrine   : C1 (Arithmetic structure → multiplicative)
 RHClaimed  : false
-sorryCount : 1  (B-02 powerset_prod_disjoint, non requis)
+sorryCount : 0
 
 Architecture doctrinale :
-  - B-00 définition squarefreeProducts
-  - B-01 coprime_prime_prod_subset     [PROVED]
-  - B-02 powerset_prod_disjoint        [OBSOLETE — non sur le chemin critique]
-  - B-03 squarefree_mul_iff_of_coprime [PROVED]
-  - B-04 squarefree_support_transfer   [PROVED via sum_powerset_insert]
-  - B-05 isMultiplicative_norm_sq      [PROVED]
-  - B-06 sum_normSq_squarefree_eq_prod [PROVED via B-04]
 
-NOTE SNAPSHOT : Les hypothèses suivantes sur l'API Mathlib sont testées :
-  - Finset.sum_powerset_insert : signature (h : p ∉ S) ⟶ égalité standard
-  - Nat.squarefree_mul          : version produit coprime
-  - Nat.Coprime.prod_right      : confirmé
-Si un nom diverge, remplacer ponctuellement sans toucher à la structure.
+* B-00 squarefreeProducts              [PROVED/DEF]
+* B-01 coprime_prime_prod_subset       [PROVED]
+* B-02 powerset_prod_disjoint          [PROVED — support premier explicite]
+* B-03 squarefree_mul_iff_of_coprime   [PROVED]
+* B-04 squarefree_support_transfer     [PROVED via sum_powerset_insert]
+* B-05 isMultiplicative_norm_sq        [PROVED]
+* B-06 sum_normSq_squarefree_eq_prod   [PROVED via B-04]
+
+Note B-02 :
+L'énoncé naïf avec seulement `hp : p.Prime` et `hpS : p ∉ S`
+est faux si `S` contient des composés. La version fermée exige donc
+explicitement que `S` soit un support premier :
+
+```
+  hS : ∀ q ∈ S, q.Prime
+```
+
+Ce lemme reste non critique pour B-04, mais il est désormais correct
+et fermé dans sa forme mathématique naturelle.
+
+NOTE SNAPSHOT — Mathlib v4.29.1 :
+
+* Finset.sum_powerset_insert : signature (h : p ∉ S) → égalité standard
+* Nat.squarefree_mul          : version produit coprime
+* Nat.Coprime.prod_right      : confirmé
+* Prime.dvd_finset_prod_iff   : utilisé via `hp.prime.dvd_finset_prod_iff _root_.id`
+
+Si un nom d'API diverge dans une version ultérieure de Mathlib,
+remplacer ponctuellement sans modifier la structure mathématique.
 -/
 
 import Mathlib.NumberTheory.ArithmeticFunction.Defs
@@ -66,20 +82,50 @@ lemma coprime_prime_prod_subset
   exact hpS' (hs (hqeq ▸ hq))
 
 /-- B-02. Disjonction combinatoire sur les images de powerset.
-    [OBSOLETE — non utilisée par le chemin critique B-04,
-     conservée pour documentation architecturale] -/
+    Version correcte : le support `S` doit être un support premier.
+
+    Si un produit issu de `S` était aussi un produit issu de `S` multiplié
+    par `p`, alors `p` diviserait un produit de premiers appartenant à `S`.
+    Par primalité, `p` diviserait donc l’un des facteurs de `S`, puis serait
+    égal à ce facteur, contradiction avec `p ∉ S`. -/
 lemma powerset_prod_disjoint
     {S : Finset ℕ} {p : ℕ}
+    (hS : ∀ q ∈ S, q.Prime)
     (hp : p.Prime) (hpS : p ∉ S) :
     Disjoint
       (S.powerset.image (fun s => s.prod _root_.id))
       ((S.powerset.image (fun s => s.prod _root_.id)).image (fun n => n * p)) := by
   classical
-  -- Idée : si x = ∏ s = (∏ t) * p, alors p ∣ ∏ s. Comme s ⊆ S et p ∉ S,
-  -- contradiction via unicité de la factorisation première.
-  -- [OBSOLETE] : B-04 passe par sum_powerset_insert, donc ce lemme
-  -- n'est plus sur le chemin critique.
-  sorry
+  rw [Finset.disjoint_left]
+  intro x hxL hxR
+
+  rcases Finset.mem_image.mp hxL with ⟨s, hsPow, hsx⟩
+  have hsSub : s ⊆ S := (Finset.mem_powerset.mp hsPow)
+
+  rcases Finset.mem_image.mp hxR with ⟨y, hyA, hyx⟩
+  rcases Finset.mem_image.mp hyA with ⟨t, htPow, hty⟩
+
+  have hEq : s.prod _root_.id = (t.prod _root_.id) * p := by
+    calc
+      s.prod _root_.id = x := hsx
+      _ = y * p := hyx.symm
+      _ = (t.prod _root_.id) * p := by rw [hty]
+
+  have hp_dvd_prod : p ∣ s.prod _root_.id := by
+    refine ⟨t.prod _root_.id, ?_⟩
+    simpa [Nat.mul_comm] using hEq
+
+  rcases (hp.prime.dvd_finset_prod_iff _root_.id).mp hp_dvd_prod with ⟨q, hq, hpq⟩
+
+  have hq_prime : q.Prime := hS q (hsSub hq)
+
+  have hqeq : q = p := by
+    rcases hq_prime.eq_one_or_self_of_dvd p hpq with h1 | hself
+    · exfalso
+      exact hp.ne_one h1
+    · exact hself.symm
+
+  exact hpS (hsSub (hqeq ▸ hq))
 
 /-- B-03. Squarefree sous coprimalité. -/
 lemma squarefree_mul_iff_of_coprime {m n : ℕ} (h : Coprime m n) :
