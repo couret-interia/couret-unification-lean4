@@ -18,8 +18,10 @@ pré-filtrage numérique du Front 3 (avril 2026) :
 ## Statut épistémique
 
   - Couche  : Logic/H3 (interface conditionnelle)
-  - Statut  : [N_strong] — pré-filtré numériquement, formalisation
-              comme prédicat conditionnel sur l'algèbre test 𝒜_TC.
+  - Statut  : [B] conditionnel formalisé, sorryCount 0.
+            Le transfert diagonal → Gram fini dépend explicitement
+            de l'hypothèse `GramExpansionBridge`, fournie comme
+            paramètre et non comme axiome global.
   - Invariant constitutionnel : RHClaimed = false
   - C3Weak n'implique PAS RH ; il pose une condition de rigidité
     qui, conditionnellement à C1+C2, contraint le résidu.
@@ -37,8 +39,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.MeasureTheory.Function.LpSpace.Basic
 import Mathlib.Topology.ContinuousMap.Basic
 
-namespace CouretUnification
-namespace Logic
+namespace CouretUnification.Logic
 
 open Complex MeasureTheory
 
@@ -114,6 +115,23 @@ de la matrice de Gram 6×6 toutes positives : 0.024 → 19.929).
 noncomputable def QResidual (σ : ℝ) (f : H3TestFunction) : ℂ :=
   R_sigma σ (f.mulConj f)
 
+/-- [PROJ] Hypothèse conditionnelle de développement de Gram.
+
+    Cette proposition encode le pont analytique manquant :
+    pour toute famille finie `(fs i)` et tous coefficients `(c i)`,
+    il existe une fonction test `F` dont le carré hermitien développe
+    exactement la forme de Gram attendue.
+
+    Point important : ce n'est pas un axiome global Lean.
+    C'est une hypothèse explicite à fournir lorsqu'on utilise
+    `gram_semidef_of_rigid`. -/
+def GramExpansionBridge : Prop :=
+  ∀ (σ : ℝ) (n : ℕ) (c : Fin n → ℂ) (fs : Fin n → H3TestFunction),
+    ∃ F : H3TestFunction,
+      QResidual σ F =
+        ∑ i, ∑ j, star (c i) * c j *
+          R_sigma σ ((fs i).mulConj (fs j))
+
 /-- [API/PROJ] Le prédicat de rigidité quadratique :
     pour tout σ > 1 et tout f ∈ 𝒜_TC, Q_σ(f) est réel positif. -/
 def ResidualRigidQuadratic : Prop :=
@@ -136,16 +154,24 @@ def GramSemiDefPos (_rigid : ResidualRigidQuadratic) : Prop :=
       0 ≤ (∑ i, ∑ j, star (c i) * c j *
            R_sigma σ ((fs i).mulConj (fs j))).re
 
-/-- [PROJ] Théorème de transfert (squelette) :
-    ResidualRigidQuadratic ⇒ Gram semi-définie positive. -/
-theorem gram_semidef_of_rigid (rigid : ResidualRigidQuadratic) :
+/-- [PROJ] Théorème de transfert conditionnel :
+    ResidualRigidQuadratic + GramExpansionBridge
+    ⇒ Gram semi-définie positive.
+
+    Le contenu non trivial n'est pas caché dans un `axiom` global :
+    il est exposé comme hypothèse explicite `bridge`. -/
+theorem gram_semidef_of_rigid
+    (rigid : ResidualRigidQuadratic)
+    (bridge : GramExpansionBridge) :
     GramSemiDefPos rigid := by
   intro σ hσ n fs c
-  -- Preuve par développement de Σᵢⱼ c̄ᵢ cⱼ R_σ(fᵢ · f̄ⱼ)
-  -- en fonction de Q_σ(Σᵢ cᵢ fᵢ) via polarisation.
-  -- Nécessite l'extension linéaire de R_sigma (axiome de cohérence)
-  -- et la formule de polarisation des formes quadratiques hermitiennes.
-  sorry
+
+  rcases bridge σ n c fs with ⟨F, hident⟩
+
+  have hpos : 0 ≤ (QResidual σ F).re := by
+    exact (rigid hσ F).2
+
+  simpa [hident] using hpos
 
 /-!
 ## Section 5 — Lien conditionnel avec le matching faible (C3)
@@ -181,12 +207,11 @@ def fileIdentity : CouretUnification.Meta.FileIdentity where
   filename := "CouretUnification/Logic/C3Weak.lean"
   layer := CouretUnification.Meta.Layer.B
   status := CouretUnification.Meta.Status.conditional
-  sorryCount := 1
+  sorryCount := 0
   rhClaimed := false
 
 example : fileIdentity.rhClaimed = false := rfl
 
 end C3Weak
 
-end Logic
-end CouretUnification
+end CouretUnification.Logic

@@ -87,12 +87,12 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Spectral/T2Gap.lean:53:def kappa : ℝ := 2
        ./Core/Arithmetic.lean:199:noncomputable def kappa (q : ℕ) : ℝ := Real.sqrt (kappaSq q)
         ──       2 H3TestFunction
-       ./Logic/C3Weak.lean:56:structure H3TestFunction where
-       ./Logic/C3Weak.lean:73:noncomputable def H3TestFunction.mulConj (f g : H3TestFunction) : H3TestFunction where
+       ./Logic/C3Weak.lean:57:structure H3TestFunction where
+       ./Logic/C3Weak.lean:74:noncomputable def H3TestFunction.mulConj (f g : H3TestFunction) : H3TestFunction where
        ./Logic/H3/H3TestSpace.lean:49:structure H3TestFunction where
        ./Logic/H3/H3TestSpace.lean:89:theorem H3TestFunction.isEvenTestFunction (f : H3TestFunction) :
         ──       2 gram_semidef_of_rigid
-       ./Logic/C3Weak.lean:141:theorem gram_semidef_of_rigid (rigid : ResidualRigidQuadratic) :
+       ./Logic/C3Weak.lean:163:theorem gram_semidef_of_rigid
        ./Logic/H3/C3Weak_Gram.lean:174:theorem gram_semidef_of_rigid
  ⚠ Core ──       2 G30
        ./Core/UnitsBridge.lean:16:abbrev G30 : Type := (ZMod 30)ˣ

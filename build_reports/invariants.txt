@@ -29,9 +29,9 @@ lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:8:  - RHClaimed = fa
 lean/CouretUnification/Logic/ChiralityFinite.lean:46:L'invariant `RHClaimed = false` est enforcé au niveau du type.
 lean/CouretUnification/Logic/ChiralityFinite.lean:232:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/ChiralityFinite.lean:234:example : RHClaimed = false := rfl
-lean/CouretUnification/Logic/C3Weak.lean:23:  - Invariant constitutionnel : RHClaimed = false
-lean/CouretUnification/Logic/C3Weak.lean:177:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/C3Weak.lean:178:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/C3Weak.lean:25:  - Invariant constitutionnel : RHClaimed = false
+lean/CouretUnification/Logic/C3Weak.lean:203:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/C3Weak.lean:204:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/ChiralityLinear.lean:246:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/ChiralityLinear.lean:248:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/FEnrichedSpec.lean:25:  - RHClaimed = false
