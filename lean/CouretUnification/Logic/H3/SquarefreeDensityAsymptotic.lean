@@ -1,3 +1,13 @@
+/-
+Couret-Unification — v38.5.10-lab
+Logic/H3/SquarefreeDensityAsymptotic.lean
+
+Laboratoire compilable de fermeture C-04b.
+Status     : lab / no sorry
+RHClaimed  : false
+Claim      : aucune fermeture [D] nouvelle à ce stade
+-/
+
 import CouretUnification.Logic.H3.SquarefreeDensity
 import CouretUnification.Logic.H3.MoebiusBridge
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius
@@ -25,12 +35,14 @@ aucune revendication [D] globale. Les étapes sont isolées, nommées,
 et promues seulement lorsqu'elles compilent sans `sorry`.
 -/
 
-/-- Condition de fermeture eulérienne pour C-04b.
+/-- Fermeture eulérienne attendue pour la densité squarefree :
+    la série de Möbius au point 2 vaut `6 / π²`.
 
-    À éliminer lorsque `∑ μ(d)/d² = 6/π²` sera prouvé localement
-    ou importé depuis Mathlib. -/
+    Cette proposition est la cible analytique centrale à éliminer
+    pour transformer C-04b en résultat [D]. -/
 def MoebiusZetaTwoClosure : Prop :=
-  True
+  LSeries (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ)) (2 : ℂ)
+    = (6 / (Real.pi ^ 2) : ℂ)
 
 /-- Première cible laboratoire : le bridge asymptotique est le but final
     du front C-04b. -/
