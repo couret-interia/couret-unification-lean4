@@ -384,6 +384,9 @@ import CouretUnification.Core.G30Classification
 -- v38.5.3 — Spécialisation à G₃₀ (|T|=3, fibres d'ordre 4 de taille 2).
 import CouretUnification.Core.G30ClassificationFromPointDefect
 
+-- v38.5.10+ — laboratoire compilable, sans sorry, pour fermeture C-04b SquarefreeDensity.
+import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.

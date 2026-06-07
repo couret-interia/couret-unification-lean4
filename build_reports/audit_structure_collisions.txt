@@ -223,7 +223,9 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./All.lean:145:import CouretUnification.Logic.H3.RouteC
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
        ./Active.lean:69:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Logic/H3/SquarefreeDensityAsymptotic.lean:1:import CouretUnification.Logic.H3.SquarefreeDensity
        ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./All.lean:388:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
         ──        import CouretUnification.Core.QuadraticResonance
        ./Frozen.lean:78:import CouretUnification.Core.QuadraticResonance
        ./All.lean:376:import CouretUnification.Core.QuadraticResonance
