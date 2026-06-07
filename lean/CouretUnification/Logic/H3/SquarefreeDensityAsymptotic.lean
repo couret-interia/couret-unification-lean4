@@ -81,4 +81,10 @@ theorem squarefree_asymptotic_density_of_moebius_closure
       (nhds (6 / (Real.pi^2))) :=
   squarefree_asymptotic_density (H HZ)
 
+/-- La sommabilité de la série de Möbius à `s = 2` est disponible
+    depuis le bridge public `MoebiusBridge`. -/
+lemma moebius_two_summable_for_asymptotic :
+    LSeriesSummable (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ)) (2 : ℂ) :=
+  moebius_LSeriesSummable_two
+
 end CouretUnification.Logic.H3
