@@ -1,5 +1,5 @@
 /-
-Couret-Unification — v35.8.6
+Couret-Unification — v38.5.8
 # CouretUnification/Logic/H3/SquarefreeDensity.lean
 
 ## Rôle
@@ -26,14 +26,14 @@ tandis que les coutures asymptotiques restent isolées comme dettes analytiques 
 - Couche      : Logic / H3 alias Diamond (Analytic density)
 - Front       : C — densité squarefree
 - RHClaimed   : false
-- Sorry count : 3
+- Sorry count : 2
 
 ### Détail des statuts
 
 - C-00 : définition de `squarefreeCount`                              [definitional]
 - C-01 : réindexation Fubini arithmétique (`sum_squarefree_fubini`)   [proved]
 - C-02 : erreur locale division entière / réelle                      [proved]
-- C-03 : terme d’erreur global `O(√N)`                                [analytic sorry]
+- C-03 : terme d’erreur global `O(√N)`                                [proved]
 - C-04a : minoration robuste `squarefreeCount_ge_half`                [analytic sorry]
 - C-04b : densité asymptotique `squarefree_asymptotic_density`        [analytic sorry]
 
@@ -226,17 +226,69 @@ lemma div_eucl_real_error (N d : ℕ) (hd : d ≠ 0) :
 
 /-- C-03. Le terme d'erreur global est O(√N).
 
-    Schéma prévu : chaque terme |...| ≤ 1 (via C-02),
-    nombre de termes ~ √N (via Nat.sqrt),
-    conclusion par `Asymptotics.IsBigO.of_bound`. -/
+    Chaque terme est borné par 1 via C-02, et il y a au plus `Nat.sqrt N`
+    termes dans `Icc 1 (Nat.sqrt N)`. Le passage vers `Real.sqrt N`
+    utilise `Real.nat_sqrt_le_real_sqrt`. -/
 lemma error_term_isBigO :
     IsBigO atTop
       (fun N : ℕ =>
         Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
           |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2|))
       (fun N : ℕ => Real.sqrt (N : ℝ)) := by
-  -- [ANALYTIC SORRY — couture de IsBigO.of_bound avec C-02 et card(Icc 1 √N)]
-  sorry
+  refine IsBigO.of_bound (1 : ℝ) ?_
+  exact eventually_atTop.2 ⟨0, by
+    intro N _hN
+
+    let A : ℝ :=
+      Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+        |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2|)
+
+    change ‖A‖ ≤ (1 : ℝ) * ‖Real.sqrt (N : ℝ)‖
+
+    have hA_nonneg : 0 ≤ A := by
+      dsimp [A]
+      exact Finset.sum_nonneg (by
+        intro d _hd
+        exact abs_nonneg _)
+
+    have hA_le_card :
+        A ≤ ((Finset.Icc 1 (Nat.sqrt N)).card : ℝ) := by
+      dsimp [A]
+      calc
+        Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+            |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2|)
+            ≤ Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun _d => (1 : ℝ)) := by
+                refine Finset.sum_le_sum ?_
+                intro d hd
+                have hd_ne : d ≠ 0 := by
+                  have hd1 : 1 ≤ d := (Finset.mem_Icc.mp hd).1
+                  omega
+                exact div_eucl_real_error N d hd_ne
+        _ = ((Finset.Icc 1 (Nat.sqrt N)).card : ℝ) := by
+                simp
+
+    have hcard_le_nat_sqrt :
+        ((Finset.Icc 1 (Nat.sqrt N)).card : ℝ) ≤ (Nat.sqrt N : ℝ) := by
+      have hcard_nat :
+          (Finset.Icc 1 (Nat.sqrt N)).card ≤ Nat.sqrt N := by
+        rw [Nat.card_Icc]
+        omega
+      exact_mod_cast hcard_nat
+
+    have hnat_sqrt_le_real_sqrt :
+        (Nat.sqrt N : ℝ) ≤ Real.sqrt (N : ℝ) := by
+      exact Real.nat_sqrt_le_real_sqrt
+
+    have hA_le_sqrt : A ≤ Real.sqrt (N : ℝ) :=
+      le_trans hA_le_card
+        (le_trans hcard_le_nat_sqrt hnat_sqrt_le_real_sqrt)
+
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (N : ℝ) :=
+      Real.sqrt_nonneg _
+
+    simpa [norm_of_nonneg hA_nonneg, norm_of_nonneg hsqrt_nonneg]
+      using hA_le_sqrt
+  ⟩
 
 /-- C-04a. Version robuste prioritaire : minoration compilable.
 
