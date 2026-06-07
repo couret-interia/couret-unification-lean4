@@ -127,4 +127,70 @@ lemma zeta_LSeries_two_eq_pi_sq_div_six_complex :
     _ = ((Real.pi : ℂ) ^ 2) / 6 := by
             simpa using riemannZeta_two
 
+/-- Non-annulation de `π` après coercion dans `ℂ`. -/
+lemma complex_pi_ne_zero : ((Real.pi : ℂ) ≠ 0) := by
+  exact_mod_cast (ne_of_gt Real.pi_pos)
+
+/-- Le facteur `π² / 6` est non nul dans `ℂ`. -/
+lemma complex_pi_sq_div_six_ne_zero :
+    (((Real.pi : ℂ) ^ 2) / 6) ≠ 0 := by
+  exact div_ne_zero (pow_ne_zero 2 complex_pi_ne_zero) (by norm_num)
+
+/-- Identité algébrique élémentaire :
+    `(π² / 6) * (6 / π²) = 1` dans `ℂ`. -/
+lemma complex_pi_sq_div_six_mul_six_div_pi_sq :
+    (((Real.pi : ℂ) ^ 2) / 6) * ((6 : ℂ) / ((Real.pi : ℂ) ^ 2)) = 1 := by
+  field_simp [complex_pi_ne_zero]
+
+/-- Fermeture eulérienne native complexe :
+    `L(μ, 2) = 6 / π²`.
+
+    Preuve : on combine `L(ζ,2) * L(μ,2) = 1`,
+    la valeur `L(ζ,2) = π²/6`, et la non-annulation de `π²/6`. -/
+lemma moebius_zeta_two_closure_complex :
+    LSeries (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ)) (2 : ℂ) =
+      (6 : ℂ) / ((Real.pi : ℂ) ^ 2) := by
+  let Z : ℂ := LSeries (fun n => (ArithmeticFunction.zeta n : ℂ)) (2 : ℂ)
+  let M : ℂ := LSeries (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ)) (2 : ℂ)
+
+  have hmul : Z * M = 1 := by
+    simpa [Z, M] using zeta_mul_moebius_two
+
+  have hZ : Z = ((Real.pi : ℂ) ^ 2) / 6 := by
+    simpa [Z] using zeta_LSeries_two_eq_pi_sq_div_six_complex
+
+  have hA_mul_M :
+      (((Real.pi : ℂ) ^ 2) / 6) * M = 1 := by
+    simpa [hZ] using hmul
+
+  have hA_mul_target :
+      (((Real.pi : ℂ) ^ 2) / 6) * ((6 : ℂ) / ((Real.pi : ℂ) ^ 2)) = 1 :=
+    complex_pi_sq_div_six_mul_six_div_pi_sq
+
+  have hM :
+      M = (6 : ℂ) / ((Real.pi : ℂ) ^ 2) := by
+    exact mul_left_cancel₀ complex_pi_sq_div_six_ne_zero
+      (by
+        calc
+          (((Real.pi : ℂ) ^ 2) / 6) * M = 1 := hA_mul_M
+          _ = (((Real.pi : ℂ) ^ 2) / 6) *
+                ((6 : ℂ) / ((Real.pi : ℂ) ^ 2)) := hA_mul_target.symm)
+
+  simpa [M] using hM
+
+/-- Fermeture du verrou `MoebiusZetaTwoClosure`.
+
+    Cette version reformate la fermeture complexe native dans la forme
+    publique du lab, où la constante est écrite comme coercion de
+    `6 / Real.pi²`. -/
+lemma moebius_zeta_two_closure_from_mathlib :
+    MoebiusZetaTwoClosure := by
+  unfold MoebiusZetaTwoClosure
+  calc
+    LSeries (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ)) (2 : ℂ)
+        = (6 : ℂ) / ((Real.pi : ℂ) ^ 2) :=
+            moebius_zeta_two_closure_complex
+    _ = (6 / (Real.pi ^ 2) : ℂ) := by
+            simp
+
 end CouretUnification.Logic.H3
