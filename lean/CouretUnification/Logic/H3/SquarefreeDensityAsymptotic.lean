@@ -193,4 +193,29 @@ lemma moebius_zeta_two_closure_from_mathlib :
     _ = (6 / (Real.pi ^ 2) : ℂ) := by
             simp
 
+/-- Le verrou eulérien `MoebiusZetaTwoClosure` est désormais fermé localement.
+
+    Ainsi, toute preuve du rail analytique
+    `SquarefreeAsymptoticClosureFromMoebius` fournit directement le bridge
+    final `SquarefreeAsymptoticDensityBridge`.
+
+    Il ne reste donc plus, pour C-04b, que le passage asymptotique :
+    comptage squarefree via Möbius + contrôle d'erreur + passage à la limite. -/
+theorem squarefree_asymptotic_bridge_of_moebius_closure
+    (H : SquarefreeAsymptoticClosureFromMoebius) :
+    SquarefreeAsymptoticDensityBridge :=
+  H moebius_zeta_two_closure_from_mathlib
+
+/-- Consommation finale du rail C-04b après fermeture eulérienne.
+
+    Ce théorème ne prouve pas encore le passage asymptotique complet ;
+    il montre que la dépendance à `MoebiusZetaTwoClosure` a disparu grâce
+    à `moebius_zeta_two_closure_from_mathlib`. -/
+theorem squarefree_asymptotic_density_of_moebius_mathlib
+    (H : SquarefreeAsymptoticClosureFromMoebius) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density
+    (squarefree_asymptotic_bridge_of_moebius_closure H)
+
 end CouretUnification.Logic.H3
