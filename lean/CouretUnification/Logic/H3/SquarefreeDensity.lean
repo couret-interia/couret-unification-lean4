@@ -292,6 +292,31 @@ lemma error_term_isBigO :
       using hA_le_sqrt
   ⟩
 
+/-!
+## Conditions de fermeture [D] de C-04a/C-04b
+
+Les deux bridges ci-dessous ne sont pas des axiomes globaux : ils exposent
+les deux dettes analytiques restantes.
+
+Pour remplacer `SquarefreeCountGeHalfBridge` par une preuve [D], il faut :
+  1. une formule exacte de comptage squarefree via Möbius ;
+  2. une borne inférieure effective uniforme ;
+  3. une vérification ou une preuve du seuil explicite `N ≥ 176`.
+
+Pour remplacer `SquarefreeAsymptoticDensityBridge` par une preuve [D],
+il faut :
+  1. l'identité `1_squarefree(n) = ∑_{d²∣n} μ(d)` ;
+  2. la réindexation C-01 ;
+  3. le contrôle d'erreur C-03 et son quotient par `N` ;
+  4. la convergence de `∑ μ(d)/d²` ;
+  5. l'identification `∑ μ(d)/d² = 1 / ζ(2)` ;
+  6. l'évaluation `ζ(2) = π² / 6`.
+
+En cas d'échec d'une de ces étapes, le bridge correspondant reste
+conditionnel. En cas de contre-exemple explicite à C-04a, le seuil `176`
+doit être révisé ou l'énoncé rétrogradé.
+-/
+
 /-- C-04a-bridge. Hypothèse explicite de minoration robuste.
 
     Cette proposition isole la dette analytique/probatoire :
@@ -341,5 +366,42 @@ theorem squarefree_asymptotic_density
     Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
       (nhds (6 / (Real.pi^2))) :=
   bridge
+
+/-- Dossier de fermeture complète de la densité squarefree.
+
+    Ce prédicat regroupe les deux conditions qui transformeraient
+    `SquarefreeDensity.lean` d'un fichier mécaniquement propre et
+    conditionnel en fichier entièrement prouvé pour C-04a/C-04b. -/
+def SquarefreeDensityFullClosure : Prop :=
+  SquarefreeCountGeHalfBridge ∧ SquarefreeAsymptoticDensityBridge
+
+/-- Consommation de la première composante du dossier de fermeture complète.
+
+    Sous `SquarefreeDensityFullClosure`, la minoration robuste C-04a
+    devient disponible sans hypothèse additionnelle locale :
+    pour tout `N ≥ 176`, au moins la moitié des entiers `≤ N`
+    sont squarefree.
+
+    Ce wrapper ne prouve pas encore la borne effective ; il expose
+    proprement la conséquence une fois le dossier de fermeture fourni. -/
+theorem squarefreeCount_ge_half_of_fullClosure
+    (H : SquarefreeDensityFullClosure)
+    {N : ℕ} (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  H.1 hN
+
+/-- Consommation de la seconde composante du dossier de fermeture complète.
+
+    Sous `SquarefreeDensityFullClosure`, la densité asymptotique C-04b
+    devient disponible sous sa forme canonique :
+    `squarefreeCount N / N → 6 / π²`.
+
+    Ce wrapper ne ferme pas l'identification analytique `∑ μ(d)/d² = 6/π²` ;
+    il rend seulement explicite l'interface de consommation du dossier complet. -/
+theorem squarefree_asymptotic_density_of_fullClosure
+    (H : SquarefreeDensityFullClosure) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  H.2
 
 end CouretUnification.Logic.H3

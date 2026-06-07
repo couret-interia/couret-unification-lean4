@@ -153,6 +153,7 @@
 │   ├── L6_ratio_estimate_note.md
 │   ├── LTB0_README.md
 │   ├── notes-techniques
+│   │   ├── SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md
 │   │   └── z30-vs-units.md
 │   ├── PASSAGE_LOCAL_GLOBAL.md
 │   ├── RAPPORT_DEMONSTRATION_v5_FINAL.md
@@ -511,4 +512,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 449 files
+63 directories, 450 files
