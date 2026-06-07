@@ -70,7 +70,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/SpectralMoments.lean:27:def unitsMod30 : Fin 8 → Nat
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:120:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
-       ./Logic/H3/SquarefreeDensity.lean:85:def squarefreeCount (N : ℕ) : ℕ :=
+       ./Logic/H3/SquarefreeDensity.lean:87:def squarefreeCount (N : ℕ) : ℕ :=
  ⚠ Core ──       2 QuadCharIdx
        ./Core/QuadraticResonance.lean:120:abbrev QuadCharIdx := Fin 2 × Fin 4
        ./Core/G30Classification.lean:104:abbrev QuadCharIdx := Fin 2 × Fin 4
