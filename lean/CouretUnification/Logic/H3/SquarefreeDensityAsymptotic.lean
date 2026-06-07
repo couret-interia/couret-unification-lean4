@@ -52,4 +52,33 @@ theorem squarefree_asymptotic_density_lab_target
       (nhds (6 / (Real.pi^2))) :=
   squarefree_asymptotic_density H
 
+/-- Fermeture analytique complète attendue pour C-04b.
+
+    Elle regroupe :
+    1. le passage du comptage squarefree à la série de Möbius ;
+    2. le contrôle asymptotique déjà préparé par C-03 ;
+    3. la fermeture eulérienne `MoebiusZetaTwoClosure`.
+
+    À raffiner progressivement jusqu'à remplacer
+    `SquarefreeAsymptoticDensityBridge`. -/
+def SquarefreeAsymptoticClosureFromMoebius : Prop :=
+  MoebiusZetaTwoClosure → SquarefreeAsymptoticDensityBridge
+
+/-- Consommation du rail conditionnel `SquarefreeAsymptoticClosureFromMoebius`.
+
+    Si le verrou eulérien `MoebiusZetaTwoClosure` est fourni, et si l'on
+    dispose du rail analytique complet qui transforme ce verrou en
+    `SquarefreeAsymptoticDensityBridge`, alors on récupère la densité
+    asymptotique canonique des entiers squarefree.
+
+    Ce théorème ne ferme pas encore C-04b ; il explicite la manière
+    dont C-04b sera consommée une fois les deux verrous intermédiaires
+    établis. -/
+theorem squarefree_asymptotic_density_of_moebius_closure
+    (H : SquarefreeAsymptoticClosureFromMoebius)
+    (HZ : MoebiusZetaTwoClosure) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density (H HZ)
+
 end CouretUnification.Logic.H3
