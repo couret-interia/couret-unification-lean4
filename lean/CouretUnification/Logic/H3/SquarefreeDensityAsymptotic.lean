@@ -258,7 +258,12 @@ theorem squarefree_asymptotic_bridge_of_density_to_moebius_LSeries
         (6 : ℂ) / ((Real.pi : ℂ) ^ 2) =
           ((6 / (Real.pi ^ 2) : ℝ) : ℂ) := by
       simp [Complex.ofReal_pow]
-    simpa [Complex.ofReal_re] using congrArg (fun z : ℂ => z.re) hcast
+    calc
+      ((6 : ℂ) / ((Real.pi : ℂ) ^ 2)).re
+          = (((6 / (Real.pi ^ 2) : ℝ) : ℂ).re) := by
+              exact congrArg (fun z : ℂ => z.re) hcast
+      _ = 6 / (Real.pi ^ 2) := by
+              exact Complex.ofReal_re _
 
   simpa [hμ_re] using H
 
