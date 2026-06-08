@@ -1436,7 +1436,6 @@ theorem moebiusFloorDifferenceEqualsWeightedError_of_scaled_main_div
   have hNne : (N : ℝ) ≠ 0 := ne_of_gt hNpos
 
   field_simp [hNne]
-  ring
 
 /-- Version finale : C-04b est consommée avec A1 et le seul bridge
     `scaled-main / N = main-term`.
