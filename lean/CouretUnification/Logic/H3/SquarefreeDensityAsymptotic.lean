@@ -218,4 +218,75 @@ theorem squarefree_asymptotic_density_of_moebius_mathlib
   squarefree_asymptotic_density
     (squarefree_asymptotic_bridge_of_moebius_closure H)
 
+/-- Pont asymptotique restant pour C-04b.
+
+    Il ne contient plus le verrou eulérien `L(μ,2)=6/π²`, désormais fermé
+    localement par `moebius_zeta_two_closure_from_mathlib`.
+
+    Il reste uniquement le passage analytique/combinatoire :
+    le quotient `squarefreeCount N / N` tend vers la partie réelle de
+    la L-série de Möbius au point `2`. -/
+def SquarefreeDensityToMoebiusLSeriesBridge : Prop :=
+  Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+    (nhds
+      ((LSeries
+        (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+        (2 : ℂ)).re))
+
+/-- Le pont `squarefreeCount/N → Re(L(μ,2))`, combiné à la fermeture
+    eulérienne déjà prouvée, fournit directement
+    `SquarefreeAsymptoticDensityBridge`.
+
+    Ce théorème réduit C-04b au seul verrou encore ouvert :
+    établir l'asymptotique de comptage vers la L-série de Möbius. -/
+theorem squarefree_asymptotic_bridge_of_density_to_moebius_LSeries
+    (H : SquarefreeDensityToMoebiusLSeriesBridge) :
+    SquarefreeAsymptoticDensityBridge := by
+  unfold SquarefreeDensityToMoebiusLSeriesBridge at H
+  unfold SquarefreeAsymptoticDensityBridge
+
+  have hμ := moebius_zeta_two_closure_from_mathlib
+  unfold MoebiusZetaTwoClosure at hμ
+
+  have hμ_re :
+      ((LSeries
+        (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+        (2 : ℂ)).re) =
+        6 / (Real.pi ^ 2) := by
+    rw [hμ]
+    have hcast :
+        (6 : ℂ) / ((Real.pi : ℂ) ^ 2) =
+          ((6 / (Real.pi ^ 2) : ℝ) : ℂ) := by
+      simp [Complex.ofReal_pow]
+    calc
+      ((6 : ℂ) / ((Real.pi : ℂ) ^ 2)).re
+          = (((6 / (Real.pi ^ 2) : ℝ) : ℂ).re) := by
+              exact congrArg (fun z : ℂ => z.re) hcast
+      _ = 6 / (Real.pi ^ 2) := by
+              exact Complex.ofReal_re _
+
+  simpa [hμ_re] using H
+
+/-- Le nouveau pont asymptotique suffit à produire le rail conditionnel
+    `SquarefreeAsymptoticClosureFromMoebius`.
+
+    La dépendance à `MoebiusZetaTwoClosure` est devenue formelle :
+    elle est déjà fermée localement dans ce fichier. -/
+theorem squarefree_asymptotic_closure_from_density_to_moebius_LSeries
+    (H : SquarefreeDensityToMoebiusLSeriesBridge) :
+    SquarefreeAsymptoticClosureFromMoebius := by
+  intro _HZ
+  exact squarefree_asymptotic_bridge_of_density_to_moebius_LSeries H
+
+/-- Consommation finale : si le pont asymptotique vers `L(μ,2)` est fourni,
+    alors la densité asymptotique squarefree `6/π²` est obtenue.
+
+    C'est la formulation la plus réduite actuelle du verrou C-04b. -/
+theorem squarefree_asymptotic_density_of_density_to_moebius_LSeries
+    (H : SquarefreeDensityToMoebiusLSeriesBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density
+    (squarefree_asymptotic_bridge_of_density_to_moebius_LSeries H)
+
 end CouretUnification.Logic.H3
