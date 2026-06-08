@@ -393,9 +393,7 @@ theorem natSqrtAtTopBridge_proved : NatSqrtAtTopBridge := by
   unfold NatSqrtAtTopBridge
   rw [Filter.tendsto_atTop_atTop]
   intro M
-  refine ⟨M ^ 2, ?_⟩
-  intro N hN
-  exact Nat.le_sqrt'.2 hN
+  exact ⟨M ^ 2, fun N hN => Nat.le_sqrt'.2 hN⟩
 
 /-- Les sous-verrous B1+B2 impliquent le sous-verrou B actuel.
 
