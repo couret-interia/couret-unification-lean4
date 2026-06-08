@@ -1552,4 +1552,91 @@ theorem squarefree_asymptotic_density_of_count_exact
   squarefree_asymptotic_density_of_exact_only
     (squarefreeCountExactMoebiusFloorBridge_of_count_bridge Hcount)
 
+/-!
+## Sous-verrou A1 — formule exacte de comptage squarefree
+
+On réduit la formule exacte à deux ingrédients classiques :
+1. l'identité indicatrice de Möbius ;
+2. la réindexation finie des couples `(d,n)` avec `d² ∣ n`.
+-/
+
+/-- Somme des indicatrices squarefree jusqu'à `N`.
+
+    Cette définition isole la version réelle du comptage :
+      `∑_{n≤N} 1_{squarefree(n)}`. -/
+noncomputable def squarefreeIndicatorCountReal (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 N) (fun n =>
+    if Squarefree n then (1 : ℝ) else 0)
+
+/-- Sous-verrou A1a : le comptage `squarefreeCount` coïncide avec
+    la somme des indicatrices squarefree.
+
+    Ce verrou dépend seulement de la définition locale de `squarefreeCount`. -/
+def SquarefreeCountEqualsIndicatorSumBridge : Prop :=
+  ∀ N : ℕ,
+    (squarefreeCount N : ℝ) = squarefreeIndicatorCountReal N
+
+/-- Somme double de Möbius sur les diviseurs carrés.
+
+    Formellement :
+      `∑_{n≤N} ∑_{d≤√N, d²∣n} μ(d)`.
+
+    C'est la version développée de l'indicatrice squarefree. -/
+noncomputable def moebiusSquareDivisorDoubleSum (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 N) (fun n =>
+    Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+      if d^2 ∣ n then ((ArithmeticFunction.moebius d : ℤ) : ℝ) else 0))
+
+/-- Sous-verrou A1b : identité indicatrice de Möbius, sommée jusqu'à `N`.
+
+    Elle encode :
+      `1_squarefree(n) = ∑_{d²∣n} μ(d)`,
+
+    avec une somme tronquée à `d ≤ √N`, suffisante pour `n ≤ N`. -/
+def SquarefreeIndicatorEqualsMoebiusDoubleSumBridge : Prop :=
+  ∀ N : ℕ,
+    squarefreeIndicatorCountReal N = moebiusSquareDivisorDoubleSum N
+
+/-- Sous-verrou A1c : réindexation finie/Fubini.
+
+    Elle encode :
+      `∑_{n≤N} ∑_{d≤√N, d²∣n} μ(d)
+       = ∑_{d≤√N} μ(d) * ⌊N/d²⌋`.
+
+    C'est la partie combinatoire de A1. -/
+def MoebiusDoubleSumEqualsFloorCountBridge : Prop :=
+  ∀ N : ℕ,
+    moebiusSquareDivisorDoubleSum N = moebiusFloorCountTerm N
+
+/-- Les trois sous-verrous A1a+A1b+A1c ferment la formule exacte A1'. -/
+theorem squarefreeCountExactMoebiusFloorCount_of_A1_bridges
+    (Hcount : SquarefreeCountEqualsIndicatorSumBridge)
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hfubini : MoebiusDoubleSumEqualsFloorCountBridge) :
+    SquarefreeCountExactMoebiusFloorCountBridge := by
+  unfold SquarefreeCountExactMoebiusFloorCountBridge
+  intro N
+  calc
+    (squarefreeCount N : ℝ)
+        = squarefreeIndicatorCountReal N := Hcount N
+    _ = moebiusSquareDivisorDoubleSum N := Hindicator N
+    _ = moebiusFloorCountTerm N := Hfubini N
+
+/-- Version finale : C-04b est consommée avec les trois sous-verrous
+    élémentaires de A1.
+
+    Tout A2 est fermé ; il reste seulement :
+    - A1a : définition du comptage ;
+    - A1b : identité indicatrice de Möbius ;
+    - A1c : réindexation finie vers les planchers. -/
+theorem squarefree_asymptotic_density_of_A1_bridges
+    (Hcount : SquarefreeCountEqualsIndicatorSumBridge)
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hfubini : MoebiusDoubleSumEqualsFloorCountBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_count_exact
+    (squarefreeCountExactMoebiusFloorCount_of_A1_bridges
+      Hcount Hindicator Hfubini)
+
 end CouretUnification.Logic.H3
