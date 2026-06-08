@@ -1825,4 +1825,48 @@ theorem squarefree_asymptotic_density_of_indicator_and_count_multiples_nat
     Hindicator
     (countMultiplesSquareBridge_of_nat_bridge Hnat)
 
+/-- Lemme général de comptage des multiples.
+
+    Pour tout `q ≥ 1`, le nombre d'entiers `n ∈ [1,N]`
+    divisibles par `q` vaut `N / q`.
+
+    Le cas des carrés `q = d²` s'en déduit immédiatement. -/
+def CountMultiplesNatBridge : Prop :=
+  ∀ N q : ℕ,
+    1 ≤ q →
+      ((Finset.Icc 1 N).filter (fun n => q ∣ n)).card =
+        N / q
+
+/-- Le comptage général des multiples implique le comptage des multiples
+    de carrés.
+
+    C'est la spécialisation `q = d²`, avec `1 ≤ d²` dès que `1 ≤ d`. -/
+theorem countMultiplesSquareNatBridge_of_general_multiples
+    (Hmult : CountMultiplesNatBridge) :
+    CountMultiplesSquareNatBridge := by
+  unfold CountMultiplesSquareNatBridge
+  unfold CountMultiplesNatBridge at Hmult
+
+  intro N d hd
+
+  have hd2 : 1 ≤ d^2 := by
+    have hmul : 1 * 1 ≤ d * d := Nat.mul_le_mul hd hd
+    simpa [pow_two] using hmul
+
+  simpa using Hmult N (d^2) hd2
+
+/-- Version finale : C-04b est consommée avec A1b et le lemme général
+    de comptage des multiples.
+
+    A1c est maintenant réduit à l'énoncé standard :
+      `#{n ∈ [1,N] | q ∣ n} = N/q`. -/
+theorem squarefree_asymptotic_density_of_indicator_and_general_multiples
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hmult : CountMultiplesNatBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_count_multiples_nat
+    Hindicator
+    (countMultiplesSquareNatBridge_of_general_multiples Hmult)
+
 end CouretUnification.Logic.H3
