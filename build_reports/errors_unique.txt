@@ -1,3 +1,5 @@
 error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:989:20: Tactic `rcases` failed: `HbigO : euclideanFloorErrorSum =O[atTop] fun N ↦ √↑N` is not an inductive datatype
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:1002:20: Application type mismatch: The argument
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:996:21: Application type mismatch: The argument
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:996:41: failed to prove positivity/nonnegativity/nonzeroness
 error: Lean exited with code 1

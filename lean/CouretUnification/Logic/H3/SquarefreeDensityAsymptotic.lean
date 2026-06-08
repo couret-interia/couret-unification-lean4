@@ -986,6 +986,7 @@ theorem normalizedEuclideanFloorErrorFromBigOBridge_proved :
   unfold EuclideanFloorErrorIsBigOBridge at HbigO
   unfold SqrtDivNatTendsZeroBridge at HsqrtDiv
 
+  rw [IsBigO] at HbigO
   rcases HbigO with ⟨C, hC_eventually⟩
 
   have hC_nonneg_eventually :
