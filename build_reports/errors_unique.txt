@@ -1,0 +1,5 @@
+error: build failed
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:916:27: Application type mismatch: The argument
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:917:10: Unknown identifier `eventually_of_forall`
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:919:8: Unknown constant `tendsto_zero_iff_abs_tendsto_zero.mpr`
+error: Lean exited with code 1
