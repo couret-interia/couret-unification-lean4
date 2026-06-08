@@ -923,4 +923,15 @@ theorem moebiusFloorToMainErrorSqueezeBridge_proved :
       (l := atTop)
       (f := fun N : ℕ => moebiusFloorDensityTerm N - moebiusMainTermPartial N)).2 hAbs
 
+/-- Version de consommation de A2 avec le squeeze réel désormais fermé.
+
+    Il reste à fournir :
+    - le contrôle de l'erreur de Möbius par l'erreur euclidienne ;
+    - l'annulation de l'erreur euclidienne normalisée. -/
+theorem moebiusFloorToMainError_of_control_and_zero
+    (Hcontrol : MoebiusFloorToMainControlledByEuclideanErrorBridge)
+    (Hzero : NormalizedEuclideanFloorErrorTendsZeroBridge) :
+    MoebiusFloorToMainTermErrorBridge :=
+  moebiusFloorToMainErrorSqueezeBridge_proved Hcontrol Hzero
+
 end CouretUnification.Logic.H3
