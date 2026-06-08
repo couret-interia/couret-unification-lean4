@@ -1160,4 +1160,90 @@ theorem squarefree_asymptotic_density_of_exact_and_control
     Hexact
     (moebiusFloorToMainError_of_control_only Hcontrol)
 
+/-!
+## Sous-verrou A2b — contrôle algébrique de l'erreur pondérée par Möbius
+
+A2b consiste à montrer que l'erreur discrète pondérée par `μ(d)`
+est dominée par la somme absolue des erreurs euclidiennes.
+-/
+
+/-- Erreur euclidienne pondérée par Möbius avant normalisation.
+
+    Formellement :
+      `∑ μ(d) * (⌊N/d²⌋ - N/d²)`.
+
+    C'est exactement la différence attendue entre le terme à plancher
+    et le terme principal réel, avant division par `N`. -/
+noncomputable def moebiusWeightedFloorErrorSum (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) *
+      (((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2))
+
+/-- Sous-verrou A2b-1 : identité algébrique entre l'erreur de densité
+    et l'erreur pondérée par Möbius normalisée.
+
+    Cette identité doit venir simplement du développement :
+      `(∑ μ(d)⌊N/d²⌋)/N - ∑ μ(d)/d²`
+    puis factorisation terme à terme. -/
+def MoebiusFloorDifferenceEqualsWeightedErrorBridge : Prop :=
+  ∀ᶠ N in atTop,
+    moebiusFloorDensityTerm N - moebiusMainTermPartial N =
+      moebiusWeightedFloorErrorSum N / (N : ℝ)
+
+/-- Sous-verrou A2b-2 : contrôle par la somme absolue euclidienne.
+
+    C'est ici que doit entrer :
+      `|μ(d)| ≤ 1`.
+
+    Formellement :
+      `|∑ μ(d) e_d| ≤ ∑ |e_d|`. -/
+def MoebiusWeightedErrorAbsBoundBridge : Prop :=
+  ∀ N : ℕ,
+    |moebiusWeightedFloorErrorSum N| ≤ euclideanFloorErrorSum N
+
+/-- A2b est fermé si l'erreur de densité est l'erreur pondérée
+    normalisée, et si cette erreur pondérée est dominée par la somme
+    absolue euclidienne.
+
+    La seule subtilité est la division par `N`, traitée éventuellement
+    pour `N ≥ 1`. -/
+theorem moebiusFloorControl_of_weighted_error_bridges
+    (Heq : MoebiusFloorDifferenceEqualsWeightedErrorBridge)
+    (Hbound : MoebiusWeightedErrorAbsBoundBridge) :
+    MoebiusFloorToMainControlledByEuclideanErrorBridge := by
+  unfold MoebiusFloorToMainControlledByEuclideanErrorBridge
+  unfold MoebiusFloorDifferenceEqualsWeightedErrorBridge at Heq
+  unfold MoebiusWeightedErrorAbsBoundBridge at Hbound
+  unfold normalizedEuclideanFloorError
+
+  filter_upwards [Heq, Filter.eventually_atTop.2 ⟨1, by
+    intro N hN
+    have hNpos_nat : 0 < N := lt_of_lt_of_le Nat.zero_lt_one hN
+    have hNpos : 0 < (N : ℝ) := by exact_mod_cast hNpos_nat
+    exact hNpos⟩] with N hEq hNpos
+
+  rw [hEq]
+
+  have hNnonneg : 0 ≤ (N : ℝ) := le_of_lt hNpos
+  have hNabs : |(N : ℝ)| = (N : ℝ) := abs_of_nonneg hNnonneg
+
+  calc
+    |moebiusWeightedFloorErrorSum N / (N : ℝ)|
+        = |moebiusWeightedFloorErrorSum N| / (N : ℝ) := by
+            rw [abs_div, hNabs]
+    _ ≤ euclideanFloorErrorSum N / (N : ℝ) :=
+            div_le_div_of_nonneg_right (Hbound N) hNnonneg
+
+/-- Version finale : C-04b est consommée avec A1 et les deux sous-verrous
+    algébriques de A2b. -/
+theorem squarefree_asymptotic_density_of_exact_and_weighted_error
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge)
+    (Heq : MoebiusFloorDifferenceEqualsWeightedErrorBridge)
+    (Hbound : MoebiusWeightedErrorAbsBoundBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_exact_and_control
+    Hexact
+    (moebiusFloorControl_of_weighted_error_bridges Heq Hbound)
+
 end CouretUnification.Logic.H3
