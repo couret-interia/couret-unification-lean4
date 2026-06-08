@@ -254,6 +254,11 @@ theorem squarefree_asymptotic_bridge_of_density_to_moebius_LSeries
         (2 : ℂ)).re) =
         6 / (Real.pi ^ 2) := by
     rw [hμ]
+    have hcast :
+        (6 : ℂ) / ((Real.pi : ℂ) ^ 2) =
+          ((6 / (Real.pi ^ 2) : ℝ) : ℂ) := by
+      simp [Complex.ofReal_pow]
+    rw [hcast]
     simp
 
   simpa [hμ_re] using H
