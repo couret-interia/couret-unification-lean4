@@ -637,4 +637,22 @@ theorem moebius_LSeries_term_partial_tends :
   unfold moebiusLSeriesTermPartialRange
   exact htendsto.comp (tendsto_add_atTop_nat 1)
 
+/-- Pont ponctuel entre le terme natif `LSeries.term` de Möbius au point `2`
+    et l'expression réelle élémentaire `μ(d) / d²`.
+
+    Ce lemme est le raccord local entre l'API Mathlib des L-séries et
+    la somme arithmétique réelle utilisée dans `moebiusPartialSumRealRange`. -/
+lemma moebius_LSeries_term_re_eq_real_term (d : ℕ) :
+    (LSeries.term
+      (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+      (2 : ℂ)
+      d).re =
+      ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2) := by
+  by_cases hd : d = 0
+  · subst d
+    simp [LSeries.term]
+  · have hdC : (d : ℂ) ≠ 0 := by exact_mod_cast hd
+    have hdR : (d : ℝ) ≠ 0 := by exact_mod_cast hd
+    simp [LSeries.term, hd, hdC, hdR, Complex.ofReal_pow]
+
 end CouretUnification.Logic.H3

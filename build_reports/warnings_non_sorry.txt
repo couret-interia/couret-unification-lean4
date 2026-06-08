@@ -1,0 +1,3 @@
+warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:656:28: This simp argument is unused:
+warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:656:33: This simp argument is unused:
+warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:656:38: This simp argument is unused:
