@@ -1246,4 +1246,61 @@ theorem squarefree_asymptotic_density_of_exact_and_weighted_error
     Hexact
     (moebiusFloorControl_of_weighted_error_bridges Heq Hbound)
 
+/-- Borne élémentaire sur la fonction de Möbius.
+
+    Elle sera ensuite fermée à partir du fait que `μ(d)` ne prend que
+    les valeurs `-1`, `0`, `1`.
+
+    Pour l'instant, on l'isole comme verrou très local :
+      `|μ(d)| ≤ 1`. -/
+def MoebiusAbsLeOneBridge : Prop :=
+  ∀ d : ℕ, |((ArithmeticFunction.moebius d : ℤ) : ℝ)| ≤ 1
+
+/-- Si `|μ(d)| ≤ 1` pour tout `d`, alors l'erreur pondérée par Möbius
+    est dominée par la somme absolue euclidienne.
+
+    C'est le cœur de A2b-2 :
+      `|∑ μ(d)e_d| ≤ ∑ |e_d|`.
+
+    La preuve utilise seulement :
+    - l'inégalité triangulaire pour les sommes finies ;
+    - `|μ(d)e_d| = |μ(d)| |e_d|` ;
+    - `|μ(d)| ≤ 1`. -/
+theorem moebiusWeightedErrorAbsBound_of_moebius_abs_le_one
+    (Hmu : MoebiusAbsLeOneBridge) :
+    MoebiusWeightedErrorAbsBoundBridge := by
+  unfold MoebiusWeightedErrorAbsBoundBridge
+  intro N
+
+  unfold moebiusWeightedFloorErrorSum
+  unfold euclideanFloorErrorSum
+
+  let s : Finset ℕ := Finset.Icc 1 (Nat.sqrt N)
+  let e : ℕ → ℝ := fun d =>
+    ((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2
+  let m : ℕ → ℝ := fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ)
+
+  calc
+    |Finset.sum s (fun d => m d * e d)|
+        ≤ Finset.sum s (fun d => |m d * e d|) := by
+            exact Finset.abs_sum_le_sum_abs _ _
+    _ ≤ Finset.sum s (fun d => |e d|) := by
+            refine Finset.sum_le_sum ?_
+            intro d hd
+            rw [abs_mul]
+            have hm : |m d| ≤ 1 := by
+              simpa [m] using Hmu d
+            have he_nonneg : 0 ≤ |e d| := abs_nonneg _
+            calc
+              |m d| * |e d| ≤ 1 * |e d| :=
+                mul_le_mul_of_nonneg_right hm he_nonneg
+              _ = |e d| := by ring
+
+/-- A2b-2 fermé à partir de la seule borne `|μ(d)| ≤ 1`. -/
+theorem moebiusWeightedErrorAbsBoundBridge_of_moebius_abs_le_one
+    (Hmu : MoebiusAbsLeOneBridge) :
+    MoebiusWeightedErrorAbsBoundBridge :=
+  moebiusWeightedErrorAbsBound_of_moebius_abs_le_one Hmu
+
 end CouretUnification.Logic.H3
