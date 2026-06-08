@@ -860,6 +860,33 @@ theorem euclideanFloorErrorIsBigOBridge_proved :
 def NormalizedEuclideanFloorErrorTendsZeroBridge : Prop :=
   Tendsto normalizedEuclideanFloorError atTop (nhds 0)
 
+/-- Bridge élémentaire attendu :
+    `sqrt(N) / N → 0`.
+
+    Ce verrou analytique standard permet de transformer
+    `euclideanFloorErrorSum = O(√N)` en erreur normalisée tendant vers `0`. -/
+def SqrtDivNatTendsZeroBridge : Prop :=
+  Tendsto (fun N : ℕ => Real.sqrt (N : ℝ) / (N : ℝ)) atTop (nhds 0)
+
+/-- Bridge de transfert `O(√N)` vers erreur normalisée nulle.
+
+    Si l'erreur euclidienne totale est `O(√N)` et si `√N/N → 0`,
+    alors l'erreur euclidienne normalisée tend vers `0`.
+
+    Cette formulation isole le lemme asymptotique général
+    `f = O(g)` et `g/N → 0` ⇒ `f/N → 0`. -/
+def NormalizedEuclideanFloorErrorFromBigOBridge : Prop :=
+  EuclideanFloorErrorIsBigOBridge →
+  SqrtDivNatTendsZeroBridge →
+  NormalizedEuclideanFloorErrorTendsZeroBridge
+
+/-- Consommation de A2a à partir de `O(√N)` et de `√N/N → 0`. -/
+theorem normalizedEuclideanFloorError_of_bigO_bridge
+    (Htransfer : NormalizedEuclideanFloorErrorFromBigOBridge)
+    (HsqrtDiv : SqrtDivNatTendsZeroBridge) :
+    NormalizedEuclideanFloorErrorTendsZeroBridge :=
+  Htransfer euclideanFloorErrorIsBigOBridge_proved HsqrtDiv
+
 /-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
     par l'erreur euclidienne normalisée.
 
