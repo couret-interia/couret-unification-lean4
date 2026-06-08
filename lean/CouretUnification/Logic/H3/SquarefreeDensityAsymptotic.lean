@@ -1514,4 +1514,42 @@ theorem squarefree_asymptotic_density_of_exact_only
     Hexact
     moebiusScaledMainTermDivBridge_proved
 
+/-- Sous-verrou A1' : formule exacte non normalisée de comptage squarefree.
+
+    C'est la forme arithmétique naturelle :
+      `squarefreeCount N = ∑_{d≤√N} μ(d)⌊N/d²⌋`.
+
+    Une fois cette identité prouvée, A1 s'obtient simplement en divisant
+    les deux côtés par `N`. -/
+def SquarefreeCountExactMoebiusFloorCountBridge : Prop :=
+  ∀ N : ℕ,
+    (squarefreeCount N : ℝ) = moebiusFloorCountTerm N
+
+/-- La formule exacte non normalisée implique A1.
+
+    Cette étape est purement formelle : on divise les deux côtés par `N`.
+    Elle garde les conventions Lean aux petits cas, notamment `N = 0`,
+    sans ajouter de traitement analytique. -/
+theorem squarefreeCountExactMoebiusFloorBridge_of_count_bridge
+    (Hcount : SquarefreeCountExactMoebiusFloorCountBridge) :
+    SquarefreeCountExactMoebiusFloorBridge := by
+  unfold SquarefreeCountExactMoebiusFloorBridge
+  intro N
+  unfold squarefreeDensityQuotient
+  unfold moebiusFloorDensityTerm
+  rw [Hcount N]
+
+/-- Version finale : C-04b est consommée avec la seule formule exacte
+    non normalisée de comptage squarefree.
+
+    Tout le volet asymptotique A2 est fermé ; il reste uniquement
+    l'identité arithmétique discrète :
+      `squarefreeCount N = ∑ μ(d)⌊N/d²⌋`. -/
+theorem squarefree_asymptotic_density_of_count_exact
+    (Hcount : SquarefreeCountExactMoebiusFloorCountBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_exact_only
+    (squarefreeCountExactMoebiusFloorBridge_of_count_bridge Hcount)
+
 end CouretUnification.Logic.H3
