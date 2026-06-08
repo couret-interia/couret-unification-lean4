@@ -1,5 +1,0 @@
-error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:491:2: `simp` made no progress
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:524:12: Invalid field `re`: The environment does not contain `Function.re`, so it is not possible to project the field `re` from an expression
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:526:2: Type mismatch: After simplification, term
-error: Lean exited with code 1

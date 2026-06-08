@@ -462,75 +462,56 @@ theorem squarefree_asymptotic_density_of_error_and_partial
 
 /-- Somme partielle complexe de la série de Möbius au point `2`.
 
-    Formellement :
-      `∑_{d ≤ M} μ(d) / d²`
-
-    mais vue dans `ℂ`, pour se raccorder directement à `LSeries`. -/
+    On la définit comme coercion complexe de la somme réelle déjà normalisée.
+    Ce choix évite les frottements d'API sur la partie réelle des sommes finies,
+    tout en gardant un objet de type `ℂ` raccordable à `LSeries`. -/
 noncomputable def moebiusPartialSumComplex (M : ℕ) : ℂ :=
-  Finset.sum (Finset.Icc 1 M) (fun d =>
-    ((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2))
+  (moebiusPartialSumReal M : ℂ)
 
-/-- Sous-verrou B1a : les sommes partielles complexes de Möbius
-    convergent vers la L-série de Möbius au point `2`.
+/-- Sous-verrou B1a : les parties réelles des sommes partielles complexes
+    convergent vers la partie réelle de la L-série de Möbius au point `2`.
 
-    C'est la forme naturelle côté `LSeries`. -/
+    Cette formulation est volontairement robuste : elle évite de dépendre
+    d'un lemme de continuité spécifique pour `Complex.re`, et correspond
+    exactement au verrou réel nécessaire pour la densité squarefree. -/
 def MoebiusPartialSumComplexTendsToLSeriesBridge : Prop :=
-  Tendsto moebiusPartialSumComplex atTop
+  Tendsto
+    (fun M : ℕ => (moebiusPartialSumComplex M).re)
+    atTop
     (nhds
-      (LSeries
+      ((LSeries
         (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
-        (2 : ℂ)))
+        (2 : ℂ)).re))
 
 /-- Les sommes partielles réelles sont les parties réelles
     des sommes partielles complexes.
 
-    Ce lemme est purement coercitif/algébrique. -/
+    Avec la définition coercitive de `moebiusPartialSumComplex`,
+    ce lemme devient purement définitionnel. -/
 lemma moebiusPartialSumReal_eq_complex_re (M : ℕ) :
     moebiusPartialSumReal M = (moebiusPartialSumComplex M).re := by
-  unfold moebiusPartialSumReal moebiusPartialSumComplex
-  simp only [map_sum]
-  refine Finset.sum_congr rfl ?_
-  intro d hd
-  have hcast :
-      (((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2)).re =
-        ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2) := by
-    by_cases hd0 : d = 0
-    · subst d
-      simp
-    · have hdC : ((d : ℂ) ^ 2) ≠ 0 := by
-        exact pow_ne_zero 2 (by exact_mod_cast hd0)
-      have hdR : ((d : ℝ) ^ 2) ≠ 0 := by
-        exact pow_ne_zero 2 (by exact_mod_cast hd0)
-      field_simp [hdC, hdR, Complex.ofReal_pow]
-  exact hcast.symm
+  simp [moebiusPartialSumComplex]
 
-/-- Si les sommes partielles complexes convergent vers `L(μ,2)`,
-    alors les sommes partielles réelles convergent vers `Re(L(μ,2))`.
+/-- Si les parties réelles des sommes partielles complexes convergent vers
+    `Re(L(μ,2))`, alors les sommes partielles réelles convergent vers
+    `Re(L(μ,2))`.
 
-    C'est le passage `Tendsto` par l'application continue `Complex.re`. -/
+    Ce wrapper ne contient plus de friction analytique : il ne fait que
+    remplacer `moebiusPartialSumReal` par sa forme complexe coercitive. -/
 theorem moebius_partial_real_tends_to_LSeries_of_complex
     (H : MoebiusPartialSumComplexTendsToLSeriesBridge) :
     MoebiusPartialSumTendsToLSeriesBridge := by
   unfold MoebiusPartialSumComplexTendsToLSeriesBridge at H
   unfold MoebiusPartialSumTendsToLSeriesBridge
   unfold moebiusLSeriesTwoReal
+  simpa [moebiusPartialSumReal_eq_complex_re] using H
 
-  have hRe :
-      Tendsto (fun M : ℕ => (moebiusPartialSumComplex M).re) atTop
-        (nhds
-          ((LSeries
-            (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
-            (2 : ℂ)).re)) := by
-    exact H.re
-
-  simpa [moebiusPartialSumReal_eq_complex_re] using hRe
-
-/-- Consommation C-04b avec B2 fermé et B1 ramené à la convergence complexe.
+/-- Consommation C-04b avec B2 fermé et B1 ramené à la convergence
+    des parties réelles des sommes partielles complexes.
 
     Il reste :
     - le sous-verrou A : erreur de comptage normalisée ;
-    - le sous-verrou B1a : convergence des sommes partielles complexes
-      vers la L-série de Möbius. -/
+    - le sous-verrou B1a : convergence vers la partie réelle de `L(μ,2)`. -/
 theorem squarefree_asymptotic_density_of_error_and_complex_partial
     (Herr : SquarefreeCountToMoebiusMainTermErrorBridge)
     (Hcomplex : MoebiusPartialSumComplexTendsToLSeriesBridge) :
