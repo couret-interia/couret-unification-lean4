@@ -893,4 +893,45 @@ theorem moebiusFloorToMainError_of_squeeze_bridge
     MoebiusFloorToMainTermErrorBridge :=
   Hsqueeze Hcontrol Hzero
 
+/-- Fermeture du principe de squeeze réel pour A2.
+
+    Si l'erreur de Möbius à plancher est éventuellement dominée en valeur
+    absolue par une erreur normalisée tendant vers `0`, alors cette erreur
+    de Möbius tend elle-même vers `0`.
+
+    Cette preuve est purement analytique : elle ne dépend pas encore
+    de la structure arithmétique de Möbius. -/
+theorem moebiusFloorToMainErrorSqueezeBridge_proved :
+    MoebiusFloorToMainErrorSqueezeBridge := by
+  intro Hcontrol Hzero
+  unfold MoebiusFloorToMainTermErrorBridge
+  unfold NormalizedEuclideanFloorErrorTendsZeroBridge at Hzero
+  unfold MoebiusFloorToMainControlledByEuclideanErrorBridge at Hcontrol
+
+  have hAbs :
+      Tendsto
+        (fun N : ℕ => |moebiusFloorDensityTerm N - moebiusMainTermPartial N|)
+        atTop
+        (nhds 0) := by
+    refine squeeze_zero'
+      (Eventually.of_forall (fun N : ℕ => abs_nonneg _))
+      Hcontrol
+      Hzero
+
+  exact
+    (tendsto_zero_iff_abs_tendsto_zero
+      (l := atTop)
+      (f := fun N : ℕ => moebiusFloorDensityTerm N - moebiusMainTermPartial N)).2 hAbs
+
+/-- Version de consommation de A2 avec le squeeze réel désormais fermé.
+
+    Il reste à fournir :
+    - le contrôle de l'erreur de Möbius par l'erreur euclidienne ;
+    - l'annulation de l'erreur euclidienne normalisée. -/
+theorem moebiusFloorToMainError_of_control_and_zero
+    (Hcontrol : MoebiusFloorToMainControlledByEuclideanErrorBridge)
+    (Hzero : NormalizedEuclideanFloorErrorTendsZeroBridge) :
+    MoebiusFloorToMainTermErrorBridge :=
+  moebiusFloorToMainErrorSqueezeBridge_proved Hcontrol Hzero
+
 end CouretUnification.Logic.H3
