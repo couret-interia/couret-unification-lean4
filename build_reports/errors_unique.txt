@@ -1,3 +1,3 @@
 error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:654:2: unsolved goals
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:658:4: Tactic `simp` failed with a nested error:
 error: Lean exited with code 1

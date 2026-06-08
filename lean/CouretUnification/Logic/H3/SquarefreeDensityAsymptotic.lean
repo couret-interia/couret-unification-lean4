@@ -651,8 +651,10 @@ lemma moebius_LSeries_term_re_eq_real_term (d : ℕ) :
   by_cases hd : d = 0
   · subst d
     simp [LSeries.term]
-  · have hdC : (d : ℂ) ≠ 0 := by exact_mod_cast hd
-    have hdR : (d : ℝ) ≠ 0 := by exact_mod_cast hd
-    simp [LSeries.term, hd, hdC, hdR, Complex.ofReal_pow]
+  · have hcast :
+        (((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2)) =
+          (((((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)) : ℝ) : ℂ) := by
+      simp [Complex.ofReal_div, Complex.ofReal_pow]
+    simp [LSeries.term, hd, hcast, Complex.ofReal_re]
 
 end CouretUnification.Logic.H3
