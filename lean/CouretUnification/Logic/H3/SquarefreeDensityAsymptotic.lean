@@ -986,26 +986,20 @@ theorem normalizedEuclideanFloorErrorFromBigOBridge_proved :
   unfold EuclideanFloorErrorIsBigOBridge at HbigO
   unfold SqrtDivNatTendsZeroBridge at HsqrtDiv
 
-  change ∃ C : ℝ, Asymptotics.IsBigOWith C atTop
-      euclideanFloorErrorSum
-      (fun N : ℕ => Real.sqrt (N : ℝ)) at HbigO
-  rcases HbigO with ⟨C, hC_eventually⟩
-
-  have hC_nonneg_eventually :
-      ∀ᶠ N in atTop, 0 ≤ C * (Real.sqrt (N : ℝ) / (N : ℝ)) := by
-    refine Filter.Eventually.of_forall ?_
-    intro N
-    exact mul_nonneg (norm_nonneg C) (by positivity)
+  rw [Asymptotics.IsBigO] at HbigO
+  rcases HbigO with ⟨C, hC_with⟩
+  rw [Asymptotics.IsBigOWith] at hC_with
 
   have hbound :
       ∀ᶠ N in atTop,
         |euclideanFloorErrorSum N / (N : ℝ)| ≤
-          ‖C‖ * (Real.sqrt (N : ℝ) / (N : ℝ)) := by
-    filter_upwards [hC_eventually, Filter.eventually_atTop.2 ⟨1, by
+          C * (Real.sqrt (N : ℝ) / (N : ℝ)) := by
+    filter_upwards [hC_with, Filter.eventually_atTop.2 ⟨1, by
       intro N hN
       have hNpos_nat : 0 < N := lt_of_lt_of_le Nat.zero_lt_one hN
       have hNpos : 0 < (N : ℝ) := by exact_mod_cast hNpos_nat
       exact hNpos⟩] with N hC hNpos
+
     have hNnonneg : 0 ≤ (N : ℝ) := le_of_lt hNpos
     have hNabs : |(N : ℝ)| = (N : ℝ) := abs_of_nonneg hNnonneg
 
@@ -1015,21 +1009,27 @@ theorem normalizedEuclideanFloorErrorFromBigOBridge_proved :
       rw [abs_div, hNabs]
 
     rw [hdiv]
-    have hC' : |euclideanFloorErrorSum N| ≤ ‖C‖ * ‖Real.sqrt (N : ℝ)‖ := by
-      simpa using hC
+
+    have hC' :
+        |euclideanFloorErrorSum N| ≤ C * |Real.sqrt (N : ℝ)| := by
+      simpa [Real.norm_eq_abs] using hC
+
     have hsqrt_nonneg : 0 ≤ Real.sqrt (N : ℝ) := Real.sqrt_nonneg _
-    have hsqrt_norm : ‖Real.sqrt (N : ℝ)‖ = Real.sqrt (N : ℝ) := by
-      simpa [Real.norm_eq_abs, abs_of_nonneg hsqrt_nonneg]
-    rw [hsqrt_norm] at hC'
+    have hsqrt_abs : |Real.sqrt (N : ℝ)| = Real.sqrt (N : ℝ) :=
+      abs_of_nonneg hsqrt_nonneg
+
+    rw [hsqrt_abs] at hC'
+
     have hdiv_le := div_le_div_of_nonneg_right hC' hNnonneg
+
     simpa [div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using hdiv_le
 
   have htendsto_majorant :
       Tendsto
-        (fun N : ℕ => ‖C‖ * (Real.sqrt (N : ℝ) / (N : ℝ)))
+        (fun N : ℕ => C * (Real.sqrt (N : ℝ) / (N : ℝ)))
         atTop
         (nhds 0) := by
-    simpa using HsqrtDiv.const_mul ‖C‖
+    simpa using HsqrtDiv.const_mul C
 
   have hAbs :
       Tendsto
@@ -1037,7 +1037,7 @@ theorem normalizedEuclideanFloorErrorFromBigOBridge_proved :
         atTop
         (nhds 0) := by
     refine squeeze_zero'
-      (Filter.Eventually.of_forall (fun N : ℕ => abs_nonneg _))
+      (Eventually.of_forall (fun N : ℕ => abs_nonneg _))
       hbound
       htendsto_majorant
 

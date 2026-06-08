@@ -1,3 +1,0 @@
-error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:989:2: 'change' tactic failed, pattern
-error: Lean exited with code 1
