@@ -233,6 +233,72 @@ def SquarefreeDensityToMoebiusLSeriesBridge : Prop :=
         (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
         (2 : ℂ)).re))
 
+/-- Quotient de densité empirique des entiers squarefree. -/
+noncomputable def squarefreeDensityQuotient (N : ℕ) : ℝ :=
+  (squarefreeCount N : ℝ) / (N : ℝ)
+
+/-- Terme principal Möbius tronqué attendu dans la preuve de densité.
+
+    Formellement :
+      `∑_{d ≤ √N} μ(d) / d²`
+
+    Ce terme est celui qui doit converger vers `L(μ,2)` tandis que
+    l'erreur de comptage doit disparaître après division par `N`. -/
+noncomputable def moebiusMainTermPartial (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2))
+
+/-- Partie réelle de la L-série de Möbius au point `2`. -/
+noncomputable def moebiusLSeriesTwoReal : ℝ :=
+  (LSeries
+    (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+    (2 : ℂ)).re
+
+/-- Sous-verrou A : l'erreur entre le quotient de comptage squarefree
+    et le terme principal Möbius tronqué tend vers `0`.
+
+    C'est ici que devront entrer :
+    - l'identité indicatrice squarefree via Möbius ;
+    - la réindexation C-01 ;
+    - le contrôle d'erreur C-03 divisé par `N`. -/
+def SquarefreeCountToMoebiusMainTermErrorBridge : Prop :=
+  Tendsto
+    (fun N : ℕ => squarefreeDensityQuotient N - moebiusMainTermPartial N)
+    atTop
+    (nhds 0)
+
+/-- Sous-verrou B : le terme principal Möbius tronqué converge vers
+    la partie réelle de `L(μ,2)`.
+
+    C'est ici que devront entrer :
+    - la sommabilité de Möbius à `s = 2` ;
+    - l'identification de la somme infinie avec `LSeries`;
+    - le passage des sommes tronquées `d ≤ √N` à la série complète. -/
+def MoebiusMainTermTendsToLSeriesBridge : Prop :=
+  Tendsto moebiusMainTermPartial atTop (nhds moebiusLSeriesTwoReal)
+
+/-- Les deux sous-verrous analytiques A+B impliquent le pont restant
+    `SquarefreeDensityToMoebiusLSeriesBridge`.
+
+    Cette étape est purement topologique :
+    si `(Q_N - M_N) → 0` et `M_N → L`, alors `Q_N → L`. -/
+theorem squarefree_density_to_moebius_LSeries_of_error_and_main
+    (Herr : SquarefreeCountToMoebiusMainTermErrorBridge)
+    (Hmain : MoebiusMainTermTendsToLSeriesBridge) :
+    SquarefreeDensityToMoebiusLSeriesBridge := by
+  unfold SquarefreeDensityToMoebiusLSeriesBridge
+  unfold SquarefreeCountToMoebiusMainTermErrorBridge at Herr
+  unfold MoebiusMainTermTendsToLSeriesBridge at Hmain
+
+  have hsum := Herr.add Hmain
+
+  simpa [
+    squarefreeDensityQuotient,
+    moebiusMainTermPartial,
+    moebiusLSeriesTwoReal,
+    sub_add_cancel
+  ] using hsum
+
 /-- Le pont `squarefreeCount/N → Re(L(μ,2))`, combiné à la fermeture
     eulérienne déjà prouvée, fournit directement
     `SquarefreeAsymptoticDensityBridge`.
