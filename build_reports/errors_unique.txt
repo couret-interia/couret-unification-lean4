@@ -1,0 +1,3 @@
+error: build failed
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:989:20: Tactic `rcases` failed: `HbigO : euclideanFloorErrorSum =O[atTop] fun N ↦ √↑N` is not an inductive datatype
+error: Lean exited with code 1
