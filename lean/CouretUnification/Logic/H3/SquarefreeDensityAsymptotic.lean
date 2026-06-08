@@ -943,6 +943,30 @@ theorem normalizedEuclideanFloorError_of_bigO_and_realSqrtAtTop
     Htransfer
     (sqrtDivNatTendsZero_of_realSqrtAtTop Hsqrt)
 
+/-- Fermeture de `Real.sqrt(N) → ∞`.
+
+    On compose le lemme Mathlib `Real.tendsto_sqrt_atTop`
+    avec la convergence standard du cast naturel `N : ℝ` vers `atTop`. -/
+theorem realSqrtNatAtTopBridge_proved :
+    RealSqrtNatAtTopBridge := by
+  unfold RealSqrtNatAtTopBridge
+  exact Real.tendsto_sqrt_atTop.comp tendsto_natCast_atTop_atTop
+
+/-- Fermeture du bridge `sqrt(N)/N → 0`. -/
+theorem sqrtDivNatTendsZeroBridge_proved :
+    SqrtDivNatTendsZeroBridge :=
+  sqrtDivNatTendsZero_of_realSqrtAtTop realSqrtNatAtTopBridge_proved
+
+/-- A2a avec le verrou `sqrt(N)/N → 0` fermé.
+
+    Il reste seulement le transfert asymptotique général depuis `O(√N)`. -/
+theorem normalizedEuclideanFloorError_of_bigO_transfer
+    (Htransfer : NormalizedEuclideanFloorErrorFromBigOBridge) :
+    NormalizedEuclideanFloorErrorTendsZeroBridge :=
+  normalizedEuclideanFloorError_of_bigO_bridge
+    Htransfer
+    sqrtDivNatTendsZeroBridge_proved
+
 /-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
     par l'erreur euclidienne normalisée.
 
