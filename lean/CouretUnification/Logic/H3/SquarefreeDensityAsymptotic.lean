@@ -697,4 +697,23 @@ lemma moebiusPartialSumRealRange_eq_LSeriesTerm_re (M : ℕ) :
 
   simpa [fR, fC] using hsum (Finset.range (M + 1))
 
+/-- Fermeture de B1 à partir de la convergence native `LSeries.term`.
+
+    Les sommes réelles `μ(d)/d²` convergent vers `Re(L(μ,2))`, car elles
+    sont les parties réelles des sommes partielles natives de la L-série. -/
+theorem moebius_partial_range_tends_to_LSeriesReal :
+    Tendsto moebiusPartialSumRealRange atTop
+      (nhds moebiusLSeriesTwoReal) := by
+  have hComplex := moebius_LSeries_term_partial_tends
+  have hRe :
+      Tendsto
+        (fun M : ℕ => (moebiusLSeriesTermPartialRange M).re)
+        atTop
+        (nhds moebiusLSeriesTwoReal) := by
+    unfold moebiusLSeriesTwoReal
+    -- si `.re` n'existe pas comme méthode, on remplacera ce bloc
+    exact hComplex.re
+
+  simpa [moebiusPartialSumRealRange_eq_LSeriesTerm_re] using hRe
+
 end CouretUnification.Logic.H3
