@@ -552,9 +552,9 @@ noncomputable def moebiusPartialSumRealRange (M : ℕ) : ℝ :=
 /-- La somme partielle `range (M+1)` coïncide avec la somme partielle
     `Icc 1 M`.
 
-    Le terme `d = 0` est nul par convention dans cette expression après
-    simplification. Ce lemme sert de passerelle entre le monde `HasSum`
-    (`range`) et le monde arithmétique (`Icc`). -/
+    La différence avec `Icc 1 M` est absorbée par la convention de division
+    totale de Lean au terme `d = 0`. Cette forme est seulement une passerelle
+    technique vers les sommes `range`. -/
 lemma moebiusPartialSumRealRange_eq_Icc (M : ℕ) :
     moebiusPartialSumRealRange M = moebiusPartialSumReal M := by
   unfold moebiusPartialSumRealRange moebiusPartialSumReal
@@ -576,6 +576,8 @@ theorem moebius_partial_Icc_tends_of_range_tends
         (nhds moebiusLSeriesTwoReal)) :
     MoebiusPartialSumTendsToLSeriesBridge := by
   unfold MoebiusPartialSumTendsToLSeriesBridge
-  simpa [moebiusPartialSumRealRange_eq_Icc] using H
+  convert H using 1
+  ext M
+  exact moebiusPartialSumRealRange_eq_Icc M
 
 end CouretUnification.Logic.H3
