@@ -19,10 +19,11 @@ import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Order.Filter.Defs
 
+namespace CouretUnification.Logic.H3
+
 open Filter
 open ArithmeticFunction
-
-namespace CouretUnification.Logic.H3
+open Asymptotics
 
 /-!
 # SquarefreeDensityAsymptotic — laboratoire de fermeture C-04b
@@ -815,5 +816,81 @@ theorem squarefree_asymptotic_density_of_floor_bridges
       (nhds (6 / (Real.pi^2))) :=
   squarefree_asymptotic_density_of_error_only
     (squarefree_count_to_moebius_main_error_of_floor Hexact Hfloor)
+
+/-- Somme absolue des erreurs euclidiennes locales.
+
+    C'est exactement le terme déjà contrôlé par `error_term_isBigO`
+    dans `SquarefreeDensity.lean` :
+
+      `∑_{d≤√N} |⌊N/d²⌋ - N/d²|`
+
+    Il sert de majorant naturel pour l'erreur entre le terme discret
+    de Möbius à plancher et le terme principal réel. -/
+noncomputable def euclideanFloorErrorSum (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+    |((N / d^2 : ℕ) : ℝ) - (N : ℝ) / (d : ℝ)^2|)
+
+/-- Erreur euclidienne normalisée par `N`.
+
+    C'est cette quantité qui doit tendre vers `0` pour fermer A2. -/
+noncomputable def normalizedEuclideanFloorError (N : ℕ) : ℝ :=
+  euclideanFloorErrorSum N / (N : ℝ)
+
+/-- Bridge déjà prouvé dans `SquarefreeDensity.lean` :
+    l'erreur euclidienne totale est `O(√N)`. -/
+def EuclideanFloorErrorIsBigOBridge : Prop :=
+  IsBigO atTop euclideanFloorErrorSum
+    (fun N : ℕ => Real.sqrt (N : ℝ))
+
+/-- Fermeture locale du bridge `O(√N)` depuis `SquarefreeDensity.error_term_isBigO`.
+
+    Cette étape ne ferme pas encore A2, mais elle raccorde explicitement
+    le laboratoire asymptotique au résultat [D] déjà obtenu dans
+    `SquarefreeDensity.lean`. -/
+theorem euclideanFloorErrorIsBigOBridge_proved :
+    EuclideanFloorErrorIsBigOBridge := by
+  unfold EuclideanFloorErrorIsBigOBridge
+  simpa [euclideanFloorErrorSum] using error_term_isBigO
+
+/-- Sous-verrou A2a : l'erreur euclidienne normalisée tend vers `0`.
+
+    Ce verrou doit être obtenu à partir de :
+    - `euclideanFloorErrorIsBigOBridge_proved`,
+    - `√N / N → 0`. -/
+def NormalizedEuclideanFloorErrorTendsZeroBridge : Prop :=
+  Tendsto normalizedEuclideanFloorError atTop (nhds 0)
+
+/-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
+    par l'erreur euclidienne normalisée.
+
+    Formellement, à partir d'un certain rang :
+      `|floor-density - main-term| ≤ normalizedEuclideanFloorError`.
+
+    C'est ici que devra entrer la borne élémentaire `|μ(d)| ≤ 1`. -/
+def MoebiusFloorToMainControlledByEuclideanErrorBridge : Prop :=
+  ∀ᶠ N in atTop,
+    |moebiusFloorDensityTerm N - moebiusMainTermPartial N| ≤
+      normalizedEuclideanFloorError N
+
+/-- Fermeture abstraite de A2 par contrôle et annulation du majorant.
+
+    Ce bridge isole le principe d'encadrement réel :
+    si l'erreur de Möbius est dominée par une erreur normalisée qui tend
+    vers `0`, alors `MoebiusFloorToMainTermErrorBridge` est établi.
+
+    Il sera remplacé plus tard par une preuve directe lorsque l'API de
+    squeeze/tendsto sera stabilisée dans ce fichier. -/
+def MoebiusFloorToMainErrorSqueezeBridge : Prop :=
+  MoebiusFloorToMainControlledByEuclideanErrorBridge →
+  NormalizedEuclideanFloorErrorTendsZeroBridge →
+  MoebiusFloorToMainTermErrorBridge
+
+/-- Consommation de la fermeture abstraite de A2. -/
+theorem moebiusFloorToMainError_of_squeeze_bridge
+    (Hsqueeze : MoebiusFloorToMainErrorSqueezeBridge)
+    (Hcontrol : MoebiusFloorToMainControlledByEuclideanErrorBridge)
+    (Hzero : NormalizedEuclideanFloorErrorTendsZeroBridge) :
+    MoebiusFloorToMainTermErrorBridge :=
+  Hsqueeze Hcontrol Hzero
 
 end CouretUnification.Logic.H3
