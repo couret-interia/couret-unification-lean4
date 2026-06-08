@@ -637,4 +637,101 @@ theorem moebius_LSeries_term_partial_tends :
   unfold moebiusLSeriesTermPartialRange
   exact htendsto.comp (tendsto_add_atTop_nat 1)
 
+/-- Pont ponctuel entre le terme natif `LSeries.term` de Möbius au point `2`
+    et l'expression réelle élémentaire `μ(d) / d²`.
+
+    Ce lemme est le raccord local entre l'API Mathlib des L-séries et
+    la somme arithmétique réelle utilisée dans `moebiusPartialSumRealRange`. -/
+lemma moebius_LSeries_term_re_eq_real_term (d : ℕ) :
+    (LSeries.term
+      (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+      (2 : ℂ)
+      d).re =
+      ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2) := by
+  by_cases hd : d = 0
+  · subst d
+    simp [LSeries.term]
+  · have hcast :
+        (((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2)) =
+          (((((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)) : ℝ) : ℂ) := by
+      simp [Complex.ofReal_div, Complex.ofReal_pow]
+    calc
+      (LSeries.term
+        (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+        (2 : ℂ)
+        d).re
+          = ((((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2)).re) := by
+              simp [LSeries.term, hd]
+      _ = (((((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)) : ℝ) : ℂ).re := by
+              exact congrArg (fun z : ℂ => z.re) hcast
+      _ = ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2) := by
+              exact Complex.ofReal_re _
+
+/-- Les sommes partielles `range` de l'expression réelle élémentaire
+    sont les parties réelles des sommes partielles natives `LSeries.term`. -/
+lemma moebiusPartialSumRealRange_eq_LSeriesTerm_re (M : ℕ) :
+    moebiusPartialSumRealRange M =
+      (moebiusLSeriesTermPartialRange M).re := by
+  unfold moebiusPartialSumRealRange moebiusLSeriesTermPartialRange
+
+  let fR : ℕ → ℝ := fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)
+
+  let fC : ℕ → ℂ := fun d =>
+    LSeries.term
+      (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+      (2 : ℂ)
+      d
+
+  have hsum : ∀ s : Finset ℕ,
+      Finset.sum s fR = (Finset.sum s fC).re := by
+    intro s
+    induction s using Finset.induction_on with
+    | empty =>
+        simp [fR, fC]
+    | insert d s hds ih =>
+        rw [Finset.sum_insert hds, Finset.sum_insert hds, Complex.add_re]
+        rw [← ih]
+        dsimp [fR, fC]
+        rw [moebius_LSeries_term_re_eq_real_term d]
+
+  simpa [fR, fC] using hsum (Finset.range (M + 1))
+
+/-- Fermeture de B1 à partir de la convergence native `LSeries.term`.
+
+    Les sommes réelles `μ(d)/d²` convergent vers `Re(L(μ,2))`, car elles
+    sont les parties réelles des sommes partielles natives de la L-série. -/
+theorem moebius_partial_range_tends_to_LSeriesReal :
+    Tendsto moebiusPartialSumRealRange atTop
+      (nhds moebiusLSeriesTwoReal) := by
+  have hComplex := moebius_LSeries_term_partial_tends
+  have hRe :
+      Tendsto
+        (fun M : ℕ => (moebiusLSeriesTermPartialRange M).re)
+        atTop
+        (nhds moebiusLSeriesTwoReal) := by
+    unfold moebiusLSeriesTwoReal
+    exact (Complex.continuous_re.tendsto _).comp hComplex
+
+  convert hRe using 1
+  · funext M
+    exact (moebiusPartialSumRealRange_eq_LSeriesTerm_re M)
+
+/-- Fermeture du sous-verrou B1 : les sommes partielles de Möbius
+    convergent vers `Re(L(μ,2))`. -/
+theorem moebiusPartialSumTendsToLSeriesBridge_proved :
+    MoebiusPartialSumTendsToLSeriesBridge :=
+  moebius_partial_Icc_tends_of_range_tends
+    moebius_partial_range_tends_to_LSeriesReal
+
+/-- Consommation C-04b avec B1 et B2 fermés :
+    il ne reste plus que le sous-verrou A, l'erreur de comptage normalisée. -/
+theorem squarefree_asymptotic_density_of_error_only
+    (Herr : SquarefreeCountToMoebiusMainTermErrorBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_error_and_partial
+    Herr
+    moebiusPartialSumTendsToLSeriesBridge_proved
+
 end CouretUnification.Logic.H3
