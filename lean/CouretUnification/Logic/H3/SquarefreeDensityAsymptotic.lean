@@ -967,6 +967,92 @@ theorem normalizedEuclideanFloorError_of_bigO_transfer
     Htransfer
     sqrtDivNatTendsZeroBridge_proved
 
+/-- Fermeture du transfert `O(√N)` vers erreur euclidienne normalisée nulle.
+
+    Preuve spécialisée :
+    si `euclideanFloorErrorSum = O(√N)`, alors, éventuellement,
+    `|euclideanFloorErrorSum N| ≤ C * √N`.
+    Après division par `N`, on domine l'erreur normalisée par
+    `C * (√N / N)`, qui tend vers `0`.
+
+    Cette preuve ferme A2a à partir du `O(√N)` déjà prouvé et du lemme
+    `sqrt(N)/N → 0` fermé localement. -/
+theorem normalizedEuclideanFloorErrorFromBigOBridge_proved :
+    NormalizedEuclideanFloorErrorFromBigOBridge := by
+  intro HbigO HsqrtDiv
+  unfold NormalizedEuclideanFloorErrorTendsZeroBridge
+  unfold normalizedEuclideanFloorError
+
+  unfold EuclideanFloorErrorIsBigOBridge at HbigO
+  unfold SqrtDivNatTendsZeroBridge at HsqrtDiv
+
+  rw [Asymptotics.IsBigO] at HbigO
+  rcases HbigO with ⟨C, hC_with⟩
+  rw [Asymptotics.IsBigOWith] at hC_with
+
+  have hbound :
+      ∀ᶠ N in atTop,
+        |euclideanFloorErrorSum N / (N : ℝ)| ≤
+          C * (Real.sqrt (N : ℝ) / (N : ℝ)) := by
+    filter_upwards [hC_with, Filter.eventually_atTop.2 ⟨1, by
+      intro N hN
+      have hNpos_nat : 0 < N := lt_of_lt_of_le Nat.zero_lt_one hN
+      have hNpos : 0 < (N : ℝ) := by exact_mod_cast hNpos_nat
+      exact hNpos⟩] with N hC hNpos
+
+    have hNnonneg : 0 ≤ (N : ℝ) := le_of_lt hNpos
+    have hNabs : |(N : ℝ)| = (N : ℝ) := abs_of_nonneg hNnonneg
+
+    have hdiv :
+        |euclideanFloorErrorSum N / (N : ℝ)| =
+          |euclideanFloorErrorSum N| / (N : ℝ) := by
+      rw [abs_div, hNabs]
+
+    rw [hdiv]
+
+    have hC' :
+        |euclideanFloorErrorSum N| ≤ C * |Real.sqrt (N : ℝ)| := by
+      simpa [Real.norm_eq_abs] using hC
+
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (N : ℝ) := Real.sqrt_nonneg _
+    have hsqrt_abs : |Real.sqrt (N : ℝ)| = Real.sqrt (N : ℝ) :=
+      abs_of_nonneg hsqrt_nonneg
+
+    rw [hsqrt_abs] at hC'
+
+    have hdiv_le := div_le_div_of_nonneg_right hC' hNnonneg
+
+    simpa [div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using hdiv_le
+
+  have htendsto_majorant :
+      Tendsto
+        (fun N : ℕ => C * (Real.sqrt (N : ℝ) / (N : ℝ)))
+        atTop
+        (nhds 0) := by
+    simpa using HsqrtDiv.const_mul C
+
+  have hAbs :
+      Tendsto
+        (fun N : ℕ => |euclideanFloorErrorSum N / (N : ℝ)|)
+        atTop
+        (nhds 0) := by
+    refine squeeze_zero'
+      (Eventually.of_forall (fun N : ℕ => abs_nonneg _))
+      hbound
+      htendsto_majorant
+
+  exact
+    (tendsto_zero_iff_abs_tendsto_zero
+      (l := atTop)
+      (f := fun N : ℕ => euclideanFloorErrorSum N / (N : ℝ))).2 hAbs
+
+/-- Fermeture de A2a : l'erreur euclidienne normalisée tend vers `0`. -/
+theorem normalizedEuclideanFloorErrorTendsZeroBridge_proved :
+    NormalizedEuclideanFloorErrorTendsZeroBridge :=
+  normalizedEuclideanFloorErrorFromBigOBridge_proved
+    euclideanFloorErrorIsBigOBridge_proved
+    sqrtDivNatTendsZeroBridge_proved
+
 /-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
     par l'erreur euclidienne normalisée.
 
