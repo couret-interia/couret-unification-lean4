@@ -655,6 +655,16 @@ lemma moebius_LSeries_term_re_eq_real_term (d : ℕ) :
         (((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2)) =
           (((((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)) : ℝ) : ℂ) := by
       simp [Complex.ofReal_div, Complex.ofReal_pow]
-    simp [LSeries.term, hd, hcast, Complex.ofReal_re]
+    calc
+      (LSeries.term
+        (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+        (2 : ℂ)
+        d).re
+          = ((((ArithmeticFunction.moebius d : ℤ) : ℂ) / ((d : ℂ) ^ 2)).re) := by
+              simp [LSeries.term, hd]
+      _ = (((((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)) : ℝ) : ℂ).re := by
+              exact congrArg (fun z : ℂ => z.re) hcast
+      _ = ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2) := by
+              exact Complex.ofReal_re _
 
 end CouretUnification.Logic.H3
