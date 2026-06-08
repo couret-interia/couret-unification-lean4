@@ -717,4 +717,21 @@ theorem moebius_partial_range_tends_to_LSeriesReal :
   · funext M
     exact (moebiusPartialSumRealRange_eq_LSeriesTerm_re M)
 
+/-- Fermeture du sous-verrou B1 : les sommes partielles de Möbius
+    convergent vers `Re(L(μ,2))`. -/
+theorem moebiusPartialSumTendsToLSeriesBridge_proved :
+    MoebiusPartialSumTendsToLSeriesBridge :=
+  moebius_partial_Icc_tends_of_range_tends
+    moebius_partial_range_tends_to_LSeriesReal
+
+/-- Consommation C-04b avec B1 et B2 fermés :
+    il ne reste plus que le sous-verrou A, l'erreur de comptage normalisée. -/
+theorem squarefree_asymptotic_density_of_error_only
+    (Herr : SquarefreeCountToMoebiusMainTermErrorBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_error_and_partial
+    Herr
+    moebiusPartialSumTendsToLSeriesBridge_proved
+
 end CouretUnification.Logic.H3
