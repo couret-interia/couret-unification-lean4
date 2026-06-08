@@ -1450,4 +1450,68 @@ theorem squarefree_asymptotic_density_of_exact_and_scaled_main
     Hexact
     (moebiusFloorDifferenceEqualsWeightedError_of_scaled_main_div Hscaled)
 
+/-- Fermeture de `scaled-main / N = main-term`.
+
+    Pour `N ≥ 1`, on divise terme à terme :
+      `(μ(d) * (N/d²)) / N = μ(d)/d²`.
+
+    La restriction éventuelle à `N ≥ 1` évite uniquement la division
+    par zéro. -/
+theorem moebiusScaledMainTermDivBridge_proved :
+    MoebiusScaledMainTermDivBridge := by
+  unfold MoebiusScaledMainTermDivBridge
+
+  refine Filter.eventually_atTop.2 ⟨1, ?_⟩
+  intro N hN
+
+  have hNpos_nat : 0 < N := lt_of_lt_of_le Nat.zero_lt_one hN
+  have hNpos : 0 < (N : ℝ) := by exact_mod_cast hNpos_nat
+  have hNne : (N : ℝ) ≠ 0 := ne_of_gt hNpos
+
+  unfold moebiusScaledMainTerm
+  unfold moebiusMainTermPartial
+
+  let s : Finset ℕ := Finset.Icc 1 (Nat.sqrt N)
+  let m : ℕ → ℝ := fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ)
+
+  change
+    (Finset.sum s (fun d => m d * ((N : ℝ) / (d : ℝ)^2))) / (N : ℝ) =
+      Finset.sum s (fun d => m d / (d : ℝ)^2)
+
+  calc
+    (Finset.sum s (fun d => m d * ((N : ℝ) / (d : ℝ)^2))) / (N : ℝ)
+        = Finset.sum s (fun d =>
+            (m d * ((N : ℝ) / (d : ℝ)^2)) / (N : ℝ)) := by
+            rw [Finset.sum_div]
+    _ = Finset.sum s (fun d => m d / (d : ℝ)^2) := by
+            refine Finset.sum_congr rfl ?_
+            intro d hd
+
+            have hd_mem : d ∈ Finset.Icc 1 (Nat.sqrt N) := by
+              simpa [s] using hd
+            have hd1 : 1 ≤ d := (Finset.mem_Icc.mp hd_mem).1
+            have hdpos_nat : 0 < d := lt_of_lt_of_le Nat.zero_lt_one hd1
+            have hdpos : 0 < (d : ℝ) := by exact_mod_cast hdpos_nat
+            have hdne : (d : ℝ) ≠ 0 := ne_of_gt hdpos
+
+            field_simp [hNne, hdne]
+
+/-- Version finale : C-04b est consommée avec le seul verrou A1.
+
+    Tout A2 est maintenant fermé :
+    - A2a par `O(√N)` et normalisation ;
+    - A2b-2 par `|μ(d)| ≤ 1` ;
+    - A2b-1 par le calcul `scaled-main / N = main-term`.
+
+    Il reste uniquement A1 :
+      la formule exacte de comptage squarefree via Möbius. -/
+theorem squarefree_asymptotic_density_of_exact_only
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_exact_and_scaled_main
+    Hexact
+    moebiusScaledMainTermDivBridge_proved
+
 end CouretUnification.Logic.H3
