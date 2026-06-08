@@ -734,4 +734,86 @@ theorem squarefree_asymptotic_density_of_error_only
     Herr
     moebiusPartialSumTendsToLSeriesBridge_proved
 
+/-!
+## Sous-verrou A — erreur de comptage normalisée
+
+Après fermeture de B1 et B2, C-04b est réduite au seul verrou A :
+montrer que le quotient de comptage squarefree est asymptotique au
+terme principal de Möbius tronqué.
+-/
+
+/-- Terme de comptage exact attendu via Möbius et division entière.
+
+    Formellement :
+      `∑_{d≤√N} μ(d) * ⌊N / d²⌋`
+
+    C'est la version discrète avant passage au terme principal réel
+    `∑ μ(d)/d²`. -/
+noncomputable def moebiusFloorCountTerm (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) *
+      ((N / d ^ 2 : ℕ) : ℝ))
+
+/-- Terme de densité exact attendu via Möbius et division entière. -/
+noncomputable def moebiusFloorDensityTerm (N : ℕ) : ℝ :=
+  moebiusFloorCountTerm N / (N : ℝ)
+
+/-- Sous-verrou A1 : formule exacte de comptage squarefree via Möbius.
+
+    Ce bridge encode l'identité discrète attendue :
+      `squarefreeCount N / N = (1/N) * ∑_{d≤√N} μ(d)⌊N/d²⌋`.
+
+    C'est ici que devront entrer :
+    - l'identité indicatrice `1_squarefree(n) = ∑_{d²∣n} μ(d)` ;
+    - la réindexation de type Fubini déjà préparée dans `SquarefreeDensity`;
+    - les conventions aux petits cas, notamment `N = 0`. -/
+def SquarefreeCountExactMoebiusFloorBridge : Prop :=
+  ∀ N : ℕ,
+    squarefreeDensityQuotient N = moebiusFloorDensityTerm N
+
+/-- Sous-verrou A2 : l'erreur entre le terme discret à plancher
+    et le terme principal réel tend vers `0`.
+
+    C'est ici que doivent entrer :
+    - le contrôle local de l'erreur euclidienne ;
+    - le `O(√N)` déjà prouvé dans `SquarefreeDensity`;
+    - la division par `N`, qui force l'erreur normalisée à tendre vers `0`. -/
+def MoebiusFloorToMainTermErrorBridge : Prop :=
+  Tendsto
+    (fun N : ℕ => moebiusFloorDensityTerm N - moebiusMainTermPartial N)
+    atTop
+    (nhds 0)
+
+/-- Les deux sous-verrous A1+A2 ferment le verrou A.
+
+    Si le comptage squarefree coïncide exactement avec le terme discret
+    de Möbius à plancher, et si l'erreur entre ce terme discret normalisé
+    et le terme principal réel tend vers `0`, alors
+    `SquarefreeCountToMoebiusMainTermErrorBridge` est établi. -/
+theorem squarefree_count_to_moebius_main_error_of_floor
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge)
+    (Hfloor : MoebiusFloorToMainTermErrorBridge) :
+    SquarefreeCountToMoebiusMainTermErrorBridge := by
+  unfold SquarefreeCountToMoebiusMainTermErrorBridge
+  unfold MoebiusFloorToMainTermErrorBridge at Hfloor
+  unfold SquarefreeCountExactMoebiusFloorBridge at Hexact
+
+  convert Hfloor using 1
+  · funext N
+    rw [Hexact N]
+
+/-- Consommation finale de C-04b lorsque A1 et A2 sont fournis.
+
+    À ce stade, les verrous eulérien, B1 et B2 sont fermés localement.
+    Il suffit donc de fournir :
+    - A1 : la formule exacte de comptage via Möbius ;
+    - A2 : l'annulation asymptotique de l'erreur plancher normalisée. -/
+theorem squarefree_asymptotic_density_of_floor_bridges
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge)
+    (Hfloor : MoebiusFloorToMainTermErrorBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_error_only
+    (squarefree_count_to_moebius_main_error_of_floor Hexact Hfloor)
+
 end CouretUnification.Logic.H3
