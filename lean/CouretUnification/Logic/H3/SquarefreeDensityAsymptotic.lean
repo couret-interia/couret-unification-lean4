@@ -711,8 +711,7 @@ theorem moebius_partial_range_tends_to_LSeriesReal :
         atTop
         (nhds moebiusLSeriesTwoReal) := by
     unfold moebiusLSeriesTwoReal
-    -- si `.re` n'existe pas comme méthode, on remplacera ce bloc
-    exact hComplex.re
+    exact (continuous_re.tendsto _).comp hComplex
 
   simpa [moebiusPartialSumRealRange_eq_LSeriesTerm_re] using hRe
 
