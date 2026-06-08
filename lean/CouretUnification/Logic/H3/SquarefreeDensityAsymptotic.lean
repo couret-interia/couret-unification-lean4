@@ -1046,6 +1046,13 @@ theorem normalizedEuclideanFloorErrorFromBigOBridge_proved :
       (l := atTop)
       (f := fun N : ℕ => euclideanFloorErrorSum N / (N : ℝ))).2 hAbs
 
+/-- Fermeture de A2a : l'erreur euclidienne normalisée tend vers `0`. -/
+theorem normalizedEuclideanFloorErrorTendsZeroBridge_proved :
+    NormalizedEuclideanFloorErrorTendsZeroBridge :=
+  normalizedEuclideanFloorErrorFromBigOBridge_proved
+    euclideanFloorErrorIsBigOBridge_proved
+    sqrtDivNatTendsZeroBridge_proved
+
 /-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
     par l'erreur euclidienne normalisée.
 
