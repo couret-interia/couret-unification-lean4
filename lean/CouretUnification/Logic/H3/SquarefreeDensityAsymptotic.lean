@@ -913,9 +913,11 @@ theorem moebiusFloorToMainErrorSqueezeBridge_proved :
         (fun N : ℕ => |moebiusFloorDensityTerm N - moebiusMainTermPartial N|)
         atTop
         (nhds 0) := by
-    refine squeeze_zero ?_ Hcontrol Hzero
-    exact eventually_of_forall fun N => abs_nonneg _
+    refine squeeze_zero'
+      (Eventually.of_forall (fun N : ℕ => abs_nonneg _))
+      Hcontrol
+      Hzero
 
-  exact tendsto_zero_iff_abs_tendsto_zero.mpr hAbs
+  exact (tendsto_zero_iff_abs_tendsto_zero atTop).2 hAbs
 
 end CouretUnification.Logic.H3
