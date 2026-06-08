@@ -577,7 +577,7 @@ theorem moebius_partial_Icc_tends_of_range_tends
     MoebiusPartialSumTendsToLSeriesBridge := by
   unfold MoebiusPartialSumTendsToLSeriesBridge
   convert H using 1
-  ext M
-  exact moebiusPartialSumRealRange_eq_Icc M
+  · funext M
+    exact (moebiusPartialSumRealRange_eq_Icc M).symm
 
 end CouretUnification.Logic.H3
