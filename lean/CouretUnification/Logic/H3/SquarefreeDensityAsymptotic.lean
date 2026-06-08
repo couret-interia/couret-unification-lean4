@@ -384,6 +384,19 @@ def MoebiusPartialSumTendsToLSeriesBridge : Prop :=
 def NatSqrtAtTopBridge : Prop :=
   Tendsto (fun N : ℕ => Nat.sqrt N) atTop atTop
 
+/-- Fermeture élémentaire du sous-verrou B2 :
+    `Nat.sqrt N → ∞` lorsque `N → ∞`.
+
+    Pour atteindre un seuil `M`, il suffit de prendre `N ≥ M²`,
+    puis `M ≤ sqrt N` par `Nat.le_sqrt'.2`. -/
+theorem natSqrtAtTopBridge_proved : NatSqrtAtTopBridge := by
+  unfold NatSqrtAtTopBridge
+  rw [Filter.tendsto_atTop_atTop]
+  intro M
+  refine Filter.eventually_atTop.2 ⟨M ^ 2, ?_⟩
+  intro N hN
+  exact Nat.le_sqrt'.2 hN
+
 /-- Les sous-verrous B1+B2 impliquent le sous-verrou B actuel.
 
     Si les sommes partielles de Möbius convergent vers `Re(L(μ,2))`,
@@ -418,5 +431,35 @@ theorem squarefree_asymptotic_density_of_error_partial_and_sqrt
     (squarefree_density_to_moebius_LSeries_of_error_and_main
       Herr
       (moebius_mainTerm_tends_to_LSeries_of_partial_and_sqrt Hpartial Hsqrt))
+
+/-- Version sans hypothèse B2 explicite :
+    B2 est maintenant fermé par `natSqrtAtTopBridge_proved`.
+
+    Il ne reste donc, pour le sous-verrou B, que la convergence des
+    sommes partielles de Möbius vers `Re(L(μ,2))`. -/
+theorem moebius_mainTerm_tends_to_LSeries_of_partial
+    (Hpartial : MoebiusPartialSumTendsToLSeriesBridge) :
+    MoebiusMainTermTendsToLSeriesBridge :=
+  moebius_mainTerm_tends_to_LSeries_of_partial_and_sqrt
+    Hpartial
+    natSqrtAtTopBridge_proved
+
+/-- Consommation C-04b avec B2 fermé :
+    il suffit désormais du sous-verrou A et du sous-verrou B1.
+
+    Autrement dit :
+    - erreur de comptage normalisée `→ 0`,
+    - sommes partielles de Möbius `→ Re(L(μ,2))`,
+
+    impliquent la densité squarefree `6 / π²`. -/
+theorem squarefree_asymptotic_density_of_error_and_partial
+    (Herr : SquarefreeCountToMoebiusMainTermErrorBridge)
+    (Hpartial : MoebiusPartialSumTendsToLSeriesBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_error_partial_and_sqrt
+    Herr
+    Hpartial
+    natSqrtAtTopBridge_proved
 
 end CouretUnification.Logic.H3
