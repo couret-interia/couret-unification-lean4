@@ -355,4 +355,68 @@ theorem squarefree_asymptotic_density_of_density_to_moebius_LSeries
   squarefree_asymptotic_density
     (squarefree_asymptotic_bridge_of_density_to_moebius_LSeries H)
 
+/-- Somme partielle réelle de la série de Möbius au point `2`.
+
+    Formellement :
+      `∑_{d ≤ M} μ(d) / d²`
+
+    C'est la version à borne libre `M`, contrairement à
+    `moebiusMainTermPartial`, qui utilise la borne `Nat.sqrt N`. -/
+noncomputable def moebiusPartialSumReal (M : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 M) (fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2))
+
+/-- Sous-verrou B1 : les sommes partielles de Möbius convergent vers
+    la partie réelle de `L(μ,2)`.
+
+    C'est ici que devront entrer :
+    - `moebius_two_summable_for_asymptotic` ;
+    - l'identification de `LSeries` avec la somme infinie ;
+    - le passage des sommes finies `Icc 1 M` à la série complète. -/
+def MoebiusPartialSumTendsToLSeriesBridge : Prop :=
+  Tendsto moebiusPartialSumReal atTop (nhds moebiusLSeriesTwoReal)
+
+/-- Sous-verrou B2 : la fonction `N ↦ Nat.sqrt N` tend vers l'infini.
+
+    Ce verrou est élémentaire mais utile à isoler : il permet de transporter
+    la convergence des sommes partielles en `M` vers les sommes tronquées
+    en `Nat.sqrt N`. -/
+def NatSqrtAtTopBridge : Prop :=
+  Tendsto (fun N : ℕ => Nat.sqrt N) atTop atTop
+
+/-- Les sous-verrous B1+B2 impliquent le sous-verrou B actuel.
+
+    Si les sommes partielles de Möbius convergent vers `Re(L(μ,2))`,
+    et si `Nat.sqrt N → ∞`, alors les sommes tronquées à `√N`
+    convergent vers la même limite. -/
+theorem moebius_mainTerm_tends_to_LSeries_of_partial_and_sqrt
+    (Hpartial : MoebiusPartialSumTendsToLSeriesBridge)
+    (Hsqrt : NatSqrtAtTopBridge) :
+    MoebiusMainTermTendsToLSeriesBridge := by
+  unfold MoebiusPartialSumTendsToLSeriesBridge at Hpartial
+  unfold NatSqrtAtTopBridge at Hsqrt
+  unfold MoebiusMainTermTendsToLSeriesBridge
+
+  simpa [moebiusMainTermPartial, moebiusPartialSumReal]
+    using Hpartial.comp Hsqrt
+
+/-- Consommation combinée actuelle de C-04b.
+
+    Si l'on dispose :
+    - du sous-verrou A : erreur de comptage normalisée tendant vers `0` ;
+    - du sous-verrou B1 : convergence des sommes partielles de Möbius ;
+    - du sous-verrou B2 : `Nat.sqrt N → ∞` ;
+
+    alors on obtient directement la densité asymptotique squarefree `6/π²`. -/
+theorem squarefree_asymptotic_density_of_error_partial_and_sqrt
+    (Herr : SquarefreeCountToMoebiusMainTermErrorBridge)
+    (Hpartial : MoebiusPartialSumTendsToLSeriesBridge)
+    (Hsqrt : NatSqrtAtTopBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_density_to_moebius_LSeries
+    (squarefree_density_to_moebius_LSeries_of_error_and_main
+      Herr
+      (moebius_mainTerm_tends_to_LSeries_of_partial_and_sqrt Hpartial Hsqrt))
+
 end CouretUnification.Logic.H3
