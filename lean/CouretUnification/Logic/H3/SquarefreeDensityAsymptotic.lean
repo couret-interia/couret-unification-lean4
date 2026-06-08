@@ -1668,4 +1668,90 @@ theorem squarefree_asymptotic_density_of_indicator_and_fubini
     Hindicator
     Hfubini
 
+/-- Sous-verrou A1c-1 : comptage des multiples de `d²` dans `1..N`.
+
+    Pour `d ≥ 1`, la somme des indicatrices `d² ∣ n` sur `1 ≤ n ≤ N`
+    vaut exactement `⌊N / d²⌋`.
+
+    On le garde en bridge local pour isoler la partie combinatoire
+    du comptage des multiples. -/
+def CountMultiplesSquareBridge : Prop :=
+  ∀ N d : ℕ,
+    1 ≤ d →
+      Finset.sum (Finset.Icc 1 N) (fun n =>
+        if d^2 ∣ n then (1 : ℝ) else 0)
+        =
+      ((N / d^2 : ℕ) : ℝ)
+
+/-- A1c est réduit au comptage des multiples de `d²`.
+
+    On échange les deux sommes finies, puis on applique le bridge
+    `CountMultiplesSquareBridge` pour chaque `d ≤ √N`. -/
+theorem moebiusDoubleSumEqualsFloorCount_of_count_multiples
+    (Hmult : CountMultiplesSquareBridge) :
+    MoebiusDoubleSumEqualsFloorCountBridge := by
+  unfold MoebiusDoubleSumEqualsFloorCountBridge
+  intro N
+
+  unfold moebiusSquareDivisorDoubleSum
+  unfold moebiusFloorCountTerm
+
+  let sN : Finset ℕ := Finset.Icc 1 N
+  let sD : Finset ℕ := Finset.Icc 1 (Nat.sqrt N)
+  let m : ℕ → ℝ := fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ)
+
+  change
+    Finset.sum sN (fun n =>
+      Finset.sum sD (fun d =>
+        if d^2 ∣ n then m d else 0))
+      =
+    Finset.sum sD (fun d =>
+      m d * ((N / d^2 : ℕ) : ℝ))
+
+  calc
+    Finset.sum sN (fun n =>
+      Finset.sum sD (fun d =>
+        if d^2 ∣ n then m d else 0))
+        =
+      Finset.sum sD (fun d =>
+        Finset.sum sN (fun n =>
+          if d^2 ∣ n then m d else 0)) := by
+            rw [Finset.sum_comm]
+    _ =
+      Finset.sum sD (fun d =>
+        m d *
+          Finset.sum sN (fun n =>
+            if d^2 ∣ n then (1 : ℝ) else 0)) := by
+            refine Finset.sum_congr rfl ?_
+            intro d hd
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl ?_
+            intro n hn
+            by_cases hdiv : d^2 ∣ n
+            · simp [hdiv]
+            · simp [hdiv]
+    _ =
+      Finset.sum sD (fun d =>
+        m d * ((N / d^2 : ℕ) : ℝ)) := by
+            refine Finset.sum_congr rfl ?_
+            intro d hd
+            have hd_mem : d ∈ Finset.Icc 1 (Nat.sqrt N) := by
+              simpa [sD] using hd
+            have hd1 : 1 ≤ d := (Finset.mem_Icc.mp hd_mem).1
+            rw [Hmult N d hd1]
+
+/-- Version finale : C-04b est consommée avec A1b et le seul bridge
+    de comptage des multiples de carrés.
+
+    A1a est fermée ; A1c est réduite à `CountMultiplesSquareBridge`. -/
+theorem squarefree_asymptotic_density_of_indicator_and_count_multiples
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hmult : CountMultiplesSquareBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_fubini
+    Hindicator
+    (moebiusDoubleSumEqualsFloorCount_of_count_multiples Hmult)
+
 end CouretUnification.Logic.H3
