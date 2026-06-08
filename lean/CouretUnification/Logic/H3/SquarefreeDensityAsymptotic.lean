@@ -1348,4 +1348,107 @@ theorem squarefree_asymptotic_density_of_exact_and_weighted_identity
     Hexact
     (moebiusFloorControl_of_weighted_error_identity Heq)
 
+/-- Terme principal mis à l'échelle par `N`.
+
+    Formellement :
+      `∑ μ(d) * (N / d²)`.
+
+    Il sert d'intermédiaire algébrique entre :
+    - le terme discret à plancher ;
+    - le terme principal normalisé `∑ μ(d)/d²`. -/
+noncomputable def moebiusScaledMainTerm (N : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) *
+      ((N : ℝ) / (d : ℝ)^2))
+
+/-- Identité algébrique finie :
+    l'erreur pondérée est la différence entre le terme à plancher
+    et le terme principal mis à l'échelle par `N`.
+
+    C'est une simple distributivité terme à terme :
+      `μ(d) * (floor - real) = μ(d)*floor - μ(d)*real`. -/
+theorem moebiusWeightedFloorErrorSum_eq_floor_minus_scaled
+    (N : ℕ) :
+    moebiusWeightedFloorErrorSum N =
+      moebiusFloorCountTerm N - moebiusScaledMainTerm N := by
+  unfold moebiusWeightedFloorErrorSum
+  unfold moebiusFloorCountTerm
+  unfold moebiusScaledMainTerm
+
+  let s : Finset ℕ := Finset.Icc 1 (Nat.sqrt N)
+  let m : ℕ → ℝ := fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ)
+  let a : ℕ → ℝ := fun d =>
+    ((N / d^2 : ℕ) : ℝ)
+  let b : ℕ → ℝ := fun d =>
+    (N : ℝ) / (d : ℝ)^2
+
+  change
+    Finset.sum s (fun d => m d * (a d - b d)) =
+      Finset.sum s (fun d => m d * a d) -
+        Finset.sum s (fun d => m d * b d)
+
+  calc
+    Finset.sum s (fun d => m d * (a d - b d))
+        = Finset.sum s (fun d => m d * a d - m d * b d) := by
+            refine Finset.sum_congr rfl ?_
+            intro d hd
+            ring
+    _ = Finset.sum s (fun d => m d * a d) -
+          Finset.sum s (fun d => m d * b d) := by
+            rw [Finset.sum_sub_distrib]
+
+/-- Sous-verrou A2b-1' :
+    le terme principal mis à l'échelle, divisé par `N`, redonne
+    le terme principal tronqué.
+
+    Pour `N ≥ 1`, cela repose sur :
+      `(μ(d) * (N/d²)) / N = μ(d)/d²`. -/
+def MoebiusScaledMainTermDivBridge : Prop :=
+  ∀ᶠ N in atTop,
+    moebiusScaledMainTerm N / (N : ℝ) =
+      moebiusMainTermPartial N
+
+/-- A2b-1 est réduit à l'identité `scaled-main / N = main-term`.
+
+    On utilise :
+    - `weighted-error = floor-count - scaled-main`,
+    - `scaled-main / N = main-term`,
+    - l'identité algébrique
+      `floor-count/N - scaled-main/N = (floor-count - scaled-main)/N`. -/
+theorem moebiusFloorDifferenceEqualsWeightedError_of_scaled_main_div
+    (Hscaled : MoebiusScaledMainTermDivBridge) :
+    MoebiusFloorDifferenceEqualsWeightedErrorBridge := by
+  unfold MoebiusFloorDifferenceEqualsWeightedErrorBridge
+  unfold MoebiusScaledMainTermDivBridge at Hscaled
+
+  filter_upwards [Hscaled, Filter.eventually_atTop.2 ⟨1, by
+    intro N hN
+    have hNpos_nat : 0 < N := lt_of_lt_of_le Nat.zero_lt_one hN
+    have hNpos : 0 < (N : ℝ) := by exact_mod_cast hNpos_nat
+    exact hNpos⟩] with N hscaled hNpos
+
+  unfold moebiusFloorDensityTerm
+
+  rw [← hscaled]
+  rw [moebiusWeightedFloorErrorSum_eq_floor_minus_scaled N]
+
+  have hNne : (N : ℝ) ≠ 0 := ne_of_gt hNpos
+
+  field_simp [hNne]
+  ring
+
+/-- Version finale : C-04b est consommée avec A1 et le seul bridge
+    `scaled-main / N = main-term`.
+
+    Le contrôle A2b-2 est déjà fermé par `|μ(d)| ≤ 1`. -/
+theorem squarefree_asymptotic_density_of_exact_and_scaled_main
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge)
+    (Hscaled : MoebiusScaledMainTermDivBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_exact_and_weighted_identity
+    Hexact
+    (moebiusFloorDifferenceEqualsWeightedError_of_scaled_main_div Hscaled)
+
 end CouretUnification.Logic.H3
