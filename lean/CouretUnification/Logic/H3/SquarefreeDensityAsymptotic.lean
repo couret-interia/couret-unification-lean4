@@ -1754,4 +1754,75 @@ theorem squarefree_asymptotic_density_of_indicator_and_count_multiples
     Hindicator
     (moebiusDoubleSumEqualsFloorCount_of_count_multiples Hmult)
 
+/-- Version naturelle du comptage des multiples de `d²`.
+
+    Cette formulation est plus proche du cœur combinatoire :
+    le nombre d'entiers `n ∈ [1,N]` tels que `d² ∣ n`
+    vaut `N / d²`.
+
+    Le bridge réel `CountMultiplesSquareBridge` s'en déduit ensuite
+    par transformation du cardinal filtré en somme d'indicatrices. -/
+def CountMultiplesSquareNatBridge : Prop :=
+  ∀ N d : ℕ,
+    1 ≤ d →
+      ((Finset.Icc 1 N).filter (fun n => d^2 ∣ n)).card =
+        N / d^2
+
+/-- Le comptage naturel des multiples implique le bridge réel
+    `CountMultiplesSquareBridge`.
+
+    Cette étape ne contient plus la combinatoire des multiples :
+    elle transforme seulement un cardinal filtré en somme d'indicatrices
+    réelles. -/
+theorem countMultiplesSquareBridge_of_nat_bridge
+    (Hnat : CountMultiplesSquareNatBridge) :
+    CountMultiplesSquareBridge := by
+  unfold CountMultiplesSquareBridge
+  unfold CountMultiplesSquareNatBridge at Hnat
+
+  intro N d hd
+
+  have hcard : ((Finset.Icc 1 N).filter (fun n => d^2 ∣ n)).card =
+      N / d^2 :=
+    Hnat N d hd
+
+  have hindicator_real :
+      Finset.sum (Finset.Icc 1 N) (fun n =>
+        if d^2 ∣ n then (1 : ℝ) else 0)
+        =
+      (((Finset.Icc 1 N).filter (fun n => d^2 ∣ n)).card : ℝ) := by
+    have hnat_indicator :
+        ((Finset.Icc 1 N).filter (fun n => d^2 ∣ n)).card =
+          Finset.sum (Finset.Icc 1 N) (fun n =>
+            if d^2 ∣ n then (1 : ℕ) else 0) := by
+      rw [Finset.card_filter]
+    have hreal_indicator :
+        (((Finset.Icc 1 N).filter (fun n => d^2 ∣ n)).card : ℝ) =
+          Finset.sum (Finset.Icc 1 N) (fun n =>
+            if d^2 ∣ n then (1 : ℝ) else 0) := by
+      exact_mod_cast hnat_indicator
+    exact hreal_indicator.symm
+
+  calc
+    Finset.sum (Finset.Icc 1 N) (fun n =>
+      if d^2 ∣ n then (1 : ℝ) else 0)
+        =
+      (((Finset.Icc 1 N).filter (fun n => d^2 ∣ n)).card : ℝ) :=
+        hindicator_real
+    _ = ((N / d^2 : ℕ) : ℝ) := by
+        exact_mod_cast hcard
+
+/-- Version finale : C-04b est consommée avec A1b et le seul bridge
+    naturel de comptage des multiples.
+
+    A1a est fermée ; A1c est réduite à un cardinal filtré naturel. -/
+theorem squarefree_asymptotic_density_of_indicator_and_count_multiples_nat
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hnat : CountMultiplesSquareNatBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_count_multiples
+    Hindicator
+    (countMultiplesSquareBridge_of_nat_bridge Hnat)
+
 end CouretUnification.Logic.H3
