@@ -579,5 +579,62 @@ theorem moebius_partial_Icc_tends_of_range_tends
   convert H using 1
   · funext M
     exact (moebiusPartialSumRealRange_eq_Icc M).symm
+/-- Somme partielle native de la L-série de Möbius au point `2`.
+
+    Cette version utilise directement `LSeries.term`, donc elle est alignée
+    avec l'API Mathlib `LSeriesHasSum` et `HasSum.tendsto_sum_nat`.
+
+    Elle sert de passerelle avant de prouver que ce terme natif coïncide
+    avec l'expression élémentaire `μ(d)/d²`. -/
+noncomputable def moebiusLSeriesTermPartialRange (M : ℕ) : ℂ :=
+  Finset.sum (Finset.range (M + 1)) (fun d =>
+    LSeries.term
+      (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+      (2 : ℂ)
+      d)
+
+/-- Les sommes partielles natives de la L-série de Möbius convergent vers
+    `L(μ,2)`.
+
+    Preuve directe :
+    `moebius_two_summable_for_asymptotic.LSeriesHasSum`
+    donne un `HasSum`, puis `HasSum.tendsto_sum_nat` donne la convergence
+    des sommes sur `range n`. On compose ensuite avec `M ↦ M + 1`. -/
+theorem moebius_LSeries_term_partial_tends :
+    Tendsto moebiusLSeriesTermPartialRange atTop
+      (nhds
+        (LSeries
+          (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+          (2 : ℂ))) := by
+  have hHas :
+      HasSum
+        (fun d : ℕ =>
+          LSeries.term
+            (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+            (2 : ℂ)
+            d)
+        (LSeries
+          (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+          (2 : ℂ)) := by
+    simpa [LSeriesHasSum] using
+      moebius_two_summable_for_asymptotic.LSeriesHasSum
+
+  have htendsto :
+      Tendsto
+        (fun M : ℕ =>
+          Finset.sum (Finset.range M) (fun d =>
+            LSeries.term
+              (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+              (2 : ℂ)
+              d))
+        atTop
+        (nhds
+          (LSeries
+            (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+            (2 : ℂ))) :=
+    hHas.tendsto_sum_nat
+
+  unfold moebiusLSeriesTermPartialRange
+  exact htendsto.comp (tendsto_add_atTop_nat 1)
 
 end CouretUnification.Logic.H3
