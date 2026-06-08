@@ -918,6 +918,9 @@ theorem moebiusFloorToMainErrorSqueezeBridge_proved :
       Hcontrol
       Hzero
 
-  exact (tendsto_zero_iff_abs_tendsto_zero atTop).2 hAbs
+  exact
+    (tendsto_zero_iff_abs_tendsto_zero
+      (l := atTop)
+      (f := fun N : ℕ => moebiusFloorDensityTerm N - moebiusMainTermPartial N)).2 hAbs
 
 end CouretUnification.Logic.H3
