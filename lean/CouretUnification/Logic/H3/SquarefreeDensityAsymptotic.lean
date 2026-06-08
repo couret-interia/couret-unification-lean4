@@ -715,6 +715,6 @@ theorem moebius_partial_range_tends_to_LSeriesReal :
 
   convert hRe using 1
   · funext M
-    exact (moebiusPartialSumRealRange_eq_LSeriesTerm_re M).symm
+    exact (moebiusPartialSumRealRange_eq_LSeriesTerm_re M)
 
 end CouretUnification.Logic.H3
