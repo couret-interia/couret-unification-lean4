@@ -713,6 +713,8 @@ theorem moebius_partial_range_tends_to_LSeriesReal :
     unfold moebiusLSeriesTwoReal
     exact (Complex.continuous_re.tendsto _).comp hComplex
 
-  simpa [moebiusPartialSumRealRange_eq_LSeriesTerm_re] using hRe
+  convert hRe using 1
+  · funext M
+    exact (moebiusPartialSumRealRange_eq_LSeriesTerm_re M).symm
 
 end CouretUnification.Logic.H3

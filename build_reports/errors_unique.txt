@@ -1,3 +1,3 @@
 error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:716:2: Type mismatch: After simplification, term
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:718:4: Type mismatch
 error: Lean exited with code 1
