@@ -1303,4 +1303,49 @@ theorem moebiusWeightedErrorAbsBoundBridge_of_moebius_abs_le_one
     MoebiusWeightedErrorAbsBoundBridge :=
   moebiusWeightedErrorAbsBound_of_moebius_abs_le_one Hmu
 
+/-- Fermeture de la borne élémentaire `|μ(d)| ≤ 1`.
+
+    Mathlib fournit déjà :
+      `ArithmeticFunction.abs_moebius_le_one`.
+
+    On le transporte simplement de `ℤ` vers `ℝ`. -/
+theorem moebiusAbsLeOneBridge_proved :
+    MoebiusAbsLeOneBridge := by
+  unfold MoebiusAbsLeOneBridge
+  intro d
+  have hZ :
+      |(ArithmeticFunction.moebius d : ℤ)| ≤ (1 : ℤ) := by
+    simpa using (ArithmeticFunction.abs_moebius_le_one (n := d))
+  exact_mod_cast hZ
+
+/-- Fermeture de A2b-2 : l'erreur pondérée par Möbius est dominée
+    par la somme absolue euclidienne. -/
+theorem moebiusWeightedErrorAbsBoundBridge_proved :
+    MoebiusWeightedErrorAbsBoundBridge :=
+  moebiusWeightedErrorAbsBoundBridge_of_moebius_abs_le_one
+    moebiusAbsLeOneBridge_proved
+
+/-- A2b est réduit à sa seule identité algébrique A2b-1.
+
+    La borne A2b-2 est maintenant fermée par `|μ(d)| ≤ 1`. -/
+theorem moebiusFloorControl_of_weighted_error_identity
+    (Heq : MoebiusFloorDifferenceEqualsWeightedErrorBridge) :
+    MoebiusFloorToMainControlledByEuclideanErrorBridge :=
+  moebiusFloorControl_of_weighted_error_bridges
+    Heq
+    moebiusWeightedErrorAbsBoundBridge_proved
+
+/-- Version finale : C-04b est consommée avec A1 et A2b-1 seulement.
+
+    À ce stade, tout A2 est fermé sauf l'identité algébrique :
+      `floor-density - main-term = weighted-error / N`. -/
+theorem squarefree_asymptotic_density_of_exact_and_weighted_identity
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge)
+    (Heq : MoebiusFloorDifferenceEqualsWeightedErrorBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_exact_and_control
+    Hexact
+    (moebiusFloorControl_of_weighted_error_identity Heq)
+
 end CouretUnification.Logic.H3
