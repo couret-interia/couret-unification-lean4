@@ -521,4 +521,63 @@ theorem squarefree_asymptotic_density_of_error_and_complex_partial
     Herr
     (moebius_partial_real_tends_to_LSeries_of_complex Hcomplex)
 
+/-- Sous-verrou B1b : les sommes partielles réelles de Möbius au point `2`
+    convergent vers la partie réelle de la série infinie associée.
+
+    Cette formulation est le prochain point de raccord avec l'API Mathlib
+    `LSeriesSummable` / `LSeriesHasSum`. -/
+def MoebiusPartialSumRealTendsToLSeriesBridge : Prop :=
+  Tendsto moebiusPartialSumReal atTop (nhds moebiusLSeriesTwoReal)
+
+/-- Le bridge réel B1b est exactement le bridge B1 déjà utilisé.
+
+    Ce wrapper sert surtout à documenter que le verrou `B1` est maintenant
+    le raccord aux sommes partielles standards de la L-série de Möbius. -/
+theorem moebius_partial_complex_bridge_of_real_bridge
+    (H : MoebiusPartialSumRealTendsToLSeriesBridge) :
+    MoebiusPartialSumComplexTendsToLSeriesBridge := by
+  unfold MoebiusPartialSumComplexTendsToLSeriesBridge
+  unfold MoebiusPartialSumRealTendsToLSeriesBridge at H
+  unfold moebiusPartialSumComplex
+  simpa using H
+
+/-- Somme partielle réelle native `range`, mieux adaptée à `HasSum.tendsto_sum_nat`.
+
+    Comme le terme `d = 0` est nul pour la L-série via `LSeries.term`,
+    cette forme sera plus facile à raccorder à l'API Mathlib des séries. -/
+noncomputable def moebiusPartialSumRealRange (M : ℕ) : ℝ :=
+  Finset.sum (Finset.range (M + 1)) (fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2))
+
+/-- La somme partielle `range (M+1)` coïncide avec la somme partielle
+    `Icc 1 M`.
+
+    La différence avec `Icc 1 M` est absorbée par la convention de division
+    totale de Lean au terme `d = 0`. Cette forme est seulement une passerelle
+    technique vers les sommes `range`. -/
+lemma moebiusPartialSumRealRange_eq_Icc (M : ℕ) :
+    moebiusPartialSumRealRange M = moebiusPartialSumReal M := by
+  unfold moebiusPartialSumRealRange moebiusPartialSumReal
+  induction M with
+  | zero =>
+      simp
+  | succ M ih =>
+      rw [Finset.sum_range_succ, ih]
+      rw [Finset.sum_Icc_succ_top]
+      · omega
+
+/-- Une convergence des sommes partielles `range` implique la convergence
+    des sommes partielles `Icc 1 M`.
+
+    C'est une passerelle technique vers l'API `HasSum.tendsto_sum_nat`. -/
+theorem moebius_partial_Icc_tends_of_range_tends
+    (H :
+      Tendsto moebiusPartialSumRealRange atTop
+        (nhds moebiusLSeriesTwoReal)) :
+    MoebiusPartialSumTendsToLSeriesBridge := by
+  unfold MoebiusPartialSumTendsToLSeriesBridge
+  convert H using 1
+  · funext M
+    exact (moebiusPartialSumRealRange_eq_Icc M).symm
+
 end CouretUnification.Logic.H3
