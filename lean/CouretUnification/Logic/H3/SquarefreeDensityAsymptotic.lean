@@ -1127,4 +1127,37 @@ theorem moebiusFloorToMainError_of_control_and_zero
     MoebiusFloorToMainTermErrorBridge :=
   moebiusFloorToMainErrorSqueezeBridge_proved Hcontrol Hzero
 
+/-- Fermeture de A2 dès que le contrôle A2b est fourni.
+
+    A2a est maintenant fermé localement :
+      `normalizedEuclideanFloorError → 0`.
+
+    Il ne reste donc, pour établir `MoebiusFloorToMainTermErrorBridge`,
+    qu'à prouver le contrôle algébrique A2b :
+      `|floor-density - main-term| ≤ normalizedEuclideanFloorError`
+    éventuellement. -/
+theorem moebiusFloorToMainError_of_control_only
+    (Hcontrol : MoebiusFloorToMainControlledByEuclideanErrorBridge) :
+    MoebiusFloorToMainTermErrorBridge :=
+  moebiusFloorToMainError_of_control_and_zero
+    Hcontrol
+    normalizedEuclideanFloorErrorTendsZeroBridge_proved
+
+/-- Consommation finale de C-04b avec A1 et le seul contrôle A2b.
+
+    À ce stade :
+    - le verrou eulérien `L(μ,2)=6/π²` est fermé ;
+    - B1 est fermé par `LSeries.term` ;
+    - B2 est fermé par `Nat.sqrt → atTop` ;
+    - A2a est fermé par `O(√N)` puis normalisation ;
+    - il reste seulement A1 et A2b. -/
+theorem squarefree_asymptotic_density_of_exact_and_control
+    (Hexact : SquarefreeCountExactMoebiusFloorBridge)
+    (Hcontrol : MoebiusFloorToMainControlledByEuclideanErrorBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_floor_bridges
+    Hexact
+    (moebiusFloorToMainError_of_control_only Hcontrol)
+
 end CouretUnification.Logic.H3
