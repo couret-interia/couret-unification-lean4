@@ -934,6 +934,15 @@ theorem normalizedEuclideanFloorError_of_bigO_bridge
     NormalizedEuclideanFloorErrorTendsZeroBridge :=
   Htransfer euclideanFloorErrorIsBigOBridge_proved HsqrtDiv
 
+/-- Consommation de `sqrt(N)/N → 0` à partir de `Real.sqrt(N) → ∞`. -/
+theorem normalizedEuclideanFloorError_of_bigO_and_realSqrtAtTop
+    (Htransfer : NormalizedEuclideanFloorErrorFromBigOBridge)
+    (Hsqrt : RealSqrtNatAtTopBridge) :
+    NormalizedEuclideanFloorErrorTendsZeroBridge :=
+  normalizedEuclideanFloorError_of_bigO_bridge
+    Htransfer
+    (sqrtDivNatTendsZero_of_realSqrtAtTop Hsqrt)
+
 /-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
     par l'erreur euclidienne normalisée.
 
