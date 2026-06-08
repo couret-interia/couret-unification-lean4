@@ -913,7 +913,7 @@ theorem sqrtDivNatTendsZero_of_realSqrtAtTop
       Tendsto (fun N : ℕ => (Real.sqrt (N : ℝ))⁻¹) atTop (nhds 0) :=
     Hsqrt.inv_tendsto_atTop
 
-  exact real_sqrt_div_nat_eq_inv_sqrt_eventually.tendsto hinv
+  exact hinv.congr' real_sqrt_div_nat_eq_inv_sqrt_eventually.symm
 
 /-- Bridge de transfert `O(√N)` vers erreur normalisée nulle.
 
