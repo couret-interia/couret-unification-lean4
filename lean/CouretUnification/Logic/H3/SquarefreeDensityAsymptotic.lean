@@ -868,6 +868,53 @@ def NormalizedEuclideanFloorErrorTendsZeroBridge : Prop :=
 def SqrtDivNatTendsZeroBridge : Prop :=
   Tendsto (fun N : ℕ => Real.sqrt (N : ℝ) / (N : ℝ)) atTop (nhds 0)
 
+/-- Sous-verrou standard : `Real.sqrt N → ∞` quand `N → ∞`.
+
+    C'est le pendant réel du lemme déjà fermé `Nat.sqrt N → ∞`.
+    Une fois ce verrou fourni, `sqrt(N)/N → 0` se ramène à
+    `1/sqrt(N) → 0`. -/
+def RealSqrtNatAtTopBridge : Prop :=
+  Tendsto (fun N : ℕ => Real.sqrt (N : ℝ)) atTop atTop
+
+/-- Pour `N > 0`, on a `sqrt(N)/N = 1/sqrt(N)`.
+
+    Ce lemme évite de laisser `field_simp` deviner la transformation
+    dans les preuves de convergence. -/
+lemma real_sqrt_div_nat_eq_inv_sqrt_eventually :
+    (fun N : ℕ => Real.sqrt (N : ℝ) / (N : ℝ)) =ᶠ[atTop]
+      (fun N : ℕ => (Real.sqrt (N : ℝ))⁻¹) := by
+  refine Filter.eventually_atTop.2 ⟨1, ?_⟩
+  intro N hN
+  have hNpos_nat : 0 < N := lt_of_lt_of_le Nat.zero_lt_one hN
+  have hNpos : 0 < (N : ℝ) := by exact_mod_cast hNpos_nat
+  have hsqrt_pos : 0 < Real.sqrt (N : ℝ) := Real.sqrt_pos.2 hNpos
+  have hsqrt_ne : Real.sqrt (N : ℝ) ≠ 0 := ne_of_gt hsqrt_pos
+  have hsq :
+      (Real.sqrt (N : ℝ)) ^ 2 = (N : ℝ) :=
+    Real.sq_sqrt hNpos.le
+  calc
+    Real.sqrt (N : ℝ) / (N : ℝ)
+        = Real.sqrt (N : ℝ) / ((Real.sqrt (N : ℝ)) ^ 2) := by
+            rw [hsq]
+    _ = (Real.sqrt (N : ℝ))⁻¹ := by
+            field_simp [hsqrt_ne, pow_two]
+
+/-- Si `sqrt(N) → ∞`, alors `sqrt(N)/N → 0`.
+
+    La preuve utilise l'identité éventuelle `sqrt(N)/N = 1/sqrt(N)`
+    et `Tendsto.inv_tendsto_atTop`. -/
+theorem sqrtDivNatTendsZero_of_realSqrtAtTop
+    (Hsqrt : RealSqrtNatAtTopBridge) :
+    SqrtDivNatTendsZeroBridge := by
+  unfold RealSqrtNatAtTopBridge at Hsqrt
+  unfold SqrtDivNatTendsZeroBridge
+
+  have hinv :
+      Tendsto (fun N : ℕ => (Real.sqrt (N : ℝ))⁻¹) atTop (nhds 0) :=
+    Hsqrt.inv_tendsto_atTop
+
+  exact hinv.congr' real_sqrt_div_nat_eq_inv_sqrt_eventually.symm
+
 /-- Bridge de transfert `O(√N)` vers erreur normalisée nulle.
 
     Si l'erreur euclidienne totale est `O(√N)` et si `√N/N → 0`,
@@ -886,6 +933,15 @@ theorem normalizedEuclideanFloorError_of_bigO_bridge
     (HsqrtDiv : SqrtDivNatTendsZeroBridge) :
     NormalizedEuclideanFloorErrorTendsZeroBridge :=
   Htransfer euclideanFloorErrorIsBigOBridge_proved HsqrtDiv
+
+/-- Consommation de `sqrt(N)/N → 0` à partir de `Real.sqrt(N) → ∞`. -/
+theorem normalizedEuclideanFloorError_of_bigO_and_realSqrtAtTop
+    (Htransfer : NormalizedEuclideanFloorErrorFromBigOBridge)
+    (Hsqrt : RealSqrtNatAtTopBridge) :
+    NormalizedEuclideanFloorErrorTendsZeroBridge :=
+  normalizedEuclideanFloorError_of_bigO_bridge
+    Htransfer
+    (sqrtDivNatTendsZero_of_realSqrtAtTop Hsqrt)
 
 /-- Sous-verrou A2b : l'erreur de Möbius à plancher est contrôlée
     par l'erreur euclidienne normalisée.
