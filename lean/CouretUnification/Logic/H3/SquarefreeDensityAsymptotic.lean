@@ -393,7 +393,7 @@ theorem natSqrtAtTopBridge_proved : NatSqrtAtTopBridge := by
   unfold NatSqrtAtTopBridge
   rw [Filter.tendsto_atTop_atTop]
   intro M
-  refine Filter.eventually_atTop.2 ⟨M ^ 2, ?_⟩
+  refine ⟨M ^ 2, ?_⟩
   intro N hN
   exact Nat.le_sqrt'.2 hN
 

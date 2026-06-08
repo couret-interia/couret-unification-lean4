@@ -1,3 +1,0 @@
-error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:396:2: Type mismatch
-error: Lean exited with code 1
