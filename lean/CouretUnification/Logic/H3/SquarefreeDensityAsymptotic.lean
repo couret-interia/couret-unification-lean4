@@ -667,4 +667,19 @@ lemma moebius_LSeries_term_re_eq_real_term (d : ℕ) :
       _ = ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2) := by
               exact Complex.ofReal_re _
 
+/-- Les sommes partielles `range` de l'expression réelle élémentaire
+    sont les parties réelles des sommes partielles natives `LSeries.term`. -/
+lemma moebiusPartialSumRealRange_eq_LSeriesTerm_re (M : ℕ) :
+    moebiusPartialSumRealRange M =
+      (moebiusLSeriesTermPartialRange M).re := by
+  unfold moebiusPartialSumRealRange moebiusLSeriesTermPartialRange
+  induction M with
+  | zero =>
+      simp [moebius_LSeries_term_re_eq_real_term]
+  | succ M ih =>
+      rw [Finset.sum_range_succ, Finset.sum_range_succ]
+      rw [Complex.add_re]
+      rw [← ih]
+      simp [moebius_LSeries_term_re_eq_real_term]
+
 end CouretUnification.Logic.H3
