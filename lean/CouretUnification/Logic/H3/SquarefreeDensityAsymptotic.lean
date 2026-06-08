@@ -1639,4 +1639,33 @@ theorem squarefree_asymptotic_density_of_A1_bridges
     (squarefreeCountExactMoebiusFloorCount_of_A1_bridges
       Hcount Hindicator Hfubini)
 
+/-- Fermeture de A1a lorsque `squarefreeCount` est défini comme
+    le cardinal des entiers squarefree dans `Icc 1 N`.
+
+    Cette preuve transforme simplement un cardinal filtré en somme
+    d'indicatrices. -/
+theorem squarefreeCountEqualsIndicatorSumBridge_proved :
+    SquarefreeCountEqualsIndicatorSumBridge := by
+  unfold SquarefreeCountEqualsIndicatorSumBridge
+  intro N
+  unfold squarefreeIndicatorCountReal
+  unfold squarefreeCount
+
+  rw [Finset.card_filter]
+  simp
+
+/-- Version finale : C-04b est consommée avec A1b et A1c seulement.
+
+    A1a, c'est-à-dire l'identification du comptage avec la somme
+    d'indicatrices, est maintenant fermée localement. -/
+theorem squarefree_asymptotic_density_of_indicator_and_fubini
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hfubini : MoebiusDoubleSumEqualsFloorCountBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_A1_bridges
+    squarefreeCountEqualsIndicatorSumBridge_proved
+    Hindicator
+    Hfubini
+
 end CouretUnification.Logic.H3
