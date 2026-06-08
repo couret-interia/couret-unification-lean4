@@ -673,13 +673,28 @@ lemma moebiusPartialSumRealRange_eq_LSeriesTerm_re (M : ℕ) :
     moebiusPartialSumRealRange M =
       (moebiusLSeriesTermPartialRange M).re := by
   unfold moebiusPartialSumRealRange moebiusLSeriesTermPartialRange
-  induction M with
-  | zero =>
-      simp [moebius_LSeries_term_re_eq_real_term]
-  | succ M ih =>
-      rw [Finset.sum_range_succ, Finset.sum_range_succ]
-      rw [Complex.add_re]
-      rw [← ih]
-      simp [moebius_LSeries_term_re_eq_real_term]
+
+  let fR : ℕ → ℝ := fun d =>
+    ((ArithmeticFunction.moebius d : ℤ) : ℝ) / ((d : ℝ) ^ 2)
+
+  let fC : ℕ → ℂ := fun d =>
+    LSeries.term
+      (fun n => ((ArithmeticFunction.moebius n : ℤ) : ℂ))
+      (2 : ℂ)
+      d
+
+  have hsum : ∀ s : Finset ℕ,
+      Finset.sum s fR = (Finset.sum s fC).re := by
+    intro s
+    induction s using Finset.induction_on with
+    | empty =>
+        simp [fR, fC]
+    | insert d s hds ih =>
+        rw [Finset.sum_insert hds, Finset.sum_insert hds, Complex.add_re]
+        rw [← ih]
+        dsimp [fR, fC]
+        rw [moebius_LSeries_term_re_eq_real_term d]
+
+  simpa [fR, fC] using hsum (Finset.range (M + 1))
 
 end CouretUnification.Logic.H3
