@@ -3549,4 +3549,53 @@ theorem squarefree_asymptotic_density_of_prime_square_exact_pair
       Hzero_square
       Hpair_exact)
 
+/-- Fermeture du zéro des termes où `p² ∣ d`.
+
+    Si `p² ∣ d` avec `p` premier, alors `d` n'est pas squarefree.
+    Mathlib donne ensuite :
+      `ArithmeticFunction.moebius_eq_zero_of_not_squarefree`. -/
+theorem moebiusSquareDivisorPrimeSquareTermsZeroBridge_proved :
+    MoebiusSquareDivisorPrimeSquareTermsZeroBridge := by
+  unfold MoebiusSquareDivisorPrimeSquareTermsZeroBridge
+
+  intro n p hp_prime hp_square_dvd_n
+
+  unfold squareDivisorLocalSupportWithPrimeSquare
+
+  refine Finset.sum_eq_zero ?_
+
+  intro d hd
+
+  rw [Finset.mem_filter] at hd
+  rcases hd with ⟨_hd_support, hp_square_dvd_d⟩
+
+  have hp_mul_dvd_d : p * p ∣ d := by
+    simpa [pow_two] using hp_square_dvd_d
+
+  have hd_not_squarefree : ¬ Squarefree d := by
+    intro hd_squarefree
+    exact
+      (Nat.squarefree_iff_prime_squarefree).1
+        hd_squarefree
+        p
+        hp_prime
+        hp_mul_dvd_d
+
+  simpa using
+    (ArithmeticFunction.moebius_eq_zero_of_not_squarefree
+      hd_not_squarefree)
+
+/-- Version finale : C-04b est consommée avec le seul bridge
+    d'appariement exact.
+
+    Les termes où `p² ∣ d` sont maintenant fermés par non-squarefreeness
+    et annulation de Möbius. -/
+theorem squarefree_asymptotic_density_of_prime_square_exact_pair_only
+    (Hpair_exact : MoebiusSquareDivisorPrimeExactPairCancellationBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_exact_pair
+    moebiusSquareDivisorPrimeSquareTermsZeroBridge_proved
+    Hpair_exact
+
 end CouretUnification.Logic.H3
