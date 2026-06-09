@@ -2705,4 +2705,71 @@ theorem squarefreeMoebiusFilteredSumOne_of_positive_support_singleton
 
   simp
 
+/-- Positivité des entiers squarefree.
+
+    Ce bridge isole le cas `n = 0`, afin de consommer proprement
+    le support singleton positif. -/
+def SquarefreePositiveBridge : Prop :=
+  ∀ n : ℕ,
+    Squarefree n →
+      1 ≤ n
+
+/-- Forme non-nulle équivalente utile pour fermer ensuite
+    `SquarefreePositiveBridge`. -/
+def SquarefreeNeZeroBridge : Prop :=
+  ∀ n : ℕ,
+    Squarefree n →
+      n ≠ 0
+
+/-- La non-nullité des entiers squarefree implique leur positivité. -/
+theorem squarefreePositiveBridge_of_neZero
+    (Hnz : SquarefreeNeZeroBridge) :
+    SquarefreePositiveBridge := by
+  unfold SquarefreePositiveBridge
+  unfold SquarefreeNeZeroBridge at Hnz
+
+  intro n hsf
+  exact Nat.one_le_iff_ne_zero.mpr (Hnz n hsf)
+
+/-- Le support singleton positif ferme le cas squarefree global,
+    dès que l'on sait qu'un entier squarefree est non nul. -/
+theorem squarefreeMoebiusFilteredSumOne_of_positive_support_and_neZero
+    (Hnz : SquarefreeNeZeroBridge)
+    (Hsupport_pos : SquarefreePositiveSquareDivisorSupportSingletonBridge) :
+    SquarefreeMoebiusFilteredSumOneBridge := by
+  unfold SquarefreeMoebiusFilteredSumOneBridge
+
+  intro n hsf
+
+  exact
+    squarefreeMoebiusFilteredSumOne_of_positive_support_singleton
+      Hsupport_pos
+      n
+      ((squarefreePositiveBridge_of_neZero Hnz) n hsf)
+      hsf
+
+/-- Le lemme de diviseur carré trivial, avec la non-nullité squarefree,
+    ferme entièrement le cas squarefree du verrou local. -/
+theorem squarefreeMoebiusFilteredSumOne_of_eq_one_and_neZero
+    (Hnz : SquarefreeNeZeroBridge)
+    (Heq_one : SquarefreeSquareDivisorEqOneBridge) :
+    SquarefreeMoebiusFilteredSumOneBridge :=
+  squarefreeMoebiusFilteredSumOne_of_positive_support_and_neZero
+    Hnz
+    (squarefreePositiveSquareDivisorSupportSingleton_of_eq_one Heq_one)
+
+/-- Version finale : C-04b est consommée avec :
+    - la non-nullité des entiers squarefree ;
+    - le lemme `d² ∣ n → d = 1` dans le cas squarefree ;
+    - le cas non-squarefree. -/
+theorem squarefree_asymptotic_density_of_neZero_eqOne_and_nonsquarefree
+    (Hnz : SquarefreeNeZeroBridge)
+    (Heq_one : SquarefreeSquareDivisorEqOneBridge)
+    (Hnsf : NonSquarefreeMoebiusFilteredSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_moebius_local_cases
+    (squarefreeMoebiusFilteredSumOne_of_eq_one_and_neZero Hnz Heq_one)
+    Hnsf
+
 end CouretUnification.Logic.H3
