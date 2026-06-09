@@ -3598,4 +3598,86 @@ theorem squarefree_asymptotic_density_of_prime_square_exact_pair_only
     moebiusSquareDivisorPrimeSquareTermsZeroBridge_proved
     Hpair_exact
 
+/-!
+## Annulation locale — réduction au changement de variable `d ↦ p*d`
+
+Le dernier bridge d'appariement exact est séparé en deux pièces :
+1. une égalité de sommes entre la partie `p` exactement une fois
+   et l'image de la partie `p ∤ d` par `d ↦ p*d` ;
+2. l'identité locale de Möbius `μ(p*d) = - μ(d)`.
+-/
+
+/-- Bridge de changement de variable :
+    la somme sur les termes où `p` apparaît exactement une fois
+    est la somme sur les termes sans `p`, après application de `d ↦ p*d`. -/
+def MoebiusPrimeExactOnceSumAsImageBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      Finset.sum (squareDivisorLocalSupportWithPrimeExactlyOnce n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      =
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius (p * d) : ℤ))
+
+/-- Bridge du signe de Möbius sous multiplication par un premier absent.
+
+    Si `p ∤ d`, alors `p` ajoute exactement un facteur premier :
+      `μ(p*d) = - μ(d)`. -/
+def MoebiusMulPrimeNotDvdBridge : Prop :=
+  ∀ p d : ℕ,
+    p.Prime →
+    ¬ p ∣ d →
+      (ArithmeticFunction.moebius (p * d) : ℤ)
+        =
+      - (ArithmeticFunction.moebius d : ℤ)
+
+/-- Le changement de variable et le signe de Möbius ferment
+    l'appariement exact. -/
+theorem moebiusSquareDivisorPrimeExactPairCancellation_of_image_and_sign
+    (Himage : MoebiusPrimeExactOnceSumAsImageBridge)
+    (Hsign : MoebiusMulPrimeNotDvdBridge) :
+    MoebiusSquareDivisorPrimeExactPairCancellationBridge := by
+  unfold MoebiusSquareDivisorPrimeExactPairCancellationBridge
+  unfold MoebiusPrimeExactOnceSumAsImageBridge at Himage
+  unfold MoebiusMulPrimeNotDvdBridge at Hsign
+
+  intro n p hp_prime hp_square_dvd
+
+  calc
+    Finset.sum (squareDivisorLocalSupportWithPrimeExactlyOnce n p)
+      (fun d => (ArithmeticFunction.moebius d : ℤ))
+        =
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius (p * d) : ℤ)) :=
+        Himage n p hp_prime hp_square_dvd
+    _ =
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => - (ArithmeticFunction.moebius d : ℤ)) := by
+        refine Finset.sum_congr rfl ?_
+        intro d hd
+        have hnot_dvd : ¬ p ∣ d := by
+          unfold squareDivisorLocalSupportWithoutPrime at hd
+          rw [Finset.mem_filter] at hd
+          exact hd.2
+        exact Hsign p d hp_prime hnot_dvd
+    _ =
+      -
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := by
+        rw [Finset.sum_neg_distrib]
+
+/-- Version finale : C-04b est consommée avec :
+    - le changement de variable `d ↦ p*d` ;
+    - le signe local de Möbius. -/
+theorem squarefree_asymptotic_density_of_prime_square_image_and_sign
+    (Himage : MoebiusPrimeExactOnceSumAsImageBridge)
+    (Hsign : MoebiusMulPrimeNotDvdBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_exact_pair_only
+    (moebiusSquareDivisorPrimeExactPairCancellation_of_image_and_sign
+      Himage
+      Hsign)
+
 end CouretUnification.Logic.H3
