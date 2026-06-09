@@ -4156,4 +4156,124 @@ theorem squarefree_asymptotic_density_of_prime_square_surj_only
     primeSquareCoprimeSquareBridge_proved
     Hsurj
 
+/-!
+## Surjectivité de l'image — réduction au quotient par `p`
+
+Pour `e` dans la partie où `p` apparaît exactement une fois,
+on veut choisir `d = e / p`.
+
+On isole trois faits :
+- existence d'un quotient `d` avec `p*d = e` ;
+- si `e² ∣ n` et `e = p*d`, alors `d² ∣ n` ;
+- si `p² ∤ e` et `e = p*d`, alors `p ∤ d`.
+-/
+
+/-- Préimage par divisibilité :
+    si `p ∣ e`, on peut écrire `e = p*d`, ici sous la forme
+    orientée `p*d = e`. -/
+def PrimeDivisorPreimageBridge : Prop :=
+  ∀ p e : ℕ,
+    p ∣ e →
+      ∃ d : ℕ, p * d = e
+
+/-- Descente du support carré :
+    si `e² ∣ n` et `e = p*d`, alors `d² ∣ n`. -/
+def SquareDvdOfPrimeMulSquareDvdBridge : Prop :=
+  ∀ n p d e : ℕ,
+    p * d = e →
+    e^2 ∣ n →
+      d^2 ∣ n
+
+/-- Exactitude du quotient :
+    si `p² ∤ e` et `e = p*d`, alors `p ∤ d`. -/
+def PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge : Prop :=
+  ∀ p d e : ℕ,
+    p.Prime →
+    p * d = e →
+    ¬ p^2 ∣ e →
+      ¬ p ∣ d
+
+/-- Les trois faits de quotient ferment la surjectivité de l'image
+    `d ↦ p*d`. -/
+theorem moebiusPrimeExactOnceImageSurjectiveBridge_of_quotient
+    (Hpre : PrimeDivisorPreimageBridge)
+    (Hsquare_down : SquareDvdOfPrimeMulSquareDvdBridge)
+    (Hnot_dvd : PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge) :
+    MoebiusPrimeExactOnceImageSurjectiveBridge := by
+  unfold MoebiusPrimeExactOnceImageSurjectiveBridge
+  unfold PrimeDivisorPreimageBridge at Hpre
+  unfold SquareDvdOfPrimeMulSquareDvdBridge at Hsquare_down
+  unfold PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge at Hnot_dvd
+
+  intro n p hp_prime hp_square_dvd_n e he
+
+  unfold squareDivisorLocalSupportWithPrimeExactlyOnce at he
+  rw [Finset.mem_filter] at he
+  rcases he with ⟨he_with_prime, hp_square_not_dvd_e⟩
+
+  unfold squareDivisorLocalSupportWithPrime at he_with_prime
+  rw [Finset.mem_filter] at he_with_prime
+  rcases he_with_prime with ⟨he_support, hp_dvd_e⟩
+
+  unfold squareDivisorLocalSupport at he_support
+  rw [Finset.mem_filter] at he_support
+  rcases he_support with ⟨he_Icc, he_square_dvd_n⟩
+  rcases Finset.mem_Icc.mp he_Icc with ⟨he_one, he_sqrt⟩
+
+  rcases Hpre p e hp_dvd_e with ⟨d, hpd_eq_e⟩
+
+  refine ⟨d, ?_, hpd_eq_e⟩
+
+  have hd_square_dvd_n : d^2 ∣ n :=
+    Hsquare_down n p d e hpd_eq_e he_square_dvd_n
+
+  have hn_pos : 0 < n := by
+    have he_square_le_n : e^2 ≤ n := Nat.le_sqrt'.1 he_sqrt
+    have hone_le_e_square : 1 ≤ e^2 := by
+      have hmul : 1 * 1 ≤ e * e := Nat.mul_le_mul he_one he_one
+      simpa [pow_two] using hmul
+    exact lt_of_lt_of_le Nat.zero_lt_one
+      (le_trans hone_le_e_square he_square_le_n)
+
+  have hd_square_le_n : d^2 ≤ n :=
+    Nat.le_of_dvd hn_pos hd_square_dvd_n
+
+  have hd_one : 1 ≤ d := by
+    by_contra hd_not_one
+    have hd_zero : d = 0 := by
+      exact Nat.eq_zero_of_not_pos (by
+        intro hd_pos
+        exact hd_not_one (Nat.succ_le_of_lt hd_pos))
+    subst d
+    have he_zero : e = 0 := by
+      simpa using hpd_eq_e.symm
+    subst e
+    exact Nat.not_succ_le_zero 0 he_one
+
+  unfold squareDivisorLocalSupportWithoutPrime
+  rw [Finset.mem_filter]
+  constructor
+  · unfold squareDivisorLocalSupport
+    rw [Finset.mem_filter]
+    constructor
+    · rw [Finset.mem_Icc]
+      exact ⟨hd_one, Nat.le_sqrt'.2 hd_square_le_n⟩
+    · exact hd_square_dvd_n
+  · exact Hnot_dvd p d e hp_prime hpd_eq_e hp_square_not_dvd_e
+
+/-- Version finale : C-04b est consommée avec trois faits de quotient.
+
+    Tous les autres composants de l'annulation locale sont maintenant fermés. -/
+theorem squarefree_asymptotic_density_of_prime_square_quotient
+    (Hpre : PrimeDivisorPreimageBridge)
+    (Hsquare_down : SquareDvdOfPrimeMulSquareDvdBridge)
+    (Hnot_dvd : PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_surj_only
+    (moebiusPrimeExactOnceImageSurjectiveBridge_of_quotient
+      Hpre
+      Hsquare_down
+      Hnot_dvd)
+
 end CouretUnification.Logic.H3
