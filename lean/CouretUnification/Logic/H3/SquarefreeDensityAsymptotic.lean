@@ -2623,4 +2623,86 @@ theorem squarefree_asymptotic_density_of_squarefree_support_and_nonsquarefree
     (squarefreeMoebiusFilteredSumOne_of_support_singleton Hsupport)
     Hnsf
 
+/-!
+## Cas squarefree — réduction au diviseur carré trivial
+-/
+
+/-- Lemme arithmétique isolé :
+    dans un entier squarefree, tout diviseur carré positif est trivial. -/
+def SquarefreeSquareDivisorEqOneBridge : Prop :=
+  ∀ n d : ℕ,
+    Squarefree n →
+    1 ≤ d →
+    d^2 ∣ n →
+      d = 1
+
+/-- Version du support singleton sur les entiers positifs.
+
+    On isole la positivité de `n`, car le support `{1}` exige
+    `1 ∈ Icc 1 √n`, donc `√n ≥ 1`. -/
+def SquarefreePositiveSquareDivisorSupportSingletonBridge : Prop :=
+  ∀ n : ℕ,
+    1 ≤ n →
+    Squarefree n →
+      ((Finset.Icc 1 (Nat.sqrt n)).filter (fun d => d^2 ∣ n))
+        =
+      ({1} : Finset ℕ)
+
+/-- Le lemme `d² ∣ n → d = 1` ferme le support singleton positif. -/
+theorem squarefreePositiveSquareDivisorSupportSingleton_of_eq_one
+    (Heq_one : SquarefreeSquareDivisorEqOneBridge) :
+    SquarefreePositiveSquareDivisorSupportSingletonBridge := by
+  unfold SquarefreePositiveSquareDivisorSupportSingletonBridge
+  unfold SquarefreeSquareDivisorEqOneBridge at Heq_one
+
+  intro n hn1 hsf
+
+  ext d
+  constructor
+
+  · intro hd
+    rw [Finset.mem_filter] at hd
+    rcases hd with ⟨hdIcc, hdiv⟩
+    rcases Finset.mem_Icc.mp hdIcc with ⟨hd1, _hd_sqrt⟩
+
+    have hd_eq_one : d = 1 :=
+      Heq_one n d hsf hd1 hdiv
+
+    rw [Finset.mem_singleton]
+    exact hd_eq_one
+
+  · intro hd
+    rw [Finset.mem_singleton] at hd
+    subst d
+
+    rw [Finset.mem_filter]
+    constructor
+    · rw [Finset.mem_Icc]
+      constructor
+      · rfl
+      ·
+        have hsq : 1^2 ≤ n := by
+          simpa using hn1
+        exact Nat.le_sqrt'.2 hsq
+    · simp
+
+/-- Dans C-04b, le support squarefree n'est utilisé que pour `n ≥ 1`.
+
+    On garde donc cette version positive comme prochain verrou consommable. -/
+theorem squarefreeMoebiusFilteredSumOne_of_positive_support_singleton
+    (Hsupport_pos : SquarefreePositiveSquareDivisorSupportSingletonBridge) :
+    ∀ n : ℕ,
+      1 ≤ n →
+      Squarefree n →
+        moebiusSquareDivisorLocalFilteredSumInt n = 1 := by
+  unfold SquarefreePositiveSquareDivisorSupportSingletonBridge at Hsupport_pos
+
+  intro n hn1 hsf
+
+  unfold moebiusSquareDivisorLocalFilteredSumInt
+
+  rw [Hsupport_pos n hn1 hsf]
+
+  simp
+
 end CouretUnification.Logic.H3
