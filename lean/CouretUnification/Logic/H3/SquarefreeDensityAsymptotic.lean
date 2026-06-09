@@ -3011,4 +3011,75 @@ theorem squarefree_asymptotic_density_of_nonsquarefree_nonzero_divisors_sum
       Hsupport
       Hdivisors_eq
       Hsum)
+
+/-!
+## Somme de Möbius sur les diviseurs — réduction à la convolution `μ * ζ = 1`
+
+Mathlib fournit :
+  `ArithmeticFunction.moebius_mul_coe_zeta : (μ * ζ : ArithmeticFunction ℤ) = 1`
+
+On réduit donc `MoebiusDivisorsSumZeroBridge` à deux faits :
+1. la somme `∑ d∣m μ(d)` est l'application de `(μ * ζ)` à `m` ;
+2. la fonction arithmétique `1` vaut `0` hors de `m = 1`.
+-/
+
+/-- Bridge convolutionnel :
+    la somme de Möbius sur les diviseurs de `m` est l'application
+    de `(μ * ζ)` à `m`.
+
+    C'est la forme exacte fournie par la convolution avec `ζ`. -/
+def MoebiusDivisorsSumAsConvolutionBridge : Prop :=
+  ∀ m : ℕ,
+    m ≠ 0 →
+      Finset.sum m.divisors
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+        =
+      ((ArithmeticFunction.moebius * ArithmeticFunction.zeta : ArithmeticFunction ℤ) m)
+
+/-- Bridge de la fonction arithmétique unité :
+    hors de `1`, la fonction arithmétique `1` vaut `0`. -/
+def ArithmeticFunctionOneApplyZeroBridge : Prop :=
+  ∀ m : ℕ,
+    m ≠ 1 →
+      ((1 : ArithmeticFunction ℤ) m) = 0
+
+/-- Les deux bridges convolutionnels ferment la somme classique
+    de Möbius sur les diviseurs. -/
+theorem moebiusDivisorsSumZeroBridge_of_convolution
+    (Hconv : MoebiusDivisorsSumAsConvolutionBridge)
+    (Hone_zero : ArithmeticFunctionOneApplyZeroBridge) :
+    MoebiusDivisorsSumZeroBridge := by
+  unfold MoebiusDivisorsSumZeroBridge
+  unfold MoebiusDivisorsSumAsConvolutionBridge at Hconv
+  unfold ArithmeticFunctionOneApplyZeroBridge at Hone_zero
+
+  intro m hm_ne_zero hm_ne_one
+
+  calc
+    Finset.sum m.divisors
+      (fun d => (ArithmeticFunction.moebius d : ℤ))
+        =
+      ((ArithmeticFunction.moebius * ArithmeticFunction.zeta : ArithmeticFunction ℤ) m) :=
+        Hconv m hm_ne_zero
+    _ = ((1 : ArithmeticFunction ℤ) m) := by
+        rw [ArithmeticFunction.moebius_mul_coe_zeta]
+    _ = 0 := Hone_zero m hm_ne_one
+
+/-- Version finale : C-04b est consommée avec :
+    - le support non-squarefree renforcé ;
+    - l'identification `Icc/filter = divisors` ;
+    - la lecture convolutionnelle de la somme de Möbius ;
+    - l'annulation de la fonction arithmétique `1` hors de `1`. -/
+theorem squarefree_asymptotic_density_of_nonsquarefree_convolution
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge)
+    (Hdivisors_eq : DivisorsAsIccFilterBridge)
+    (Hconv : MoebiusDivisorsSumAsConvolutionBridge)
+    (Hone_zero : ArithmeticFunctionOneApplyZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_nonzero_divisors_sum
+    Hsupport
+    Hdivisors_eq
+    (moebiusDivisorsSumZeroBridge_of_convolution Hconv Hone_zero)
+
 end CouretUnification.Logic.H3
