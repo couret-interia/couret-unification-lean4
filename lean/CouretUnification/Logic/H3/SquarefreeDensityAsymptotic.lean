@@ -2913,4 +2913,68 @@ theorem squarefree_asymptotic_density_of_nonsquarefree_divisor_sum
       Hsupport
       Hsum_zero)
 
+/-!
+## Somme classique de Möbius — réduction à `m.divisors`
+
+Le bridge `MoebiusDivisorSumZeroBridge` utilise un filtre `Icc 1 m`.
+Mathlib travaille plus naturellement avec `m.divisors`.
+On réduit donc la forme filtrée à la forme `m.divisors`.
+-/
+
+/-- Forme Mathlib naturelle de l'annulation de la somme de Möbius :
+    pour `m ≠ 1`, la somme sur `m.divisors` vaut `0`. -/
+def MoebiusDivisorsSumZeroBridge : Prop :=
+  ∀ m : ℕ,
+    m ≠ 1 →
+      Finset.sum m.divisors
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+        =
+      0
+
+/-- Identification entre le filtre `1 ≤ d ≤ m, d ∣ m`
+    et `m.divisors`.
+
+    On l'isole car `m.divisors` peut avoir des conditions internes
+    différentes selon l'API Mathlib autour de `0`. -/
+def DivisorsAsIccFilterBridge : Prop :=
+  ∀ m : ℕ,
+    m ≠ 0 →
+      ((Finset.Icc 1 m).filter (fun d => d ∣ m))
+        =
+      m.divisors
+
+/-- La forme `m.divisors` implique la forme filtrée `Icc 1 m`. -/
+theorem moebiusDivisorSumZeroBridge_of_divisors
+    (Hdivisors_eq : DivisorsAsIccFilterBridge)
+    (Hsum : MoebiusDivisorsSumZeroBridge) :
+    MoebiusDivisorSumZeroBridge := by
+  unfold MoebiusDivisorSumZeroBridge
+  unfold DivisorsAsIccFilterBridge at Hdivisors_eq
+  unfold MoebiusDivisorsSumZeroBridge at Hsum
+
+  intro m hm_ne_one
+
+  have hm_ne_zero : m ≠ 0 := by
+    intro hm0
+    subst m
+    exact hm_ne_one rfl
+
+  rw [Hdivisors_eq m hm_ne_zero]
+
+  exact Hsum m hm_ne_one
+
+/-- Version finale : C-04b est consommée avec :
+    - le support non-squarefree ;
+    - la somme de Möbius sur `m.divisors` ;
+    - l'identification `Icc/filter = divisors`. -/
+theorem squarefree_asymptotic_density_of_nonsquarefree_divisors_sum
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsDivisorsBridge)
+    (Hdivisors_eq : DivisorsAsIccFilterBridge)
+    (Hsum : MoebiusDivisorsSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_divisor_sum
+    Hsupport
+    (moebiusDivisorSumZeroBridge_of_divisors Hdivisors_eq Hsum)
+
 end CouretUnification.Logic.H3
