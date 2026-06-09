@@ -3895,4 +3895,107 @@ theorem squarefree_asymptotic_density_of_prime_square_image_map_surj
     moebiusPrimeExactOnceImageInjectiveBridge_proved
     Hsurj
 
+/-!
+## Bonne définition de l'image — réduction arithmétique
+
+Pour montrer que `d ↦ p*d` envoie bien le support sans `p`
+vers le support où `p` apparaît exactement une fois, il reste deux
+faits arithmétiques :
+- produit de diviseurs carrés copremiers ;
+- impossibilité de `p² ∣ p*d` si `p ∤ d`.
+-/
+
+/-- Produit de diviseurs carrés copremiers.
+
+    Si `p² ∣ n`, `d² ∣ n`, et `p ∤ d`, alors
+    `(p*d)² ∣ n`. -/
+def PrimeSquareMulSquareDvdBridge : Prop :=
+  ∀ n p d : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+    d^2 ∣ n →
+    ¬ p ∣ d →
+      (p * d)^2 ∣ n
+
+/-- Exactitude de la présence de `p`.
+
+    Si `p ∤ d`, alors `p²` ne divise pas `p*d`. -/
+def PrimeSquareNotDvdPrimeMulBridge : Prop :=
+  ∀ p d : ℕ,
+    p.Prime →
+    ¬ p ∣ d →
+      ¬ p^2 ∣ p * d
+
+/-- Les deux faits arithmétiques ferment la bonne définition
+    de l'image `d ↦ p*d`. -/
+theorem moebiusPrimeExactOnceImageMapBridge_of_arith
+    (Hprod : PrimeSquareMulSquareDvdBridge)
+    (Hexact : PrimeSquareNotDvdPrimeMulBridge) :
+    MoebiusPrimeExactOnceImageMapBridge := by
+  unfold MoebiusPrimeExactOnceImageMapBridge
+  unfold PrimeSquareMulSquareDvdBridge at Hprod
+  unfold PrimeSquareNotDvdPrimeMulBridge at Hexact
+
+  intro n p hp_prime hp_square_dvd d hd
+
+  unfold squareDivisorLocalSupportWithoutPrime at hd
+  rw [Finset.mem_filter] at hd
+  rcases hd with ⟨hd_support, hp_not_dvd⟩
+
+  unfold squareDivisorLocalSupport at hd_support
+  rw [Finset.mem_filter] at hd_support
+  rcases hd_support with ⟨hd_Icc, hd_square_dvd⟩
+  rcases Finset.mem_Icc.mp hd_Icc with ⟨hd_one, hd_sqrt⟩
+
+  have hpd_square_dvd : (p * d)^2 ∣ n :=
+    Hprod n p d hp_prime hp_square_dvd hd_square_dvd hp_not_dvd
+
+  have hpd_one : 1 ≤ p * d := by
+    have hp_one : 1 ≤ p := Nat.succ_le_of_lt hp_prime.pos
+    have hmul : 1 * 1 ≤ p * d := Nat.mul_le_mul hp_one hd_one
+    simpa using hmul
+
+  have hn_pos : 0 < n := by
+    have hd_square_le_n : d^2 ≤ n := Nat.le_sqrt'.1 hd_sqrt
+    have hone_le_d_square : 1 ≤ d^2 := by
+      have hmul : 1 * 1 ≤ d * d := Nat.mul_le_mul hd_one hd_one
+      simpa [pow_two] using hmul
+    exact lt_of_lt_of_le Nat.zero_lt_one
+      (le_trans hone_le_d_square hd_square_le_n)
+
+  have hpd_square_le_n : (p * d)^2 ≤ n :=
+    Nat.le_of_dvd hn_pos hpd_square_dvd
+
+  unfold squareDivisorLocalSupportWithPrimeExactlyOnce
+  rw [Finset.mem_filter]
+  constructor
+  · unfold squareDivisorLocalSupportWithPrime
+    rw [Finset.mem_filter]
+    constructor
+    · unfold squareDivisorLocalSupport
+      rw [Finset.mem_filter]
+      constructor
+      · rw [Finset.mem_Icc]
+        exact ⟨hpd_one, Nat.le_sqrt'.2 hpd_square_le_n⟩
+      · exact hpd_square_dvd
+    · exact ⟨d, rfl⟩
+  · exact Hexact p d hp_prime hp_not_dvd
+
+/-- Version finale : C-04b est consommée avec :
+    - le produit de diviseurs carrés ;
+    - l'exactitude `p² ∤ p*d` ;
+    - la surjectivité.
+
+    La bonne définition de l'image est maintenant réduite à deux
+    faits arithmétiques locaux. -/
+theorem squarefree_asymptotic_density_of_prime_square_arith_surj
+    (Hprod : PrimeSquareMulSquareDvdBridge)
+    (Hexact : PrimeSquareNotDvdPrimeMulBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_image_map_surj
+    (moebiusPrimeExactOnceImageMapBridge_of_arith Hprod Hexact)
+    Hsurj
+
 end CouretUnification.Logic.H3
