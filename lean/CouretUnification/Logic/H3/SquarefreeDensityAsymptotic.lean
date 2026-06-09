@@ -2513,4 +2513,58 @@ theorem squarefree_asymptotic_density_of_local_moebius_filtered_int
     (squarefreeIndicatorLocalMoebiusBridge_of_int
       (squarefreeIndicatorLocalMoebiusIntBridge_of_filtered Hfiltered))
 
+/-!
+## Dernier verrou local — séparation squarefree / non-squarefree
+
+On scinde l'identité locale filtrée entière en deux cas :
+- si `n` est squarefree, la somme vaut `1` ;
+- si `n` n'est pas squarefree, la somme vaut `0`.
+-/
+
+/-- Cas squarefree du dernier verrou local :
+    si `n` est squarefree, la somme locale de Möbius sur les diviseurs
+    carrés vaut `1`. -/
+def SquarefreeMoebiusFilteredSumOneBridge : Prop :=
+  ∀ n : ℕ,
+    Squarefree n →
+      moebiusSquareDivisorLocalFilteredSumInt n = 1
+
+/-- Cas non-squarefree du dernier verrou local :
+    si `n` n'est pas squarefree, la somme locale de Möbius sur les
+    diviseurs carrés vaut `0`. -/
+def NonSquarefreeMoebiusFilteredSumZeroBridge : Prop :=
+  ∀ n : ℕ,
+    ¬ Squarefree n →
+      moebiusSquareDivisorLocalFilteredSumInt n = 0
+
+/-- Les deux cas `squarefree` / `non-squarefree` ferment l'identité
+    locale filtrée entière. -/
+theorem squarefreeIndicatorLocalMoebiusFilteredIntBridge_of_cases
+    (Hsf : SquarefreeMoebiusFilteredSumOneBridge)
+    (Hnsf : NonSquarefreeMoebiusFilteredSumZeroBridge) :
+    SquarefreeIndicatorLocalMoebiusFilteredIntBridge := by
+  unfold SquarefreeIndicatorLocalMoebiusFilteredIntBridge
+  unfold SquarefreeMoebiusFilteredSumOneBridge at Hsf
+  unfold NonSquarefreeMoebiusFilteredSumZeroBridge at Hnsf
+
+  intro n
+
+  unfold squarefreeIndicatorLocalInt
+
+  by_cases hsf : Squarefree n
+  · rw [if_pos hsf]
+    exact (Hsf n hsf).symm
+  · rw [if_neg hsf]
+    exact (Hnsf n hsf).symm
+
+/-- Version finale : C-04b est consommée avec les deux derniers cas
+    arithmétiques locaux de l'identité de Möbius. -/
+theorem squarefree_asymptotic_density_of_moebius_local_cases
+    (Hsf : SquarefreeMoebiusFilteredSumOneBridge)
+    (Hnsf : NonSquarefreeMoebiusFilteredSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_local_moebius_filtered_int
+    (squarefreeIndicatorLocalMoebiusFilteredIntBridge_of_cases Hsf Hnsf)
+
 end CouretUnification.Logic.H3
