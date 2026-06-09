@@ -2044,5 +2044,70 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_bijection_parts
   squarefree_asymptotic_density_of_indicator_and_multiples_bijection_data
     Hindicator
     (countMultiplesNatBijectionDataBridge_of_parts Hmap Hinj Hsurj)
+/-- Petit verrou arithmétique pour la surjectivité :
+    si `k ≤ N/q`, alors `q*k ≤ N`.
+
+    C'est exactement le contrôle qui garantit que l'antécédent
+    `n = q*k` appartient bien à `[1,N]`. -/
+def NatMulLeOfLeDivBridge : Prop :=
+  ∀ N q k : ℕ,
+    1 ≤ q →
+    k ≤ N / q →
+      q * k ≤ N
+
+/-- Petit verrou arithmétique pour l'inverse :
+    pour `q ≥ 1`, `(q*k)/q = k`. -/
+def NatMulDivCancelLeftBridge : Prop :=
+  ∀ q k : ℕ,
+    1 ≤ q →
+      (q * k) / q = k
+
+/-- La surjectivité de la bijection des multiples est réduite aux deux
+    lemmes élémentaires de division naturelle :
+    - `k ≤ N/q → q*k ≤ N` ;
+    - `(q*k)/q = k`.
+
+    L'antécédent de `k` est explicitement `n = q*k`. -/
+theorem countMultiplesNatSurjectiveBridge_of_nat_div_bridges
+    (Hmul_le : NatMulLeOfLeDivBridge)
+    (Hcancel : NatMulDivCancelLeftBridge) :
+    CountMultiplesNatSurjectiveBridge := by
+  unfold CountMultiplesNatSurjectiveBridge
+  unfold NatMulLeOfLeDivBridge at Hmul_le
+  unfold NatMulDivCancelLeftBridge at Hcancel
+
+  intro N q hq k hk
+
+  rcases Finset.mem_Icc.mp hk with ⟨hk1, hkN⟩
+
+  refine ⟨q * k, ?_, ?_⟩
+
+  · rw [Finset.mem_filter]
+    constructor
+    · rw [Finset.mem_Icc]
+      constructor
+      · have hqk : 1 * 1 ≤ q * k := Nat.mul_le_mul hq hk1
+        simpa using hqk
+      · exact Hmul_le N q k hq hkN
+    · exact ⟨k, rfl⟩
+
+  · exact Hcancel q k hq
+
+/-- Version finale : C-04b est consommée avec A1b, la bonne définition,
+    l'injectivité, et les deux lemmes de division naturelle qui ferment
+    la surjectivité. -/
+theorem squarefree_asymptotic_density_of_indicator_and_multiples_map_inj_div
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hmap : CountMultiplesNatMapBridge)
+    (Hinj : CountMultiplesNatInjectiveBridge)
+    (Hmul_le : NatMulLeOfLeDivBridge)
+    (Hcancel : NatMulDivCancelLeftBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_multiples_bijection_parts
+    Hindicator
+    Hmap
+    Hinj
+    (countMultiplesNatSurjectiveBridge_of_nat_div_bridges Hmul_le Hcancel)
 
 end CouretUnification.Logic.H3
