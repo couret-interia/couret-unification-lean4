@@ -2811,12 +2811,9 @@ theorem squarefreeSquareDivisorEqOneBridge_proved :
   intro n d hsf hd1 hdiv
 
   have hd_unit : IsUnit d :=
-    hsf hdiv
+    hsf d hdiv
 
-  rcases hd_unit with ⟨u, hu⟩
-  exact Nat.eq_one_of_dvd_one (by
-    rw [← hu]
-    exact u.isUnit.dvd)
+  exact Nat.isUnit_iff.mp hd_unit
 
 /-- Version finale : C-04b est consommée avec le seul cas
     non-squarefree.
