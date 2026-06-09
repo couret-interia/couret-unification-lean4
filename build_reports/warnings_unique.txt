@@ -5,7 +5,7 @@ warning: lean/CouretUnification/Analytic/GammaFactor.lean:93:8: declaration uses
 warning: lean/CouretUnification/AnalyticHorizon/Det2Transport.lean:64:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/Lemma7Residual.lean:6:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/H3/RouteC.lean:774:8: declaration uses `sorry`
-warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:2610:2: try 'simp' instead of 'simpa'
+warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:2610:8: This simp argument is unused:
 warning: lean/CouretUnification/Logic/L10NoGoTheorem.lean:206:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L10NoGoTheorem.lean:63:8: declaration uses `sorry`
 warning: lean/CouretUnification/Logic/L6RatioEstimateDerived.lean:66:8: declaration uses `sorry`

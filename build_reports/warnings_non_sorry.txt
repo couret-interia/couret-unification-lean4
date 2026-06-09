@@ -1,1 +1,1 @@
-warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:2610:2: try 'simp' instead of 'simpa'
+warning: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:2610:8: This simp argument is unused:
