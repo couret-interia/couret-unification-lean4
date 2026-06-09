@@ -3082,4 +3082,60 @@ theorem squarefree_asymptotic_density_of_nonsquarefree_convolution
     Hdivisors_eq
     (moebiusDivisorsSumZeroBridge_of_convolution Hconv Hone_zero)
 
+/-- Fermeture de l'annulation de la fonction arithmétique unité hors de `1`.
+
+    Mathlib fournit directement `ArithmeticFunction.one_apply_ne`. -/
+theorem arithmeticFunctionOneApplyZeroBridge_proved :
+    ArithmeticFunctionOneApplyZeroBridge := by
+  unfold ArithmeticFunctionOneApplyZeroBridge
+
+  intro m hm_ne_one
+
+  exact ArithmeticFunction.one_apply_ne hm_ne_one
+
+/-- Fermeture de la lecture convolutionnelle de la somme de Möbius.
+
+    Mathlib fournit directement :
+      `ArithmeticFunction.coe_mul_zeta_apply`
+
+    sous la forme :
+      `(f * ζ) m = ∑ d ∈ m.divisors, f d`. -/
+theorem moebiusDivisorsSumAsConvolutionBridge_proved :
+    MoebiusDivisorsSumAsConvolutionBridge := by
+  unfold MoebiusDivisorsSumAsConvolutionBridge
+
+  intro m hm_ne_zero
+
+  exact (ArithmeticFunction.coe_mul_zeta_apply
+    (f := ArithmeticFunction.moebius)
+    (x := m)).symm
+
+/-- Fermeture de la somme classique de Möbius sur les diviseurs :
+    pour `m ≠ 0`, `m ≠ 1`, on a `∑_{d∣m} μ(d)=0`.
+
+    Elle combine :
+    - la lecture convolutionnelle ;
+    - l'identité `μ * ζ = 1` ;
+    - l'annulation de `1` hors de `1`. -/
+theorem moebiusDivisorsSumZeroBridge_proved :
+    MoebiusDivisorsSumZeroBridge :=
+  moebiusDivisorsSumZeroBridge_of_convolution
+    moebiusDivisorsSumAsConvolutionBridge_proved
+    arithmeticFunctionOneApplyZeroBridge_proved
+
+/-- Version finale : C-04b est consommée avec :
+    - le support non-squarefree renforcé ;
+    - l'identification `Icc/filter = divisors`.
+
+    La somme classique de Möbius est maintenant fermée par Mathlib. -/
+theorem squarefree_asymptotic_density_of_nonsquarefree_support_and_divisors
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge)
+    (Hdivisors_eq : DivisorsAsIccFilterBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_nonzero_divisors_sum
+    Hsupport
+    Hdivisors_eq
+    moebiusDivisorsSumZeroBridge_proved
+
 end CouretUnification.Logic.H3
