@@ -3686,18 +3686,15 @@ theorem squarefree_asymptotic_density_of_prime_square_image_and_sign
     - `ArithmeticFunction.isMultiplicative_moebius`;
     - `IsMultiplicative.map_mul_of_coprime`;
     - `ArithmeticFunction.moebius_apply_prime`;
-    - `Prime.not_coprime_iff_dvd` pour transformer `¬ p ∣ d`
-      en `p.Coprime d`. -/
+    - la caractérisation `hp_prime.coprime_iff_not_dvd`. -/
 theorem moebiusMulPrimeNotDvdBridge_proved :
     MoebiusMulPrimeNotDvdBridge := by
   unfold MoebiusMulPrimeNotDvdBridge
 
   intro p d hp_prime hp_not_dvd
 
-  have hcop : p.Coprime d := by
-    by_contra hnot_coprime
-    exact hp_not_dvd
-      ((Nat.Prime.not_coprime_iff_dvd hp_prime).mp hnot_coprime)
+  have hcop : p.Coprime d :=
+    (hp_prime.coprime_iff_not_dvd).2 hp_not_dvd
 
   calc
     (ArithmeticFunction.moebius (p * d) : ℤ)
