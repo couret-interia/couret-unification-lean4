@@ -2117,7 +2117,7 @@ theorem natMulLeOfLeDivBridge_proved :
     NatMulLeOfLeDivBridge := by
   unfold NatMulLeOfLeDivBridge
   intro N q k hq hk
-  exact Nat.mul_le_of_le_div N q k hk
+  exact (Nat.le_div_iff_mul_le (lt_of_lt_of_le Nat.zero_lt_one hq)).1 hk
 
 /-- Fermeture du verrou `(q*k)/q = k`.
 
