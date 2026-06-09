@@ -2567,4 +2567,60 @@ theorem squarefree_asymptotic_density_of_moebius_local_cases
   squarefree_asymptotic_density_of_local_moebius_filtered_int
     (squarefreeIndicatorLocalMoebiusFilteredIntBridge_of_cases Hsf Hnsf)
 
+/-!
+## Cas squarefree — réduction au support `{1}`
+
+Pour `n` squarefree, les seuls diviseurs carrés de `n` doivent être
+triviaux. On isole donc le support filtré de la somme de Möbius.
+-/
+
+/-- Support du cas squarefree :
+    si `n` est squarefree, alors les `d ∈ [1,√n]` tels que `d² ∣ n`
+    forment exactement le singleton `{1}`. -/
+def SquarefreeSquareDivisorSupportSingletonBridge : Prop :=
+  ∀ n : ℕ,
+    Squarefree n →
+      ((Finset.Icc 1 (Nat.sqrt n)).filter (fun d => d^2 ∣ n))
+        =
+      ({1} : Finset ℕ)
+
+/-- Valeur de Möbius en `1`, dans `ℤ`. -/
+def MoebiusOneIntBridge : Prop :=
+  (ArithmeticFunction.moebius 1 : ℤ) = 1
+
+/-- Fermeture locale de `μ(1)=1`. -/
+theorem moebiusOneIntBridge_proved :
+    MoebiusOneIntBridge := by
+  unfold MoebiusOneIntBridge
+  simp
+
+/-- Le support `{1}` ferme le cas squarefree du dernier verrou local. -/
+theorem squarefreeMoebiusFilteredSumOne_of_support_singleton
+    (Hsupport : SquarefreeSquareDivisorSupportSingletonBridge) :
+    SquarefreeMoebiusFilteredSumOneBridge := by
+  unfold SquarefreeMoebiusFilteredSumOneBridge
+  unfold SquarefreeSquareDivisorSupportSingletonBridge at Hsupport
+
+  intro n hsf
+
+  unfold moebiusSquareDivisorLocalFilteredSumInt
+
+  rw [Hsupport n hsf]
+
+  exact moebiusOneIntBridge_proved
+
+/-- Version finale : C-04b est consommée avec le cas non-squarefree
+    et le support singleton du cas squarefree.
+
+    Le cas squarefree est maintenant réduit à :
+      `{d ∈ [1,√n] | d² ∣ n} = {1}`. -/
+theorem squarefree_asymptotic_density_of_squarefree_support_and_nonsquarefree
+    (Hsupport : SquarefreeSquareDivisorSupportSingletonBridge)
+    (Hnsf : NonSquarefreeMoebiusFilteredSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_moebius_local_cases
+    (squarefreeMoebiusFilteredSumOne_of_support_singleton Hsupport)
+    Hnsf
+
 end CouretUnification.Logic.H3
