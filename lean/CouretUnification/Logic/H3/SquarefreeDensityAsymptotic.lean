@@ -2772,4 +2772,32 @@ theorem squarefree_asymptotic_density_of_neZero_eqOne_and_nonsquarefree
     (squarefreeMoebiusFilteredSumOne_of_eq_one_and_neZero Hnz Heq_one)
     Hnsf
 
+/-- Fermeture de la non-nullité des entiers squarefree.
+
+    Mathlib fournit `not_squarefree_zero`, utilisé ici par contradiction. -/
+theorem squarefreeNeZeroBridge_proved :
+    SquarefreeNeZeroBridge := by
+  unfold SquarefreeNeZeroBridge
+
+  intro n hsf hn0
+
+  subst n
+
+  exact not_squarefree_zero hsf
+
+/-- Version finale : C-04b est consommée avec :
+    - le lemme `d² ∣ n → d = 1` dans le cas squarefree ;
+    - le cas non-squarefree.
+
+    La non-nullité des entiers squarefree est maintenant fermée. -/
+theorem squarefree_asymptotic_density_of_eqOne_and_nonsquarefree
+    (Heq_one : SquarefreeSquareDivisorEqOneBridge)
+    (Hnsf : NonSquarefreeMoebiusFilteredSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_neZero_eqOne_and_nonsquarefree
+    squarefreeNeZeroBridge_proved
+    Heq_one
+    Hnsf
+
 end CouretUnification.Logic.H3
