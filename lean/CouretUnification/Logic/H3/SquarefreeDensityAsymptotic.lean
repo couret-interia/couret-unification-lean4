@@ -3279,4 +3279,107 @@ theorem squarefree_asymptotic_density_of_prime_square_cancellation_only
     primeSquareDivisorOfNonSquarefreeBridge_proved
     Hcancel
 
+/-!
+## Annulation locale — découpage du support selon un premier
+
+On prépare l'annulation finale en séparant les diviseurs carrés `d`
+selon deux cas :
+- `p ∤ d` ;
+- `p ∣ d`.
+
+L'idée mathématique est ensuite de montrer que la partie `p ∣ d`
+est l'image de la partie `p ∤ d` par `d ↦ p*d`, avec
+`μ(p*d) = - μ(d)`.
+-/
+
+/-- Support local des diviseurs carrés de `n`. -/
+noncomputable def squareDivisorLocalSupport (n : ℕ) : Finset ℕ :=
+  (Finset.Icc 1 (Nat.sqrt n)).filter (fun d => d^2 ∣ n)
+
+/-- Partie du support local où `p` ne divise pas `d`. -/
+noncomputable def squareDivisorLocalSupportWithoutPrime (n p : ℕ) : Finset ℕ :=
+  (squareDivisorLocalSupport n).filter (fun d => ¬ p ∣ d)
+
+/-- Partie du support local où `p` divise `d`. -/
+noncomputable def squareDivisorLocalSupportWithPrime (n p : ℕ) : Finset ℕ :=
+  (squareDivisorLocalSupport n).filter (fun d => p ∣ d)
+
+/-- Le support local redonne exactement la somme filtrée déjà utilisée. -/
+theorem moebiusSquareDivisorLocalFilteredSumInt_eq_support
+    (n : ℕ) :
+    moebiusSquareDivisorLocalFilteredSumInt n =
+      Finset.sum (squareDivisorLocalSupport n)
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := by
+  unfold moebiusSquareDivisorLocalFilteredSumInt
+  unfold squareDivisorLocalSupport
+  rfl
+
+/-- Bridge de découpage du support selon `p ∣ d` ou non. -/
+def MoebiusSquareDivisorPrimeSplitBridge : Prop :=
+  ∀ n p : ℕ,
+    moebiusSquareDivisorLocalFilteredSumInt n =
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      +
+      Finset.sum (squareDivisorLocalSupportWithPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- Bridge d'annulation par appariement :
+    la partie `p ∣ d` est l'opposée de la partie `p ∤ d`. -/
+def MoebiusSquareDivisorPrimePairCancellationBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      Finset.sum (squareDivisorLocalSupportWithPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      =
+      -
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- Le découpage du support et l'annulation par appariement ferment
+    l'annulation locale au-dessus d'un facteur premier carré. -/
+theorem moebiusSquareDivisorCancellationAtPrime_of_split_and_pair
+    (Hsplit : MoebiusSquareDivisorPrimeSplitBridge)
+    (Hpair : MoebiusSquareDivisorPrimePairCancellationBridge) :
+    MoebiusSquareDivisorCancellationAtPrimeBridge := by
+  unfold MoebiusSquareDivisorCancellationAtPrimeBridge
+  unfold MoebiusSquareDivisorPrimeSplitBridge at Hsplit
+  unfold MoebiusSquareDivisorPrimePairCancellationBridge at Hpair
+
+  intro n p hp_prime hp_square_dvd
+
+  calc
+    moebiusSquareDivisorLocalFilteredSumInt n
+        =
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      +
+      Finset.sum (squareDivisorLocalSupportWithPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) :=
+        Hsplit n p
+    _ =
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      +
+      -
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := by
+        rw [Hpair n p hp_prime hp_square_dvd]
+    _ = 0 := by
+        simp
+
+/-- Version finale : C-04b est consommée avec :
+    - le découpage du support ;
+    - l'annulation par appariement. -/
+theorem squarefree_asymptotic_density_of_prime_square_pair_cancellation
+    (Hsplit : MoebiusSquareDivisorPrimeSplitBridge)
+    (Hpair : MoebiusSquareDivisorPrimePairCancellationBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_cancellation_only
+    (moebiusSquareDivisorCancellationAtPrime_of_split_and_pair
+      Hsplit
+      Hpair)
+
 end CouretUnification.Logic.H3
