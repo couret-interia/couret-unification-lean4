@@ -2360,4 +2360,68 @@ theorem squarefree_asymptotic_density_of_local_moebius_and_truncation
       Hlocal
       Htrunc)
 
+/-- Fermeture de la troncature `√n → √N`.
+
+    Pour `n ∈ [1,N]`, l'intervalle `Icc 1 √n` est inclus dans
+    `Icc 1 √N`. Les termes ajoutés sont nuls : si `d² ∣ n` et
+    `n > 0`, alors `d² ≤ n`, donc `d ≤ √n`. -/
+theorem squarefreeIndicatorMoebiusTruncationBridge_proved :
+    SquarefreeIndicatorMoebiusTruncationBridge := by
+  unfold SquarefreeIndicatorMoebiusTruncationBridge
+
+  intro N n hn
+
+  unfold moebiusSquareDivisorLocalSum
+
+  rcases Finset.mem_Icc.mp hn with ⟨hn1, hnN⟩
+
+  let f : ℕ → ℝ := fun d =>
+    if d^2 ∣ n then ((ArithmeticFunction.moebius d : ℤ) : ℝ) else 0
+
+  change
+    Finset.sum (Finset.Icc 1 (Nat.sqrt n)) f =
+      Finset.sum (Finset.Icc 1 (Nat.sqrt N)) f
+
+  have hsubset :
+      Finset.Icc 1 (Nat.sqrt n) ⊆ Finset.Icc 1 (Nat.sqrt N) := by
+    intro d hd
+    rcases Finset.mem_Icc.mp hd with ⟨hd1, hd_sqrt_n⟩
+    have hd2_le_n : d^2 ≤ n := Nat.le_sqrt'.1 hd_sqrt_n
+    have hd2_le_N : d^2 ≤ N := le_trans hd2_le_n hnN
+    exact Finset.mem_Icc.mpr ⟨hd1, Nat.le_sqrt'.2 hd2_le_N⟩
+
+  refine Finset.sum_subset hsubset ?_
+
+  intro d hd_big hd_not_small
+
+  have hd_big_parts := Finset.mem_Icc.mp hd_big
+  rcases hd_big_parts with ⟨hd1, _hd_sqrt_N⟩
+
+  by_cases hdiv : d^2 ∣ n
+  · exfalso
+
+    have hnpos : 0 < n := lt_of_lt_of_le Nat.zero_lt_one hn1
+
+    have hd2_le_n : d^2 ≤ n :=
+      Nat.le_of_dvd hnpos hdiv
+
+    have hd_sqrt_n : d ≤ Nat.sqrt n :=
+      Nat.le_sqrt'.2 hd2_le_n
+
+    exact hd_not_small (Finset.mem_Icc.mpr ⟨hd1, hd_sqrt_n⟩)
+
+  · simp [hdiv]
+
+/-- Version finale : C-04b est consommée avec le seul bridge local
+    d'identité indicatrice de Möbius.
+
+    La troncature `√n → √N` est maintenant fermée localement. -/
+theorem squarefree_asymptotic_density_of_local_moebius_only
+    (Hlocal : SquarefreeIndicatorLocalMoebiusBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_local_moebius_and_truncation
+    Hlocal
+    squarefreeIndicatorMoebiusTruncationBridge_proved
+
 end CouretUnification.Logic.H3
