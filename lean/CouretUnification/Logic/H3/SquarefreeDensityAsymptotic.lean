@@ -2800,4 +2800,19 @@ theorem squarefree_asymptotic_density_of_eqOne_and_nonsquarefree
     Heq_one
     Hnsf
 
+/-- Fermeture du lemme :
+    dans un entier squarefree, tout diviseur carré positif est trivial.
+
+    Pour `ℕ`, une unité est nécessairement `1`. -/
+theorem squarefreeSquareDivisorEqOneBridge_proved :
+    SquarefreeSquareDivisorEqOneBridge := by
+  unfold SquarefreeSquareDivisorEqOneBridge
+
+  intro n d hsf hd1 hdiv
+
+  have hd_unit : IsUnit d :=
+    hsf hdiv
+
+  exact Nat.isUnit_iff.mp hd_unit
+
 end CouretUnification.Logic.H3
