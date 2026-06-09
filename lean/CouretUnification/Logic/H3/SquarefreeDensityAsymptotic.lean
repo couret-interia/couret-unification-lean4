@@ -2818,4 +2818,16 @@ theorem squarefreeSquareDivisorEqOneBridge_proved :
     rw [← hu]
     exact u.isUnit.dvd)
 
+/-- Version finale : C-04b est consommée avec le seul cas
+    non-squarefree.
+
+    Le cas squarefree est maintenant fermé localement. -/
+theorem squarefree_asymptotic_density_of_nonsquarefree_only
+    (Hnsf : NonSquarefreeMoebiusFilteredSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_eqOne_and_nonsquarefree
+    squarefreeSquareDivisorEqOneBridge_proved
+    Hnsf
+
 end CouretUnification.Logic.H3
