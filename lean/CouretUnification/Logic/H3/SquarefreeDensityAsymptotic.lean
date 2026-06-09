@@ -3181,4 +3181,65 @@ theorem squarefree_asymptotic_density_of_nonsquarefree_support_only
     divisorsAsIccFilterBridge_proved
     moebiusDivisorsSumZeroBridge_proved
 
+/-!
+## Cas non-squarefree — réduction à un facteur premier carré
+
+Il reste à fermer le cœur local :
+  `¬ Squarefree n → ∑_{d²∣n} μ(d)=0`.
+
+La voie arithmétique naturelle est :
+1. extraire un premier `p` tel que `p² ∣ n` ;
+2. annuler la somme par appariement des termes contenant / ne contenant pas `p`.
+-/
+
+/-- Extraction arithmétique :
+    tout entier non-squarefree possède un facteur premier carré. -/
+def PrimeSquareDivisorOfNonSquarefreeBridge : Prop :=
+  ∀ n : ℕ,
+    ¬ Squarefree n →
+      ∃ p : ℕ,
+        p.Prime ∧
+          p^2 ∣ n
+
+/-- Annulation locale de Möbius en présence d'un facteur premier carré.
+
+    Si `p² ∣ n`, alors la somme
+      `∑_{d²∣n} μ(d)`
+    s'annule par appariement des diviseurs selon la présence de `p`. -/
+def MoebiusSquareDivisorCancellationAtPrimeBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      moebiusSquareDivisorLocalFilteredSumInt n = 0
+
+/-- L'extraction d'un facteur premier carré et l'annulation locale
+    ferment le cas non-squarefree. -/
+theorem nonSquarefreeMoebiusFilteredSumZero_of_prime_square
+    (Hprime_square : PrimeSquareDivisorOfNonSquarefreeBridge)
+    (Hcancel : MoebiusSquareDivisorCancellationAtPrimeBridge) :
+    NonSquarefreeMoebiusFilteredSumZeroBridge := by
+  unfold NonSquarefreeMoebiusFilteredSumZeroBridge
+  unfold PrimeSquareDivisorOfNonSquarefreeBridge at Hprime_square
+  unfold MoebiusSquareDivisorCancellationAtPrimeBridge at Hcancel
+
+  intro n hnsf
+
+  rcases Hprime_square n hnsf with ⟨p, hp_prime, hp_square_dvd⟩
+
+  exact Hcancel n p hp_prime hp_square_dvd
+
+/-- Version finale alternative : C-04b est consommée avec deux bridges
+    purement locaux :
+    - extraction d'un facteur premier carré ;
+    - annulation de la somme de Möbius en présence de ce facteur. -/
+theorem squarefree_asymptotic_density_of_prime_square_cancellation
+    (Hprime_square : PrimeSquareDivisorOfNonSquarefreeBridge)
+    (Hcancel : MoebiusSquareDivisorCancellationAtPrimeBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_only
+    (nonSquarefreeMoebiusFilteredSumZero_of_prime_square
+      Hprime_square
+      Hcancel)
+
 end CouretUnification.Logic.H3
