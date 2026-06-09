@@ -3680,4 +3680,50 @@ theorem squarefree_asymptotic_density_of_prime_square_image_and_sign
       Himage
       Hsign)
 
+/-- Fermeture du signe de Möbius sous multiplication par un premier absent.
+
+    On utilise :
+    - `ArithmeticFunction.isMultiplicative_moebius`;
+    - `IsMultiplicative.map_mul_of_coprime`;
+    - `ArithmeticFunction.moebius_apply_prime`;
+    - `Prime.not_coprime_iff_dvd` pour transformer `¬ p ∣ d`
+      en `p.Coprime d`. -/
+theorem moebiusMulPrimeNotDvdBridge_proved :
+    MoebiusMulPrimeNotDvdBridge := by
+  unfold MoebiusMulPrimeNotDvdBridge
+
+  intro p d hp_prime hp_not_dvd
+
+  have hcop : p.Coprime d := by
+    by_contra hnot_coprime
+    exact hp_not_dvd
+      ((Nat.Prime.not_coprime_iff_dvd hp_prime).mp hnot_coprime)
+
+  calc
+    (ArithmeticFunction.moebius (p * d) : ℤ)
+        =
+      (ArithmeticFunction.moebius p : ℤ) *
+        (ArithmeticFunction.moebius d : ℤ) := by
+        exact
+          ArithmeticFunction.isMultiplicative_moebius.map_mul_of_coprime
+            hcop
+    _ =
+      (-1 : ℤ) * (ArithmeticFunction.moebius d : ℤ) := by
+        rw [ArithmeticFunction.moebius_apply_prime hp_prime]
+    _ =
+      - (ArithmeticFunction.moebius d : ℤ) := by
+        ring
+
+/-- Version finale : C-04b est consommée avec le seul bridge
+    de changement de variable `d ↦ p*d`.
+
+    Le signe de Möbius est maintenant fermé par multiplicativité. -/
+theorem squarefree_asymptotic_density_of_prime_square_image_only
+    (Himage : MoebiusPrimeExactOnceSumAsImageBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_image_and_sign
+    Himage
+    moebiusMulPrimeNotDvdBridge_proved
+
 end CouretUnification.Logic.H3
