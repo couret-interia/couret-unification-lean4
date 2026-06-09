@@ -4325,4 +4325,68 @@ theorem squarefree_asymptotic_density_of_prime_square_quotient_exact_only
     squareDvdOfPrimeMulSquareDvdBridge_proved
     Hnot_dvd
 
+/-- Fermeture de l'exactitude du quotient.
+
+    Si `p ∣ d`, alors `d = p*k`, donc
+    `e = p*d = p*(p*k) = p²*k`, contradiction avec `p² ∤ e`. -/
+theorem primeNotDvdQuotientOfPrimeSquareNotDvdBridge_proved :
+    PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge := by
+  unfold PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge
+
+  intro p d e hp_prime hpd_eq_e hp_square_not_dvd_e hp_dvd_d
+
+  rcases hp_dvd_d with ⟨k, hk⟩
+
+  apply hp_square_not_dvd_e
+
+  refine ⟨k, ?_⟩
+
+  calc
+    e = p * d := hpd_eq_e.symm
+    _ = p * (p * k) := by
+        rw [hk]
+    _ = p^2 * k := by
+        ring
+
+/-- Fermeture finale de l'annulation locale au-dessus d'un facteur premier carré. -/
+theorem moebiusSquareDivisorCancellationAtPrimeBridge_proved :
+    MoebiusSquareDivisorCancellationAtPrimeBridge :=
+  moebiusSquareDivisorCancellationAtPrime_of_split_and_pair
+    moebiusSquareDivisorPrimeSplitBridge_proved
+    (moebiusSquareDivisorPrimePairCancellation_of_exact_pair
+      moebiusSquareDivisorWithPrimeSplitBridge_proved
+      moebiusSquareDivisorPrimeSquareTermsZeroBridge_proved
+      (moebiusSquareDivisorPrimeExactPairCancellation_of_image_and_sign
+        (moebiusPrimeExactOnceSumAsImageBridge_of_data
+          (moebiusPrimeExactOnceImageDataBridge_of_parts
+            (moebiusPrimeExactOnceImageMapBridge_of_arith
+              (primeSquareMulSquareDvdBridge_of_coprime_product
+                primeSquareCoprimeSquareBridge_proved
+                coprimeMulDvdOfDvdDvdBridge_proved)
+              primeSquareNotDvdPrimeMulBridge_proved)
+            moebiusPrimeExactOnceImageInjectiveBridge_proved
+            (moebiusPrimeExactOnceImageSurjectiveBridge_of_quotient
+              primeDivisorPreimageBridge_proved
+              squareDvdOfPrimeMulSquareDvdBridge_proved
+              primeNotDvdQuotientOfPrimeSquareNotDvdBridge_proved)))
+        moebiusMulPrimeNotDvdBridge_proved))
+
+/-- Fermeture finale du cas non-squarefree local. -/
+theorem nonSquarefreeMoebiusFilteredSumZeroBridge_proved :
+    NonSquarefreeMoebiusFilteredSumZeroBridge :=
+  nonSquarefreeMoebiusFilteredSumZero_of_prime_square
+    primeSquareDivisorOfNonSquarefreeBridge_proved
+    moebiusSquareDivisorCancellationAtPrimeBridge_proved
+
+/-- Fermeture finale de C-04b dans le fichier lab :
+    la densité asymptotique des squarefree est `6 / π²`.
+
+    Statut : fermeture locale complète de l'identité de Möbius filtrée,
+    au-dessus des bridges analytiques déjà fermés dans ce fichier. -/
+theorem squarefree_asymptotic_density_final_proved :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_only
+    nonSquarefreeMoebiusFilteredSumZeroBridge_proved
+
 end CouretUnification.Logic.H3
