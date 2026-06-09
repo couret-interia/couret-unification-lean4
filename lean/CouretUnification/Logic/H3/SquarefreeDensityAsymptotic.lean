@@ -2157,4 +2157,47 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_map_inj
     Hinj
     countMultiplesNatSurjectiveBridge_proved
 
+/-- Fermeture de la bonne définition de la carte `n ↦ n/q`.
+
+    Si `n ∈ [1,N]` et `q ∣ n`, alors :
+    - `n/q ≤ N/q` par monotonie de la division ;
+    - `1 ≤ n/q` car `q ≤ n`, puisque `q ∣ n`, `q ≥ 1`, et `n ≥ 1`. -/
+theorem countMultiplesNatMapBridge_proved :
+    CountMultiplesNatMapBridge := by
+  unfold CountMultiplesNatMapBridge
+
+  intro N q hq n hn
+
+  rw [Finset.mem_filter] at hn
+  rcases hn with ⟨hnIcc, hdiv⟩
+  rcases Finset.mem_Icc.mp hnIcc with ⟨hn1, hnN⟩
+
+  rw [Finset.mem_Icc]
+  constructor
+
+  · have hqpos : 0 < q := lt_of_lt_of_le Nat.zero_lt_one hq
+    have hnpos : 0 < n := lt_of_lt_of_le Nat.zero_lt_one hn1
+
+    have hq_le_n : q ≤ n :=
+      Nat.le_of_dvd hnpos hdiv
+
+    exact (Nat.one_le_div_iff hqpos).2 hq_le_n
+
+  · exact Nat.div_le_div_right hnN
+
+/-- Version finale : C-04b est consommée avec A1b et l'injectivité
+    de la bijection des multiples.
+
+    La bonne définition et la surjectivité sont maintenant fermées
+    localement. -/
+theorem squarefree_asymptotic_density_of_indicator_and_multiples_inj
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hinj : CountMultiplesNatInjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_multiples_map_inj
+    Hindicator
+    countMultiplesNatMapBridge_proved
+    Hinj
+
 end CouretUnification.Logic.H3
