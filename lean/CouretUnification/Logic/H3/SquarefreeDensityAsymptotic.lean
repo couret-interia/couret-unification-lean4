@@ -4032,4 +4032,70 @@ theorem squarefree_asymptotic_density_of_prime_square_prod_surj
     primeSquareNotDvdPrimeMulBridge_proved
     Hsurj
 
+/-!
+## Produit de diviseurs carrés — réduction à la coprimalité
+
+Il reste à fermer :
+  `p² ∣ n`, `d² ∣ n`, `p ∤ d` ⟹ `(p*d)² ∣ n`.
+
+On le réduit à deux faits standards :
+- `(p²).Coprime (d²)` ;
+- si `a ∣ n`, `b ∣ n`, et `a.Coprime b`, alors `a*b ∣ n`.
+-/
+
+/-- Coprimalité des carrés.
+
+    Si `p` est premier et `p ∤ d`, alors `p²` est premier à `d²`. -/
+def PrimeSquareCoprimeSquareBridge : Prop :=
+  ∀ p d : ℕ,
+    p.Prime →
+    ¬ p ∣ d →
+      (p^2).Coprime (d^2)
+
+/-- Produit de deux diviseurs copremiers d'un même entier. -/
+def CoprimeMulDvdOfDvdDvdBridge : Prop :=
+  ∀ a b n : ℕ,
+    a.Coprime b →
+    a ∣ n →
+    b ∣ n →
+      a * b ∣ n
+
+/-- Les deux faits standards ferment le produit de diviseurs carrés. -/
+theorem primeSquareMulSquareDvdBridge_of_coprime_product
+    (Hcop : PrimeSquareCoprimeSquareBridge)
+    (Hmul : CoprimeMulDvdOfDvdDvdBridge) :
+    PrimeSquareMulSquareDvdBridge := by
+  unfold PrimeSquareMulSquareDvdBridge
+  unfold PrimeSquareCoprimeSquareBridge at Hcop
+  unfold CoprimeMulDvdOfDvdDvdBridge at Hmul
+
+  intro n p d hp_prime hp_square_dvd hd_square_dvd hp_not_dvd
+
+  have hcop : (p^2).Coprime (d^2) :=
+    Hcop p d hp_prime hp_not_dvd
+
+  have hprod : p^2 * d^2 ∣ n :=
+    Hmul (p^2) (d^2) n hcop hp_square_dvd hd_square_dvd
+
+  have hrewrite : p^2 * d^2 = (p * d)^2 := by
+    ring
+
+  rw [← hrewrite]
+
+  exact hprod
+
+/-- Version finale : C-04b est consommée avec :
+    - la coprimalité des carrés ;
+    - le produit de diviseurs copremiers ;
+    - la surjectivité de l'image. -/
+theorem squarefree_asymptotic_density_of_prime_square_coprime_surj
+    (Hcop : PrimeSquareCoprimeSquareBridge)
+    (Hmul : CoprimeMulDvdOfDvdDvdBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_prod_surj
+    (primeSquareMulSquareDvdBridge_of_coprime_product Hcop Hmul)
+    Hsurj
+
 end CouretUnification.Logic.H3
