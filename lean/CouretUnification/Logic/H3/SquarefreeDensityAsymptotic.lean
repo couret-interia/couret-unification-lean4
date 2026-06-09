@@ -4125,4 +4125,35 @@ theorem squarefree_asymptotic_density_of_prime_square_coprime_only
     coprimeMulDvdOfDvdDvdBridge_proved
     Hsurj
 
+/-- Fermeture de la coprimalité des carrés.
+
+    De `p ∤ d` et `p` premier, on obtient `p.Coprime d`.
+    La coprimalité est ensuite stable par puissances. -/
+theorem primeSquareCoprimeSquareBridge_proved :
+    PrimeSquareCoprimeSquareBridge := by
+  unfold PrimeSquareCoprimeSquareBridge
+
+  intro p d hp_prime hp_not_dvd
+
+  have hcop : p.Coprime d :=
+    (hp_prime.coprime_iff_not_dvd).2 hp_not_dvd
+
+  have hcop_left : (p^2).Coprime d := by
+    exact hcop.pow_left 2
+
+  exact hcop_left.pow_right 2
+
+/-- Version finale : C-04b est consommée avec le seul bridge
+    de surjectivité de l'image.
+
+    La coprimalité des carrés et le produit de diviseurs copremiers
+    sont maintenant fermés. -/
+theorem squarefree_asymptotic_density_of_prime_square_surj_only
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_coprime_only
+    primeSquareCoprimeSquareBridge_proved
+    Hsurj
+
 end CouretUnification.Logic.H3
