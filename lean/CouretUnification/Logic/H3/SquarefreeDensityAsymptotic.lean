@@ -2970,40 +2970,45 @@ theorem nonSquarefreeSquareDivisorSupportAsDivisors_of_nonzero
 
   exact ⟨m, hm_ne_one, hsum⟩
 
-/-- La forme `m.divisors` implique la forme filtrée `Icc 1 m`,
-    avec les hypothèses naturelles `m ≠ 0`, `m ≠ 1`. -/
-theorem moebiusDivisorSumZeroBridge_of_divisors
+/-- La paramétrisation renforcée, combinée à la forme `m.divisors`,
+    ferme directement le cas non-squarefree. -/
+theorem nonSquarefreeMoebiusFilteredSumZero_of_nonzero_divisors_sum
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge)
     (Hdivisors_eq : DivisorsAsIccFilterBridge)
     (Hsum : MoebiusDivisorsSumZeroBridge) :
-    MoebiusDivisorSumZeroBridge := by
-  unfold MoebiusDivisorSumZeroBridge
+    NonSquarefreeMoebiusFilteredSumZeroBridge := by
+  unfold NonSquarefreeMoebiusFilteredSumZeroBridge
+  unfold NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge at Hsupport
   unfold DivisorsAsIccFilterBridge at Hdivisors_eq
   unfold MoebiusDivisorsSumZeroBridge at Hsum
 
-  intro m hm_ne_one
+  intro n hnsf
 
-  by_cases hm0 : m = 0
-  · subst m
-    exfalso
-    -- Ce cas est impossible pour le futur support renforcé,
-    -- mais l'ancien bridge seul ne porte pas l'hypothèse `m ≠ 0`.
-    -- On garde donc cette voie non utilisée hors wrapper renforcé.
-    exact hm_ne_one rfl
-  · rw [Hdivisors_eq m hm0]
-    exact Hsum m hm0 hm_ne_one
+  rcases Hsupport n hnsf with ⟨m, hm_ne_zero, hm_ne_one, hsum_eq⟩
 
-/-- Version finale renforcée : C-04b est consommée avec :
-    - le support non-squarefree renforcé `m ≠ 0`, `m ≠ 1` ;
-    - la somme de Möbius sur `m.divisors` ;
-    - l'identification `Icc/filter = divisors`. -/
+  calc
+    moebiusSquareDivisorLocalFilteredSumInt n
+        =
+      Finset.sum
+        ((Finset.Icc 1 m).filter (fun d => d ∣ m))
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := hsum_eq
+    _ =
+      Finset.sum m.divisors
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := by
+          rw [Hdivisors_eq m hm_ne_zero]
+    _ = 0 := Hsum m hm_ne_zero hm_ne_one
+
+/-- Version finale propre : C-04b est consommée avec les trois bridges
+    naturels du cas non-squarefree. -/
 theorem squarefree_asymptotic_density_of_nonsquarefree_nonzero_divisors_sum
     (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge)
     (Hdivisors_eq : DivisorsAsIccFilterBridge)
     (Hsum : MoebiusDivisorsSumZeroBridge) :
     Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
       (nhds (6 / (Real.pi^2))) :=
-  squarefree_asymptotic_density_of_nonsquarefree_divisor_sum
-    (nonSquarefreeSquareDivisorSupportAsDivisors_of_nonzero Hsupport)
-    (moebiusDivisorSumZeroBridge_of_divisors Hdivisors_eq Hsum)
-
+  squarefree_asymptotic_density_of_nonsquarefree_only
+    (nonSquarefreeMoebiusFilteredSumZero_of_nonzero_divisors_sum
+      Hsupport
+      Hdivisors_eq
+      Hsum)
 end CouretUnification.Logic.H3
