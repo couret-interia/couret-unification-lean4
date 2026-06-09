@@ -1,3 +1,0 @@
-error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:3264:41: Application type mismatch: The argument
-error: Lean exited with code 1

@@ -3261,7 +3261,11 @@ theorem primeSquareDivisorOfNonSquarefreeBridge_proved :
 
   exact (Nat.squarefree_iff_prime_squarefree).2 (by
     intro p hp_prime hp_square_dvd
-    exact hno_prime_square ⟨p, hp_prime, hp_square_dvd⟩)
+
+    have hp_square_dvd_pow : p^2 ∣ n := by
+      simpa [pow_two] using hp_square_dvd
+
+    exact hno_prime_square ⟨p, hp_prime, hp_square_dvd_pow⟩)
 
 /-- Version finale : C-04b est consommée avec le seul bridge
     d'annulation locale au-dessus d'un facteur premier carré.
