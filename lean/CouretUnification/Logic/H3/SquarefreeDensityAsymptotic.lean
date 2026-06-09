@@ -2810,10 +2810,14 @@ theorem squarefreeSquareDivisorEqOneBridge_proved :
 
   intro n d hsf hd1 hdiv
 
+  have hdiv' : d * d ∣ n := by
+    simpa [pow_two] using hdiv
+
   have hd_unit : IsUnit d :=
-    hsf d hdiv
+    hsf d hdiv'
 
   exact Nat.isUnit_iff.mp hd_unit
+
 
 /-- Version finale : C-04b est consommée avec le seul cas
     non-squarefree.
