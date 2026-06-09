@@ -3998,4 +3998,38 @@ theorem squarefree_asymptotic_density_of_prime_square_arith_surj
     (moebiusPrimeExactOnceImageMapBridge_of_arith Hprod Hexact)
     Hsurj
 
+/-- Fermeture de l'exactitude `p² ∤ p*d` si `p ∤ d`.
+
+    Si `p² ∣ p*d`, alors `p*d = p²*k`.
+    En réécrivant `p²*k = p*(p*k)` puis en simplifiant par `p > 0`,
+    on obtient `d = p*k`, contradiction avec `p ∤ d`. -/
+theorem primeSquareNotDvdPrimeMulBridge_proved :
+    PrimeSquareNotDvdPrimeMulBridge := by
+  unfold PrimeSquareNotDvdPrimeMulBridge
+
+  intro p d hp_prime hp_not_dvd hp_square_dvd
+
+  rcases hp_square_dvd with ⟨k, hk⟩
+
+  have hd_eq : d = p * k := by
+    exact Nat.mul_left_cancel hp_prime.pos (by
+      simpa [pow_two, Nat.mul_assoc] using hk)
+
+  exact hp_not_dvd ⟨k, hd_eq⟩
+
+/-- Version finale : C-04b est consommée avec :
+    - le produit de diviseurs carrés copremiers ;
+    - la surjectivité de l'image.
+
+    L'exactitude `p² ∤ p*d` est maintenant fermée. -/
+theorem squarefree_asymptotic_density_of_prime_square_prod_surj
+    (Hprod : PrimeSquareMulSquareDvdBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_arith_surj
+    Hprod
+    primeSquareNotDvdPrimeMulBridge_proved
+    Hsurj
+
 end CouretUnification.Logic.H3
