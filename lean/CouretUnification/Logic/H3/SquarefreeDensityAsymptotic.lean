@@ -3780,11 +3780,11 @@ theorem moebiusPrimeExactOnceSumAsImageBridge_of_data
   exact Finset.sum_bij
     (fun d _ => p * d)
     (fun d hd => hmap d hd)
-    (fun d hd => rfl)
     (fun d₁ hd₁ d₂ hd₂ h => hinj d₁ hd₁ d₂ hd₂ h)
     (fun e he => by
       rcases hsurj e he with ⟨d, hd, hde⟩
       exact ⟨d, hd, hde⟩)
+    (fun d hd => rfl)
 
 /-- Version finale : C-04b est consommée avec les seules données
     de bijection du changement de variable `d ↦ p*d`.
