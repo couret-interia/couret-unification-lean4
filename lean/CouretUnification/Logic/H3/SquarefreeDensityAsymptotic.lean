@@ -2110,4 +2110,23 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_map_inj_div
     Hinj
     (countMultiplesNatSurjectiveBridge_of_nat_div_bridges Hmul_le Hcancel)
 
+/-- Fermeture du verrou `k ≤ N/q → q*k ≤ N`.
+
+    Mathlib fournit déjà `Nat.mul_le_of_le_div`. -/
+theorem natMulLeOfLeDivBridge_proved :
+    NatMulLeOfLeDivBridge := by
+  unfold NatMulLeOfLeDivBridge
+  intro N q k hq hk
+  exact Nat.mul_le_of_le_div N q k hk
+
+/-- Fermeture du verrou `(q*k)/q = k`.
+
+    Mathlib fournit déjà `Nat.mul_div_cancel_left`. -/
+theorem natMulDivCancelLeftBridge_proved :
+    NatMulDivCancelLeftBridge := by
+  unfold NatMulDivCancelLeftBridge
+  intro q k hq
+  have hqpos : 0 < q := lt_of_lt_of_le Nat.zero_lt_one hq
+  exact Nat.mul_div_cancel_left k hqpos
+
 end CouretUnification.Logic.H3
