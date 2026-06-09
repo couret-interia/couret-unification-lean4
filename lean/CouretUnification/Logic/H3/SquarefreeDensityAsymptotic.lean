@@ -2284,4 +2284,80 @@ theorem squarefree_asymptotic_density_of_indicator_only
     Hindicator
     moebiusDoubleSumEqualsFloorCountBridge_proved
 
+/-!
+## Sous-verrou A1b — identité indicatrice de Möbius
+
+A1b est maintenant séparé en deux parties :
+1. une identité locale, au niveau de chaque `n` ;
+2. une extension de troncature de `√n` vers `√N` lorsque `n ≤ N`.
+-/
+
+/-- Somme locale de Möbius sur les diviseurs carrés de `n`.
+
+    C'est la forme naturelle de l'identité :
+      `1_squarefree(n) = ∑_{d≤√n, d²∣n} μ(d)`. -/
+noncomputable def moebiusSquareDivisorLocalSum (n : ℕ) : ℝ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt n)) (fun d =>
+    if d^2 ∣ n then ((ArithmeticFunction.moebius d : ℤ) : ℝ) else 0)
+
+/-- Sous-verrou A1b-local :
+    identité indicatrice de Möbius au niveau d'un entier `n`.
+
+    C'est le dernier cœur arithmétique :
+      `1` si `n` est squarefree, `0` sinon,
+    égal à la somme de Möbius sur les diviseurs carrés de `n`. -/
+def SquarefreeIndicatorLocalMoebiusBridge : Prop :=
+  ∀ n : ℕ,
+    (if Squarefree n then (1 : ℝ) else 0)
+      =
+    moebiusSquareDivisorLocalSum n
+
+/-- Sous-verrou A1b-troncature :
+    pour `1 ≤ n ≤ N`, la somme locale tronquée à `√n`
+    coïncide avec la somme tronquée à `√N`.
+
+    Les termes ajoutés entre `√n` et `√N` sont nuls, car `d² ∣ n`
+    impliquerait `d² ≤ n`. -/
+def SquarefreeIndicatorMoebiusTruncationBridge : Prop :=
+  ∀ N n : ℕ,
+    n ∈ Finset.Icc 1 N →
+      moebiusSquareDivisorLocalSum n
+        =
+      Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+        if d^2 ∣ n then ((ArithmeticFunction.moebius d : ℤ) : ℝ) else 0)
+
+/-- Les deux sous-verrous A1b-local et A1b-troncature ferment A1b. -/
+theorem squarefreeIndicatorEqualsMoebiusDoubleSum_of_local_and_truncation
+    (Hlocal : SquarefreeIndicatorLocalMoebiusBridge)
+    (Htrunc : SquarefreeIndicatorMoebiusTruncationBridge) :
+    SquarefreeIndicatorEqualsMoebiusDoubleSumBridge := by
+  unfold SquarefreeIndicatorEqualsMoebiusDoubleSumBridge
+  unfold squarefreeIndicatorCountReal
+  unfold moebiusSquareDivisorDoubleSum
+
+  intro N
+
+  refine Finset.sum_congr rfl ?_
+  intro n hn
+
+  calc
+    (if Squarefree n then (1 : ℝ) else 0)
+        = moebiusSquareDivisorLocalSum n := Hlocal n
+    _ =
+      Finset.sum (Finset.Icc 1 (Nat.sqrt N)) (fun d =>
+        if d^2 ∣ n then ((ArithmeticFunction.moebius d : ℤ) : ℝ) else 0) :=
+          Htrunc N n hn
+
+/-- Version finale : C-04b est consommée avec les deux derniers
+    sous-verrous arithmétiques de A1b. -/
+theorem squarefree_asymptotic_density_of_local_moebius_and_truncation
+    (Hlocal : SquarefreeIndicatorLocalMoebiusBridge)
+    (Htrunc : SquarefreeIndicatorMoebiusTruncationBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_only
+    (squarefreeIndicatorEqualsMoebiusDoubleSum_of_local_and_truncation
+      Hlocal
+      Htrunc)
+
 end CouretUnification.Logic.H3
