@@ -2110,4 +2110,51 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_map_inj_div
     Hinj
     (countMultiplesNatSurjectiveBridge_of_nat_div_bridges Hmul_le Hcancel)
 
+/-- Fermeture du verrou `k ≤ N/q → q*k ≤ N`.
+
+    Mathlib fournit `Nat.le_div_iff_mul_le`, qui donne naturellement
+    `k*q ≤ N`; on commute ensuite le produit. -/
+theorem natMulLeOfLeDivBridge_proved :
+    NatMulLeOfLeDivBridge := by
+  unfold NatMulLeOfLeDivBridge
+  intro N q k hq hk
+  have hqpos : 0 < q := lt_of_lt_of_le Nat.zero_lt_one hq
+  have hmul : k * q ≤ N :=
+    (Nat.le_div_iff_mul_le hqpos).1 hk
+  simpa [Nat.mul_comm] using hmul
+
+/-- Fermeture du verrou `(q*k)/q = k`.
+
+    Mathlib fournit déjà `Nat.mul_div_cancel_left`. -/
+theorem natMulDivCancelLeftBridge_proved :
+    NatMulDivCancelLeftBridge := by
+  unfold NatMulDivCancelLeftBridge
+  intro q k hq
+  have hqpos : 0 < q := lt_of_lt_of_le Nat.zero_lt_one hq
+  exact Nat.mul_div_cancel_left k hqpos
+
+/-- Fermeture de la surjectivité de la bijection des multiples. -/
+theorem countMultiplesNatSurjectiveBridge_proved :
+    CountMultiplesNatSurjectiveBridge :=
+  countMultiplesNatSurjectiveBridge_of_nat_div_bridges
+    natMulLeOfLeDivBridge_proved
+    natMulDivCancelLeftBridge_proved
+
+/-- Version finale : C-04b est consommée avec A1b, la bonne définition
+    et l'injectivité de la bijection des multiples.
+
+    La surjectivité est maintenant fermée localement par les lemmes Nat
+    de division. -/
+theorem squarefree_asymptotic_density_of_indicator_and_multiples_map_inj
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hmap : CountMultiplesNatMapBridge)
+    (Hinj : CountMultiplesNatInjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_multiples_bijection_parts
+    Hindicator
+    Hmap
+    Hinj
+    countMultiplesNatSurjectiveBridge_proved
+
 end CouretUnification.Logic.H3
