@@ -2424,4 +2424,93 @@ theorem squarefree_asymptotic_density_of_local_moebius_only
     Hlocal
     squarefreeIndicatorMoebiusTruncationBridge_proved
 
+/-!
+## Réduction entière de l'identité locale de Möbius
+
+On évite les difficultés de coercion `ℤ → ℝ` en isolant d'abord
+l'identité locale dans `ℤ`.
+-/
+
+/-- Indicatrice entière de la propriété squarefree. -/
+noncomputable def squarefreeIndicatorLocalInt (n : ℕ) : ℤ :=
+  if Squarefree n then (1 : ℤ) else 0
+
+/-- Somme locale entière de Möbius sur les diviseurs carrés de `n`. -/
+noncomputable def moebiusSquareDivisorLocalSumInt (n : ℕ) : ℤ :=
+  Finset.sum (Finset.Icc 1 (Nat.sqrt n)) (fun d =>
+    if d^2 ∣ n then (ArithmeticFunction.moebius d : ℤ) else 0)
+
+/-- Version entière du dernier verrou local. -/
+def SquarefreeIndicatorLocalMoebiusIntBridge : Prop :=
+  ∀ n : ℕ,
+    squarefreeIndicatorLocalInt n =
+      moebiusSquareDivisorLocalSumInt n
+
+/-- La version entière implique le bridge réel déjà utilisé par C-04b. -/
+theorem squarefreeIndicatorLocalMoebiusBridge_of_int
+    (Hint : SquarefreeIndicatorLocalMoebiusIntBridge) :
+    SquarefreeIndicatorLocalMoebiusBridge := by
+  unfold SquarefreeIndicatorLocalMoebiusBridge
+  unfold SquarefreeIndicatorLocalMoebiusIntBridge at Hint
+
+  intro n
+
+  have hZ := Hint n
+
+  unfold squarefreeIndicatorLocalInt at hZ
+  unfold moebiusSquareDivisorLocalSumInt at hZ
+  unfold moebiusSquareDivisorLocalSum
+
+  exact_mod_cast hZ
+
+/-- Version filtrée entière de la somme locale.
+
+    Elle remplace la somme avec `if d² ∣ n` par une somme sur le
+    sous-ensemble filtré des diviseurs carrés. -/
+noncomputable def moebiusSquareDivisorLocalFilteredSumInt (n : ℕ) : ℤ :=
+  Finset.sum
+    ((Finset.Icc 1 (Nat.sqrt n)).filter (fun d => d^2 ∣ n))
+    (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- La somme entière avec `if` coïncide avec la somme filtrée. -/
+theorem moebiusSquareDivisorLocalSumInt_eq_filtered
+    (n : ℕ) :
+    moebiusSquareDivisorLocalSumInt n =
+      moebiusSquareDivisorLocalFilteredSumInt n := by
+  unfold moebiusSquareDivisorLocalSumInt
+  unfold moebiusSquareDivisorLocalFilteredSumInt
+  symm
+  rw [Finset.sum_filter]
+
+/-- Dernier verrou sous forme filtrée entière. -/
+def SquarefreeIndicatorLocalMoebiusFilteredIntBridge : Prop :=
+  ∀ n : ℕ,
+    squarefreeIndicatorLocalInt n =
+      moebiusSquareDivisorLocalFilteredSumInt n
+
+/-- La forme filtrée entière implique la forme entière avec `if`. -/
+theorem squarefreeIndicatorLocalMoebiusIntBridge_of_filtered
+    (Hfiltered : SquarefreeIndicatorLocalMoebiusFilteredIntBridge) :
+    SquarefreeIndicatorLocalMoebiusIntBridge := by
+  unfold SquarefreeIndicatorLocalMoebiusIntBridge
+  unfold SquarefreeIndicatorLocalMoebiusFilteredIntBridge at Hfiltered
+
+  intro n
+
+  calc
+    squarefreeIndicatorLocalInt n
+        = moebiusSquareDivisorLocalFilteredSumInt n := Hfiltered n
+    _ = moebiusSquareDivisorLocalSumInt n :=
+        (moebiusSquareDivisorLocalSumInt_eq_filtered n).symm
+
+/-- Version finale : C-04b est consommée avec le seul dernier verrou
+    filtré entier de l'identité de Möbius locale. -/
+theorem squarefree_asymptotic_density_of_local_moebius_filtered_int
+    (Hfiltered : SquarefreeIndicatorLocalMoebiusFilteredIntBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_local_moebius_only
+    (squarefreeIndicatorLocalMoebiusBridge_of_int
+      (squarefreeIndicatorLocalMoebiusIntBridge_of_filtered Hfiltered))
+
 end CouretUnification.Logic.H3
