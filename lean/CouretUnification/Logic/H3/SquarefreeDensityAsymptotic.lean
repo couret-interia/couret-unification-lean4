@@ -4098,4 +4098,31 @@ theorem squarefree_asymptotic_density_of_prime_square_coprime_surj
     (primeSquareMulSquareDvdBridge_of_coprime_product Hcop Hmul)
     Hsurj
 
+/-- Fermeture du produit de deux diviseurs copremiers d'un même entier.
+
+    Mathlib fournit ce fait comme méthode de `Nat.Coprime` :
+      `hcop.mul_dvd_of_dvd_of_dvd`. -/
+theorem coprimeMulDvdOfDvdDvdBridge_proved :
+    CoprimeMulDvdOfDvdDvdBridge := by
+  unfold CoprimeMulDvdOfDvdDvdBridge
+
+  intro a b n hcop ha hb
+
+  exact hcop.mul_dvd_of_dvd_of_dvd ha hb
+
+/-- Version finale : C-04b est consommée avec :
+    - la coprimalité des carrés ;
+    - la surjectivité de l'image.
+
+    Le produit de diviseurs copremiers est maintenant fermé. -/
+theorem squarefree_asymptotic_density_of_prime_square_coprime_only
+    (Hcop : PrimeSquareCoprimeSquareBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_coprime_surj
+    Hcop
+    coprimeMulDvdOfDvdDvdBridge_proved
+    Hsurj
+
 end CouretUnification.Logic.H3
