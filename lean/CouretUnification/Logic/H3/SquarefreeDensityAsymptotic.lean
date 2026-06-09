@@ -2200,4 +2200,88 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_inj
     countMultiplesNatMapBridge_proved
     Hinj
 
+/-- Fermeture de l'injectivité de la carte `n ↦ n/q` sur les multiples
+    de `q`.
+
+    Si `q ∣ n₁` et `q ∣ n₂`, on écrit :
+      `n₁ = q*t₁`, `n₂ = q*t₂`.
+
+    Alors :
+      `n₁/q = t₁` et `n₂/q = t₂`,
+    donc l'égalité des quotients donne `t₁ = t₂`, puis `n₁ = n₂`. -/
+theorem countMultiplesNatInjectiveBridge_proved :
+    CountMultiplesNatInjectiveBridge := by
+  unfold CountMultiplesNatInjectiveBridge
+
+  intro N q hq n₁ hn₁ n₂ hn₂ hquot
+
+  rw [Finset.mem_filter] at hn₁
+  rw [Finset.mem_filter] at hn₂
+
+  rcases hn₁ with ⟨_hn₁Icc, hdiv₁⟩
+  rcases hn₂ with ⟨_hn₂Icc, hdiv₂⟩
+
+  rcases hdiv₁ with ⟨t₁, ht₁⟩
+  rcases hdiv₂ with ⟨t₂, ht₂⟩
+
+  have hqpos : 0 < q := lt_of_lt_of_le Nat.zero_lt_one hq
+
+  have hquot₁ : n₁ / q = t₁ := by
+    rw [ht₁, Nat.mul_div_cancel_left t₁ hqpos]
+
+  have hquot₂ : n₂ / q = t₂ := by
+    rw [ht₂, Nat.mul_div_cancel_left t₂ hqpos]
+
+  have ht : t₁ = t₂ := by
+    rw [hquot₁, hquot₂] at hquot
+    exact hquot
+
+  rw [ht₁, ht₂, ht]
+
+/-- Fermeture du comptage général des multiples.
+
+    Les trois propriétés de la bijection `n ↦ n/q` sont maintenant
+    fermées localement :
+    - bonne définition ;
+    - injectivité ;
+    - surjectivité. -/
+theorem countMultiplesNatBridge_proved :
+    CountMultiplesNatBridge :=
+  countMultiplesNatBridge_of_bijection_bridge
+    (countMultiplesNatBijectionBridge_of_data
+      (countMultiplesNatBijectionDataBridge_of_parts
+        countMultiplesNatMapBridge_proved
+        countMultiplesNatInjectiveBridge_proved
+        countMultiplesNatSurjectiveBridge_proved))
+
+/-- Fermeture du comptage des multiples de carrés. -/
+theorem countMultiplesSquareNatBridge_proved :
+    CountMultiplesSquareNatBridge :=
+  countMultiplesSquareNatBridge_of_general_multiples
+    countMultiplesNatBridge_proved
+
+/-- Fermeture réelle du bridge de comptage des multiples de carrés. -/
+theorem countMultiplesSquareBridge_proved :
+    CountMultiplesSquareBridge :=
+  countMultiplesSquareBridge_of_nat_bridge
+    countMultiplesSquareNatBridge_proved
+
+/-- Fermeture de A1c : réindexation finie/Fubini vers les planchers. -/
+theorem moebiusDoubleSumEqualsFloorCountBridge_proved :
+    MoebiusDoubleSumEqualsFloorCountBridge :=
+  moebiusDoubleSumEqualsFloorCount_of_count_multiples
+    countMultiplesSquareBridge_proved
+
+/-- Version finale : C-04b est consommée avec le seul bridge A1b
+    d'identité indicatrice de Möbius.
+
+    A1a et A1c sont maintenant fermés localement. -/
+theorem squarefree_asymptotic_density_of_indicator_only
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_fubini
+    Hindicator
+    moebiusDoubleSumEqualsFloorCountBridge_proved
+
 end CouretUnification.Logic.H3
