@@ -3798,4 +3798,101 @@ theorem squarefree_asymptotic_density_of_prime_square_image_data
   squarefree_asymptotic_density_of_prime_square_image_only
     (moebiusPrimeExactOnceSumAsImageBridge_of_data Hdata)
 
+/-!
+## Données de bijection — séparation en image / injectivité / surjectivité
+-/
+
+/-- Bonne définition de l'image `d ↦ p*d`. -/
+def MoebiusPrimeExactOnceImageMapBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      ∀ d : ℕ,
+        d ∈ squareDivisorLocalSupportWithoutPrime n p →
+          p * d ∈ squareDivisorLocalSupportWithPrimeExactlyOnce n p
+
+/-- Injectivité de l'image `d ↦ p*d` sur le support source. -/
+def MoebiusPrimeExactOnceImageInjectiveBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      ∀ d₁ : ℕ,
+        d₁ ∈ squareDivisorLocalSupportWithoutPrime n p →
+        ∀ d₂ : ℕ,
+          d₂ ∈ squareDivisorLocalSupportWithoutPrime n p →
+            p * d₁ = p * d₂ →
+              d₁ = d₂
+
+/-- Surjectivité de l'image `d ↦ p*d` vers la partie où `p`
+    apparaît exactement une fois. -/
+def MoebiusPrimeExactOnceImageSurjectiveBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      ∀ e : ℕ,
+        e ∈ squareDivisorLocalSupportWithPrimeExactlyOnce n p →
+          ∃ d : ℕ,
+            d ∈ squareDivisorLocalSupportWithoutPrime n p
+              ∧ p * d = e
+
+/-- Les trois composantes image / injectivité / surjectivité reconstruisent
+    les données de bijection. -/
+theorem moebiusPrimeExactOnceImageDataBridge_of_parts
+    (Hmap : MoebiusPrimeExactOnceImageMapBridge)
+    (Hinj : MoebiusPrimeExactOnceImageInjectiveBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    MoebiusPrimeExactOnceImageDataBridge := by
+  unfold MoebiusPrimeExactOnceImageDataBridge
+  unfold MoebiusPrimeExactOnceImageMapBridge at Hmap
+  unfold MoebiusPrimeExactOnceImageInjectiveBridge at Hinj
+  unfold MoebiusPrimeExactOnceImageSurjectiveBridge at Hsurj
+
+  intro n p hp_prime hp_square_dvd
+
+  exact
+    ⟨Hmap n p hp_prime hp_square_dvd,
+     Hinj n p hp_prime hp_square_dvd,
+     Hsurj n p hp_prime hp_square_dvd⟩
+
+/-- Version finale : C-04b est consommée avec les trois composantes
+    de la bijection `d ↦ p*d`. -/
+theorem squarefree_asymptotic_density_of_prime_square_image_parts
+    (Hmap : MoebiusPrimeExactOnceImageMapBridge)
+    (Hinj : MoebiusPrimeExactOnceImageInjectiveBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_image_data
+    (moebiusPrimeExactOnceImageDataBridge_of_parts
+      Hmap
+      Hinj
+      Hsurj)
+
+/-- Fermeture de l'injectivité de `d ↦ p*d`.
+
+    Comme `p` est premier, `p > 0`, donc la multiplication à gauche
+    par `p` est cancellable dans `ℕ`. -/
+theorem moebiusPrimeExactOnceImageInjectiveBridge_proved :
+    MoebiusPrimeExactOnceImageInjectiveBridge := by
+  unfold MoebiusPrimeExactOnceImageInjectiveBridge
+
+  intro n p hp_prime hp_square_dvd d₁ hd₁ d₂ hd₂ hmul
+
+  exact Nat.mul_left_cancel hp_prime.pos hmul
+
+/-- Version finale : C-04b est consommée avec :
+    - la bonne définition de l'image ;
+    - la surjectivité.
+
+    L'injectivité est maintenant fermée. -/
+theorem squarefree_asymptotic_density_of_prime_square_image_map_surj
+    (Hmap : MoebiusPrimeExactOnceImageMapBridge)
+    (Hsurj : MoebiusPrimeExactOnceImageSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_image_parts
+    Hmap
+    moebiusPrimeExactOnceImageInjectiveBridge_proved
+    Hsurj
+
 end CouretUnification.Logic.H3
