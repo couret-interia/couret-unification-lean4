@@ -3382,4 +3382,39 @@ theorem squarefree_asymptotic_density_of_prime_square_pair_cancellation
       Hsplit
       Hpair)
 
+/-- Fermeture du découpage du support selon `p ∣ d` ou non.
+
+    C'est l'identité standard :
+      somme totale = somme sur `¬ p ∣ d` + somme sur `p ∣ d`. -/
+theorem moebiusSquareDivisorPrimeSplitBridge_proved :
+    MoebiusSquareDivisorPrimeSplitBridge := by
+  unfold MoebiusSquareDivisorPrimeSplitBridge
+
+  intro n p
+
+  rw [moebiusSquareDivisorLocalFilteredSumInt_eq_support n]
+
+  unfold squareDivisorLocalSupportWithoutPrime
+  unfold squareDivisorLocalSupportWithPrime
+
+  symm
+  rw [add_comm]
+
+  exact Finset.sum_filter_add_sum_filter_not
+    (s := squareDivisorLocalSupport n)
+    (p := fun d => p ∣ d)
+    (f := fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- Version finale : C-04b est consommée avec le seul bridge
+    d'appariement des deux parties du support.
+
+    Le découpage du support est maintenant fermé. -/
+theorem squarefree_asymptotic_density_of_prime_square_pair_only
+    (Hpair : MoebiusSquareDivisorPrimePairCancellationBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_pair_cancellation
+    moebiusSquareDivisorPrimeSplitBridge_proved
+    Hpair
+
 end CouretUnification.Logic.H3
