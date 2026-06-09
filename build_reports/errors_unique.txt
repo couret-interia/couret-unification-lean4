@@ -1,3 +1,0 @@
-error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:2610:29: unexpected token 'using'; expected command
-error: Lean exited with code 1

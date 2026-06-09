@@ -2607,7 +2607,7 @@ theorem squarefreeMoebiusFilteredSumOne_of_support_singleton
 
   rw [Hsupport n hsf]
 
-  simp [MoebiusOneIntBridge] using moebiusOneIntBridge_proved
+  simp
 
 /-- Version finale : C-04b est consommée avec le cas non-squarefree
     et le support singleton du cas squarefree.
