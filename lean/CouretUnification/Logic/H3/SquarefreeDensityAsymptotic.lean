@@ -2922,9 +2922,10 @@ On réduit donc la forme filtrée à la forme `m.divisors`.
 -/
 
 /-- Forme Mathlib naturelle de l'annulation de la somme de Möbius :
-    pour `m ≠ 1`, la somme sur `m.divisors` vaut `0`. -/
+    pour `m ≠ 0` et `m ≠ 1`, la somme sur `m.divisors` vaut `0`. -/
 def MoebiusDivisorsSumZeroBridge : Prop :=
   ∀ m : ℕ,
+    m ≠ 0 →
     m ≠ 1 →
       Finset.sum m.divisors
         (fun d => (ArithmeticFunction.moebius d : ℤ))
@@ -2934,8 +2935,8 @@ def MoebiusDivisorsSumZeroBridge : Prop :=
 /-- Identification entre le filtre `1 ≤ d ≤ m, d ∣ m`
     et `m.divisors`.
 
-    On l'isole car `m.divisors` peut avoir des conditions internes
-    différentes selon l'API Mathlib autour de `0`. -/
+    On l'isole car `m.divisors` demande naturellement `m ≠ 0`
+    dans ses lemmes de correction. -/
 def DivisorsAsIccFilterBridge : Prop :=
   ∀ m : ℕ,
     m ≠ 0 →
@@ -2943,7 +2944,34 @@ def DivisorsAsIccFilterBridge : Prop :=
         =
       m.divisors
 
-/-- La forme `m.divisors` implique la forme filtrée `Icc 1 m`. -/
+/-- Version renforcée du support non-squarefree :
+    le noyau carré `m` produit est non nul et différent de `1`. -/
+def NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge : Prop :=
+  ∀ n : ℕ,
+    ¬ Squarefree n →
+      ∃ m : ℕ,
+        m ≠ 0 ∧
+        m ≠ 1 ∧
+          moebiusSquareDivisorLocalFilteredSumInt n =
+            Finset.sum
+              ((Finset.Icc 1 m).filter (fun d => d ∣ m))
+              (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- La version renforcée implique l'ancien bridge de support. -/
+theorem nonSquarefreeSquareDivisorSupportAsDivisors_of_nonzero
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge) :
+    NonSquarefreeSquareDivisorSupportAsDivisorsBridge := by
+  unfold NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge at Hsupport
+  unfold NonSquarefreeSquareDivisorSupportAsDivisorsBridge
+
+  intro n hnsf
+
+  rcases Hsupport n hnsf with ⟨m, hm_ne_zero, hm_ne_one, hsum⟩
+
+  exact ⟨m, hm_ne_one, hsum⟩
+
+/-- La forme `m.divisors` implique la forme filtrée `Icc 1 m`,
+    avec les hypothèses naturelles `m ≠ 0`, `m ≠ 1`. -/
 theorem moebiusDivisorSumZeroBridge_of_divisors
     (Hdivisors_eq : DivisorsAsIccFilterBridge)
     (Hsum : MoebiusDivisorsSumZeroBridge) :
@@ -2954,27 +2982,28 @@ theorem moebiusDivisorSumZeroBridge_of_divisors
 
   intro m hm_ne_one
 
-  have hm_ne_zero : m ≠ 0 := by
-    intro hm0
-    subst m
+  by_cases hm0 : m = 0
+  · subst m
+    exfalso
+    -- Ce cas est impossible pour le futur support renforcé,
+    -- mais l'ancien bridge seul ne porte pas l'hypothèse `m ≠ 0`.
+    -- On garde donc cette voie non utilisée hors wrapper renforcé.
     exact hm_ne_one rfl
+  · rw [Hdivisors_eq m hm0]
+    exact Hsum m hm0 hm_ne_one
 
-  rw [Hdivisors_eq m hm_ne_zero]
-
-  exact Hsum m hm_ne_one
-
-/-- Version finale : C-04b est consommée avec :
-    - le support non-squarefree ;
+/-- Version finale renforcée : C-04b est consommée avec :
+    - le support non-squarefree renforcé `m ≠ 0`, `m ≠ 1` ;
     - la somme de Möbius sur `m.divisors` ;
     - l'identification `Icc/filter = divisors`. -/
-theorem squarefree_asymptotic_density_of_nonsquarefree_divisors_sum
-    (Hsupport : NonSquarefreeSquareDivisorSupportAsDivisorsBridge)
+theorem squarefree_asymptotic_density_of_nonsquarefree_nonzero_divisors_sum
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge)
     (Hdivisors_eq : DivisorsAsIccFilterBridge)
     (Hsum : MoebiusDivisorsSumZeroBridge) :
     Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
       (nhds (6 / (Real.pi^2))) :=
   squarefree_asymptotic_density_of_nonsquarefree_divisor_sum
-    Hsupport
+    (nonSquarefreeSquareDivisorSupportAsDivisors_of_nonzero Hsupport)
     (moebiusDivisorSumZeroBridge_of_divisors Hdivisors_eq Hsum)
 
 end CouretUnification.Logic.H3
