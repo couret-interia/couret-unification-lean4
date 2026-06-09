@@ -3138,4 +3138,47 @@ theorem squarefree_asymptotic_density_of_nonsquarefree_support_and_divisors
     Hdivisors_eq
     moebiusDivisorsSumZeroBridge_proved
 
+/-- Fermeture de l'identification `Icc/filter = divisors`.
+
+    Pour `m ≠ 0`, `m.divisors` est exactement l'ensemble des diviseurs
+    positifs de `m`; le filtre `Icc 1 m` encode la même chose. -/
+theorem divisorsAsIccFilterBridge_proved :
+    DivisorsAsIccFilterBridge := by
+  unfold DivisorsAsIccFilterBridge
+
+  intro m hm_ne_zero
+
+  ext d
+  constructor
+
+  · intro hd
+    rw [Finset.mem_filter] at hd
+    rcases hd with ⟨hdIcc, hdiv⟩
+    exact Nat.mem_divisors.mpr ⟨hdiv, hm_ne_zero⟩
+
+  · intro hd
+    have hdiv : d ∣ m := Nat.dvd_of_mem_divisors hd
+    have hdpos : 0 < d := Nat.pos_of_mem_divisors hd
+    have hdle : d ≤ m := Nat.le_of_dvd (Nat.pos_of_ne_zero hm_ne_zero) hdiv
+
+    rw [Finset.mem_filter]
+    constructor
+    · rw [Finset.mem_Icc]
+      exact ⟨Nat.succ_le_of_lt hdpos, hdle⟩
+    · exact hdiv
+
+/-- Version finale : C-04b est consommée avec le seul support
+    non-squarefree renforcé.
+
+    L'identification `Icc/filter = divisors` et la somme de Möbius
+    sont maintenant fermées par Mathlib. -/
+theorem squarefree_asymptotic_density_of_nonsquarefree_support_only
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsNonzeroDivisorsBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_nonzero_divisors_sum
+    Hsupport
+    divisorsAsIccFilterBridge_proved
+    moebiusDivisorsSumZeroBridge_proved
+
 end CouretUnification.Logic.H3
