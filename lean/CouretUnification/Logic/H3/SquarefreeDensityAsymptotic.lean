@@ -1985,4 +1985,64 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_bijection_data
     Hindicator
     (countMultiplesNatBijectionBridge_of_data Hdata)
 
+/-- Partie "bonne définition" de la bijection des multiples :
+    si `n ∈ [1,N]` et `q ∣ n`, alors `n/q ∈ [1,N/q]`. -/
+def CountMultiplesNatMapBridge : Prop :=
+  ∀ N q : ℕ,
+    1 ≤ q →
+      ∀ n : ℕ,
+        n ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n) →
+          n / q ∈ Finset.Icc 1 (N / q)
+
+/-- Partie injective de la bijection :
+    sur les multiples de `q`, l'application `n ↦ n/q` est injective. -/
+def CountMultiplesNatInjectiveBridge : Prop :=
+  ∀ N q : ℕ,
+    1 ≤ q →
+      ∀ n₁ : ℕ,
+        n₁ ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n) →
+        ∀ n₂ : ℕ,
+        n₂ ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n) →
+          n₁ / q = n₂ / q →
+            n₁ = n₂
+
+/-- Partie surjective de la bijection :
+    tout `k ∈ [1,N/q]` provient du multiple `q*k`. -/
+def CountMultiplesNatSurjectiveBridge : Prop :=
+  ∀ N q : ℕ,
+    1 ≤ q →
+      ∀ k : ℕ,
+        k ∈ Finset.Icc 1 (N / q) →
+          ∃ n : ℕ,
+            n ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n)
+              ∧ n / q = k
+
+/-- Les trois propriétés élémentaires de `n ↦ n/q` fournissent les
+    données complètes de bijection. -/
+theorem countMultiplesNatBijectionDataBridge_of_parts
+    (Hmap : CountMultiplesNatMapBridge)
+    (Hinj : CountMultiplesNatInjectiveBridge)
+    (Hsurj : CountMultiplesNatSurjectiveBridge) :
+    CountMultiplesNatBijectionDataBridge := by
+  unfold CountMultiplesNatBijectionDataBridge
+  unfold CountMultiplesNatMapBridge at Hmap
+  unfold CountMultiplesNatInjectiveBridge at Hinj
+  unfold CountMultiplesNatSurjectiveBridge at Hsurj
+
+  intro N q hq
+  exact ⟨Hmap N q hq, Hinj N q hq, Hsurj N q hq⟩
+
+/-- Version finale : C-04b est consommée avec A1b et les trois propriétés
+    élémentaires de la bijection des multiples. -/
+theorem squarefree_asymptotic_density_of_indicator_and_multiples_bijection_parts
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hmap : CountMultiplesNatMapBridge)
+    (Hinj : CountMultiplesNatInjectiveBridge)
+    (Hsurj : CountMultiplesNatSurjectiveBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_multiples_bijection_data
+    Hindicator
+    (countMultiplesNatBijectionDataBridge_of_parts Hmap Hinj Hsurj)
+
 end CouretUnification.Logic.H3
