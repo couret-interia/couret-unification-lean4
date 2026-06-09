@@ -3723,4 +3723,79 @@ theorem squarefree_asymptotic_density_of_prime_square_image_only
     Himage
     moebiusMulPrimeNotDvdBridge_proved
 
+/-!
+## Changement de variable `d ↦ p*d` — données de bijection
+
+On réduit le dernier bridge `MoebiusPrimeExactOnceSumAsImageBridge`
+aux trois propriétés finies usuelles :
+- bonne définition de l'image ;
+- injectivité ;
+- surjectivité.
+-/
+
+/-- Données de bijection pour le changement de variable `d ↦ p*d`.
+
+    Source :
+      `d ∈ squareDivisorLocalSupportWithoutPrime n p`
+
+    Cible :
+      `e ∈ squareDivisorLocalSupportWithPrimeExactlyOnce n p`
+
+    Le changement de variable est `e = p*d`. -/
+def MoebiusPrimeExactOnceImageDataBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      (∀ d : ℕ,
+        d ∈ squareDivisorLocalSupportWithoutPrime n p →
+          p * d ∈ squareDivisorLocalSupportWithPrimeExactlyOnce n p)
+      ∧
+      (∀ d₁ : ℕ,
+        d₁ ∈ squareDivisorLocalSupportWithoutPrime n p →
+        ∀ d₂ : ℕ,
+        d₂ ∈ squareDivisorLocalSupportWithoutPrime n p →
+          p * d₁ = p * d₂ →
+            d₁ = d₂)
+      ∧
+      (∀ e : ℕ,
+        e ∈ squareDivisorLocalSupportWithPrimeExactlyOnce n p →
+          ∃ d : ℕ,
+            d ∈ squareDivisorLocalSupportWithoutPrime n p
+              ∧ p * d = e)
+
+/-- Les données de bijection ferment l'égalité de sommes par changement
+    de variable `d ↦ p*d`. -/
+theorem moebiusPrimeExactOnceSumAsImageBridge_of_data
+    (Hdata : MoebiusPrimeExactOnceImageDataBridge) :
+    MoebiusPrimeExactOnceSumAsImageBridge := by
+  unfold MoebiusPrimeExactOnceSumAsImageBridge
+  unfold MoebiusPrimeExactOnceImageDataBridge at Hdata
+
+  intro n p hp_prime hp_square_dvd
+
+  rcases Hdata n p hp_prime hp_square_dvd with ⟨hmap, hinj, hsurj⟩
+
+  symm
+
+  exact Finset.sum_bij
+    (fun d _ => p * d)
+    (fun d hd => hmap d hd)
+    (fun d₁ hd₁ d₂ hd₂ h => hinj d₁ hd₁ d₂ hd₂ h)
+    (fun e he => by
+      rcases hsurj e he with ⟨d, hd, hde⟩
+      exact ⟨d, hd, hde⟩)
+    (fun d hd => rfl)
+
+/-- Version finale : C-04b est consommée avec les seules données
+    de bijection du changement de variable `d ↦ p*d`.
+
+    Le signe de Möbius est fermé ; il reste seulement l'arithmétique
+    finie du support. -/
+theorem squarefree_asymptotic_density_of_prime_square_image_data
+    (Hdata : MoebiusPrimeExactOnceImageDataBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_image_only
+    (moebiusPrimeExactOnceSumAsImageBridge_of_data Hdata)
+
 end CouretUnification.Logic.H3
