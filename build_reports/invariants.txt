@@ -52,6 +52,7 @@ lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:79:  RHClaimed 
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:278:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:281:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/Logic/H3/ParityGamma30.lean:3:   0 sorry. RHClaimed = false. -/
+lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:4429:    RHClaimed = false.
 lean/CouretUnification/Logic/H3/C3Weak.lean:27:  RHClaimed = false.
 lean/CouretUnification/Logic/H3/C3Weak.lean:127:theorem RHClaimed_false_guard : True := trivial
 lean/CouretUnification/Logic/H3/C3Weak.lean:128:-- Marqueur doctrinal.  RHClaimed = false dans tous les contextes

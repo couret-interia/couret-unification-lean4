@@ -4389,4 +4389,49 @@ theorem squarefree_asymptotic_density_final_proved :
   squarefree_asymptotic_density_of_nonsquarefree_only
     nonSquarefreeMoebiusFilteredSumZeroBridge_proved
 
+/-!
+## Capsule canonique — fermeture C-04b
+
+Ce bloc ne rajoute pas de mathématique nouvelle.
+Il donne simplement des noms publics stables à la fermeture obtenue.
+
+Statut :
+- identité locale de Möbius filtrée : fermée ;
+- cas squarefree : fermé ;
+- cas non-squarefree : fermé ;
+- densité asymptotique : obtenue via les bridges analytiques déjà fermés ;
+- aucune implication RH / Hilbert–Pólya n'est revendiquée ici.
+-/
+
+/-- Proposition canonique de densité asymptotique des entiers squarefree. -/
+def SquarefreeAsymptoticDensitySixOverPiSquaredBridge : Prop :=
+  Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+    (nhds (6 / (Real.pi^2)))
+
+/-- Fermeture canonique du bridge de densité asymptotique. -/
+theorem squarefreeAsymptoticDensitySixOverPiSquaredBridge_proved :
+    SquarefreeAsymptoticDensitySixOverPiSquaredBridge := by
+  unfold SquarefreeAsymptoticDensitySixOverPiSquaredBridge
+
+  exact squarefree_asymptotic_density_final_proved
+
+/-- Nom court public pour la densité asymptotique des entiers squarefree.
+
+    Ce théorème est l'aboutissement local du fichier lab
+    `SquarefreeDensityAsymptotic.lean`. -/
+theorem squarefree_asymptotic_density_six_over_pi_squared :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_final_proved
+
+/-- Alias doctrinal C-04b : fermeture du verrou de densité squarefree.
+
+    RHClaimed = false.
+    Ce résultat concerne uniquement la densité asymptotique classique
+    des entiers squarefree, dans le cadre local du fichier lab. -/
+theorem C04b_squarefree_density_closed :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_six_over_pi_squared
+
 end CouretUnification.Logic.H3
