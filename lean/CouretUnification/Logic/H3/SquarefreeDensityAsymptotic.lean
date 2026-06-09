@@ -2813,6 +2813,9 @@ theorem squarefreeSquareDivisorEqOneBridge_proved :
   have hd_unit : IsUnit d :=
     hsf hdiv
 
-  exact Nat.isUnit_iff.mp hd_unit
+  rcases hd_unit with ⟨u, hu⟩
+  exact Nat.eq_one_of_dvd_one (by
+    rw [← hu]
+    exact u.isUnit.dvd)
 
 end CouretUnification.Logic.H3
