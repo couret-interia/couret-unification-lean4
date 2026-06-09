@@ -1869,4 +1869,52 @@ theorem squarefree_asymptotic_density_of_indicator_and_general_multiples
     Hindicator
     (countMultiplesSquareNatBridge_of_general_multiples Hmult)
 
+/-- Forme bijective du comptage des multiples.
+
+    Elle encode la bijection attendue :
+      `n ∈ [1,N]`, `q ∣ n`  ↦  `n/q ∈ [1, N/q]`,
+    avec inverse :
+      `k ∈ [1,N/q]`  ↦  `q*k`.
+
+    Cette formulation sépare la preuve de bijection proprement dite
+    de la simple évaluation du cardinal de l'intervalle `[1, N/q]`. -/
+def CountMultiplesNatBijectionBridge : Prop :=
+  ∀ N q : ℕ,
+    1 ≤ q →
+      ((Finset.Icc 1 N).filter (fun n => q ∣ n)).card =
+        (Finset.Icc 1 (N / q)).card
+
+/-- La forme bijective implique le comptage général des multiples.
+
+    Il reste seulement à utiliser :
+      `card (Icc 1 M) = M`. -/
+theorem countMultiplesNatBridge_of_bijection_bridge
+    (Hbij : CountMultiplesNatBijectionBridge) :
+    CountMultiplesNatBridge := by
+  unfold CountMultiplesNatBridge
+  unfold CountMultiplesNatBijectionBridge at Hbij
+
+  intro N q hq
+
+  calc
+    ((Finset.Icc 1 N).filter (fun n => q ∣ n)).card
+        = (Finset.Icc 1 (N / q)).card := Hbij N q hq
+    _ = N / q := by
+        rw [Nat.card_Icc]
+        exact Nat.succ_sub_one (N / q)
+
+/-- Version finale : C-04b est consommée avec A1b et la bijection
+    naturelle de comptage des multiples.
+
+    Le dernier verrou combinatoire est maintenant la bijection explicite
+    entre les multiples de `q` dans `[1,N]` et l'intervalle `[1,N/q]`. -/
+theorem squarefree_asymptotic_density_of_indicator_and_multiples_bijection
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hbij : CountMultiplesNatBijectionBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_general_multiples
+    Hindicator
+    (countMultiplesNatBridge_of_bijection_bridge Hbij)
+
 end CouretUnification.Logic.H3
