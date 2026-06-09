@@ -1917,4 +1917,72 @@ theorem squarefree_asymptotic_density_of_indicator_and_multiples_bijection
     Hindicator
     (countMultiplesNatBridge_of_bijection_bridge Hbij)
 
+/-- Donnée explicite de la bijection de comptage des multiples.
+
+    Pour `q ≥ 1`, on encode les trois propriétés de la carte :
+      `n ↦ n / q`
+
+    depuis les multiples de `q` dans `[1,N]` vers `[1,N/q]` :
+    - elle envoie bien la source dans la cible ;
+    - elle est injective sur la source ;
+    - elle est surjective sur la cible.
+
+    Le prochain pas consistera à prouver ces trois propriétés avec
+    l'inverse explicite `k ↦ q*k`. -/
+def CountMultiplesNatBijectionDataBridge : Prop :=
+  ∀ N q : ℕ,
+    1 ≤ q →
+      (∀ n : ℕ,
+        n ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n) →
+          n / q ∈ Finset.Icc 1 (N / q))
+      ∧
+      (∀ n₁ : ℕ,
+        n₁ ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n) →
+        ∀ n₂ : ℕ,
+        n₂ ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n) →
+          n₁ / q = n₂ / q →
+            n₁ = n₂)
+      ∧
+      (∀ k : ℕ,
+        k ∈ Finset.Icc 1 (N / q) →
+          ∃ n : ℕ,
+            n ∈ (Finset.Icc 1 N).filter (fun n => q ∣ n)
+              ∧ n / q = k)
+
+/-- La donnée explicite de bijection implique l'égalité des cardinaux.
+
+    Cette étape ne fait plus d'arithmétique : elle applique seulement
+    `Finset.card_bij` à la carte `n ↦ n/q`. -/
+theorem countMultiplesNatBijectionBridge_of_data
+    (Hdata : CountMultiplesNatBijectionDataBridge) :
+    CountMultiplesNatBijectionBridge := by
+  unfold CountMultiplesNatBijectionBridge
+  unfold CountMultiplesNatBijectionDataBridge at Hdata
+
+  intro N q hq
+
+  rcases Hdata N q hq with ⟨hmap, hinj, hsurj⟩
+
+  exact Finset.card_bij
+    (fun n _ => n / q)
+    (fun n hn => hmap n hn)
+    (fun n₁ hn₁ n₂ hn₂ h => hinj n₁ hn₁ n₂ hn₂ h)
+    (fun k hk => by
+      rcases hsurj k hk with ⟨n, hn, hnk⟩
+      exact ⟨n, hn, hnk⟩)
+
+/-- Version finale : C-04b est consommée avec A1b et les données
+    explicites de la bijection des multiples.
+
+    Le verrou restant est maintenant purement arithmétique :
+    vérifier les trois propriétés de `n ↦ n/q` avec inverse `k ↦ q*k`. -/
+theorem squarefree_asymptotic_density_of_indicator_and_multiples_bijection_data
+    (Hindicator : SquarefreeIndicatorEqualsMoebiusDoubleSumBridge)
+    (Hdata : CountMultiplesNatBijectionDataBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_indicator_and_multiples_bijection
+    Hindicator
+    (countMultiplesNatBijectionBridge_of_data Hdata)
+
 end CouretUnification.Logic.H3
