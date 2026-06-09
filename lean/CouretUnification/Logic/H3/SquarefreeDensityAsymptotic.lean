@@ -2818,7 +2818,6 @@ theorem squarefreeSquareDivisorEqOneBridge_proved :
 
   exact Nat.isUnit_iff.mp hd_unit
 
-
 /-- Version finale : C-04b est consommée avec le seul cas
     non-squarefree.
 
@@ -2830,5 +2829,88 @@ theorem squarefree_asymptotic_density_of_nonsquarefree_only
   squarefree_asymptotic_density_of_eqOne_and_nonsquarefree
     squarefreeSquareDivisorEqOneBridge_proved
     Hnsf
+
+/-!
+## Cas non-squarefree — réduction à une somme de Möbius nulle
+
+Le dernier verrou est l'annulation :
+  `∑_{d²∣n} μ(d) = 0`
+lorsque `n` n'est pas squarefree.
+
+On isole maintenant la forme standard attendue :
+une somme de Möbius sur les diviseurs d'un entier non trivial.
+-/
+
+/-- Bridge standard de Möbius :
+    si `m ≠ 1`, alors la somme de `μ(d)` sur les diviseurs positifs
+    de `m` vaut `0`.
+
+    C'est la forme classique :
+      `∑_{d∣m} μ(d) = 0` pour `m ≠ 1`. -/
+def MoebiusDivisorSumZeroBridge : Prop :=
+  ∀ m : ℕ,
+    m ≠ 1 →
+      Finset.sum
+        ((Finset.Icc 1 m).filter (fun d => d ∣ m))
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+        =
+      0
+
+/-- Bridge de paramétrisation du support des diviseurs carrés.
+
+    Pour un `n` non-squarefree, on isole un entier `m ≠ 1`
+    tel que la somme sur les `d` vérifiant `d² ∣ n` coïncide avec
+    la somme classique de Möbius sur les diviseurs de `m`.
+
+    Intuitivement, `m` est le produit des facteurs premiers dont
+    l'exposant dans `n` est au moins `2`. -/
+def NonSquarefreeSquareDivisorSupportAsDivisorsBridge : Prop :=
+  ∀ n : ℕ,
+    ¬ Squarefree n →
+      ∃ m : ℕ,
+        m ≠ 1 ∧
+          moebiusSquareDivisorLocalFilteredSumInt n =
+            Finset.sum
+              ((Finset.Icc 1 m).filter (fun d => d ∣ m))
+              (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- La paramétrisation du support des diviseurs carrés, combinée à
+    l'identité standard `∑_{d∣m} μ(d)=0`, ferme le cas non-squarefree. -/
+theorem nonSquarefreeMoebiusFilteredSumZero_of_divisor_sum
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsDivisorsBridge)
+    (Hsum_zero : MoebiusDivisorSumZeroBridge) :
+    NonSquarefreeMoebiusFilteredSumZeroBridge := by
+  unfold NonSquarefreeMoebiusFilteredSumZeroBridge
+  unfold NonSquarefreeSquareDivisorSupportAsDivisorsBridge at Hsupport
+  unfold MoebiusDivisorSumZeroBridge at Hsum_zero
+
+  intro n hnsf
+
+  rcases Hsupport n hnsf with ⟨m, hm_ne_one, hsum_eq⟩
+
+  calc
+    moebiusSquareDivisorLocalFilteredSumInt n
+        =
+      Finset.sum
+        ((Finset.Icc 1 m).filter (fun d => d ∣ m))
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := hsum_eq
+    _ = 0 := Hsum_zero m hm_ne_one
+
+/-- Version finale : C-04b est consommée avec les deux derniers bridges
+    standardisés du cas non-squarefree.
+
+    Le cas squarefree est fermé ; il reste :
+    - la somme classique de Möbius sur les diviseurs ;
+    - l'identification du support `d²∣n` avec les diviseurs d'un
+      noyau carré non trivial. -/
+theorem squarefree_asymptotic_density_of_nonsquarefree_divisor_sum
+    (Hsupport : NonSquarefreeSquareDivisorSupportAsDivisorsBridge)
+    (Hsum_zero : MoebiusDivisorSumZeroBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_nonsquarefree_only
+    (nonSquarefreeMoebiusFilteredSumZero_of_divisor_sum
+      Hsupport
+      Hsum_zero)
 
 end CouretUnification.Logic.H3
