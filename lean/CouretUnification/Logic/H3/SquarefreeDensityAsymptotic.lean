@@ -3242,4 +3242,41 @@ theorem squarefree_asymptotic_density_of_prime_square_cancellation
       Hprime_square
       Hcancel)
 
+/-- Fermeture de l'extraction d'un facteur premier carré.
+
+    On utilise la caractérisation Mathlib :
+      `Nat.squarefree_iff_prime_squarefree`
+
+    qui dit qu'un entier est squarefree exactement lorsque
+    aucun carré de premier ne le divise. -/
+theorem primeSquareDivisorOfNonSquarefreeBridge_proved :
+    PrimeSquareDivisorOfNonSquarefreeBridge := by
+  unfold PrimeSquareDivisorOfNonSquarefreeBridge
+
+  intro n hnsf
+
+  by_contra hno_prime_square
+
+  apply hnsf
+
+  exact (Nat.squarefree_iff_prime_squarefree).2 (by
+    intro p hp_prime hp_square_dvd
+
+    have hp_square_dvd_pow : p^2 ∣ n := by
+      simpa [pow_two] using hp_square_dvd
+
+    exact hno_prime_square ⟨p, hp_prime, hp_square_dvd_pow⟩)
+
+/-- Version finale : C-04b est consommée avec le seul bridge
+    d'annulation locale au-dessus d'un facteur premier carré.
+
+    L'extraction du facteur premier carré est maintenant fermée. -/
+theorem squarefree_asymptotic_density_of_prime_square_cancellation_only
+    (Hcancel : MoebiusSquareDivisorCancellationAtPrimeBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_cancellation
+    primeSquareDivisorOfNonSquarefreeBridge_proved
+    Hcancel
+
 end CouretUnification.Logic.H3
