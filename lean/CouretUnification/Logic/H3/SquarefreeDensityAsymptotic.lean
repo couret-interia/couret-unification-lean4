@@ -1901,7 +1901,7 @@ theorem countMultiplesNatBridge_of_bijection_bridge
         = (Finset.Icc 1 (N / q)).card := Hbij N q hq
     _ = N / q := by
         rw [Nat.card_Icc]
-        omega
+        exact Nat.succ_sub_one (N / q)
 
 /-- Version finale : C-04b est consommée avec A1b et la bijection
     naturelle de comptage des multiples.
