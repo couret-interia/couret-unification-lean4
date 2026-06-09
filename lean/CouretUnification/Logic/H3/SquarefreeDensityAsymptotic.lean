@@ -4276,4 +4276,53 @@ theorem squarefree_asymptotic_density_of_prime_square_quotient
       Hsquare_down
       Hnot_dvd)
 
+/-- Fermeture de la préimage par divisibilité.
+
+    Une hypothèse `p ∣ e` fournit exactement un quotient `d`
+    tel que `e = p*d`; on retourne simplement l'égalité. -/
+theorem primeDivisorPreimageBridge_proved :
+    PrimeDivisorPreimageBridge := by
+  unfold PrimeDivisorPreimageBridge
+
+  intro p e hpe
+
+  rcases hpe with ⟨d, hd⟩
+
+  exact ⟨d, hd.symm⟩
+
+/-- Fermeture de la descente du support carré.
+
+    Si `e = p*d`, alors `d² ∣ e²`; donc de `e² ∣ n`
+    on déduit `d² ∣ n`. On le prouve ici directement par témoin. -/
+theorem squareDvdOfPrimeMulSquareDvdBridge_proved :
+    SquareDvdOfPrimeMulSquareDvdBridge := by
+  unfold SquareDvdOfPrimeMulSquareDvdBridge
+
+  intro n p d e hpd_eq_e he_square_dvd_n
+
+  rcases he_square_dvd_n with ⟨k, hk⟩
+
+  refine ⟨p^2 * k, ?_⟩
+
+  calc
+    n = e^2 * k := hk
+    _ = (p * d)^2 * k := by
+        rw [← hpd_eq_e]
+    _ = d^2 * (p^2 * k) := by
+        ring
+
+/-- Version finale : C-04b est consommée avec le seul fait restant :
+    l'exactitude du quotient.
+
+    La préimage par divisibilité et la descente du support carré sont
+    maintenant fermées. -/
+theorem squarefree_asymptotic_density_of_prime_square_quotient_exact_only
+    (Hnot_dvd : PrimeNotDvdQuotientOfPrimeSquareNotDvdBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_quotient
+    primeDivisorPreimageBridge_proved
+    squareDvdOfPrimeMulSquareDvdBridge_proved
+    Hnot_dvd
+
 end CouretUnification.Logic.H3
