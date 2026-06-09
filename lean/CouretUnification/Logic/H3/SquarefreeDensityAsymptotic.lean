@@ -3417,4 +3417,136 @@ theorem squarefree_asymptotic_density_of_prime_square_pair_only
     moebiusSquareDivisorPrimeSplitBridge_proved
     Hpair
 
+/-!
+## Annulation locale — séparation des termes `p² ∣ d`
+
+La bijection naïve `d ↦ p*d` ne couvre proprement que les termes où
+`p` apparaît exactement une fois.
+
+Les termes où `p² ∣ d` sont traités séparément : leur contribution
+Möbius est nulle.
+-/
+
+/-- Partie du support local où `p` divise `d`, mais `p²` ne divise pas `d`.
+
+    C'est la partie où `p` apparaît exactement une fois dans `d`. -/
+noncomputable def squareDivisorLocalSupportWithPrimeExactlyOnce
+    (n p : ℕ) : Finset ℕ :=
+  (squareDivisorLocalSupportWithPrime n p).filter (fun d => ¬ p^2 ∣ d)
+
+/-- Partie du support local où `p²` divise déjà `d`.
+
+    Ces termes auront une contribution de Möbius nulle. -/
+noncomputable def squareDivisorLocalSupportWithPrimeSquare
+    (n p : ℕ) : Finset ℕ :=
+  (squareDivisorLocalSupportWithPrime n p).filter (fun d => p^2 ∣ d)
+
+/-- Découpage de la partie `p ∣ d` selon `p² ∣ d` ou non. -/
+def MoebiusSquareDivisorWithPrimeSplitBridge : Prop :=
+  ∀ n p : ℕ,
+    Finset.sum (squareDivisorLocalSupportWithPrime n p)
+      (fun d => (ArithmeticFunction.moebius d : ℤ))
+    =
+    Finset.sum (squareDivisorLocalSupportWithPrimeExactlyOnce n p)
+      (fun d => (ArithmeticFunction.moebius d : ℤ))
+    +
+    Finset.sum (squareDivisorLocalSupportWithPrimeSquare n p)
+      (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- Fermeture du découpage de la partie `p ∣ d`. -/
+theorem moebiusSquareDivisorWithPrimeSplitBridge_proved :
+    MoebiusSquareDivisorWithPrimeSplitBridge := by
+  unfold MoebiusSquareDivisorWithPrimeSplitBridge
+
+  intro n p
+
+  unfold squareDivisorLocalSupportWithPrimeExactlyOnce
+  unfold squareDivisorLocalSupportWithPrimeSquare
+
+  symm
+  rw [add_comm]
+
+  exact Finset.sum_filter_add_sum_filter_not
+    (s := squareDivisorLocalSupportWithPrime n p)
+    (p := fun d => p^2 ∣ d)
+    (f := fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- Bridge : les termes où `p² ∣ d` ont contribution de Möbius nulle. -/
+def MoebiusSquareDivisorPrimeSquareTermsZeroBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      Finset.sum (squareDivisorLocalSupportWithPrimeSquare n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      =
+      0
+
+/-- Bridge : appariement de la partie `p` exactement une fois
+    avec la partie `p ∤ d`.
+
+    C'est ici que vivra le vrai changement de variable `d ↦ p*d`
+    et l'identité `μ(p*d) = - μ(d)`. -/
+def MoebiusSquareDivisorPrimeExactPairCancellationBridge : Prop :=
+  ∀ n p : ℕ,
+    p.Prime →
+    p^2 ∣ n →
+      Finset.sum (squareDivisorLocalSupportWithPrimeExactlyOnce n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      =
+      -
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+
+/-- Le découpage `p² ∣ d` / `¬ p² ∣ d`, le zéro des termes carrés,
+    et l'appariement exact ferment le bridge d'annulation par paires. -/
+theorem moebiusSquareDivisorPrimePairCancellation_of_exact_pair
+    (Hsplit_with : MoebiusSquareDivisorWithPrimeSplitBridge)
+    (Hzero_square : MoebiusSquareDivisorPrimeSquareTermsZeroBridge)
+    (Hpair_exact : MoebiusSquareDivisorPrimeExactPairCancellationBridge) :
+    MoebiusSquareDivisorPrimePairCancellationBridge := by
+  unfold MoebiusSquareDivisorPrimePairCancellationBridge
+  unfold MoebiusSquareDivisorWithPrimeSplitBridge at Hsplit_with
+  unfold MoebiusSquareDivisorPrimeSquareTermsZeroBridge at Hzero_square
+  unfold MoebiusSquareDivisorPrimeExactPairCancellationBridge at Hpair_exact
+
+  intro n p hp_prime hp_square_dvd
+
+  calc
+    Finset.sum (squareDivisorLocalSupportWithPrime n p)
+      (fun d => (ArithmeticFunction.moebius d : ℤ))
+        =
+      Finset.sum (squareDivisorLocalSupportWithPrimeExactlyOnce n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      +
+      Finset.sum (squareDivisorLocalSupportWithPrimeSquare n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) :=
+        Hsplit_with n p
+    _ =
+      -
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ))
+      +
+      0 := by
+        rw [Hpair_exact n p hp_prime hp_square_dvd]
+        rw [Hzero_square n p hp_prime hp_square_dvd]
+    _ =
+      -
+      Finset.sum (squareDivisorLocalSupportWithoutPrime n p)
+        (fun d => (ArithmeticFunction.moebius d : ℤ)) := by
+        simp
+
+/-- Version finale : C-04b est consommée avec deux bridges restants :
+    - zéro des termes où `p² ∣ d` ;
+    - appariement exact de la partie où `p` apparaît une seule fois. -/
+theorem squarefree_asymptotic_density_of_prime_square_exact_pair
+    (Hzero_square : MoebiusSquareDivisorPrimeSquareTermsZeroBridge)
+    (Hpair_exact : MoebiusSquareDivisorPrimeExactPairCancellationBridge) :
+    Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
+      (nhds (6 / (Real.pi^2))) :=
+  squarefree_asymptotic_density_of_prime_square_pair_only
+    (moebiusSquareDivisorPrimePairCancellation_of_exact_pair
+      moebiusSquareDivisorWithPrimeSplitBridge_proved
+      Hzero_square
+      Hpair_exact)
+
 end CouretUnification.Logic.H3
