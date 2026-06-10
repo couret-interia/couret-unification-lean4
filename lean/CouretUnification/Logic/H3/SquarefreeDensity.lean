@@ -17,13 +17,10 @@ Le fichier sépare explicitement deux niveaux :
 2. **Partie analytique encore ouverte**
    - minoration uniforme `squarefreeCount_ge_half`
 
-2. **Partie analytique encore ouverte**
-   - majoration globale de l’erreur en `O(√N)`
-   - minoration uniforme `squarefreeCount_ge_half`
-
 Cette séparation reflète la doctrine du dépôt :
-les identités discrètes exactes sont fermées dès que possible,
-tandis que les coutures asymptotiques restent isolées comme dettes analytiques explicites.
+les identités discrètes exactes et la fermeture C-04b sont fermées
+dès que possible, tandis que la minoration effective C-04a reste isolée
+comme dette analytique/probatoire explicite.
 
 ## Statut
 
@@ -363,8 +360,9 @@ def SquarefreeAsymptoticDensityBridge : Prop :=
     exposé dans `SquarefreeAsymptoticDensityBridge`,
     sans nouvel axiome global et sans `sorry`.
 
-    Cette fermeture ne revendique pas la preuve interne de la densité ;
-    elle stabilise l'interface logique du dépôt. -/
+    Cette fermeture est fournie par la façade de promotion
+   `SquarefreeDensityC04bClosed`; ce fichier conserve l'interface logique
+   stable du dépôt. -/
 theorem squarefree_asymptotic_density
     (bridge : SquarefreeAsymptoticDensityBridge) :
     Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
