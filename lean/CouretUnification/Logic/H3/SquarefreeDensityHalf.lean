@@ -257,4 +257,62 @@ theorem squarefreeCount_ge_half_of_primeSquare_card_sum
     Hsum
     hN
 
+/-!
+## Cardinal exact des multiples de carrés premiers
+
+On ferme maintenant le second morceau combinatoire du crible :
+le cardinal de `{n ≤ N | p² ∣ n}` est exactement `⌊N / p²⌋`.
+
+La preuve réutilise le lemme général déjà fermé dans
+`SquarefreeDensityAsymptotic.lean`.
+-/
+
+/-- Fermeture du cardinal exact des multiples de `p²`.
+
+    Le fait général `countMultiplesSquareNatBridge_proved` a déjà été
+    fermé dans le laboratoire C-04b. Ici, on l'applique simplement à
+    `p`, après avoir extrait `1 ≤ p` de `p ∈ primeSquareIndexSet N`. -/
+theorem primeSquareMultipleSetCardBridge_proved :
+    PrimeSquareMultipleSetCardBridge := by
+  unfold PrimeSquareMultipleSetCardBridge
+
+  intro N p hp
+
+  unfold primeSquareIndexSet at hp
+  rw [Finset.mem_filter] at hp
+  rcases hp with ⟨hpIcc, _hp_prime⟩
+  rcases Finset.mem_Icc.mp hpIcc with ⟨hp_two, _hp_sqrt⟩
+
+  have hp_one : 1 ≤ p := by
+    exact le_trans (by norm_num : (1 : ℕ) ≤ 2) hp_two
+
+  unfold primeSquareMultipleSet
+
+  exact countMultiplesSquareNatBridge_proved N p hp_one
+
+/-- Version de la majoration de crible où seul reste ouvert
+    le bridge de couverture. -/
+theorem nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_cover
+    (Hcover : NonSquarefreeCountLePrimeSquareMultipleCardSumBridge) :
+    NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge :=
+  nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_card_sum
+    Hcover
+    primeSquareMultipleSetCardBridge_proved
+
+/-- Version consommable de C-04a sous :
+    - la couverture des non-squarefree par les carrés premiers ;
+    - la borne effective sur la somme des multiples.
+
+    Le cardinal exact des fibres est maintenant fermé. -/
+theorem squarefreeCount_ge_half_of_primeSquare_cover_sum
+    (Hcover : NonSquarefreeCountLePrimeSquareMultipleCardSumBridge)
+    (Hsum : PrimeSquareMultipleUpperSumLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_primeSquare_sum
+    (nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_cover Hcover)
+    Hsum
+    hN
+
 end CouretUnification.Logic.H3
