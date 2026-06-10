@@ -977,7 +977,6 @@ theorem natDivPrimeSquareCastLeRat
     _ =
       (N : ℚ) * ((1 : ℚ) / ((p : ℚ)^2)) := by
         norm_num [div_eq_mul_inv, pow_two]
-        ring
 
 /-- Fermeture de la borne coefficientielle des petits premiers. -/
 theorem smallPrimeSquareMultipleUpperSumLeCoefficientBridge_proved :
