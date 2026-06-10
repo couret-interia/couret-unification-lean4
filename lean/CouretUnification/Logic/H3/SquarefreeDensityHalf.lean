@@ -413,4 +413,73 @@ theorem squarefreeCount_ge_half_of_primeSquare_subset_sum
     Hsum
     hN
 
+/-!
+## Fermeture de l'inclusion combinatoire
+
+On ferme l'inclusion :
+  non-squarefree ≤ union des multiples de carrés premiers.
+
+Le seul ingrédient arithmétique est déjà fermé dans le lab C-04b :
+`primeSquareDivisorOfNonSquarefreeBridge_proved`.
+-/
+
+/-- Fermeture de l'inclusion des non-squarefree dans l'union
+    des multiples de carrés premiers. -/
+theorem nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved :
+    NonSquarefreeSubsetPrimeSquareMultipleUnionBridge := by
+  unfold NonSquarefreeSubsetPrimeSquareMultipleUnionBridge
+
+  intro N n hn
+
+  rw [Finset.mem_filter] at hn
+  rcases hn with ⟨hnIcc, hnsf⟩
+  rcases Finset.mem_Icc.mp hnIcc with ⟨hn_one, hn_le_N⟩
+
+  rcases primeSquareDivisorOfNonSquarefreeBridge_proved n hnsf with
+    ⟨p, hp_prime, hp_square_dvd_n⟩
+
+  have hn_pos : 0 < n :=
+    lt_of_lt_of_le Nat.zero_lt_one hn_one
+
+  have hp_square_le_n : p^2 ≤ n :=
+    Nat.le_of_dvd hn_pos hp_square_dvd_n
+
+  have hp_square_le_N : p^2 ≤ N :=
+    le_trans hp_square_le_n hn_le_N
+
+  have hp_le_sqrt_N : p ≤ Nat.sqrt N :=
+    Nat.le_sqrt'.2 hp_square_le_N
+
+  have hp_two : 2 ≤ p :=
+    hp_prime.two_le
+
+  have hp_index : p ∈ primeSquareIndexSet N := by
+    unfold primeSquareIndexSet
+    rw [Finset.mem_filter]
+    constructor
+    · rw [Finset.mem_Icc]
+      exact ⟨hp_two, hp_le_sqrt_N⟩
+    · exact hp_prime
+
+  have hn_multiple : n ∈ primeSquareMultipleSet N p := by
+    unfold primeSquareMultipleSet
+    rw [Finset.mem_filter]
+    exact ⟨hnIcc, hp_square_dvd_n⟩
+
+  unfold primeSquareMultipleUnion
+
+  exact Finset.mem_biUnion.mpr ⟨p, hp_index, hn_multiple⟩
+
+/-- Version consommable de C-04a où il ne reste plus que
+    la borne effective sur la somme des multiples de carrés premiers. -/
+theorem squarefreeCount_ge_half_of_primeSquare_effective_sum
+    (Hsum : PrimeSquareMultipleUpperSumLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_primeSquare_subset_sum
+    nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved
+    Hsum
+    hN
+
 end CouretUnification.Logic.H3
