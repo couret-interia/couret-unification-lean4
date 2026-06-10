@@ -582,4 +582,165 @@ theorem squarefreeCount_ge_half_of_small_tail
     (primeSquareMultipleUpperSumLeHalfBridge_of_small_tail Hsplit Hhalf)
     hN
 
+/-!
+## Fermeture de la séparation petits premiers + queue
+
+On ferme maintenant `Hsplit` :
+la somme sur les premiers `p ≤ √N` est majorée par la somme des petits
+premiers explicites plus la queue entière `19..√N`.
+
+Le seul point utilisé est la classification élémentaire :
+un premier `p < 19` appartient à `{2,3,5,7,11,13,17}`.
+-/
+
+/-- Les indices premiers du crible sont contenus dans :
+    petits premiers explicites ∪ queue entière à partir de `19`. -/
+def PrimeSquareIndexSetSubsetSmallUnionTailBridge : Prop :=
+  ∀ N : ℕ,
+    primeSquareIndexSet N
+      ⊆
+    smallPrimeSquareIndexSet ∪ Finset.Icc 19 (Nat.sqrt N)
+
+/-- Fermeture de l'inclusion des indices. -/
+theorem primeSquareIndexSetSubsetSmallUnionTailBridge_proved :
+    PrimeSquareIndexSetSubsetSmallUnionTailBridge := by
+  unfold PrimeSquareIndexSetSubsetSmallUnionTailBridge
+
+  intro N p hp
+
+  unfold primeSquareIndexSet at hp
+  rw [Finset.mem_filter] at hp
+  rcases hp with ⟨hpIcc, hp_prime⟩
+  rcases Finset.mem_Icc.mp hpIcc with ⟨hp_two, hp_sqrt⟩
+
+  rw [Finset.mem_union]
+
+  by_cases hp_lt_19 : p < 19
+
+  · left
+
+    have hp_cases :
+        p = 2 ∨ p = 3 ∨ p = 4 ∨ p = 5 ∨ p = 6 ∨
+        p = 7 ∨ p = 8 ∨ p = 9 ∨ p = 10 ∨ p = 11 ∨
+        p = 12 ∨ p = 13 ∨ p = 14 ∨ p = 15 ∨ p = 16 ∨
+        p = 17 ∨ p = 18 := by
+      omega
+
+    rcases hp_cases with
+      rfl | rfl | rfl | rfl | rfl |
+      rfl | rfl | rfl | rfl | rfl |
+      rfl | rfl | rfl | rfl | rfl |
+      rfl | rfl
+
+    · exact (by decide : 2 ∈ smallPrimeSquareIndexSet)
+    · exact (by decide : 3 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 4) hp_prime
+    · exact (by decide : 5 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 6) hp_prime
+    · exact (by decide : 7 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 8) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 9) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 10) hp_prime
+    · exact (by decide : 11 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 12) hp_prime
+    · exact (by decide : 13 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 14) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 15) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 16) hp_prime
+    · exact (by decide : 17 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 18) hp_prime
+
+  · right
+    rw [Finset.mem_Icc]
+    exact ⟨le_of_not_gt hp_lt_19, hp_sqrt⟩
+
+/-- Les petits premiers explicites sont disjoints de la queue `19..√N`. -/
+theorem smallPrimeSquareIndexSet_disjoint_largeTail
+    (N : ℕ) :
+    Disjoint smallPrimeSquareIndexSet (Finset.Icc 19 (Nat.sqrt N)) := by
+  rw [Finset.disjoint_left]
+
+  intro p hp_small hp_tail
+
+  rw [Finset.mem_Icc] at hp_tail
+  have hp_ge_19 : 19 ≤ p := hp_tail.1
+
+  unfold smallPrimeSquareIndexSet at hp_small
+  simp at hp_small
+
+  rcases hp_small with
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  all_goals omega
+
+/-- Fermeture de la séparation :
+    somme sur les premiers ≤ petits premiers + queue entière. -/
+theorem primeSquareMultipleUpperSumLeSmallPlusTailBridge_proved :
+    PrimeSquareMultipleUpperSumLeSmallPlusTailBridge := by
+  unfold PrimeSquareMultipleUpperSumLeSmallPlusTailBridge
+
+  intro N
+
+  unfold primeSquareMultipleUpperSum
+  unfold smallPrimeSquareMultipleUpperSum
+  unfold largeSquareTailMultipleUpperSum
+
+  have hsubset :
+      ((Finset.Icc 2 (Nat.sqrt N)).filter Nat.Prime)
+        ⊆
+      smallPrimeSquareIndexSet ∪ Finset.Icc 19 (Nat.sqrt N) := by
+    intro p hp
+    exact
+      (primeSquareIndexSetSubsetSmallUnionTailBridge_proved N)
+        (by
+          unfold primeSquareIndexSet
+          exact hp)
+
+  have hsum_subset :
+      Finset.sum ((Finset.Icc 2 (Nat.sqrt N)).filter Nat.Prime)
+          (fun p => N / p^2)
+        ≤
+      Finset.sum
+          (smallPrimeSquareIndexSet ∪ Finset.Icc 19 (Nat.sqrt N))
+          (fun p => N / p^2) :=
+    Finset.sum_le_sum_of_subset_of_nonneg
+      hsubset
+      (by
+        intro p hp_union hp_not_left
+        exact Nat.zero_le _)
+
+  have hsum_union :
+      Finset.sum
+          (smallPrimeSquareIndexSet ∪ Finset.Icc 19 (Nat.sqrt N))
+          (fun p => N / p^2)
+        =
+      Finset.sum smallPrimeSquareIndexSet (fun p => N / p^2)
+        +
+      Finset.sum (Finset.Icc 19 (Nat.sqrt N)) (fun p => N / p^2) := by
+    rw [Finset.sum_union (smallPrimeSquareIndexSet_disjoint_largeTail N)]
+
+  exact le_trans hsum_subset (by
+    rw [hsum_union])
+
+/-- Version consommable de C-04a où il ne reste que
+    la borne effective numérique `SmallPlusTailLeHalfBridge`. -/
+theorem squarefreeCount_ge_half_of_small_tail_effective
+    (Hhalf : SmallPlusTailLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_small_tail
+    primeSquareMultipleUpperSumLeSmallPlusTailBridge_proved
+    Hhalf
+    hN
+
 end CouretUnification.Logic.H3
