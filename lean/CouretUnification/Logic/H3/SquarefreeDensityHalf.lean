@@ -631,7 +631,12 @@ theorem primeSquareIndexSetSubsetSmallUnionTailBridge_proved :
       rfl | rfl | rfl | rfl | rfl |
       rfl | rfl | rfl | rfl | rfl |
       rfl | rfl
-    simp [smallPrimeSquareIndexSet] at hp_prime ⊢
+
+    all_goals
+      first
+      | norm_num [smallPrimeSquareIndexSet]
+      | exfalso
+        norm_num at hp_prime
 
   · right
     rw [Finset.mem_Icc]
