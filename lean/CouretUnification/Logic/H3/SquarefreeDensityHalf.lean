@@ -315,4 +315,102 @@ theorem squarefreeCount_ge_half_of_primeSquare_cover_sum
     Hsum
     hN
 
+/-!
+## Couverture par union finie
+
+On raffine le bridge de couverture :
+
+1. les non-squarefree forment un sous-ensemble de l'union des multiples
+   de carrés premiers ;
+2. le cardinal d'une union finie est majoré par la somme des cardinaux.
+
+Le point non trivial restant devient donc une inclusion élémentaire :
+un entier non-squarefree `n ≤ N` possède un diviseur carré premier `p²`
+avec `p ≤ √N`.
+-/
+
+/-- Union finie des ensembles de multiples de carrés premiers. -/
+def primeSquareMultipleUnion (N : ℕ) : Finset ℕ :=
+  (primeSquareIndexSet N).biUnion
+    (fun p => primeSquareMultipleSet N p)
+
+/-- Bridge d'inclusion :
+    les entiers non-squarefree `≤ N` sont contenus dans l'union
+    des multiples de carrés premiers. -/
+def NonSquarefreeSubsetPrimeSquareMultipleUnionBridge : Prop :=
+  ∀ N : ℕ,
+    ((Finset.Icc 1 N).filter (fun n => ¬ Squarefree n))
+      ⊆
+    primeSquareMultipleUnion N
+
+/-- Bridge cardinal-union :
+    le cardinal de l'union finie est majoré par la somme des cardinaux. -/
+def PrimeSquareMultipleUnionCardLeSumBridge : Prop :=
+  ∀ N : ℕ,
+    (primeSquareMultipleUnion N).card
+      ≤
+    Finset.sum (primeSquareIndexSet N)
+      (fun p => (primeSquareMultipleSet N p).card)
+
+/-- Fermeture du bridge cardinal-union par le lemme standard `Finset.card_biUnion_le`. -/
+theorem primeSquareMultipleUnionCardLeSumBridge_proved :
+    PrimeSquareMultipleUnionCardLeSumBridge := by
+  unfold PrimeSquareMultipleUnionCardLeSumBridge
+
+  intro N
+
+  unfold primeSquareMultipleUnion
+
+  exact Finset.card_biUnion_le
+
+/-- L'inclusion dans l'union donne la majoration du cardinal
+    des non-squarefree par le cardinal de cette union. -/
+theorem nonSquarefreeCountLePrimeSquareMultipleUnion_of_subset
+    (Hsubset : NonSquarefreeSubsetPrimeSquareMultipleUnionBridge) :
+    ∀ N : ℕ,
+      nonSquarefreeCount N ≤ (primeSquareMultipleUnion N).card := by
+  unfold NonSquarefreeSubsetPrimeSquareMultipleUnionBridge at Hsubset
+
+  intro N
+
+  unfold nonSquarefreeCount
+
+  exact Finset.card_le_card (Hsubset N)
+
+/-- L'inclusion et l'inégalité union/somme ferment le bridge de couverture
+    par somme des cardinaux. -/
+theorem nonSquarefreeCountLePrimeSquareMultipleCardSumBridge_of_subset
+    (Hsubset : NonSquarefreeSubsetPrimeSquareMultipleUnionBridge) :
+    NonSquarefreeCountLePrimeSquareMultipleCardSumBridge := by
+  unfold NonSquarefreeCountLePrimeSquareMultipleCardSumBridge
+
+  intro N
+
+  have h_union :
+      nonSquarefreeCount N ≤ (primeSquareMultipleUnion N).card :=
+    nonSquarefreeCountLePrimeSquareMultipleUnion_of_subset Hsubset N
+
+  have h_sum :
+      (primeSquareMultipleUnion N).card
+        ≤
+      Finset.sum (primeSquareIndexSet N)
+        (fun p => (primeSquareMultipleSet N p).card) :=
+    primeSquareMultipleUnionCardLeSumBridge_proved N
+
+  exact le_trans h_union h_sum
+
+/-- Version consommable de C-04a où il ne reste que :
+    - l'inclusion des non-squarefree dans l'union des multiples de `p²` ;
+    - la borne effective sur la somme. -/
+theorem squarefreeCount_ge_half_of_primeSquare_subset_sum
+    (Hsubset : NonSquarefreeSubsetPrimeSquareMultipleUnionBridge)
+    (Hsum : PrimeSquareMultipleUpperSumLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_primeSquare_cover_sum
+    (nonSquarefreeCountLePrimeSquareMultipleCardSumBridge_of_subset Hsubset)
+    Hsum
+    hN
+
 end CouretUnification.Logic.H3
