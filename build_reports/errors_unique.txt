@@ -1,3 +1,0 @@
-error: build failed
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:1308:8: No goals to be solved
-error: Lean exited with code 1

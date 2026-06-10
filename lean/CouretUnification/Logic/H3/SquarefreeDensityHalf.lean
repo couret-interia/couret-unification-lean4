@@ -1305,7 +1305,6 @@ theorem largeSquareTailTelescopingIcc_eq
       have hnot :
           18 + (k + 1) ∉ Finset.Icc 19 (18 + k) := by
         simp [Finset.mem_Icc]
-        omega
 
       rw [hIcc]
       rw [Finset.sum_insert hnot]
