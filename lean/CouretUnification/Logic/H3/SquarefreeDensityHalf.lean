@@ -94,4 +94,76 @@ theorem squarefreeCount_ge_half_of_nonSquarefree_le_half
     (squarefreeCountGeHalfBridge_of_nonSquarefree_le_half H)
     hN
 
+/-!
+## Réduction par crible — multiples de carrés premiers
+
+Un entier non-squarefree possède un diviseur carré premier `p²`.
+On prépare donc la borne d'union :
+
+  nonSquarefreeCount N ≤ ∑_{p ≤ √N, p premier} ⌊N / p²⌋.
+
+Ce bloc ne ferme pas encore cette borne : il isole proprement les deux
+dettes restantes de C-04a.
+-/
+
+/-- Somme supérieure naturelle pour compter les entiers `≤ N`
+    divisibles par un carré premier. -/
+def primeSquareMultipleUpperSum (N : ℕ) : ℕ :=
+  Finset.sum
+    ((Finset.Icc 2 (Nat.sqrt N)).filter Nat.Prime)
+    (fun p => N / p^2)
+
+/-- Bridge de crible :
+    tout non-squarefree `≤ N` est couvert par au moins un multiple
+    de carré premier `p²`, avec `p ≤ √N`. -/
+def NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge : Prop :=
+  ∀ N : ℕ,
+    nonSquarefreeCount N ≤ primeSquareMultipleUpperSum N
+
+/-- Bridge effectif numérique/analytique :
+    la somme des multiples de carrés premiers est au plus `N/2`
+    pour `N ≥ 176`. -/
+def PrimeSquareMultipleUpperSumLeHalfBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      (primeSquareMultipleUpperSum N : ℚ) ≤ (N : ℚ) / 2
+
+/-- Les deux bridges de crible ferment le bridge effectif sur
+    les non-squarefree. -/
+theorem nonSquarefreeCountLeHalfBridge_of_primeSquare_sum
+    (Hcount : NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge)
+    (Hsum : PrimeSquareMultipleUpperSumLeHalfBridge) :
+    NonSquarefreeCountLeHalfBridge := by
+  unfold NonSquarefreeCountLeHalfBridge
+  unfold NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge at Hcount
+  unfold PrimeSquareMultipleUpperSumLeHalfBridge at Hsum
+
+  intro N hN
+
+  have hcount_nat :
+      nonSquarefreeCount N ≤ primeSquareMultipleUpperSum N :=
+    Hcount N
+
+  have hcount_rat :
+      (nonSquarefreeCount N : ℚ) ≤
+        (primeSquareMultipleUpperSum N : ℚ) := by
+    exact_mod_cast hcount_nat
+
+  have hsum :
+      (primeSquareMultipleUpperSum N : ℚ) ≤ (N : ℚ) / 2 :=
+    Hsum hN
+
+  exact le_trans hcount_rat hsum
+
+/-- Version consommable de C-04a sous les deux bridges de crible. -/
+theorem squarefreeCount_ge_half_of_primeSquare_sum
+    (Hcount : NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge)
+    (Hsum : PrimeSquareMultipleUpperSumLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_nonSquarefree_le_half
+    (nonSquarefreeCountLeHalfBridge_of_primeSquare_sum Hcount Hsum)
+    hN
+
 end CouretUnification.Logic.H3
