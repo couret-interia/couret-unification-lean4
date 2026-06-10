@@ -1013,4 +1013,120 @@ theorem smallPrimeSquareMultipleUpperSumLeCoefficientBridge_proved :
           (fun p => (1 : ℚ) / ((p : ℚ)^2)) := by
         rw [Finset.mul_sum]
 
+/-!
+## Réduction de la queue à une borne coefficientielle finie
+
+On traite maintenant la queue :
+
+  ∑_{19 ≤ d ≤ √N} ⌊N / d²⌋.
+
+Premier pas : remplacer chaque plancher par sa majoration rationnelle :
+
+  ⌊N / d²⌋ ≤ N / d².
+
+Il restera ensuite uniquement la borne finie :
+
+  ∑_{19 ≤ d ≤ √N} 1 / d² ≤ 1 / 18.
+-/
+
+/-- Coefficient rationnel fini associé à la queue `19..√N`. -/
+def largeSquareTailFiniteRationalCoefficient (N : ℕ) : ℚ :=
+  Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+    (fun d => (1 : ℚ) / ((d : ℚ)^2))
+
+/-- Bridge : la queue des multiples est contrôlée par son coefficient fini. -/
+def LargeSquareTailMultipleUpperSumLeFiniteCoefficientBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      (largeSquareTailMultipleUpperSum N : ℚ)
+        ≤
+      (N : ℚ) * largeSquareTailFiniteRationalCoefficient N
+
+/-- Bridge restant : le coefficient fini de queue est borné par `1/18`. -/
+def LargeSquareTailFiniteCoefficientLeBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      largeSquareTailFiniteRationalCoefficient N
+        ≤
+      largeSquareTailRationalCoefficient
+
+/-- Fermeture de la majoration de la queue par son coefficient fini. -/
+theorem largeSquareTailMultipleUpperSumLeFiniteCoefficientBridge_proved :
+    LargeSquareTailMultipleUpperSumLeFiniteCoefficientBridge := by
+  unfold LargeSquareTailMultipleUpperSumLeFiniteCoefficientBridge
+
+  intro N hN
+
+  unfold largeSquareTailMultipleUpperSum
+  unfold largeSquareTailFiniteRationalCoefficient
+
+  calc
+    ((Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+        (fun d => N / d^2) : ℕ) : ℚ)
+        =
+      Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+        (fun d => ((N / d^2 : ℕ) : ℚ)) := by
+        norm_num [Nat.cast_sum]
+    _ ≤
+      Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+        (fun d => (N : ℚ) * ((1 : ℚ) / ((d : ℚ)^2))) := by
+        refine Finset.sum_le_sum ?_
+        intro d hd
+
+        rcases Finset.mem_Icc.mp hd with ⟨hd_ge_19, _hd_sqrt⟩
+
+        have hd_pos : 0 < d :=
+          lt_of_lt_of_le (by norm_num : 0 < 19) hd_ge_19
+
+        exact natDivPrimeSquareCastLeRat N d hd_pos
+    _ =
+      (N : ℚ) *
+        Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+          (fun d => (1 : ℚ) / ((d : ℚ)^2)) := by
+        rw [Finset.mul_sum]
+
+/-- Le coefficient fini `≤ 1/18` ferme la borne coefficientielle de queue. -/
+theorem largeSquareTailMultipleUpperSumLeCoefficientBridge_of_finite
+    (Hfinite : LargeSquareTailFiniteCoefficientLeBridge) :
+    LargeSquareTailMultipleUpperSumLeCoefficientBridge := by
+  unfold LargeSquareTailMultipleUpperSumLeCoefficientBridge
+  unfold LargeSquareTailFiniteCoefficientLeBridge at Hfinite
+
+  intro N hN
+
+  have htail :
+      (largeSquareTailMultipleUpperSum N : ℚ)
+        ≤
+      (N : ℚ) * largeSquareTailFiniteRationalCoefficient N :=
+    largeSquareTailMultipleUpperSumLeFiniteCoefficientBridge_proved hN
+
+  have hfinite :
+      largeSquareTailFiniteRationalCoefficient N
+        ≤
+      largeSquareTailRationalCoefficient :=
+    Hfinite hN
+
+  have hN_nonneg : (0 : ℚ) ≤ (N : ℚ) := by
+    exact_mod_cast Nat.zero_le N
+
+  have hmul :
+      (N : ℚ) * largeSquareTailFiniteRationalCoefficient N
+        ≤
+      (N : ℚ) * largeSquareTailRationalCoefficient := by
+    exact mul_le_mul_of_nonneg_left hfinite hN_nonneg
+
+  exact le_trans htail hmul
+
+/-- Version de C-04a où il ne reste plus que la borne finie
+    `∑_{19 ≤ d ≤ √N} 1/d² ≤ 1/18`. -/
+theorem squarefreeCount_ge_half_of_tail_finite_coefficient
+    (Hfinite : LargeSquareTailFiniteCoefficientLeBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_coefficient_parts
+    smallPrimeSquareMultipleUpperSumLeCoefficientBridge_proved
+    (largeSquareTailMultipleUpperSumLeCoefficientBridge_of_finite Hfinite)
+    hN
+
 end CouretUnification.Logic.H3
