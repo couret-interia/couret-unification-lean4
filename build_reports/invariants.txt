@@ -84,6 +84,7 @@ lean/CouretUnification/Logic/H3/L10Bridge.lean:469:theorem rh_not_claimed : RHCl
 lean/CouretUnification/Logic/H3/SpectralBridge.lean:62:- `RHClaimed = false`
 lean/CouretUnification/Logic/H3/SpectralBridge.lean:63:- `HilbertPolyaClaimed = false`
 lean/CouretUnification/Logic/H3/SpectralBridge.lean:64:- `Det2IdentityClaimed = false`
+lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:56:/-- Alias de promotion : C-04b fermé dans la façade stable, RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/FiniteSpectralAPI.lean:3:   0 sorry. RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/ZeroMatching.lean:7:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/ZeroMatching.lean:8:theorem rh_not_claimed : RHClaimed = false := rfl

@@ -11,11 +11,15 @@ Le fichier sépare explicitement deux niveaux :
 1. **Partie robuste déjà fermée**
    - réindexation arithmétique de type Fubini (`sum_squarefree_fubini`)
    - contrôle local de l’erreur euclidienne (`div_eucl_real_error`)
+   - densité asymptotique `6 / π²`, fermée via la façade
+     `SquarefreeDensityC04bClosed`
+
+2. **Partie analytique encore ouverte**
+   - minoration uniforme `squarefreeCount_ge_half`
 
 2. **Partie analytique encore ouverte**
    - majoration globale de l’erreur en `O(√N)`
    - minoration uniforme `squarefreeCount_ge_half`
-   - densité asymptotique `6 / π²`
 
 Cette séparation reflète la doctrine du dépôt :
 les identités discrètes exactes sont fermées dès que possible,
@@ -35,7 +39,7 @@ tandis que les coutures asymptotiques restent isolées comme dettes analytiques 
 - C-02 : erreur locale division entière / réelle                      [proved]
 - C-03 : terme d’erreur global `O(√N)`                                [proved]
 - C-04a : minoration robuste `squarefreeCount_ge_half`                [conditional bridge]
-- C-04b : densité asymptotique `6 / π²`                               [conditional bridge]
+- C-04b : densité asymptotique `6 / π²`                               [proved via SquarefreeDensityC04bClosed]
 
 ## Doctrine
 
@@ -355,9 +359,9 @@ def SquarefreeAsymptoticDensityBridge : Prop :=
 
 /-- C-04b. Théorème de densité asymptotique : densité `6 / π²`.
 
-    Version conditionnelle : le contenu analytique complet est exposé
-    dans `SquarefreeAsymptoticDensityBridge`, sans nouvel axiome global
-    et sans `sorry`.
+    Prouvé via SquarefreeDensityC04bClosed et contenu analytique complet
+    exposé dans `SquarefreeAsymptoticDensityBridge`,
+    sans nouvel axiome global et sans `sorry`.
 
     Cette fermeture ne revendique pas la preuve interne de la densité ;
     elle stabilise l'interface logique du dépôt. -/

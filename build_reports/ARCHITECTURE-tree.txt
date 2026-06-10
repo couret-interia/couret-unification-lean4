@@ -377,6 +377,7 @@
 │   │   │   │   ├── SpectralBridge.lean
 │   │   │   │   ├── SpectralSpatial.lean
 │   │   │   │   ├── SquarefreeDensityAsymptotic.lean
+│   │   │   │   ├── SquarefreeDensityC04bClosed.lean
 │   │   │   │   ├── SquarefreeDensity.lean
 │   │   │   │   ├── SquarefreeSupport.lean
 │   │   │   │   ├── T5Weak.lean
@@ -513,4 +514,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 451 files
+63 directories, 452 files
