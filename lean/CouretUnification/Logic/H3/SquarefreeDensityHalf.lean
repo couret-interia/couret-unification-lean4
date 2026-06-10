@@ -618,8 +618,20 @@ theorem primeSquareIndexSetSubsetSmallUnionTailBridge_proved :
   by_cases hp_lt_19 : p < 19
 
   · left
-    unfold smallPrimeSquareIndexSet
-    interval_cases p <; simp [smallPrimeSquareIndexSet] at hp_prime ⊢
+
+    have hp_cases :
+        p = 2 ∨ p = 3 ∨ p = 4 ∨ p = 5 ∨ p = 6 ∨
+        p = 7 ∨ p = 8 ∨ p = 9 ∨ p = 10 ∨ p = 11 ∨
+        p = 12 ∨ p = 13 ∨ p = 14 ∨ p = 15 ∨ p = 16 ∨
+        p = 17 ∨ p = 18 := by
+      omega
+
+    rcases hp_cases with
+      rfl | rfl | rfl | rfl | rfl |
+      rfl | rfl | rfl | rfl | rfl |
+      rfl | rfl | rfl | rfl | rfl |
+      rfl | rfl
+    all_goals norm_num [smallPrimeSquareIndexSet] at hp_prime ⊢
 
   · right
     rw [Finset.mem_Icc]
@@ -661,9 +673,7 @@ theorem primeSquareMultipleUpperSumLeSmallPlusTailBridge_proved :
       smallPrimeSquareIndexSet ∪ Finset.Icc 19 (Nat.sqrt N) := by
     intro p hp
     exact
-      primeSquareIndexSetSubsetSmallUnionTailBridge_proved
-        N
-        p
+      (primeSquareIndexSetSubsetSmallUnionTailBridge_proved N)
         (by
           unfold primeSquareIndexSet
           exact hp)
