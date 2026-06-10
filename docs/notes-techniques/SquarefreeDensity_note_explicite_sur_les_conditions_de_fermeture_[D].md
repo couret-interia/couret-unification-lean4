@@ -42,53 +42,22 @@ vérification finie pour 176 ≤ N < N₀
 
 Donc C-04a est probablement prouvable, mais il faut un vrai module de borne effective. Ce n’est pas seulement un branchement à C-03.
 
-### Pour C-04b : densité `6 / π²`
+## Addendum v38.5.11 — statut de C-04b
 
-Il faut prouver :
+La section C-04b de cette note a été retirée car le verrou correspondant est désormais fermé dans le dépôt.
 
-```lean
-Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
-  (nhds (6 / Real.pi^2))
-```
-
-Conditions nécessaires :
-
-1. Formule de Möbius :
+Le statut canonique est documenté dans :
 
 ```text
-1_squarefree(n) = ∑_{d² | n} μ(d)
+docs/notes-techniques/SquarefreeDensity_C04b_v38.5.11.md
 ```
 
-2. Réindexation Fubini déjà largement préparée par C-01.
-
-3. Contrôle d’erreur : C-03 donne `O(√N)`, donc après division par `N`, il faut montrer :
-
-```lean
-O(√N) / N → 0
-```
-
-4. Passage à la limite :
+Résumé :
 
 ```text
-∑_{d ≤ √N} μ(d) / d² → ∑_{d ≥ 1} μ(d) / d²
+C-04b densité 6 / π² : [D] prouvé via SquarefreeDensityC04bClosed
+C-04a minoration N/2 : conditional bridge / ouvert
+RHClaimed            : false
 ```
 
-5. Identification eulérienne :
-
-```text
-∑ μ(d) / d² = 1 / ζ(2)
-```
-
-6. Évaluation classique :
-
-```text
-ζ(2) = π² / 6
-```
-
-donc :
-
-```text
-1 / ζ(2) = 6 / π²
-```
-
-La fermeture `[D]` de C-04b dépend donc de deux zones : ton `MoebiusBridge` et une évaluation formelle de `ζ(2)` côté Mathlib/projet.
+Cette note reste donc pertinente uniquement pour la dette restante C-04a.
