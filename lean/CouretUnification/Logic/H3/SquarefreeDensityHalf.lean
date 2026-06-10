@@ -632,11 +632,33 @@ theorem primeSquareIndexSetSubsetSmallUnionTailBridge_proved :
       rfl | rfl | rfl | rfl | rfl |
       rfl | rfl
 
-    all_goals
-      first
-      | norm_num [smallPrimeSquareIndexSet]
-      | exfalso
-        norm_num at hp_prime
+    · exact (by decide : 2 ∈ smallPrimeSquareIndexSet)
+    · exact (by decide : 3 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 4) hp_prime
+    · exact (by decide : 5 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 6) hp_prime
+    · exact (by decide : 7 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 8) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 9) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 10) hp_prime
+    · exact (by decide : 11 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 12) hp_prime
+    · exact (by decide : 13 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 14) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 15) hp_prime
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 16) hp_prime
+    · exact (by decide : 17 ∈ smallPrimeSquareIndexSet)
+    · exfalso
+      exact (by decide : ¬ Nat.Prime 18) hp_prime
 
   · right
     rw [Finset.mem_Icc]
