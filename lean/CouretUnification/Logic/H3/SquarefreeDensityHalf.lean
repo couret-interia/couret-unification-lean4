@@ -1393,11 +1393,26 @@ theorem primeSquareMultipleUpperSumLeHalfBridge_proved :
 
 /-- Fermeture du bridge effectif C-04a. -/
 theorem squarefreeCountGeHalfBridge_proved :
-    SquarefreeCountGeHalfBridge :=
-  squarefreeCountGeHalfBridge_of_nonSquarefree_le_half
-    (nonSquarefreeCountLeHalfBridge_of_primeSquare_sum
-      nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved
-        |> nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_cover
-      primeSquareMultipleUpperSumLeHalfBridge_proved)
+    SquarefreeCountGeHalfBridge := by
+  apply squarefreeCountGeHalfBridge_of_nonSquarefree_le_half
+
+  apply nonSquarefreeCountLeHalfBridge_of_primeSquare_sum
+
+  · exact
+      nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_cover
+        nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved
+
+  · exact primeSquareMultipleUpperSumLeHalfBridge_proved
+
+/-- Théorème final C-04a :
+    pour `N ≥ 176`, au moins la moitié des entiers `≤ N`
+    sont squarefree. -/
+theorem squarefreeCount_ge_half_final
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half
+    squarefreeCountGeHalfBridge_proved
+    hN
 
 end CouretUnification.Logic.H3
