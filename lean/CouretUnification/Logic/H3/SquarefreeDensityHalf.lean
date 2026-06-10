@@ -1129,4 +1129,145 @@ theorem squarefreeCount_ge_half_of_tail_finite_coefficient
     (largeSquareTailMultipleUpperSumLeCoefficientBridge_of_finite Hfinite)
     hN
 
+/-!
+## Queue : réduction télescopique
+
+On introduit la majoration terme à terme :
+
+  1 / d² ≤ 1 / (d - 1) - 1 / d,
+
+valable pour `d ≥ 2`.
+
+Ainsi, le coefficient fini de queue
+
+  ∑_{19 ≤ d ≤ √N} 1 / d²
+
+est majoré par une somme télescopique. Il restera ensuite seulement à
+fermer cette somme télescopique par `1 / 18`.
+-/
+
+/-- Coefficient télescopique associé à la queue `19..√N`. -/
+def largeSquareTailTelescopingCoefficient (N : ℕ) : ℚ :=
+  Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+    (fun d =>
+      (1 : ℚ) / (((d - 1 : ℕ) : ℚ))
+        - (1 : ℚ) / (d : ℚ))
+
+/-- Inégalité élémentaire de télescopage :
+    `1/d² ≤ 1/(d-1) - 1/d`, pour `d ≥ 2`. -/
+theorem ratInvSquareLeTelescopingStep
+    (d : ℕ)
+    (hd : 2 ≤ d) :
+    (1 : ℚ) / ((d : ℚ)^2)
+      ≤
+    (1 : ℚ) / (((d - 1 : ℕ) : ℚ))
+      - (1 : ℚ) / (d : ℚ) := by
+  have hd_pos_nat : 0 < d := by
+    exact lt_of_lt_of_le (by norm_num : 0 < 2) hd
+
+  have hd_gt_one_nat : 1 < d := by
+    exact lt_of_lt_of_le (by norm_num : 1 < 2) hd
+
+  have hdm1_pos_nat : 0 < d - 1 := by
+    exact Nat.sub_pos_of_lt hd_gt_one_nat
+
+  have hdq_pos : (0 : ℚ) < (d : ℚ) := by
+    exact_mod_cast hd_pos_nat
+
+  have hdm1q_pos : (0 : ℚ) < (((d - 1 : ℕ) : ℚ)) := by
+    exact_mod_cast hdm1_pos_nat
+
+  have hdq_ne : (d : ℚ) ≠ 0 :=
+    ne_of_gt hdq_pos
+
+  have hdm1q_ne : (((d - 1 : ℕ) : ℚ)) ≠ 0 :=
+    ne_of_gt hdm1q_pos
+
+  have hdm1_cast :
+      (((d - 1 : ℕ) : ℚ)) = (d : ℚ) - 1 := by
+    rw [Nat.cast_sub (by omega : 1 ≤ d)]
+    norm_num
+
+  rw [hdm1_cast] at hdm1q_ne ⊢
+
+  have hdm1_expr_pos : (0 : ℚ) < (d : ℚ) - 1 := by
+    rw [← hdm1_cast]
+    exact hdm1q_pos
+
+  field_simp [hdq_ne, hdm1q_ne, pow_two]
+  nlinarith [hdq_pos, hdm1_expr_pos]
+
+/-- Bridge : le coefficient fini de queue est majoré par
+    le coefficient télescopique. -/
+def LargeSquareTailFiniteCoefficientLeTelescopingBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      largeSquareTailFiniteRationalCoefficient N
+        ≤
+      largeSquareTailTelescopingCoefficient N
+
+/-- Fermeture terme à terme de la majoration par la somme télescopique. -/
+theorem largeSquareTailFiniteCoefficientLeTelescopingBridge_proved :
+    LargeSquareTailFiniteCoefficientLeTelescopingBridge := by
+  unfold LargeSquareTailFiniteCoefficientLeTelescopingBridge
+
+  intro N hN
+
+  unfold largeSquareTailFiniteRationalCoefficient
+  unfold largeSquareTailTelescopingCoefficient
+
+  refine Finset.sum_le_sum ?_
+
+  intro d hd
+
+  rcases Finset.mem_Icc.mp hd with ⟨hd_ge_19, _hd_sqrt⟩
+
+  have hd_two : 2 ≤ d :=
+    le_trans (by norm_num : 2 ≤ 19) hd_ge_19
+
+  exact ratInvSquareLeTelescopingStep d hd_two
+
+/-- Bridge restant :
+    la somme télescopique de queue est bornée par `1/18`. -/
+def LargeSquareTailTelescopingCoefficientLeBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      largeSquareTailTelescopingCoefficient N
+        ≤
+      largeSquareTailRationalCoefficient
+
+/-- La borne télescopique ferme le coefficient fini de queue. -/
+theorem largeSquareTailFiniteCoefficientLeBridge_of_telescoping
+    (Htel : LargeSquareTailTelescopingCoefficientLeBridge) :
+    LargeSquareTailFiniteCoefficientLeBridge := by
+  unfold LargeSquareTailFiniteCoefficientLeBridge
+  unfold LargeSquareTailTelescopingCoefficientLeBridge at Htel
+
+  intro N hN
+
+  have hfinite_tel :
+      largeSquareTailFiniteRationalCoefficient N
+        ≤
+      largeSquareTailTelescopingCoefficient N :=
+    largeSquareTailFiniteCoefficientLeTelescopingBridge_proved hN
+
+  have htel :
+      largeSquareTailTelescopingCoefficient N
+        ≤
+      largeSquareTailRationalCoefficient :=
+    Htel hN
+
+  exact le_trans hfinite_tel htel
+
+/-- Version de C-04a où il ne reste plus que la borne télescopique
+    `largeSquareTailTelescopingCoefficient N ≤ 1/18`. -/
+theorem squarefreeCount_ge_half_of_tail_telescoping
+    (Htel : LargeSquareTailTelescopingCoefficientLeBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_tail_finite_coefficient
+    (largeSquareTailFiniteCoefficientLeBridge_of_telescoping Htel)
+    hN
+
 end CouretUnification.Logic.H3
