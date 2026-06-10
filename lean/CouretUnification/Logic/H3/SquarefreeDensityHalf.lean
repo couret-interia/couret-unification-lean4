@@ -743,4 +743,190 @@ theorem squarefreeCount_ge_half_of_small_tail_effective
     Hhalf
     hN
 
+/-!
+## Réduction du verrou effectif à deux bornes de coefficients
+
+Après fermeture de la séparation petits premiers + queue, le dernier verrou
+`SmallPlusTailLeHalfBridge` est réduit à deux estimations de coefficients :
+
+1. petits premiers :
+   `∑ ⌊N / p²⌋ ≤ N * ∑ 1/p²`
+
+2. queue :
+   `∑_{19 ≤ d ≤ √N} ⌊N / d²⌋ ≤ N / 18`
+
+Le coefficient total est alors explicitement vérifié :
+  ∑_{p ∈ {2,3,5,7,11,13,17}} 1/p² + 1/18 ≤ 1/2.
+-/
+
+/-- Coefficient rationnel associé aux petits premiers explicites. -/
+def smallPrimeSquareRationalCoefficient : ℚ :=
+  Finset.sum smallPrimeSquareIndexSet
+    (fun p => (1 : ℚ) / ((p : ℚ)^2))
+
+/-- Coefficient rationnel grossier pour la queue `d ≥ 19`.
+
+    Il correspond à la borne intégrale classique :
+    `∑_{d ≥ 19} 1/d² ≤ ∫_{18}^{∞} dx/x² = 1/18`. -/
+def largeSquareTailRationalCoefficient : ℚ :=
+  1 / 18
+
+/-- Bridge : les petits premiers sont contrôlés par leur coefficient
+    rationnel explicite. -/
+def SmallPrimeSquareMultipleUpperSumLeCoefficientBridge : Prop :=
+  ∀ N : ℕ,
+    (smallPrimeSquareMultipleUpperSum N : ℚ)
+      ≤
+    (N : ℚ) * smallPrimeSquareRationalCoefficient
+
+/-- Bridge : la queue entière est contrôlée par le coefficient `1/18`. -/
+def LargeSquareTailMultipleUpperSumLeCoefficientBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      (largeSquareTailMultipleUpperSum N : ℚ)
+        ≤
+      (N : ℚ) * largeSquareTailRationalCoefficient
+
+/-- Bridge intermédiaire :
+    petits premiers + queue sont contrôlés par la somme des coefficients. -/
+def SmallPlusTailLeCoefficientBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      ((smallPrimeSquareMultipleUpperSum N
+          + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        ≤
+      (N : ℚ) *
+        (smallPrimeSquareRationalCoefficient
+          + largeSquareTailRationalCoefficient)
+
+/-- Le coefficient total est au plus `1/2`. -/
+def SmallTailCoefficientLeHalfBridge : Prop :=
+  smallPrimeSquareRationalCoefficient
+    + largeSquareTailRationalCoefficient
+      ≤
+    (1 : ℚ) / 2
+
+/-- Fermeture numérique du coefficient total. -/
+theorem smallTailCoefficientLeHalfBridge_proved :
+    SmallTailCoefficientLeHalfBridge := by
+  unfold SmallTailCoefficientLeHalfBridge
+  unfold smallPrimeSquareRationalCoefficient
+  unfold largeSquareTailRationalCoefficient
+  unfold smallPrimeSquareIndexSet
+  norm_num
+
+/-- Les deux bornes de coefficients impliquent le bridge intermédiaire. -/
+theorem smallPlusTailLeCoefficientBridge_of_parts
+    (Hsmall : SmallPrimeSquareMultipleUpperSumLeCoefficientBridge)
+    (Htail : LargeSquareTailMultipleUpperSumLeCoefficientBridge) :
+    SmallPlusTailLeCoefficientBridge := by
+  unfold SmallPlusTailLeCoefficientBridge
+  unfold SmallPrimeSquareMultipleUpperSumLeCoefficientBridge at Hsmall
+  unfold LargeSquareTailMultipleUpperSumLeCoefficientBridge at Htail
+
+  intro N hN
+
+  have hsmall :
+      (smallPrimeSquareMultipleUpperSum N : ℚ)
+        ≤
+      (N : ℚ) * smallPrimeSquareRationalCoefficient :=
+    Hsmall N
+
+  have htail :
+      (largeSquareTailMultipleUpperSum N : ℚ)
+        ≤
+      (N : ℚ) * largeSquareTailRationalCoefficient :=
+    Htail hN
+
+  have hcast :
+      ((smallPrimeSquareMultipleUpperSum N
+          + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        =
+      (smallPrimeSquareMultipleUpperSum N : ℚ)
+        + (largeSquareTailMultipleUpperSum N : ℚ) := by
+    norm_num [Nat.cast_add]
+
+  calc
+    ((smallPrimeSquareMultipleUpperSum N
+        + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        =
+      (smallPrimeSquareMultipleUpperSum N : ℚ)
+        + (largeSquareTailMultipleUpperSum N : ℚ) := hcast
+    _ ≤
+      (N : ℚ) * smallPrimeSquareRationalCoefficient
+        + (N : ℚ) * largeSquareTailRationalCoefficient := by
+        exact add_le_add hsmall htail
+    _ =
+      (N : ℚ) *
+        (smallPrimeSquareRationalCoefficient
+          + largeSquareTailRationalCoefficient) := by
+        ring
+
+/-- Le contrôle par coefficient total ferme `SmallPlusTailLeHalfBridge`. -/
+theorem smallPlusTailLeHalfBridge_of_coefficient
+    (Hcoeff : SmallPlusTailLeCoefficientBridge)
+    (Hhalf : SmallTailCoefficientLeHalfBridge) :
+    SmallPlusTailLeHalfBridge := by
+  unfold SmallPlusTailLeHalfBridge
+  unfold SmallPlusTailLeCoefficientBridge at Hcoeff
+  unfold SmallTailCoefficientLeHalfBridge at Hhalf
+
+  intro N hN
+
+  have hcoeff :
+      ((smallPrimeSquareMultipleUpperSum N
+          + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        ≤
+      (N : ℚ) *
+        (smallPrimeSquareRationalCoefficient
+          + largeSquareTailRationalCoefficient) :=
+    Hcoeff hN
+
+  have hN_nonneg : (0 : ℚ) ≤ (N : ℚ) := by
+    exact_mod_cast Nat.zero_le N
+
+  have hmul :
+      (N : ℚ) *
+          (smallPrimeSquareRationalCoefficient
+            + largeSquareTailRationalCoefficient)
+        ≤
+      (N : ℚ) * ((1 : ℚ) / 2) := by
+    exact mul_le_mul_of_nonneg_left Hhalf hN_nonneg
+
+  calc
+    ((smallPrimeSquareMultipleUpperSum N
+        + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        ≤
+      (N : ℚ) *
+        (smallPrimeSquareRationalCoefficient
+          + largeSquareTailRationalCoefficient) := hcoeff
+    _ ≤
+      (N : ℚ) * ((1 : ℚ) / 2) := hmul
+    _ =
+      (N : ℚ) / 2 := by
+        ring
+
+/-- Version de `SmallPlusTailLeHalfBridge` où il ne reste que
+    les deux bornes séparées : petits premiers et queue. -/
+theorem smallPlusTailLeHalfBridge_of_coefficient_parts
+    (Hsmall : SmallPrimeSquareMultipleUpperSumLeCoefficientBridge)
+    (Htail : LargeSquareTailMultipleUpperSumLeCoefficientBridge) :
+    SmallPlusTailLeHalfBridge :=
+  smallPlusTailLeHalfBridge_of_coefficient
+    (smallPlusTailLeCoefficientBridge_of_parts Hsmall Htail)
+    smallTailCoefficientLeHalfBridge_proved
+
+/-- Version consommable de C-04a où il reste exactement deux verrous :
+    - la borne coefficientielle des petits premiers ;
+    - la borne coefficientielle de la queue. -/
+theorem squarefreeCount_ge_half_of_coefficient_parts
+    (Hsmall : SmallPrimeSquareMultipleUpperSumLeCoefficientBridge)
+    (Htail : LargeSquareTailMultipleUpperSumLeCoefficientBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_small_tail_effective
+    (smallPlusTailLeHalfBridge_of_coefficient_parts Hsmall Htail)
+    hN
+
 end CouretUnification.Logic.H3
