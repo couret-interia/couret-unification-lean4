@@ -1,11 +1,23 @@
 /-
-Couret-Unification — v38.5.10-lab
-Logic/H3/SquarefreeDensityAsymptotic.lean
+Couret-Unification — v38.5.11
+# CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean
 
-Laboratoire compilable de fermeture C-04b.
-Status     : lab / no sorry
-RHClaimed  : false
-Claim      : aucune fermeture [D] nouvelle à ce stade
+## Rôle
+
+Laboratoire compilable de fermeture C-04b :
+  squarefreeCount N / N → 6 / π².
+
+Ce fichier contient la fermeture du bridge asymptotique C-04b.
+La promotion stable est exposée par :
+  CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+
+## Statut
+
+- Status      : proved [D]
+- Front       : C-04b — densité asymptotique squarefree
+- Couche      : Logic / H3
+- RHClaimed   : false
+- Sorry count : 0
 -/
 
 import CouretUnification.Logic.H3.SquarefreeDensity

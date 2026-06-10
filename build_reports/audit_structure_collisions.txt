@@ -224,9 +224,9 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
        ./Frozen.lean:95:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
        ./Frozen.lean:97:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
-       ./Logic/H3/SquarefreeDensityAsymptotic.lean:11:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Logic/H3/SquarefreeDensityAsymptotic.lean:23:import CouretUnification.Logic.H3.SquarefreeDensity
        ./Logic/H3/SquarefreeDensityC04aClosed.lean:29:import CouretUnification.Logic.H3.SquarefreeDensityHalf
-       ./Logic/H3/SquarefreeDensityHalf.lean:23:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./Logic/H3/SquarefreeDensityHalf.lean:24:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
        ./Logic/H3/SquarefreeDensityC04bClosed.lean:28:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
        ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
        ./All.lean:388:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic

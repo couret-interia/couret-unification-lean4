@@ -1,5 +1,5 @@
 /-
-Couret-Unification — v38.5.12-lab
+Couret-Unification — v38.5.12
 # CouretUnification/Logic/H3/SquarefreeDensityHalf.lean
 
 ## Rôle
@@ -7,15 +7,16 @@ Couret-Unification — v38.5.12-lab
 Laboratoire de fermeture de C-04a :
   pour N ≥ 176, squarefreeCount N ≥ N / 2.
 
-Ce premier fichier ne ferme pas encore la borne effective.
-Il réduit C-04a à une majoration équivalente du nombre d'entiers
-non-squarefree.
+Ce fichier ferme la borne effective C-04a.
+Il réduit puis prouve la minoration via le comptage des entiers
+non-squarefree, la couverture par carrés premiers, la séparation
+petits premiers / queue, et une borne télescopique rationnelle.
 
 ## Statut
 
-- Couche      : Logic / H3
+- Status      : proved [D]
 - Front       : C-04a — minoration effective squarefree
-- C-04b       : déjà fermé via SquarefreeDensityC04bClosed
+- Couche      : Logic / H3
 - RHClaimed   : false
 - Sorry count : 0
 -/
