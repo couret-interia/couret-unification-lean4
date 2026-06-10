@@ -166,4 +166,95 @@ theorem squarefreeCount_ge_half_of_primeSquare_sum
     (nonSquarefreeCountLeHalfBridge_of_primeSquare_sum Hcount Hsum)
     hN
 
+/-!
+## Décomposition fine du crible C-04a
+
+La majoration
+
+  nonSquarefreeCount N ≤ ∑_{p ≤ √N, p premier} ⌊N / p²⌋
+
+est séparée en deux pièces :
+
+1. une couverture combinatoire par les ensembles de multiples de `p²` ;
+2. le calcul exact du cardinal de chaque ensemble de multiples.
+-/
+
+/-- Ensemble des premiers `p` utilisés dans le crible C-04a :
+    `2 ≤ p ≤ √N`. -/
+def primeSquareIndexSet (N : ℕ) : Finset ℕ :=
+  (Finset.Icc 2 (Nat.sqrt N)).filter Nat.Prime
+
+/-- Ensemble des entiers `n ≤ N` divisibles par `p²`. -/
+def primeSquareMultipleSet (N p : ℕ) : Finset ℕ :=
+  (Finset.Icc 1 N).filter (fun n => p^2 ∣ n)
+
+/-- Bridge de couverture :
+    les entiers non-squarefree sont couverts par l'union sur les multiples
+    des carrés premiers. On l'exprime directement sous forme de borne
+    par somme des cardinaux, ce qui autorise le surcomptage. -/
+def NonSquarefreeCountLePrimeSquareMultipleCardSumBridge : Prop :=
+  ∀ N : ℕ,
+    nonSquarefreeCount N ≤
+      Finset.sum (primeSquareIndexSet N)
+        (fun p => (primeSquareMultipleSet N p).card)
+
+/-- Bridge de cardinal exact :
+    pour chaque premier `p ≤ √N`, le nombre d'entiers `≤ N`
+    divisibles par `p²` est `⌊N / p²⌋`. -/
+def PrimeSquareMultipleSetCardBridge : Prop :=
+  ∀ N p : ℕ,
+    p ∈ primeSquareIndexSet N →
+      (primeSquareMultipleSet N p).card = N / p^2
+
+/-- Les deux bridges fins reconstruisent la majoration par la somme
+    `primeSquareMultipleUpperSum`. -/
+theorem nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_card_sum
+    (Hcover : NonSquarefreeCountLePrimeSquareMultipleCardSumBridge)
+    (Hcard : PrimeSquareMultipleSetCardBridge) :
+    NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge := by
+  unfold NonSquarefreeCountLePrimeSquareMultipleUpperSumBridge
+  unfold NonSquarefreeCountLePrimeSquareMultipleCardSumBridge at Hcover
+  unfold PrimeSquareMultipleSetCardBridge at Hcard
+
+  intro N
+
+  have hcover :
+      nonSquarefreeCount N ≤
+        Finset.sum (primeSquareIndexSet N)
+          (fun p => (primeSquareMultipleSet N p).card) :=
+    Hcover N
+
+  have hsum :
+      Finset.sum (primeSquareIndexSet N)
+          (fun p => (primeSquareMultipleSet N p).card)
+        =
+      primeSquareMultipleUpperSum N := by
+    unfold primeSquareIndexSet
+    unfold primeSquareMultipleUpperSum
+    refine Finset.sum_congr rfl ?_
+    intro p hp
+    exact Hcard N p (by
+      unfold primeSquareIndexSet
+      exact hp)
+
+  simpa [hsum] using hcover
+
+/-- Version consommable de C-04a sous :
+    - la couverture par les multiples de carrés premiers ;
+    - le cardinal exact de ces multiples ;
+    - la borne effective sur la somme. -/
+theorem squarefreeCount_ge_half_of_primeSquare_card_sum
+    (Hcover : NonSquarefreeCountLePrimeSquareMultipleCardSumBridge)
+    (Hcard : PrimeSquareMultipleSetCardBridge)
+    (Hsum : PrimeSquareMultipleUpperSumLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_primeSquare_sum
+    (nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_card_sum
+      Hcover
+      Hcard)
+    Hsum
+    hN
+
 end CouretUnification.Logic.H3
