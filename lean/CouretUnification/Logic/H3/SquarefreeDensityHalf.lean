@@ -1315,7 +1315,18 @@ theorem largeSquareTailTelescopingIcc_eq
           18 + (k + 1) - 1 = 18 + k := by
         omega
 
-      rw [hsub]
+      calc
+        (1 / (((18 + (k + 1) - 1 : ℕ) : ℚ))
+            - 1 / (((18 + (k + 1) : ℕ) : ℚ)))
+            + (1 / 18 - 1 / (((18 + k : ℕ) : ℚ)))
+            =
+          (1 / (((18 + k : ℕ) : ℚ))
+            - 1 / (((18 + (k + 1) : ℕ) : ℚ)))
+            + (1 / 18 - 1 / (((18 + k : ℕ) : ℚ))) := by
+            rw [hsub]
+        _ =
+          1 / 18 - 1 / (((18 + (k + 1) : ℕ) : ℚ)) := by
+            ring
 
 /-- Fermeture de la borne télescopique de queue. -/
 theorem largeSquareTailTelescopingCoefficientLeBridge_proved :
