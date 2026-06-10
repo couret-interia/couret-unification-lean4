@@ -1,27 +1,19 @@
 /-
-Couret-Unification — v38.5.9
+Couret-Unification — v38.5.12
 # CouretUnification/Logic/H3/SquarefreeDensity.lean
 
 ## Rôle
 
 Bloc H3 consacré à la densité des entiers squarefree.
 
-Le fichier sépare explicitement deux niveaux :
-
-1. **Partie robuste déjà fermée**
+Interface stable ; les deux verrous C-04a/C-04b sont désormais fermés par façades.
    - réindexation arithmétique de type Fubini (`sum_squarefree_fubini`)
    - contrôle local de l’erreur euclidienne (`div_eucl_real_error`)
    - majoration globale de l’erreur en `O(√N)` (`error_term_isBigO`)
    - densité asymptotique `6 / π²`, fermée via la façade
      `SquarefreeDensityC04bClosed`
-
-2. **Partie analytique encore ouverte**
-   - minoration uniforme `squarefreeCount_ge_half`
-
-Cette séparation reflète la doctrine du dépôt :
-les identités discrètes exactes et la fermeture C-04b sont fermées
-dès que possible, tandis que la minoration effective C-04a reste isolée
-comme dette analytique/probatoire explicite.
+   - minoration uniforme `squarefreeCount_ge_half`,
+     promue inconditionnellement via `SquarefreeDensityC04aClosed`
 
 ## Statut
 
@@ -36,7 +28,7 @@ comme dette analytique/probatoire explicite.
 - C-01 : réindexation Fubini arithmétique (`sum_squarefree_fubini`)   [proved]
 - C-02 : erreur locale division entière / réelle                      [proved]
 - C-03 : terme d’erreur global `O(√N)`                                [proved]
-- C-04a : minoration robuste `squarefreeCount_ge_half`                [conditional bridge]
+- C-04a : minoration robuste `squarefreeCount_ge_half`                [proved via SquarefreeDensityC04aClosed]
 - C-04b : densité asymptotique `6 / π²`                               [proved via SquarefreeDensityC04bClosed]
 
 ## Doctrine
@@ -294,39 +286,12 @@ lemma error_term_isBigO :
       using hA_le_sqrt
   ⟩
 
-/-!
-## Conditions de fermeture [D] de C-04a/C-04b
-
-Les deux bridges ci-dessous ne sont pas des axiomes globaux : ils exposent
-les deux dettes analytiques restantes.
-
-Pour remplacer `SquarefreeCountGeHalfBridge` par une preuve [D], il faut :
-  1. une formule exacte de comptage squarefree via Möbius ;
-  2. une borne inférieure effective uniforme ;
-  3. une vérification ou une preuve du seuil explicite `N ≥ 176`.
-
-Pour remplacer `SquarefreeAsymptoticDensityBridge` par une preuve [D],
-il faut :
-  1. l'identité `1_squarefree(n) = ∑_{d²∣n} μ(d)` ;
-  2. la réindexation C-01 ;
-  3. le contrôle d'erreur C-03 et son quotient par `N` ;
-  4. la convergence de `∑ μ(d)/d²` ;
-  5. l'identification `∑ μ(d)/d² = 1 / ζ(2)` ;
-  6. l'évaluation `ζ(2) = π² / 6`.
-
-En cas d'échec d'une de ces étapes, le bridge correspondant reste
-conditionnel. En cas de contre-exemple explicite à C-04a, le seuil `176`
-doit être révisé ou l'énoncé rétrogradé.
--/
-
 /-- C-04a-bridge. Hypothèse explicite de minoration robuste.
 
-    Cette proposition isole la dette analytique/probatoire :
-    au-delà du seuil `176`, au moins la moitié des entiers `≤ N`
+    Au-delà du seuil `176`, au moins la moitié des entiers `≤ N`
     sont squarefree.
 
-    Elle n'est pas posée comme axiome global ; elle est fournie comme
-    paramètre aux théorèmes qui en ont besoin. -/
+    Elle est fournie comme paramètre aux théorèmes qui en ont besoin. -/
 def SquarefreeCountGeHalfBridge : Prop :=
   ∀ {N : ℕ}, 176 ≤ N → (N : ℚ) / 2 ≤ squarefreeCount N
 
@@ -334,9 +299,9 @@ def SquarefreeCountGeHalfBridge : Prop :=
 
     Au-delà d'un seuil N₀ = 176, au moins N/2 entiers sont squarefree,
     sous l'hypothèse explicite `SquarefreeCountGeHalfBridge`.
-
-    Le contenu non trivial est volontairement exposé comme pont
-    analytique/probatoire, et non caché dans un `axiom`. -/
+    Le contenu non trivial reste exposé comme pont public,
+    mais il est désormais fourni inconditionnellement par
+    `SquarefreeDensityC04aClosed`. -/
 theorem squarefreeCount_ge_half
     (bridge : SquarefreeCountGeHalfBridge)
     {N : ℕ} (hN : 176 ≤ N) :
