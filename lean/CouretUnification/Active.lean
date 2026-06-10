@@ -59,15 +59,11 @@ import CouretUnification.Logic.L6RatioEstimateDerived
 import CouretUnification.Logic.L10NoGoTheorem
 
 -- Logic : fronts actifs
-import CouretUnification.Logic.C3Weak
-import CouretUnification.Logic.EulerBridgeInfinite
+import CouretUnification.Logic.C3Weak -- [B] conditionnel formalisé (0 sorry - v38.5.6)
 
 -- H3 : fronts actifs
 import CouretUnification.Logic.H3.RouteC
 import CouretUnification.Logic.H3.Lemma7Residual
-import CouretUnification.Logic.H3.SquarefreeSupport
-import CouretUnification.Logic.H3.SquarefreeDensity
-import CouretUnification.Logic.H3.MoebiusBridge
 
 -- AnalyticHorizon
 import CouretUnification.AnalyticHorizon.Det2Transport

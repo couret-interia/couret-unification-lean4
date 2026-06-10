@@ -65,6 +65,7 @@ import CouretUnification.Logic.L6Bridge
 -- Front H3 : briques à 0 sorry uniquement
 import CouretUnification.Logic.H3.LocalFactor
 import CouretUnification.Logic.H3.CriticalLineTransferSpec
+import CouretUnification.Logic.H3.MoebiusBridge               -- v38.5.7
 
 -- v38.0 — TimeBridge LTB-0 (livré 7 mai 2026)
 -- Basic : socle de spec (openProblem, invariants doctrinaux)
@@ -82,3 +83,15 @@ import CouretUnification.Core.CharacterSubgroupSums               -- [D-formal, 
 import CouretUnification.Core.PointDefectLemma                    -- [D-formal, abstract]
 import CouretUnification.Core.G30Classification                   -- [D-computational, local]
 import CouretUnification.Core.G30ClassificationFromPointDefect    -- [D-formal, local bridge]
+
+-- v38.5.4
+import CouretUnification.Logic.H3.SquarefreeSupport
+
+-- v38.5.5
+import CouretUnification.Logic.EulerBridgeInfinite
+
+-- Front H3 : briques SquarefreeDensity (v38.5.8+)
+-- v38.5.11 — C-04b [D], densité asymptotique 6 / π².
+import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+-- v38.5.12 — C-04a [D], minoration effective squarefreeCount ≥ N/2.
+import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed

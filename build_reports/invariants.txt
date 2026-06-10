@@ -52,10 +52,12 @@ lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:79:  RHClaimed 
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:278:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:281:theorem rh_not_claimed : RHClaimed = false := rfl
 lean/CouretUnification/Logic/H3/ParityGamma30.lean:3:   0 sorry. RHClaimed = false. -/
+lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:4441:    RHClaimed = false.
 lean/CouretUnification/Logic/H3/C3Weak.lean:27:  RHClaimed = false.
 lean/CouretUnification/Logic/H3/C3Weak.lean:127:theorem RHClaimed_false_guard : True := trivial
 lean/CouretUnification/Logic/H3/C3Weak.lean:128:-- Marqueur doctrinal.  RHClaimed = false dans tous les contextes
 lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:8:  - RHClaimed = false
+lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:57:/-- Alias de promotion : C-04a fermé dans la façade stable, RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/AlgebraTC.lean:419:theorem RHClaimed_false_AlgebraTC : True := trivial
 lean/CouretUnification/Logic/H3/RouteC.lean:37:`RHClaimed = false.`
 lean/CouretUnification/Logic/H3/RouteC.lean:924:def RHClaimed : Bool := false
@@ -83,6 +85,7 @@ lean/CouretUnification/Logic/H3/L10Bridge.lean:469:theorem rh_not_claimed : RHCl
 lean/CouretUnification/Logic/H3/SpectralBridge.lean:62:- `RHClaimed = false`
 lean/CouretUnification/Logic/H3/SpectralBridge.lean:63:- `HilbertPolyaClaimed = false`
 lean/CouretUnification/Logic/H3/SpectralBridge.lean:64:- `Det2IdentityClaimed = false`
+lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:56:/-- Alias de promotion : C-04b fermé dans la façade stable, RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/FiniteSpectralAPI.lean:3:   0 sorry. RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/ZeroMatching.lean:7:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/H3/ZeroMatching.lean:8:theorem rh_not_claimed : RHClaimed = false := rfl
