@@ -224,10 +224,12 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
        ./Active.lean:69:import CouretUnification.Logic.H3.SquarefreeDensity
        ./Logic/H3/SquarefreeDensityAsymptotic.lean:11:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Logic/H3/SquarefreeDensityHalf.lean:23:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
        ./Logic/H3/SquarefreeDensityC04bClosed.lean:28:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
        ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
        ./All.lean:388:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
        ./All.lean:390:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./All.lean:392:import CouretUnification.Logic.H3.SquarefreeDensityHalf
         ──        import CouretUnification.Core.QuadraticResonance
        ./Frozen.lean:78:import CouretUnification.Core.QuadraticResonance
        ./All.lean:376:import CouretUnification.Core.QuadraticResonance
