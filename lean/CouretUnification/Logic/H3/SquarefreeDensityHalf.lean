@@ -929,4 +929,89 @@ theorem squarefreeCount_ge_half_of_coefficient_parts
     (smallPlusTailLeHalfBridge_of_coefficient_parts Hsmall Htail)
     hN
 
+/-!
+## Fermeture de la borne coefficientielle des petits premiers
+
+On ferme le verrou `Hsmall` :
+
+  ∑_{p ∈ petits premiers} ⌊N / p²⌋
+    ≤
+  N * ∑_{p ∈ petits premiers} 1 / p².
+
+L'ingrédient élémentaire est :
+  ⌊N/q⌋ ≤ N/q
+dans `ℚ`, pour `q > 0`.
+-/
+
+/-- Inégalité élémentaire : la division euclidienne est majorée
+    par la division rationnelle correspondante. -/
+theorem natDivCastLeRatDiv
+    (N q : ℕ)
+    (hq : 0 < q) :
+    ((N / q : ℕ) : ℚ) ≤ (N : ℚ) / (q : ℚ) := by
+  have hq_pos : (0 : ℚ) < (q : ℚ) := by
+    exact_mod_cast hq
+
+  have hmul :
+      ((N / q : ℕ) : ℚ) * (q : ℚ) ≤ (N : ℚ) := by
+    exact_mod_cast Nat.div_mul_le_self N q
+
+  rw [le_div_iff₀ hq_pos]
+  exact hmul
+
+/-- Version spécialisée à `q = p²`. -/
+theorem natDivPrimeSquareCastLeRat
+    (N p : ℕ)
+    (hp : 0 < p) :
+    ((N / p^2 : ℕ) : ℚ)
+      ≤
+    (N : ℚ) * ((1 : ℚ) / ((p : ℚ)^2)) := by
+  have hp_sq_pos : 0 < p^2 := by
+    exact pow_pos hp 2
+
+  calc
+    ((N / p^2 : ℕ) : ℚ)
+        ≤
+      (N : ℚ) / ((p^2 : ℕ) : ℚ) :=
+        natDivCastLeRatDiv N (p^2) hp_sq_pos
+    _ =
+      (N : ℚ) * ((1 : ℚ) / ((p : ℚ)^2)) := by
+        norm_num [div_eq_mul_inv, pow_two]
+        ring
+
+/-- Fermeture de la borne coefficientielle des petits premiers. -/
+theorem smallPrimeSquareMultipleUpperSumLeCoefficientBridge_proved :
+    SmallPrimeSquareMultipleUpperSumLeCoefficientBridge := by
+  unfold SmallPrimeSquareMultipleUpperSumLeCoefficientBridge
+
+  intro N
+
+  unfold smallPrimeSquareMultipleUpperSum
+  unfold smallPrimeSquareRationalCoefficient
+
+  calc
+    ((Finset.sum smallPrimeSquareIndexSet
+        (fun p => N / p^2) : ℕ) : ℚ)
+        =
+      Finset.sum smallPrimeSquareIndexSet
+        (fun p => ((N / p^2 : ℕ) : ℚ)) := by
+        norm_num [Nat.cast_sum]
+    _ ≤
+      Finset.sum smallPrimeSquareIndexSet
+        (fun p => (N : ℚ) * ((1 : ℚ) / ((p : ℚ)^2))) := by
+        refine Finset.sum_le_sum ?_
+        intro p hp_mem
+
+        have hp_pos : 0 < p := by
+          unfold smallPrimeSquareIndexSet at hp_mem
+          simp at hp_mem
+          omega
+
+        exact natDivPrimeSquareCastLeRat N p hp_pos
+    _ =
+      (N : ℚ) *
+        Finset.sum smallPrimeSquareIndexSet
+          (fun p => (1 : ℚ) / ((p : ℚ)^2)) := by
+        rw [Finset.mul_sum]
+
 end CouretUnification.Logic.H3
