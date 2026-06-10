@@ -1316,7 +1316,6 @@ theorem largeSquareTailTelescopingIcc_eq
         omega
 
       rw [hsub]
-      ring
 
 /-- Fermeture de la borne télescopique de queue. -/
 theorem largeSquareTailTelescopingCoefficientLeBridge_proved :
@@ -1400,7 +1399,8 @@ theorem squarefreeCountGeHalfBridge_proved :
 
   · exact
       nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_cover
-        nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved
+        (nonSquarefreeCountLePrimeSquareMultipleCardSumBridge_of_subset
+          nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved)
 
   · exact primeSquareMultipleUpperSumLeHalfBridge_proved
 

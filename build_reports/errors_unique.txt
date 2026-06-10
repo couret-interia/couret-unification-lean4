@@ -1,4 +1,4 @@
 error: build failed
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:1296:14: unsolved goals
 error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:1308:8: No goals to be solved
-error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:1403:8: Application type mismatch: The argument
 error: Lean exited with code 1
