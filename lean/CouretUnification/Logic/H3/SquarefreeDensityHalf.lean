@@ -1270,4 +1270,159 @@ theorem squarefreeCount_ge_half_of_tail_telescoping
     (largeSquareTailFiniteCoefficientLeBridge_of_telescoping Htel)
     hN
 
+/-!
+## Fermeture de la somme télescopique
+
+On ferme le dernier verrou effectif :
+
+  ∑_{19 ≤ d ≤ √N} (1/(d-1) - 1/d) ≤ 1/18.
+
+La preuve passe par une identité exacte sur `Icc 19 (18+k)` :
+la somme vaut `1/18 - 1/(18+k)`.
+-/
+
+/-- Identité télescopique exacte sur l'intervalle `19..18+k`. -/
+theorem largeSquareTailTelescopingIcc_eq
+    (k : ℕ) :
+    Finset.sum (Finset.Icc 19 (18 + k))
+      (fun d =>
+        (1 : ℚ) / (((d - 1 : ℕ) : ℚ))
+          - (1 : ℚ) / (d : ℚ))
+      =
+    (1 : ℚ) / 18 - (1 : ℚ) / ((18 + k : ℕ) : ℚ) := by
+  induction k with
+  | zero =>
+      norm_num
+  | succ k ih =>
+      have hIcc :
+          Finset.Icc 19 (18 + (k + 1))
+            =
+          insert (18 + (k + 1)) (Finset.Icc 19 (18 + k)) := by
+        ext d
+        simp [Finset.mem_Icc]
+        omega
+
+      have hnot :
+          18 + (k + 1) ∉ Finset.Icc 19 (18 + k) := by
+        simp [Finset.mem_Icc]
+
+      rw [hIcc]
+      rw [Finset.sum_insert hnot]
+      rw [ih]
+
+      have hsub :
+          18 + (k + 1) - 1 = 18 + k := by
+        omega
+
+      calc
+        (1 / (((18 + (k + 1) - 1 : ℕ) : ℚ))
+            - 1 / (((18 + (k + 1) : ℕ) : ℚ)))
+            + (1 / 18 - 1 / (((18 + k : ℕ) : ℚ)))
+            =
+          (1 / (((18 + k : ℕ) : ℚ))
+            - 1 / (((18 + (k + 1) : ℕ) : ℚ)))
+            + (1 / 18 - 1 / (((18 + k : ℕ) : ℚ))) := by
+            rw [hsub]
+        _ =
+          1 / 18 - 1 / (((18 + (k + 1) : ℕ) : ℚ)) := by
+            ring
+
+/-- Fermeture de la borne télescopique de queue. -/
+theorem largeSquareTailTelescopingCoefficientLeBridge_proved :
+    LargeSquareTailTelescopingCoefficientLeBridge := by
+  unfold LargeSquareTailTelescopingCoefficientLeBridge
+
+  intro N hN
+
+  unfold largeSquareTailTelescopingCoefficient
+  unfold largeSquareTailRationalCoefficient
+
+  by_cases hsmall : Nat.sqrt N < 19
+
+  · have hsum_zero :
+        Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+          (fun d =>
+            (1 : ℚ) / (((d - 1 : ℕ) : ℚ))
+              - (1 : ℚ) / (d : ℚ))
+          =
+        0 := by
+      refine Finset.sum_eq_zero ?_
+      intro d hd
+      exfalso
+      rcases Finset.mem_Icc.mp hd with ⟨hd_ge_19, hd_le_sqrt⟩
+      omega
+
+    rw [hsum_zero]
+    norm_num
+
+  · have hsqrt_ge_18 : 18 ≤ Nat.sqrt N := by
+      omega
+
+    have hrepr :
+        18 + (Nat.sqrt N - 18) = Nat.sqrt N := by
+      omega
+
+    rw [← hrepr]
+    rw [largeSquareTailTelescopingIcc_eq (Nat.sqrt N - 18)]
+
+    have hnonneg :
+        (0 : ℚ)
+          ≤
+        (1 : ℚ) / (((18 + (Nat.sqrt N - 18) : ℕ) : ℚ)) := by
+      positivity
+
+    linarith
+
+/-- Fermeture du coefficient fini de queue. -/
+theorem largeSquareTailFiniteCoefficientLeBridge_proved :
+    LargeSquareTailFiniteCoefficientLeBridge :=
+  largeSquareTailFiniteCoefficientLeBridge_of_telescoping
+    largeSquareTailTelescopingCoefficientLeBridge_proved
+
+/-- Fermeture de la borne coefficientielle de queue. -/
+theorem largeSquareTailMultipleUpperSumLeCoefficientBridge_proved :
+    LargeSquareTailMultipleUpperSumLeCoefficientBridge :=
+  largeSquareTailMultipleUpperSumLeCoefficientBridge_of_finite
+    largeSquareTailFiniteCoefficientLeBridge_proved
+
+/-- Fermeture de `SmallPlusTailLeHalfBridge`. -/
+theorem smallPlusTailLeHalfBridge_proved :
+    SmallPlusTailLeHalfBridge :=
+  smallPlusTailLeHalfBridge_of_coefficient_parts
+    smallPrimeSquareMultipleUpperSumLeCoefficientBridge_proved
+    largeSquareTailMultipleUpperSumLeCoefficientBridge_proved
+
+/-- Fermeture de la borne effective sur la somme des multiples
+    de carrés premiers. -/
+theorem primeSquareMultipleUpperSumLeHalfBridge_proved :
+    PrimeSquareMultipleUpperSumLeHalfBridge :=
+  primeSquareMultipleUpperSumLeHalfBridge_of_small_tail
+    primeSquareMultipleUpperSumLeSmallPlusTailBridge_proved
+    smallPlusTailLeHalfBridge_proved
+
+/-- Fermeture du bridge effectif C-04a. -/
+theorem squarefreeCountGeHalfBridge_proved :
+    SquarefreeCountGeHalfBridge := by
+  apply squarefreeCountGeHalfBridge_of_nonSquarefree_le_half
+
+  apply nonSquarefreeCountLeHalfBridge_of_primeSquare_sum
+
+  · exact
+      nonSquarefreeCountLePrimeSquareMultipleUpperSumBridge_of_cover
+        (nonSquarefreeCountLePrimeSquareMultipleCardSumBridge_of_subset
+          nonSquarefreeSubsetPrimeSquareMultipleUnionBridge_proved)
+
+  · exact primeSquareMultipleUpperSumLeHalfBridge_proved
+
+/-- Théorème final C-04a :
+    pour `N ≥ 176`, au moins la moitié des entiers `≤ N`
+    sont squarefree. -/
+theorem squarefreeCount_ge_half_final
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half
+    squarefreeCountGeHalfBridge_proved
+    hN
+
 end CouretUnification.Logic.H3
