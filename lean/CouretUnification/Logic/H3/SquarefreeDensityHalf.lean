@@ -482,4 +482,104 @@ theorem squarefreeCount_ge_half_of_primeSquare_effective_sum
     Hsum
     hN
 
+/-!
+## Réduction effective — petits premiers + queue entière
+
+Le dernier verrou de C-04a est :
+
+  ∑_{p ≤ √N, p premier} ⌊N / p²⌋ ≤ N / 2.
+
+On le prépare en séparant :
+- les petits premiers explicites `2, 3, 5, 7, 11, 13, 17` ;
+- une queue entière grossière à partir de `19`.
+
+Cette étape ne ferme pas encore l'inégalité numérique ; elle remplace
+le verrou effectif par deux bridges plus lisibles.
+-/
+
+/-- Petits premiers traités explicitement dans la borne C-04a. -/
+def smallPrimeSquareIndexSet : Finset ℕ :=
+  ({2, 3, 5, 7, 11, 13, 17} : Finset ℕ)
+
+/-- Contribution explicite des petits premiers. -/
+def smallPrimeSquareMultipleUpperSum (N : ℕ) : ℕ :=
+  Finset.sum smallPrimeSquareIndexSet
+    (fun p => N / p^2)
+
+/-- Queue entière grossière à partir de `19`.
+
+    Elle majore la contribution des premiers `p ≥ 19` en oubliant
+    la condition de primalité. -/
+def largeSquareTailMultipleUpperSum (N : ℕ) : ℕ :=
+  Finset.sum (Finset.Icc 19 (Nat.sqrt N))
+    (fun d => N / d^2)
+
+/-- Bridge de séparation effective :
+    la somme sur les carrés premiers est majorée par la contribution
+    des petits premiers explicites plus la queue entière. -/
+def PrimeSquareMultipleUpperSumLeSmallPlusTailBridge : Prop :=
+  ∀ N : ℕ,
+    primeSquareMultipleUpperSum N
+      ≤
+    smallPrimeSquareMultipleUpperSum N
+      + largeSquareTailMultipleUpperSum N
+
+/-- Bridge effectif restant :
+    petits premiers + queue entière sont au plus `N/2`
+    pour `N ≥ 176`. -/
+def SmallPlusTailLeHalfBridge : Prop :=
+  ∀ {N : ℕ},
+    176 ≤ N →
+      ((smallPrimeSquareMultipleUpperSum N
+          + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        ≤
+      (N : ℚ) / 2
+
+/-- Les deux bridges effectifs ferment la borne sur la somme
+    des multiples de carrés premiers. -/
+theorem primeSquareMultipleUpperSumLeHalfBridge_of_small_tail
+    (Hsplit : PrimeSquareMultipleUpperSumLeSmallPlusTailBridge)
+    (Hhalf : SmallPlusTailLeHalfBridge) :
+    PrimeSquareMultipleUpperSumLeHalfBridge := by
+  unfold PrimeSquareMultipleUpperSumLeHalfBridge
+  unfold PrimeSquareMultipleUpperSumLeSmallPlusTailBridge at Hsplit
+  unfold SmallPlusTailLeHalfBridge at Hhalf
+
+  intro N hN
+
+  have hsplit_nat :
+      primeSquareMultipleUpperSum N
+        ≤
+      smallPrimeSquareMultipleUpperSum N
+        + largeSquareTailMultipleUpperSum N :=
+    Hsplit N
+
+  have hsplit_rat :
+      (primeSquareMultipleUpperSum N : ℚ)
+        ≤
+      ((smallPrimeSquareMultipleUpperSum N
+          + largeSquareTailMultipleUpperSum N : ℕ) : ℚ) := by
+    exact_mod_cast hsplit_nat
+
+  have hhalf :
+      ((smallPrimeSquareMultipleUpperSum N
+          + largeSquareTailMultipleUpperSum N : ℕ) : ℚ)
+        ≤
+      (N : ℚ) / 2 :=
+    Hhalf hN
+
+  exact le_trans hsplit_rat hhalf
+
+/-- Version consommable de C-04a sous les deux bridges effectifs
+    `petits premiers + queue`. -/
+theorem squarefreeCount_ge_half_of_small_tail
+    (Hsplit : PrimeSquareMultipleUpperSumLeSmallPlusTailBridge)
+    (Hhalf : SmallPlusTailLeHalfBridge)
+    {N : ℕ}
+    (hN : 176 ≤ N) :
+    (N : ℚ) / 2 ≤ squarefreeCount N :=
+  squarefreeCount_ge_half_of_primeSquare_effective_sum
+    (primeSquareMultipleUpperSumLeHalfBridge_of_small_tail Hsplit Hhalf)
+    hN
+
 end CouretUnification.Logic.H3
