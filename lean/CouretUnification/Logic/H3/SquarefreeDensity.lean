@@ -11,6 +11,7 @@ Le fichier sépare explicitement deux niveaux :
 1. **Partie robuste déjà fermée**
    - réindexation arithmétique de type Fubini (`sum_squarefree_fubini`)
    - contrôle local de l’erreur euclidienne (`div_eucl_real_error`)
+   - majoration globale de l’erreur en `O(√N)` (`error_term_isBigO`)
    - densité asymptotique `6 / π²`, fermée via la façade
      `SquarefreeDensityC04bClosed`
 
@@ -361,8 +362,8 @@ def SquarefreeAsymptoticDensityBridge : Prop :=
     sans nouvel axiome global et sans `sorry`.
 
     Cette fermeture est fournie par la façade de promotion
-   `SquarefreeDensityC04bClosed`; ce fichier conserve l'interface logique
-   stable du dépôt. -/
+    `SquarefreeDensityC04bClosed`; ce fichier conserve l'interface logique
+    stable du dépôt. -/
 theorem squarefree_asymptotic_density
     (bridge : SquarefreeAsymptoticDensityBridge) :
     Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
