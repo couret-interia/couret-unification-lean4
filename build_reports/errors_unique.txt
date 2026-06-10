@@ -1,0 +1,6 @@
+error: build failed
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:606:53: unsolved goals
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:622:22: unexpected token ';'; expected term
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:622:4: interval_cases failed: unsupported type Prop
+error: lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:666:8: Application type mismatch: The argument
+error: Lean exited with code 1
