@@ -57,6 +57,7 @@ lean/CouretUnification/Logic/H3/C3Weak.lean:27:  RHClaimed = false.
 lean/CouretUnification/Logic/H3/C3Weak.lean:127:theorem RHClaimed_false_guard : True := trivial
 lean/CouretUnification/Logic/H3/C3Weak.lean:128:-- Marqueur doctrinal.  RHClaimed = false dans tous les contextes
 lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:8:  - RHClaimed = false
+lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:57:/-- Alias de promotion : C-04a fermé dans la façade stable, RHClaimed = false. -/
 lean/CouretUnification/Logic/H3/AlgebraTC.lean:419:theorem RHClaimed_false_AlgebraTC : True := trivial
 lean/CouretUnification/Logic/H3/RouteC.lean:37:`RHClaimed = false.`
 lean/CouretUnification/Logic/H3/RouteC.lean:924:def RHClaimed : Bool := false
