@@ -134,7 +134,7 @@ Recherche : def / structure / inductive / abbrev / theorem
 
 ── Catégorie 2.2 — Relevé des imports à examiner ──
         ──        import CouretUnification.Logic.ChiralityFinite
-       ./Frozen.lean:58:import CouretUnification.Logic.ChiralityFinite
+       ./Frozen.lean:69:import CouretUnification.Logic.ChiralityFinite
        ./All.lean:253:import CouretUnification.Logic.ChiralityFinite
         ──        import CouretUnification.Core.U30
        ./Logic/ChiralityFinite.lean:54:import CouretUnification.Core.U30
@@ -196,8 +196,8 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/SophieGermainHecke.lean:29:import CouretUnification.Core.Mod30
        ./Core/ExceptionalTriplets.lean:1:import CouretUnification.Core.Mod30
         ──        import CouretUnification.Core.G30Classification
-       ./Frozen.lean:84:import CouretUnification.Core.G30Classification
-       ./Frozen.lean:85:import CouretUnification.Core.G30ClassificationFromPointDefect
+       ./Frozen.lean:95:import CouretUnification.Core.G30Classification
+       ./Frozen.lean:96:import CouretUnification.Core.G30ClassificationFromPointDefect
        ./All.lean:383:import CouretUnification.Core.G30Classification
        ./All.lean:385:import CouretUnification.Core.G30ClassificationFromPointDefect
        ./Core/G30ClassificationFromPointDefect.lean:2:import CouretUnification.Core.G30Classification
@@ -219,11 +219,11 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Core.SpectralMoments
        ./All.lean:58:import CouretUnification.Core.SpectralMoments
         ──        import CouretUnification.Logic.H3.RouteC
-       ./Active.lean:65:import CouretUnification.Logic.H3.RouteC
+       ./Active.lean:63:import CouretUnification.Logic.H3.RouteC
        ./All.lean:145:import CouretUnification.Logic.H3.RouteC
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
-       ./Frozen.lean:95:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
-       ./Frozen.lean:97:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
+       ./Frozen.lean:106:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./Frozen.lean:108:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
        ./Logic/H3/SquarefreeDensityAsymptotic.lean:23:import CouretUnification.Logic.H3.SquarefreeDensity
        ./Logic/H3/SquarefreeDensityC04aClosed.lean:29:import CouretUnification.Logic.H3.SquarefreeDensityHalf
        ./Logic/H3/SquarefreeDensityHalf.lean:24:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
@@ -234,7 +234,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./All.lean:392:import CouretUnification.Logic.H3.SquarefreeDensityHalf
        ./All.lean:394:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
         ──        import CouretUnification.Core.QuadraticResonance
-       ./Frozen.lean:79:import CouretUnification.Core.QuadraticResonance
+       ./Frozen.lean:90:import CouretUnification.Core.QuadraticResonance
        ./All.lean:376:import CouretUnification.Core.QuadraticResonance
         ──        import CouretUnification.Core.TCAutoInverse
        ./All.lean:79:import CouretUnification.Core.TCAutoInverse
@@ -249,7 +249,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/RouteC.lean:8:import CouretUnification.Core.Arithmetic
        ./All.lean:146:import CouretUnification.Core.Arithmetic
         ──        import CouretUnification.Logic.C3Weak
-       ./Active.lean:62:import CouretUnification.Logic.C3Weak
+       ./Active.lean:52:import CouretUnification.Logic.C3Weak
        ./All.lean:218:import CouretUnification.Logic.C3Weak
        ./All.lean:248:import CouretUnification.Logic.C3Weak_Gram
         ──        import CouretUnification.Logic.H3.H3TestSpace
@@ -259,7 +259,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Logic/H3/RigidityParams.lean:32:import CouretUnification.Logic.H3.H3TestSpace
        ./All.lean:173:import CouretUnification.Logic.H3.H3TestSpace
         ──        import CouretUnification.Logic.H3.C3Weak_Gram
-       ./Frozen.lean:55:import CouretUnification.Logic.H3.C3Weak_Gram
+       ./Frozen.lean:66:import CouretUnification.Logic.H3.C3Weak_Gram
        ./Logic/C3Weak_Gram.lean:11:import CouretUnification.Logic.H3.C3Weak_Gram
        ./All.lean:242:import CouretUnification.Logic.H3.C3Weak_Gram
         ──        import CouretUnification.Core.UnitsBridge
@@ -279,7 +279,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./SophieGermainUmbrella.lean:38:import CouretUnification.Empirical.SophieGermainExpected
        ./All.lean:229:import CouretUnification.Empirical.SophieGermainExpected
         ──        import CouretUnification.Analytic.GammaFactor
-       ./Active.lean:72:import CouretUnification.Analytic.GammaFactor
+       ./Active.lean:70:import CouretUnification.Analytic.GammaFactor
        ./All.lean:247:import CouretUnification.Analytic.GammaFactor
         ──        import CouretUnification.Core.CenteredEigenspace
        ./All.lean:64:import CouretUnification.Core.CenteredEigenspace
