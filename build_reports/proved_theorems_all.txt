@@ -247,7 +247,6 @@
 ./lean/CouretUnification/Core/CenteredEigenspace.lean:79:theorem unique_centered_eig3
 ./lean/CouretUnification/Core/CenteredEigenspace.lean:113:theorem rows_correct_on_v3a :
 ./lean/CouretUnification/Core/CenteredEigenspace.lean:119:theorem rows_correct_on_v3b :
-./lean/CouretUnification/Core/CenteredSpace30.lean:17:-- Ce simp lemma résout tous les goals résiduels.
 ./lean/CouretUnification/Core/CenteredSpace30.lean:20:@[simp] theorem nat_totient_30 : Nat.totient 30 = 8 := by native_decide
 ./lean/CouretUnification/Core/CenteredSpace30.lean:32:theorem finrank_FunG30 : Module.finrank ℂ FunG30 = 8 := by
 ./lean/CouretUnification/Core/CenteredSpace30.lean:48:theorem totalSum_trivialMode : totalSum trivialMode = 8 := by
@@ -1312,7 +1311,6 @@
 ./lean/CouretUnification/Logic/H3/SpectralSpatial.lean:111:theorem spectral_block_zero (i j : Fin 8)
 ./lean/CouretUnification/Logic/H3/SpectralSpatial.lean:129:theorem tensor_op_norm_factor (K_norm : ℝ) (_hK : 0 ≤ K_norm) :
 ./lean/CouretUnification/Logic/H3/SpectralSpatial.lean:135:theorem tensor_hs_norm_factor (K_norm : ℝ) (_hK : 0 ≤ K_norm) :
-./lean/CouretUnification/Logic/H3/SpectralSpatial.lean:197:  , note := "G2 spectral is a theorem (DEntry_off_diag). " ++
 ./lean/CouretUnification/Logic/H3/SpectralSpatial.lean:206:theorem rh_not_claimed : RHClaimed = false := rfl
 ./lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:65:theorem squarefree_asymptotic_density_lab_target
 ./lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:93:theorem squarefree_asymptotic_density_of_moebius_closure
@@ -1560,8 +1558,6 @@
 ./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:213:lemma isMultiplicative_norm_sq
 ./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:226:lemma sum_normSq_squarefree_eq_prod
 ./lean/CouretUnification/Logic/H3/T5Weak.lean:112:theorem gap_grows : gap_30.gap < gap_210.gap ∧
-./lean/CouretUnification/Logic/H3/T5Weak.lean:140:  uses_abel_lemma : Prop
-./lean/CouretUnification/Logic/H3/T5Weak.lean:152:  , uses_abel_lemma := True }
 ./lean/CouretUnification/Logic/H3/T5Weak.lean:194:theorem off_diag_small_210 : (15 : ℚ) / 1000 < 1 / 10 := by norm_num
 ./lean/CouretUnification/Logic/H3/T5Weak.lean:243:theorem localization_improves :
 ./lean/CouretUnification/Logic/H3/T5Weak.lean:309:theorem rh_not_claimed : RHClaimed = false := rfl

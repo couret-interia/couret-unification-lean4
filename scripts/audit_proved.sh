@@ -54,7 +54,7 @@ if [ ! -f "$FROZEN_FILE" ]; then
 fi
 
 D_PATTERN='\[D\]|D-formal|D-computational|proved \[D\]|Status[[:space:]]*:[[:space:]]*proved|status[[:space:]]*:=[[:space:]]*.*Status\.proved|status[[:space:]]*:=[[:space:]]*.*\.proved'
-THEOREM_PATTERN='(theorem|lemma)[[:space:]]+'
+THEOREM_PATTERN='[[:space:]]*(@\[[^]]+\][[:space:]]*)?(private[[:space:]]+)?(theorem|lemma)[[:space:]]+'
 
 # ━━━ Audit marqueurs [D] / proved ━━━
 {
@@ -74,7 +74,7 @@ echo "✓ Audit marqueurs [D] / proved"
 
 # ━━━ Audit theorem/lemma global ━━━
 find "$LEAN_ROOT" -type f -name '*.lean' -print | sort | while IFS= read -r file; do
-  grep -nE "$THEOREM_PATTERN" "$file" 2>/dev/null | sed "s|^|$file:|"
+  grep -nE "^$THEOREM_PATTERN" "$file" 2>/dev/null | sed "s|^|$file:|"
 done > "$ALL_THEOREMS_OUT"
 echo "✓ Audit theorem/lemma global"
 
@@ -103,7 +103,7 @@ echo "✓ Audit theorem/lemma Frozen"
 MARKERS_COUNT="$(wc -l < "$MARKERS_OUT" | tr -d ' ')"
 ALL_THEOREMS_COUNT="$(wc -l < "$ALL_THEOREMS_OUT" | tr -d ' ')"
 FROZEN_IMPORTS_COUNT="$(wc -l < "$FROZEN_IMPORTS_OUT" | tr -d ' ')"
-FROZEN_THEOREMS_COUNT="$(grep -cE "$THEOREM_PATTERN" "$FROZEN_THEOREMS_OUT" 2>/dev/null || true)"
+FROZEN_THEOREMS_COUNT="$(grep -cE ":[0-9]+:$THEOREM_PATTERN" "$FROZEN_THEOREMS_OUT" 2>/dev/null || true)"
 
 {
   echo
