@@ -1,6 +1,5 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
 # Logic/H3/FEnriched30.lean — Instanciation du foncteur enrichi à q = 30
 
@@ -20,9 +19,7 @@ import CouretUnification.Logic.FEnrichedSpec
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Fin.Basic
 
-namespace CouretUnification
-namespace Logic
-namespace FEnriched30
+namespace CouretUnification.Logic.FEnriched30
 
 open CouretUnification.Logic.FEnriched
 
@@ -166,6 +163,4 @@ def fileIdentity : CouretUnification.Meta.FileIdentity where
 
 example : fileIdentity.rhClaimed = false := rfl
 
-end FEnriched30
-end Logic
-end CouretUnification
+end CouretUnification.Logic.FEnriched30
