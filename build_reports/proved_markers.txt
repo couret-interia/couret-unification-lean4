@@ -21,12 +21,11 @@
 ./docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md:8:C-04a squarefreeCount_ge_half : [D] prouvé via SquarefreeDensityC04aClosed
 ./docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md:9:C-04b densité 6 / π²          : [D] prouvé via SquarefreeDensityC04bClosed
 ./docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md:23:Le fichier original est disponible dans [`Attic`](../../Attic/docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D]_v38.5.10.md)
-./docs/PRESENTATION_PROGRAMME.md:41:- **Un socle formel d’au moins 14 résultats [D]** identifiés dans le registre courant vérifiés
-./docs/PRESENTATION_PROGRAMME.md:62:### Le lemme du défaut ponctuel `[D]`
-./docs/PRESENTATION_PROGRAMME.md:74:### La classification complète de `G₃₀` `[D]`
-./docs/PRESENTATION_PROGRAMME.md:88:### Les autres théorèmes du socle `[D]`
-./docs/PRESENTATION_PROGRAMME.md:174:- **La grammaire des statuts** — 8 statuts (`[D] [M] [C] [H] [P] [O] [F] [T]`) plus la
-./docs/PRESENTATION_PROGRAMME.md:225:Registre v54.7 — 34 claims : **14 `[D]`**, 4 `[M-solide]`, 2 `[P]`, 1 `[P|H]`, 1 `[C]`,
+./docs/PRESENTATION_PROGRAMME.md:61:### Le lemme du défaut ponctuel `[D]`
+./docs/PRESENTATION_PROGRAMME.md:73:### La classification complète de `G₃₀` `[D]`
+./docs/PRESENTATION_PROGRAMME.md:87:### Les autres théorèmes du socle `[D]`
+./docs/PRESENTATION_PROGRAMME.md:173:- **La grammaire des statuts** — 8 statuts (`[D] [M] [C] [H] [P] [O] [F] [T]`) plus la
+./docs/PRESENTATION_PROGRAMME.md:224:Registre v54.7 — 34 claims : **14 `[D]`**, 4 `[M-solide]`, 2 `[P]`, 1 `[P|H]`, 1 `[C]`,
 ./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:110:C'est le pivot transmissible. Si on diluait `FiniteCore` en y mettant des choses analytiques (même `[D]`),
 ./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:121: sont parfaitement légitimes en `[D]` mais qui dépendent d'instruments analytiques généraux
 ./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:161:**Non si** : le fichier utilise des limites, des séries infinies, des intégrales, des objets analytiques (continuité, dérivabilité), même si chaque pas est `[D]`.
@@ -52,6 +51,31 @@
 ./docs/registry/README_RESGOLD-V38.5b.md:223:   (séparé) pour fermer `signedTrace_spectral_sum_status` `[O] → [D]`.
 ./docs/registry/RESGOLD_CORRECTIONS_v38.5_NOTE.md:39:**Conséquence doctrinale.** Lors d'une revue ultérieure, un développeur pressé peut remplacer le `sorry` par `trivial` et faire passer le théorème en `[D]` machine-certifié, sans que le contenu mathématique réel ait été établi. C'est un faux placeholder.
 ./docs/registry/RESGOLD_CORRECTIONS_v38.5_NOTE.md:43:> **Règle anti-True-énoncé.** Quand on formalise un théorème conditionnel ou un placeholder en Lean, l'énoncé doit porter le contenu mathématique réel, même si la preuve est `sorry`. Un théorème dont l'énoncé est `True` (ou plus généralement, trivialement habitable) est un faux placeholder qui peut être promu silencieusement en `[D]` sans contenu.
+./docs/registry/RESULTATS_D_FORMELS.md:2:# Résultats formels `[D]` — registre de synthèse
+./docs/registry/RESULTATS_D_FORMELS.md:17:Un résultat inscrit ici est `[D]` uniquement dans le périmètre indiqué :
+./docs/registry/RESULTATS_D_FORMELS.md:28:theorem Lean technique ≠ claim [D] autonome
+./docs/registry/RESULTATS_D_FORMELS.md:56:**Statut :** `[D-formal, abstract]`.
+./docs/registry/RESULTATS_D_FORMELS.md:81:**Statut :** `[D-formal, abstract]`.
+./docs/registry/RESULTATS_D_FORMELS.md:120:**Statut :** `[D-computational, local]`.
+./docs/registry/RESULTATS_D_FORMELS.md:147:**Statut :** `[D-formal, local bridge]`.
+./docs/registry/RESULTATS_D_FORMELS.md:178:**Statut :** `[D-formal / D-computational, finite]`.
+./docs/registry/RESULTATS_D_FORMELS.md:221:**Statut :** `[D-formal, finite]`.
+./docs/registry/RESULTATS_D_FORMELS.md:256:**Statut :** `[D-formal, finite linear algebra]`.
+./docs/registry/RESULTATS_D_FORMELS.md:287:**Statut :** `[D-formal, Euler bridge]`.
+./docs/registry/RESULTATS_D_FORMELS.md:314:**Statut :** `[D-formal, compatibility]`.
+./docs/registry/RESULTATS_D_FORMELS.md:344:**Statut :** `[D-formal, squarefree support]`.
+./docs/registry/RESULTATS_D_FORMELS.md:378:**Statut :** `[D-formal, arithmético-effectif]`.
+./docs/registry/RESULTATS_D_FORMELS.md:416:**Statut :** `[D-formal, arithmético-analytique local]`.
+./docs/registry/RESULTATS_D_FORMELS.md:448:**Statut :** `[D-formal, conditional interface]`.
+./docs/registry/RESULTATS_D_FORMELS.md:475:**Statut :** `[D-formal, local factor]`.
+./docs/registry/RESULTATS_D_FORMELS.md:500:**Statut :** `[D-formal, local bridge]`.
+./docs/registry/RESULTATS_D_FORMELS.md:535:**Statut :** `[D-formal, bridge]`.
+./docs/registry/RESULTATS_D_FORMELS.md:561:**Statut :** `[D-formal, calibration]`.
+./docs/registry/RESULTATS_D_FORMELS.md:596:Les éléments suivants apparaissent dans l’audit, mais ne doivent pas être comptés comme résultats `[D]` autonomes :
+./docs/registry/RESULTATS_D_FORMELS.md:639:18 résultats formels agrégés [D]
+./docs/registry/RESULTATS_D_FORMELS.md:645:au moins 14 résultats [D]
+./docs/registry/RESULTATS_D_FORMELS.md:658:un socle formel d’au moins 18 résultats agrégés [D],
+./docs/registry/RESULTATS_D_FORMELS.md:669:Le registre donne le droit de dire [D].
 ./docs/registry/SophieGermain.md:5:- `Residue/SGShiftSqrt2.lean` : `[D]`
 ./docs/registry/SophieGermain.md:18:  - distingue `[D]`, `[M]`, `[O]`
 ./docs/registry/SophieGermain.md:23:### Modules démontrés `[D]`

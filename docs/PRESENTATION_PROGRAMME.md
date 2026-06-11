@@ -37,10 +37,9 @@ L'invariant géométrique `λ = 1/√7`, échelle interne du simplexe centré `�
 ## 2. Ce qui a été accompli — vue d'ensemble
 
 Le programme n'est pas une promesse : c'est un corpus de résultats, mesurables et tracés.
-
-- **Un socle formel d’au moins 14 résultats [D]** identifiés dans le registre courant vérifiés
-  au compilateur Lean 4, 0 sorry, dont un lemme général réutilisable et la classification finie
-  complète d'un groupe.
+- **Un socle formel d’au moins 18 résultats agrégés [`D`]**, issus du périmètre Frozen identifiés
+  dans le registre formel et vérifiés au compilateur Lean 4, 0 sorry, dont un lemme général
+  réutilisable et la classification finie complète d'un groupe.
 - **Une classification fermée** : les 56 triplets de `G₃₀` entièrement répartis, sans reste,
   avec caractérisation positive de chaque famille.
 - **Plusieurs no-go structurels démontrés** : savoir *pourquoi* certaines routes vers

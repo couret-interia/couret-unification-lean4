@@ -177,6 +177,7 @@
 │   │   ├── NO_GO_SG_1SQRT7.md
 │   │   ├── README_RESGOLD-V38.5b.md
 │   │   ├── RESGOLD_CORRECTIONS_v38.5_NOTE.md
+│   │   ├── RESULTATS_D_FORMELS.md
 │   │   └── SophieGermain.md
 │   ├── ROADMAP_FINAL.md
 │   ├── THOMAS_BUILD_PROTOCOL.md
@@ -528,4 +529,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-64 directories, 465 files
+64 directories, 466 files
