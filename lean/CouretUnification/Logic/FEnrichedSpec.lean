@@ -1,6 +1,5 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
 # Logic/H3/FEnrichedSpec.lean — Spécification du foncteur enrichi F^{enr}
 
@@ -38,9 +37,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 
-namespace CouretUnification
-namespace Logic
-namespace FEnriched
+namespace CouretUnification.Logic.FEnriched
 
 /-!
 ## Section 1 — Grammaire des statuts épistémiques
@@ -209,6 +206,4 @@ def fileIdentity : CouretUnification.Meta.FileIdentity where
 
 example : fileIdentity.rhClaimed = false := rfl
 
-end FEnriched
-end Logic
-end CouretUnification
+end CouretUnification.Logic.FEnriched

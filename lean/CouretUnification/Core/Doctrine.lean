@@ -1,6 +1,5 @@
 /-
 Copyright (c) 2026 Couret-Unification Programme.
-Released under Apache 2.0.
 
 # Core/Doctrine.lean — Invariants constitutionnels centralisés
 
