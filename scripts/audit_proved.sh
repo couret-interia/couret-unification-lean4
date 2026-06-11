@@ -54,11 +54,13 @@ THEOREM_PATTERN='^(theorem|lemma)[[:space:]]+'
 echo "== Audit marqueurs [D] / proved =="
 {
   if [ -d "$DOCS_ROOT" ]; then
-    find "$LEAN_ROOT" "$DOCS_ROOT" "$BUILD_ROOT" \
+    #~ find "$LEAN_ROOT" "$DOCS_ROOT" "$BUILD_ROOT" \
+    find "$LEAN_ROOT" "$DOCS_ROOT" \
       -type f \( -name '*.lean' -o -name '*.md' -o -name '*.txt' \) \
       -print
   else
-    find "$LEAN_ROOT" "$BUILD_ROOT" \
+    #~ find "$LEAN_ROOT" "$BUILD_ROOT" \
+    find "$LEAN_ROOT" \
       -type f \( -name '*.lean' -o -name '*.md' -o -name '*.txt' \) \
       -print
   fi
