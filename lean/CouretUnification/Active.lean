@@ -10,11 +10,11 @@ Contrairement à Frozen.lean, ce fichier PEUT échouer au build si un
 front casse temporairement. La CI doit traiter cet échec comme un
 warning, pas un blocage.
 
-## Statut (v38.5.12) — 10 sorries total
+## Statut (v38.5.13) — 11 sorries total
 
-- Logic/C3Weak                        [0 sorry ✅, B conditionnel formalisé]
+- Logic/C3Weak                        [0 sorry ✅, 0 axiom local, B conditionnel formalisé / bridge à stabiliser]
 - Logic/L6RatioEstimateDerived        [1 sorry  — ANALYTIC ASSEMBLY]
-- Logic/L10NoGoTheorem                [2 sorry  — 1 CONCEPTUEL + 1 UPSTREAM]
+- Logic/L10NoGoTheorem                [3 sorry  — 1 CONCEPTUEL + 2 UPSTREAM/TECHNIQUES]
 - Logic/H3/RouteC                     [1 sorry  — LOCK 3 / EXISTENCE OPÉRATEUR]
 - Logic/H3/Lemma7Residual             [1 sorry  — L7 / RÉSIDU SUR LIGNE CRITIQUE]
 - AnalyticHorizon/Det2Transport       [1 sorry  — INSTANCIATION]

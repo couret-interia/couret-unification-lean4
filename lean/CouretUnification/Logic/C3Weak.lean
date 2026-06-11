@@ -94,10 +94,15 @@ laissant la définition concrète à AnalyticHorizon.
     Interface abstraite, branchée sur la formule explicite restreinte. -/
 opaque R_sigma (σ : ℝ) (f : H3TestFunction) : ℂ
 
-/-- [PROJ] Compatibilité ℂ-linéaire à droite (axiome de cohérence
-    avec la structure de la formule explicite). -/
-axiom R_sigma_linear_left (σ : ℝ) (a b : ℂ) (f g : H3TestFunction) :
-  ∃ (h : H3TestFunction), R_sigma σ h = a * R_sigma σ f + b * R_sigma σ g
+/-- [PROJ] Compatibilité ℂ-linéaire à droite.
+
+    Cette propriété n'est pas postulée comme axiome global.
+    Elle est exposée comme bridge conditionnel, à fournir explicitement
+    lorsqu'un théorème en a besoin. -/
+def RSigmaLinearLeftBridge : Prop :=
+  ∀ (σ : ℝ) (a b : ℂ) (f g : H3TestFunction),
+    ∃ (h : H3TestFunction),
+      R_sigma σ h = a * R_sigma σ f + b * R_sigma σ g
 
 /-!
 ## Section 3 — La forme quadratique Q_σ et l'invariant principal

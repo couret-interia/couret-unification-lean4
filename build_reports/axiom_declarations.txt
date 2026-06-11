@@ -1,5 +1,4 @@
 === Déclarations 'axiom' dans le code (hors commentaires) ===
-lean/CouretUnification/Logic/C3Weak.lean:99:axiom R_sigma_linear_left (σ : ℝ) (a b : ℂ) (f g : H3TestFunction) :
 lean/CouretUnification/Logic/H3/ArithmeticBridge.lean:29:axiom Det2IdentifiesXi : Prop
 lean/CouretUnification/Logic/H3/ArithmeticBridge.lean:30:axiom ZeroMatching : Prop
 lean/CouretUnification/Logic/H3/AlgebraTC.lean:195:axiom mellinConvolve_comm :

@@ -14,8 +14,8 @@
 # scripts/lib/lean_strip_comments.awk.
 # Pour ajouter une nouvelle section : une ligne grep sur $CLEAN_CODE.
 
-SORRY_COUNT_MAX=19
-AXIOM_COUNT_MAX=10
+SORRY_COUNT_MAX=11
+AXIOM_COUNT_MAX=9
 
 LEAN_DIR="${1:-.}"
 

@@ -30,8 +30,8 @@ lean/CouretUnification/Logic/ChiralityFinite.lean:46:L'invariant `RHClaimed = fa
 lean/CouretUnification/Logic/ChiralityFinite.lean:232:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/ChiralityFinite.lean:234:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/C3Weak.lean:25:  - Invariant constitutionnel : RHClaimed = false
-lean/CouretUnification/Logic/C3Weak.lean:203:def RHClaimed : Bool := false
-lean/CouretUnification/Logic/C3Weak.lean:204:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/C3Weak.lean:208:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/C3Weak.lean:209:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/ChiralityLinear.lean:246:def RHClaimed : Bool := false
 lean/CouretUnification/Logic/ChiralityLinear.lean:248:example : RHClaimed = false := rfl
 lean/CouretUnification/Logic/FEnrichedSpec.lean:24:  - RHClaimed = false

@@ -1,5 +1,5 @@
 /-
-# Meta/AuditHints.lean — Commandes d'audit cibles (v35.8.1-bis)
+# Meta/AuditHints.lean — Commandes d'audit cibles (v38.5.13)
 
 ## Statut épistémique
 
@@ -32,28 +32,12 @@ font partie du contrat de confiance de la théorie des types de Lean :
 Tout autre axiome apparaissant dans `#print axioms` d'un théorème
 [B] doit faire l'objet d'une investigation et d'une justification
 explicite (ou d'une suppression).
-
-## Axiomes locaux résiduels documentés (v35.8.1-bis)
-
-Au moment de cette release, un seul axiome local Couret-Unification
-subsiste :
-
-  - `R_sigma_linear_left` dans `Logic/C3Weak.lean` (hérité de v35.6.1).
-    À traiter dans une release ultérieure.
-
-Aucun autre axiome local n'est attendu. Si l'audit en révèle d'autres,
-c'est un signal de régression doctrinale.
 -/
 
 import CouretUnification.Logic.Doctrine
-import CouretUnification.Logic.L6Bridge
-import CouretUnification.Logic.L10NoGoTheorem
 import CouretUnification.Logic.EulerBridgeInfiniteReal
-import CouretUnification.Logic.EulerBridgeInfiniteCompat
 
-namespace CouretUnification
-namespace Meta
-namespace AuditHints
+namespace CouretUnification.Meta.AuditHints
 
 /-! ## Section 1 — Commandes d'audit pivot
 
@@ -61,85 +45,70 @@ Ces commandes sont à exécuter dans un buffer Lean (par exemple un
 fichier `scratch.lean` séparé) ou décommenter ici lors d'un audit
 ponctuel. Elles ne sont pas exécutées par défaut pour ne pas polluer
 les sorties du build standard.
-
-### Audit du verrou L6 (data package)
-
-```
-#print axioms CouretUnification.Logic.L6Bridge.L6_eta_lt_one_eventual_positivity
-```
-
-**Sortie attendue** :
-```
-'CouretUnification.Logic.L6Bridge.L6_eta_lt_one_eventual_positivity'
-depends on axioms: [propext, Classical.choice, Quot.sound]
-```
-
-Toute autre dépendance (en particulier un nom commençant par
-`CouretUnification.`) est un échec d'audit.
-
-### Audit du pont eulérien réel
-
-```
-#print axioms CouretUnification.Logic.EulerBridgeInfiniteReal.squarefree_limit_eq_euler_product_real
-```
-
-**Sortie attendue** : axiomes Mathlib uniquement, **plus** la dépendance
-documentée à `CouretUnification.Logic.EulerBridgeInfiniteCompat.target_bound`
-(qui contient un sorry, pas un axiome — la dépendance se voit dans
-`#print axioms` car un sorry crée un axiome `sorryAx` synthétique).
-
-### Audit du no-go L10
-
-```
-#print axioms CouretUnification.Logic.L10NoGoTheorem.integerSpectra_distance_positive
-```
-
-**Sortie attendue** : axiomes Mathlib + dépendances aux 3 sorries CORE
-de L10 + dépendance à l'opaque `IsNonTrivialZetaImaginaryPart`.
-
-### Audit du verrou doctrinal C3
-
-```
-#print axioms CouretUnification.Logic.C3Weak.gram_semidef_of_rigid
-```
-
-**Sortie attendue** : axiomes Mathlib + `R_sigma_linear_left` (hérité,
-documenté). Si d'autres axiomes locaux apparaissent : régression.
 -/
+
+-- ### Audit du pont eulérien réel
+
+-- #print axioms CouretUnification.Logic.EulerBridgeInfiniteReal.squarefree_limit_eq_euler_product_real
 
 /-! ## Section 2 — Commandes de comptage
 
 ### Sorries actifs par fichier
 
 Recommandé en CI via :
+
 ```bash
-for f in $(find CouretUnification -name "*.lean"); do
-  count=$(awk '/^[[:space:]]*sorry[[:space:]]*$/' "$f" | wc -l)
-  if [ "$count" -gt 0 ]; then
-    echo "$f: $count sorry"
-  fi
-done
+make audit-scripts
 ```
 
-**Inventaire attendu v35.8.1-bis** :
+**Inventaire attendu** :
+
 ```
-Logic/C3Weak.lean                         1 sorry  [B-DOCTRINAL]
-Logic/EulerBridgeInfiniteCompat.lean      1 sorry  [B-ANALYTIC target_bound]
-Logic/EulerBridgeInfinite.lean            2 sorry  [B-API generic R variant]
-Logic/L10NoGoTheorem.lean                 4 sorry  [B-CORE conceptual]
-                                          ─────
-                                          8 sorries (tous catégorisés)
+━━━ SORRY (hors commentaires) ━━━
+./CouretUnification/Logic/L10NoGoTheorem.lean:69:  sorry
+./CouretUnification/Logic/L10NoGoTheorem.lean:239:        sorry
+./CouretUnification/Logic/L10NoGoTheorem.lean:245:    sorry
+./CouretUnification/Logic/H3/Lemma7Residual.lean:13:  sorry
+./CouretUnification/Logic/H3/RouteC.lean:780:  sorry
+./CouretUnification/Logic/L6RatioEstimateDerived.lean:90:    sorry
+./CouretUnification/AnalyticHorizon/Det2Transport.lean:71:  sorry
+./CouretUnification/Analytic/GammaFactor.lean:62:noncomputable def D_M (s : ℂ) : ℂ := sorry
+./CouretUnification/Analytic/GammaFactor.lean:83:  sorry
+./CouretUnification/Analytic/GammaFactor.lean:95:  sorry
+./CouretUnification/Analytic/GammaFactor.lean:112:  sorry
+  Total sorry: 11
+
+━━━ AXIOM ━━━
+./CouretUnification/Logic/H3/ArithmeticBridge.lean:29:axiom Det2IdentifiesXi : Prop
+./CouretUnification/Logic/H3/ArithmeticBridge.lean:30:axiom ZeroMatching : Prop
+./CouretUnification/Logic/H3/AlgebraTC.lean:195:axiom mellinConvolve_comm :
+./CouretUnification/Logic/H3/C2Restricted.lean:60:axiom restricted_explicit_formula_old
+./CouretUnification/Logic/H3/C2Restricted.lean:91:axiom restricted_explicit_formula_holds
+./CouretUnification/Logic/H3/C2Restricted.lean:112:axiom mainTermPositive_of_positiveBias
+./CouretUnification/Logic/H3/RigidityParams.lean:50:axiom sigma_G_critical_pos
+./CouretUnification/Logic/H3/Lock2Conditional.lean:6:axiom local_bridge_to_det2_xi
+./CouretUnification/Logic/H3/ZeroMatching.lean:5:axiom spectral_id_to_zero_matching (hDet : Det2IdentifiesXi) : ZeroMatching
+  Total axiom: 9
 ```
 
 ### Axiomes locaux Couret-Unification
 
 ```bash
-grep -rE "^axiom |^[[:space:]]+axiom " CouretUnification --include="*.lean"
+grep -rE "^axiom |^[[:space:]]+axiom " lean/CouretUnification --include="*.lean"
 ```
 
-**Inventaire attendu v35.8.1-bis** :
+**Inventaire attendu** :
+
 ```
-Logic/C3Weak.lean: axiom R_sigma_linear_left ...   (hérité, documenté)
+Logic/H3/ArithmeticBridge.lean:axiom Det2IdentifiesXi : Prop
+Logic/H3/ArithmeticBridge.lean:axiom ZeroMatching : Prop
+Logic/H3/AlgebraTC.lean:axiom mellinConvolve_comm :
+Logic/H3/C2Restricted.lean:axiom restricted_explicit_formula_old
+Logic/H3/C2Restricted.lean:axiom restricted_explicit_formula_holds
+Logic/H3/C2Restricted.lean:axiom mainTermPositive_of_positiveBias
+Logic/H3/RigidityParams.lean:axiom sigma_G_critical_pos
+Logic/H3/Lock2Conditional.lean:axiom local_bridge_to_det2_xi
+Logic/H3/ZeroMatching.lean:axiom spectral_id_to_zero_matching (hDet : Det2IdentifiesXi) : ZeroMatching
 ```
 
 Toute autre ligne est une régression doctrinale.
@@ -160,6 +129,4 @@ example : fileIdentity.rhClaimed = false := rfl
 def auditDoctrineActive : Bool := true
 example : auditDoctrineActive = true := rfl
 
-end AuditHints
-end Meta
-end CouretUnification
+end CouretUnification.Meta.AuditHints
