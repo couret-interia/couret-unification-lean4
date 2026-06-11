@@ -151,6 +151,8 @@
 │   ├── Algebre_arithmetique_flux_modulaire_30.docx
 │   ├── Ameliorations_Architecture_Thomas.md
 │   ├── ARCHITECTURE.md
+│   ├── arxiv
+│   │   └── ARTICLE_titre_et_introduction_FR.md
 │   ├── BuildGraph.md
 │   ├── DOCTRINE_PROGRAMME.md
 │   ├── ETAT_DEFINITIF_v5_INTEGRAL.md
@@ -529,4 +531,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-64 directories, 466 files
+65 directories, 467 files
