@@ -130,6 +130,11 @@
 │   ├── broken_imports.txt
 │   ├── errors_unique.txt
 │   ├── invariants.txt
+│   ├── proved_frozen_imports.txt
+│   ├── proved_markers.txt
+│   ├── proved_summary.txt
+│   ├── proved_theorems_all.txt
+│   ├── proved_theorems_frozen.txt
 │   ├── sorries_declarations.txt
 │   ├── true_statements.txt
 │   ├── warnings_non_sorry.txt
@@ -474,6 +479,7 @@
 ├── scripts
 │   ├── audit_doctrine.sh
 │   ├── audit_orphans.sh
+│   ├── audit_proved.sh
 │   ├── audit_reachability.sh
 │   ├── audit_structure_collisions.sh
 │   ├── audit_v36.0.sh
@@ -522,4 +528,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-64 directories, 459 files
+64 directories, 465 files

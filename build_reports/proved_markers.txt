@@ -1,0 +1,168 @@
+./docs/Ameliorations_Architecture_Thomas.md:230:  status     := CouretUnification.Meta.Status.proved
+./docs/ARCHITECTURE.md:81:| `[D]` | Demonstrated : démontré ou vérifié dans Lean         | calcul fini, table, classification |
+./docs/ARCHITECTURE.md:86:Aucune couche `[H]` ou `[O]` ne doit être présentée comme `[D]`.
+./docs/ARCHITECTURE.md:757:* pas de promotion d’un statut `[H]` en `[D]` ;
+./docs/DOCTRINE_PROGRAMME.md:58:| `[D]` | Demonstrated : démontré par Lean, par calcul fini exhaustif intégré, ou par audit formel du build | preuve ou build vérifiable uniquement      |
+./docs/DOCTRINE_PROGRAMME.md:59:| `[M]` | Measured : mesuré par script, rapport ou expérimentation reproductible                            | ne devient pas `[D]` sans preuve           |
+./docs/DOCTRINE_PROGRAMME.md:69:> `[M] + [H] + [C]` ne donne jamais `[D]` par accumulation rhétorique.
+./docs/DOCTRINE_PROGRAMME.md:210:Un résultat mesuré `[M]` ne devient jamais `[D]` sans preuve.
+./docs/DOCTRINE_PROGRAMME.md:214:Une explication plausible `[H]` ne devient jamais `[D]` par accumulation de cohérence narrative.
+./docs/DOCTRINE_PROGRAMME.md:218:Un théorème conditionnel `[C]` ne devient `[D]` que lorsque toutes ses hypothèses sont fermées.
+./docs/DOCTRINE_PROGRAMME.md:244:| V5     | corrélations de Möbius / estimées globales      | `[M]` ou `[H]`, non `[D]`   |
+./docs/IMPORT_HYGIENE.md:165:- **H1 [D]** — démontré dans le périmètre local documenté : ‖M‖ ≤ ‖M‖_HS ≤ P(3/2) = 0.8495 < 1 → KLMN → auto-adjoint ∀σ≥1/2
+./docs/IMPORT_HYGIENE.md:172:#### Registre [D]/[M]/[C]/[P]/[O]/[H]
+./docs/IMPORT_HYGIENE.md:174:(36 claims au registre, dont 13 [D], 4 [M-solide], 2 [C], 2 [P], 5 [O], 8 falsifiées — état mai 2026.)
+./docs/IMPORT_HYGIENE.md:183:| R2 — Distinction stricte [D] / [H] / [O] | ✓ |
+./docs/notes-techniques/SquarefreeDensity_C04a_v38.5.12.md:22:C-04a squarefreeCount_ge_half      : [D] prouvé via SquarefreeDensityC04aClosed
+./docs/notes-techniques/SquarefreeDensity_C04a_v38.5.12.md:23:C-04b densité 6 / π²               : [D] prouvé via SquarefreeDensityC04bClosed
+./docs/notes-techniques/SquarefreeDensity_C04a_v38.5.12.md:192:[D] résultat arithmético-effectif local prouvé
+./docs/notes-techniques/SquarefreeDensity_C04b_v38.5.11.md:24:C-04b densité 6 / π²               : [D] prouvé via SquarefreeDensityC04bClosed
+./docs/notes-techniques/SquarefreeDensity_C04b_v38.5.11.md:89:[D] résultat arithmético-analytique local prouvé
+./docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md:8:C-04a squarefreeCount_ge_half : [D] prouvé via SquarefreeDensityC04aClosed
+./docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md:9:C-04b densité 6 / π²          : [D] prouvé via SquarefreeDensityC04bClosed
+./docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md:23:Le fichier original est disponible dans [`Attic`](../../Attic/docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D]_v38.5.10.md)
+./docs/PRESENTATION_PROGRAMME.md:41:- **Un socle formel d’au moins 14 résultats [D]** identifiés dans le registre courant vérifiés
+./docs/PRESENTATION_PROGRAMME.md:62:### Le lemme du défaut ponctuel `[D]`
+./docs/PRESENTATION_PROGRAMME.md:74:### La classification complète de `G₃₀` `[D]`
+./docs/PRESENTATION_PROGRAMME.md:88:### Les autres théorèmes du socle `[D]`
+./docs/PRESENTATION_PROGRAMME.md:174:- **La grammaire des statuts** — 8 statuts (`[D] [M] [C] [H] [P] [O] [F] [T]`) plus la
+./docs/PRESENTATION_PROGRAMME.md:225:Registre v54.7 — 34 claims : **14 `[D]`**, 4 `[M-solide]`, 2 `[P]`, 1 `[P|H]`, 1 `[C]`,
+./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:110:C'est le pivot transmissible. Si on diluait `FiniteCore` en y mettant des choses analytiques (même `[D]`),
+./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:121: sont parfaitement légitimes en `[D]` mais qui dépendent d'instruments analytiques généraux
+./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:161:**Non si** : le fichier utilise des limites, des séries infinies, des intégrales, des objets analytiques (continuité, dérivabilité), même si chaque pas est `[D]`.
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:22:- `[D]` — démontré, machine-certifié (Lean 4 / Mathlib v4.29.1)
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:130:**Statut : `[D] à 90%`.**
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:154:**Statut : `[D] partiel.`**
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:224:  Sous L7.1 [D] et L7.3 [O fermé selon Route A, B ou C],
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:255:| L7.1 — existence det₂ | V1 (HS-Tower) | `[D] à 90%` |
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:256:| L7.2 — facteur G archimédien | AnalyticHorizon/L6 + GammaFactor | `[D] partiel` |
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:312:1. Fermer L7.1 strict (transport σ = ½) — `[D] partiel → [D]`
+./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:313:2. Réduire les 4 sorrys de `Analytic/GammaFactor.lean` — `[O] → [D] partiel`
+./docs/registry/NO_GO_SG_1SQRT7.md:161:## 5. Invariant structurel 1/√2 — confirmé [D]
+./docs/registry/NO_GO_SG_1SQRT7.md:215:**Statut actualisé v38x : `[D]`**, via :
+./docs/registry/NO_GO_SG_1SQRT7.md:242:| Support SG actif `{11, 23, 29}` pour `p > 5` | [D] déterministe par contraintes de pgcd |
+./docs/registry/NO_GO_SG_1SQRT7.md:245:| `1/√2` structurel dans `sym(E · T_SG)` | [D] formalisé dans Lean |
+./docs/registry/NO_GO_SG_1SQRT7.md:256:| Ancien `ε₃₀` comme caractère de Dirichlet | implicite | [D] non — 18 violations |
+./docs/registry/NO_GO_SG_1SQRT7.md:258:| Support SG `{11, 23, 29}` pour `p > 5` | [D] | [D] |
+./docs/registry/NO_GO_SG_1SQRT7.md:260:| `1/√2` structurel dans `sym(E·T_SG)` | non noté | [D] formalisé |
+./docs/registry/NO_GO_SG_1SQRT7.md:335:programme : le local rigoureusement testé `[D]/[P]` est tenu simultanément
+./docs/registry/README_RESGOLD-V38.5b.md:71:    ├── Status.lean                       -- marqueurs [D]/[M]/[H]/[O]/[E], RHClaimed
+./docs/registry/README_RESGOLD-V38.5b.md:104:| `signedTrace_three_cases` | [D] **prouvé** | Tautologique de la définition, sans sorry |
+./docs/registry/README_RESGOLD-V38.5b.md:118:| `A_asymptotic_param` | [D] cond. sur `h_mertens` | Mertens + algèbre |
+./docs/registry/README_RESGOLD-V38.5b.md:223:   (séparé) pour fermer `signedTrace_spectral_sum_status` `[O] → [D]`.
+./docs/registry/RESGOLD_CORRECTIONS_v38.5_NOTE.md:39:**Conséquence doctrinale.** Lors d'une revue ultérieure, un développeur pressé peut remplacer le `sorry` par `trivial` et faire passer le théorème en `[D]` machine-certifié, sans que le contenu mathématique réel ait été établi. C'est un faux placeholder.
+./docs/registry/RESGOLD_CORRECTIONS_v38.5_NOTE.md:43:> **Règle anti-True-énoncé.** Quand on formalise un théorème conditionnel ou un placeholder en Lean, l'énoncé doit porter le contenu mathématique réel, même si la preuve est `sorry`. Un théorème dont l'énoncé est `True` (ou plus généralement, trivialement habitable) est un faux placeholder qui peut être promu silencieusement en `[D]` sans contenu.
+./docs/registry/SophieGermain.md:5:- `Residue/SGShiftSqrt2.lean` : `[D]`
+./docs/registry/SophieGermain.md:18:  - distingue `[D]`, `[M]`, `[O]`
+./docs/registry/SophieGermain.md:23:### Modules démontrés `[D]`
+./docs/towerlift/delta7_sg_synthese.md:20:> - `Core/SophieGermainHecke.lean` : SG-shift modulo 30 `[D]` ;
+./docs/towerlift/delta7_sg_synthese.md:21:> - `Core/SophieGermainTowerLift.lean` : tower lift primoriel avec règle `ℓ - 2` `[D]` ;
+./docs/towerlift/delta7_sg_synthese.md:22:> - `Residue/SGShiftSqrt2.lean` : identité cubique rationnelle `M³ = (1/2)M` `[D]`.
+./docs/towerlift/delta7_sg_synthese.md:145:- noyau fini démontré [D] ;
+./docs/towerlift/delta7_sg_synthese.md:150:Core/SophieGermainHecke.lean        [D]
+./docs/towerlift/delta7_sg_synthese.md:151:Core/SophieGermainTowerLift.lean    [D]
+./docs/towerlift/delta7_sg_synthese.md:152:Residue/SGShiftSqrt2.lean           [D]
+./docs/towerlift/delta7_sg_synthese.md:177:Depuis l'intégration v38x, la formalisation Lean est séparée en noyaux finis démontrés `[D]`, modules numériques `[M]`, et modules historiques ou expérimentaux. Les résultats exacts actuellement stabilisés sont le SG-shift modulo 30, le tower lift primoriel et l'identité cubique rationnelle du bloc SG-shift.
+./docs/TOWERLIFT.md:6:**Doctrine : noyau fini démontré `[D]`, couches empiriques et spectrales séparées**
+./docs/TOWERLIFT.md:28:**Statut : `[D]` — démontré / machine-certified**
+./docs/TOWERLIFT.md:64:**Statut : `[D]` — démontré / machine-certified**
+./docs/TOWERLIFT.md:110:**Statut : `[D]` — démontré / machine-certified**
+./docs/TOWERLIFT.md:231:**Statut : `[D]` pour l’identité rationnelle sous-jacente**
+./docs/TOWERLIFT.md:288:### 5.1 Couche `[D]`
+./docs/TOWERLIFT.md:396:Ce sont des ajouts `[D]` au noyau fini du projet.
+./docs/TOWERLIFT.md:407:Statut : [D] pour les fichiers Core/SophieGermainHecke,
+./docs/towerlift/SGShiftSqrt2_NOTE.md:92:| Identité cubique `2 M³ = M` | non formalisée | `[D]` prouvée dans Lean |
+./docs/towerlift/sophie_germain_synthese.md:18:> - `Core/SophieGermainHecke.lean` : SG-shift modulo 30 `[D]` ;
+./docs/towerlift/sophie_germain_synthese.md:19:> - `Core/SophieGermainTowerLift.lean` : tower lift primoriel avec règle `ℓ - 2` `[D]` ;
+./docs/towerlift/sophie_germain_synthese.md:20:> - `Residue/SGShiftSqrt2.lean` : identité cubique rationnelle `M³ = (1/2)M` `[D]`.
+./lean/CouretUnification/All.lean:378:-- v38.5.3 — Sommes de caractères sur sous-groupe (ordre 2), moteur du défaut ponctuel — [D-formal]
+./lean/CouretUnification/AnalyticHorizon/L6Stirling.lean:21:- aucune promotion en [D] sans preuve.
+./lean/CouretUnification/Core/CenteredCoordinates.lean:30:  Statut : [D] machine-certifié après compilation.
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:10:## STATUT : [D-formal] — compilé, 0 sorry (lake build, Lean v4.29.1, Mathlib v4.29.1).
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:12:Promotion [P-scaffold] → [D-formal] effective au build du 3 juin 2026.
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:27:  (orthogonalité globale, déjà [D] dans le dépôt) via la coercion `ℂˣ →* ℂ`.
+./lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:16:D-formal localement, dépend de l'oracle D-computational typeQ_iff_quadratic_fiber]
+./lean/CouretUnification/Core/G30Classification.lean:28:[D-computational, local] + hash archivé + ai_lock external_certified.
+./lean/CouretUnification/Core/PointDefectLemma.lean:14:Statut : [D-formal, abstract].
+./lean/CouretUnification/Core/QuadraticResonance.lean:44:[D] après compilation de ce fichier (post-v1.3 chantier 3).
+./lean/CouretUnification/Core/QuadraticResonance.lean:268:    Mise à jour du registre : A.4 passe de [P→D] à [D] après succès du
+./lean/CouretUnification/Core/SophieGermainHecke.lean:24:Statut : [D] fini / décidable.
+./lean/CouretUnification/Core/SophieGermainHecke.lean:218:Établi, statut [D] :
+./lean/CouretUnification/Core/SophieGermain.lean:186:  status := EpistemicStatus.proved
+./lean/CouretUnification/Core/SophieGermainTowerLift.lean:38:Statut : `[D]` — certifié par machine. Aucun `sorry`, aucun `axiom`, aucun `admit`.
+./lean/CouretUnification/Core/SophieGermainTowerLift.lean:44:Le tower lift de Sophie Germain est un fait [D] dans le noyau combinatoire
+./lean/CouretUnification/Core/SophieGermainTowerLift.lean:234:Établi, statut `[D]` :
+./lean/CouretUnification/Experimental/TowerLift.lean:8:et l'exploration, mais ne constituent pas le noyau démonstratif `[D]`.
+./lean/CouretUnification/Experimental/TowerLift.lean:20:/-- Statut doctrinal de cette ombrelle : expérimental, non démonstratif `[D]`. -/
+./lean/CouretUnification/Frozen.lean:36:- Core/CharacterSubgroupSums            [0 sorry ✅, D-formal, abstract]
+./lean/CouretUnification/Frozen.lean:37:- Core/PointDefectLemma                 [0 sorry ✅, D-formal, abstract]
+./lean/CouretUnification/Frozen.lean:38:- Core/G30Classification                [0 sorry ✅, D-computational, local]
+./lean/CouretUnification/Frozen.lean:39:- Core/G30ClassificationFromPointDefect [0 sorry ✅, D-formal, local bridge]
+./lean/CouretUnification/Frozen.lean:43:- Logic/H3/SquarefreeDensityC04bClosed  [0 sorry ✅, C-04b [D]]
+./lean/CouretUnification/Frozen.lean:44:- Logic/H3/SquarefreeDensityC04aClosed  [0 sorry ✅, C-04a [D]]
+./lean/CouretUnification/Frozen.lean:93:import CouretUnification.Core.CharacterSubgroupSums               -- [D-formal, abstract]
+./lean/CouretUnification/Frozen.lean:94:import CouretUnification.Core.PointDefectLemma                    -- [D-formal, abstract]
+./lean/CouretUnification/Frozen.lean:95:import CouretUnification.Core.G30Classification                   -- [D-computational, local]
+./lean/CouretUnification/Frozen.lean:96:import CouretUnification.Core.G30ClassificationFromPointDefect    -- [D-formal, local bridge]
+./lean/CouretUnification/Frozen.lean:105:-- v38.5.11 — C-04b [D], densité asymptotique 6 / π².
+./lean/CouretUnification/Frozen.lean:107:-- v38.5.12 — C-04a [D], minoration effective squarefreeCount ≥ N/2.
+./lean/CouretUnification/Logic/C2/Umbrella.lean:19:  - preuve locale `[D]` du support compact ;
+./lean/CouretUnification/Logic/C2/Umbrella.lean:48:  "[M] C2 typed scaffold; local [D] Fejer compact support; RHClaimed = false"
+./lean/CouretUnification/Logic/C2/Window.lean:9:  Noyau local : [D] preuve du support compact du cutoff de Fejer côté Fourier.
+./lean/CouretUnification/Logic/C2/Window.lean:167:* La preuve locale du support compact de `fejerHat` est `[D]`.
+./lean/CouretUnification/Logic/Doctrine.lean:14:  3. Les conventions de marquage `[A]/[B]/[C]/[D]` utilisées par le programme.
+./lean/CouretUnification/Logic/Doctrine.lean:89:  | .D => "[D] spéculatif"
+./lean/CouretUnification/Logic/Doctrine.lean:95:  status := .proved
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:207:  status     := Status.proved
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:7:  - Statut : [D] prouvé.
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:97:/-- **[D] E4.2 : facteur local squarefree.**
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:193:/-- **[D] E3+E4 final : produit eulérien linéarisé dans le cas squarefree.**
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:226:  status := CouretUnification.Meta.Status.proved
+./lean/CouretUnification/Logic/EulerBridgeInfiniteReal.lean:133:  status := CouretUnification.Meta.Status.proved
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:234:  status     := Status.proved
+./lean/CouretUnification/Logic/H3/LocalFactor.lean:8:Status     : proved (sous réserve de compilation contre snapshot Mathlib récent)
+./lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:206:  status := CouretUnification.EpistemicStatus.proved
+./lean/CouretUnification/Logic/H3/MoebiusBridge.lean:10:- Status     : [D] proved
+./lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:16:- Status      : proved [D]
+./lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:50:aucune revendication [D] globale. Les étapes sont isolées, nommées,
+./lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:860:    le laboratoire asymptotique au résultat [D] déjà obtenu dans
+./lean/CouretUnification/Logic/H3/SquarefreeDensityHalf.lean:17:- Status      : proved [D]
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:8:Status     : [D] (B-00 à B-06 fermés)
+./lean/CouretUnification/Logic/L6Analytic.lean:21:- Status    : proved
+./lean/CouretUnification/Logic/L6Analytic.lean:271:  status     := Status.proved
+./lean/CouretUnification/Logic/L6Bridge.lean:30:- Status   : proved
+./lean/CouretUnification/Logic/L6Bridge.lean:153:  status     := Status.proved
+./lean/CouretUnification/Logic/L6Interface.lean:28:- Status   : proved (pures déclarations de types)
+./lean/CouretUnification/Logic/OpenLocks.lean:11:- Status  : proved (invariant compilé)
+./lean/CouretUnification/Logic/OpenLocks.lean:158:  status     := Status.proved
+./lean/CouretUnification/Meta/AuditHints.lean:122:  status := CouretUnification.Meta.Status.proved
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:12:* `localPhi`, `nu`         : définitions finies, [D]
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:13:* `nu_value`               : identité combinatoire, [D] (provable, sorry routinier)
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:15:  `Jcal_nontrivial`        : décomposition Dirichlet multiplicative, [D]
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:16:* `Ip_quotient`            : valeur rationnelle ν_p(R)/(p-1), [D]
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:67:/-- **[D]** Identité combinatoire fondamentale :
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:161:/-- **[D]** Caractère trivial : J_p(R, 1) = ν_p(R). -/
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:320:/-- **[D]** Caractère non trivial :
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:402:/-- **[D]** Valeur rationnelle de l'intégrale au niveau du quotient fini :
+./lean/CouretUnification/ResGold/L0_LocalLemma.lean:409:/-- **[D]** Identité rationnelle. -/
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:17:* Définitions et énoncés spectraux finis : [D]
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:18:* Identité Tamagawa locale (‖M‖²_HS = ‖Ψ‖²_{L²(ℚ_p^×)}) : [D]
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:56:**[D]**
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:72:/-- **[D]** Carré du module des valeurs propres non triviales.
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:87:/-- **[D]** Norme de Hilbert–Schmidt au carré de l'opérateur centré.
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:99:/-- **[D]** Identité de norme HS (tautologique de la définition).
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:108:/-- **[D]** Trace signée — formule à **trois cas**.
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:125:/-- **[D]** Caractérisation cas-par-cas de la trace signée.
+./lean/CouretUnification/ResGold/L1_ConductorOne.lean:159:/-- **[D]** Identité de norme L² au niveau quotient fini :
+./lean/CouretUnification/ResGold/L2_MertensAsymptotic.lean:47:* `mertensA` (somme tronquée) : [D]
+./lean/CouretUnification/ResGold/L2_MertensAsymptotic.lean:65:que p ∤ R. **[D]** comme objet fini ; l'asymptotique est traitée plus bas. -/
+./lean/CouretUnification/ResGold/Status.lean:16:Statut de ce fichier : [D] (pur, aucun sorry).
+./lean/CouretUnification/SophieGermainUmbrella.lean:14:  * Core/SophieGermainHecke        [D]
+./lean/CouretUnification/SophieGermainUmbrella.lean:15:  * Core/SophieGermainTowerLift    [D]
+./lean/CouretUnification/SophieGermainUmbrella.lean:16:  * Residue/SGShiftSqrt2           [D] sceau algébrique fini
+./lean/CouretUnification/SophieGermainUmbrella.lean:57:Le noyau démontré `[D]` comprend :
+./lean/CouretUnification/SophieGermainUmbrella.lean:66:La frontière `Residue.SGShiftSpectrum` devra rester séparée du noyau `[D]`
+./lean/CouretUnification/SophieGermainUmbrella.lean:76:  "[D] core SG + [M] empirical/numerics; RHClaimed = false"
+./lean/CouretUnification/Speculative/AnalogyMTF.lean:7:  - Statut : [D] speculative — **analogie structurelle**, pas un théorème
+./lean/CouretUnification/Speculative/AnalogyMTF.lean:67:/-- **[D] ANALOGIE PURE — N'A PAS DE STATUT MATHÉMATIQUE DANS LE PROGRAMME.**
+./lean/CouretUnification/Speculative/Ontology.lean:7:  - Statut : [D] speculative
