@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# validate_pack.sh — Couret-Unification v38.5.1
+# validate_pack.sh — Couret-Unification v38.5.12
 # Validates the Lean pack structure and invariants.
 set -euo pipefail
 
@@ -16,9 +16,9 @@ check() {
   fi
 }
 
-echo "══════════════════════════════════════════════"
-echo "  Couret-Unification — Pack Validation v38.5"
-echo "══════════════════════════════════════════════"
+echo "═════════════════════════════════════════════════"
+echo "  Couret-Unification — Pack Validation v38.5.12"
+echo "═════════════════════════════════════════════════"
 
 # ──── 1. Structure ────
 echo ""
@@ -100,21 +100,16 @@ check "test -f lean/CouretUnification/Spectral/T2Gap.lean" "Spectral/T2Gap"
 echo ""
 echo "[4/5] Invariants épistemiques..."
 
-# (a) Compteur des sorries doctrinaux (18 attendus)
-EXPECTED_SORRIES=18
+# (a) Compteur des sorries doctrinaux (10 attendus)
+EXPECTED_SORRIES=10
 SORRIES="
     Attendu :
     - Logic :
-      - C3Weak:141                         [RIGIDITÉ FAIBLE DU RÉSIDU]
-      - EulerBridgeInfinite:107:133        [COMPLÉTION EULÉRIENNE INFINIE]
       - L6RatioEstimateDerived:66          [ANALYTIC ASSEMBLY]
       - L10NoGoTheorem:63:206              [1 CONCEPTUEL + 1 UPSTREAM]
     - Logic.H3 :
       - Lemma7Residual:6                   [L7 / RÉSIDU SUR LIGNE CRITIQUE]
       - RouteC:765                         [LOCK 3 / EXISTENCE OPÉRATEUR]
-      - SquarefreeSupport:71               [OBSOLETE, hors chemin]
-      - SquarefreeDensity:232:245:254      [ANALYTIC]
-      - MoebiusBridge:73                   [SNAPSHOT API]
     - AnalyticHorizon :
       - Det2Transport:64                   [INSTANCIATION]
     - Analytic :
