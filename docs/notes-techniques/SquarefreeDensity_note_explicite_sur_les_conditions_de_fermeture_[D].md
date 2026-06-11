@@ -1,94 +1,23 @@
-## Peut-on réunir les conditions pour passer C-04a/C-04b en `[D]` ?
+## Addendum v38.5.12 — statut de C-04a et C-04b
 
-Oui. Il faut expliciter un petit **dossier de fermeture [D]** dans le code ou dans un document associé. Aujourd’hui, les deux bridges disent :
+Les deux verrous initialement discutés dans cette note sont désormais fermés dans le dépôt.
 
-```lean
-SquarefreeCountGeHalfBridge
-SquarefreeAsymptoticDensityBridge
-```
-
-Pour les remplacer par de vraies preuves `[D]`, il faut fermer deux chaînes distinctes.
-
-### Pour C-04a : `squarefreeCount_ge_half`
-
-Il faut prouver effectivement :
-
-```lean
-∀ {N : ℕ}, 176 ≤ N → (N : ℚ) / 2 ≤ squarefreeCount N
-```
-
-Conditions nécessaires :
-
-1. Une formule exacte du comptage squarefree, du type :
-
-```lean
-squarefreeCount N =
-  ∑ d ∈ Icc 1 (Nat.sqrt N), μ(d) * ⌊N / d^2⌋
-```
-
-ou une variante équivalente.
-
-2. Une borne inférieure effective de cette somme.
-
-3. Une gestion explicite du seuil `176`.
-
-La difficulté n’est pas conceptuelle mais **effective** : il faut une borne suffisamment forte pour tous les `N ≥ 176`, ou bien une combinaison :
+Statut canonique :
 
 ```text
-preuve analytique pour N ≥ N₀
-+
-vérification finie pour 176 ≤ N < N₀
+C-04a squarefreeCount_ge_half : [D] prouvé via SquarefreeDensityC04aClosed
+C-04b densité 6 / π²          : [D] prouvé via SquarefreeDensityC04bClosed
+RHClaimed                     : false
 ```
 
-Donc C-04a est probablement prouvable, mais il faut un vrai module de borne effective. Ce n’est pas seulement un branchement à C-03.
-
-### Pour C-04b : densité `6 / π²`
-
-Il faut prouver :
-
-```lean
-Tendsto (fun N : ℕ => (squarefreeCount N : ℝ) / N) atTop
-  (nhds (6 / Real.pi^2))
-```
-
-Conditions nécessaires :
-
-1. Formule de Möbius :
+Notes canoniques :
 
 ```text
-1_squarefree(n) = ∑_{d² | n} μ(d)
+docs/notes-techniques/SquarefreeDensity_C04a_v38.5.12.md
+docs/notes-techniques/SquarefreeDensity_C04b_v38.5.11.md
 ```
 
-2. Réindexation Fubini déjà largement préparée par C-01.
+Cette note doit donc être lue comme une archive historique des conditions de fermeture,
+et non comme un état ouvert du dossier.
 
-3. Contrôle d’erreur : C-03 donne `O(√N)`, donc après division par `N`, il faut montrer :
-
-```lean
-O(√N) / N → 0
-```
-
-4. Passage à la limite :
-
-```text
-∑_{d ≤ √N} μ(d) / d² → ∑_{d ≥ 1} μ(d) / d²
-```
-
-5. Identification eulérienne :
-
-```text
-∑ μ(d) / d² = 1 / ζ(2)
-```
-
-6. Évaluation classique :
-
-```text
-ζ(2) = π² / 6
-```
-
-donc :
-
-```text
-1 / ζ(2) = 6 / π²
-```
-
-La fermeture `[D]` de C-04b dépend donc de deux zones : ton `MoebiusBridge` et une évaluation formelle de `ζ(2)` côté Mathlib/projet.
+Le fichier original est disponible dans [`Attic`](../../Attic/docs/notes-techniques/SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D]_v38.5.10.md)

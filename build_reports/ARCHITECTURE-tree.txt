@@ -4,6 +4,8 @@
 │   │   ├── ARCHITECTURE_CIBLE_v36.md
 │   │   ├── COMPILATION.md
 │   │   ├── DEPENDENCIES.md
+│   │   ├── notes-techniques
+│   │   │   └── SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D]_v38.5.10.md
 │   │   └── STATUS-T1-T7.md
 │   ├── Dossier_Couret_Unification_RH_HP_v35.9.1_Integrations.pdf
 │   ├── generate_pdf_v35.9.1.py
@@ -153,6 +155,8 @@
 │   ├── L6_ratio_estimate_note.md
 │   ├── LTB0_README.md
 │   ├── notes-techniques
+│   │   ├── SquarefreeDensity_C04a_v38.5.12.md
+│   │   ├── SquarefreeDensity_C04b_v38.5.11.md
 │   │   ├── SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md
 │   │   └── z30-vs-units.md
 │   ├── PASSAGE_LOCAL_GLOBAL.md
@@ -376,6 +380,10 @@
 │   │   │   │   ├── RouteC.lean
 │   │   │   │   ├── SpectralBridge.lean
 │   │   │   │   ├── SpectralSpatial.lean
+│   │   │   │   ├── SquarefreeDensityAsymptotic.lean
+│   │   │   │   ├── SquarefreeDensityC04aClosed.lean
+│   │   │   │   ├── SquarefreeDensityC04bClosed.lean
+│   │   │   │   ├── SquarefreeDensityHalf.lean
 │   │   │   │   ├── SquarefreeDensity.lean
 │   │   │   │   ├── SquarefreeSupport.lean
 │   │   │   │   ├── T5Weak.lean
@@ -512,4 +520,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-63 directories, 450 files
+64 directories, 457 files

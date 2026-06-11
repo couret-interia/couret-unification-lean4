@@ -359,6 +359,10 @@ tree -P '*.lean' -I 'Attic' --gitignore --prune --filesfirst
         │   │   ├── RouteC.lean
         │   │   ├── SpectralBridge.lean
         │   │   ├── SpectralSpatial.lean
+        │   │   ├── SquarefreeDensityAsymptotic.lean
+        │   │   ├── SquarefreeDensityC04aClosed.lean
+        │   │   ├── SquarefreeDensityC04bClosed.lean
+        │   │   ├── SquarefreeDensityHalf.lean
         │   │   ├── SquarefreeDensity.lean
         │   │   ├── SquarefreeSupport.lean
         │   │   ├── T5Weak.lean

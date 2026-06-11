@@ -70,7 +70,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/SpectralMoments.lean:27:def unitsMod30 : Fin 8 → Nat
         ──       2 squarefreeCount
        ./Logic/H3/RouteC.lean:120:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
-       ./Logic/H3/SquarefreeDensity.lean:87:def squarefreeCount (N : ℕ) : ℕ :=
+       ./Logic/H3/SquarefreeDensity.lean:81:def squarefreeCount (N : ℕ) : ℕ :=
  ⚠ Core ──       2 QuadCharIdx
        ./Core/QuadraticResonance.lean:120:abbrev QuadCharIdx := Fin 2 × Fin 4
        ./Core/G30Classification.lean:104:abbrev QuadCharIdx := Fin 2 × Fin 4
@@ -196,8 +196,8 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./Core/SophieGermainHecke.lean:29:import CouretUnification.Core.Mod30
        ./Core/ExceptionalTriplets.lean:1:import CouretUnification.Core.Mod30
         ──        import CouretUnification.Core.G30Classification
-       ./Frozen.lean:83:import CouretUnification.Core.G30Classification
-       ./Frozen.lean:84:import CouretUnification.Core.G30ClassificationFromPointDefect
+       ./Frozen.lean:84:import CouretUnification.Core.G30Classification
+       ./Frozen.lean:85:import CouretUnification.Core.G30ClassificationFromPointDefect
        ./All.lean:383:import CouretUnification.Core.G30Classification
        ./All.lean:385:import CouretUnification.Core.G30ClassificationFromPointDefect
        ./Core/G30ClassificationFromPointDefect.lean:2:import CouretUnification.Core.G30Classification
@@ -219,13 +219,22 @@ Recherche : def / structure / inductive / abbrev / theorem
         ──        import CouretUnification.Core.SpectralMoments
        ./All.lean:58:import CouretUnification.Core.SpectralMoments
         ──        import CouretUnification.Logic.H3.RouteC
-       ./Active.lean:66:import CouretUnification.Logic.H3.RouteC
+       ./Active.lean:65:import CouretUnification.Logic.H3.RouteC
        ./All.lean:145:import CouretUnification.Logic.H3.RouteC
         ──        import CouretUnification.Logic.H3.SquarefreeDensity
-       ./Active.lean:69:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Frozen.lean:95:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./Frozen.lean:97:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
+       ./Logic/H3/SquarefreeDensityAsymptotic.lean:23:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Logic/H3/SquarefreeDensityC04aClosed.lean:29:import CouretUnification.Logic.H3.SquarefreeDensityHalf
+       ./Logic/H3/SquarefreeDensityHalf.lean:24:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./Logic/H3/SquarefreeDensityC04bClosed.lean:28:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
        ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./All.lean:388:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
+       ./All.lean:390:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./All.lean:392:import CouretUnification.Logic.H3.SquarefreeDensityHalf
+       ./All.lean:394:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
         ──        import CouretUnification.Core.QuadraticResonance
-       ./Frozen.lean:78:import CouretUnification.Core.QuadraticResonance
+       ./Frozen.lean:79:import CouretUnification.Core.QuadraticResonance
        ./All.lean:376:import CouretUnification.Core.QuadraticResonance
         ──        import CouretUnification.Core.TCAutoInverse
        ./All.lean:79:import CouretUnification.Core.TCAutoInverse
@@ -270,7 +279,7 @@ Recherche : def / structure / inductive / abbrev / theorem
        ./SophieGermainUmbrella.lean:38:import CouretUnification.Empirical.SophieGermainExpected
        ./All.lean:229:import CouretUnification.Empirical.SophieGermainExpected
         ──        import CouretUnification.Analytic.GammaFactor
-       ./Active.lean:76:import CouretUnification.Analytic.GammaFactor
+       ./Active.lean:72:import CouretUnification.Analytic.GammaFactor
        ./All.lean:247:import CouretUnification.Analytic.GammaFactor
         ──        import CouretUnification.Core.CenteredEigenspace
        ./All.lean:64:import CouretUnification.Core.CenteredEigenspace

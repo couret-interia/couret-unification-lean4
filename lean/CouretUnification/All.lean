@@ -384,6 +384,15 @@ import CouretUnification.Core.G30Classification
 -- v38.5.3 — Spécialisation à G₃₀ (|T|=3, fibres d'ordre 4 de taille 2).
 import CouretUnification.Core.G30ClassificationFromPointDefect
 
+-- v38.5.11 — laboratoire compilable pour fermer C-04b SquarefreeDensity.
+import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
+-- v38.5.11 — importe le lab C-04b et transforme le bridge public de `SquarefreeDensity.lean` en résultat prouvé.
+import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+-- v38.5.12 — laboratoire compilable pour fermer C-04a SquarefreeDensity.
+import CouretUnification.Logic.H3.SquarefreeDensityHalf
+-- v38.5.12 — importe le lab C-04a et transforme le bridge public de `SquarefreeDensity.lean` en résultat prouvé.
+import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.
