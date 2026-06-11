@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-# scripts/d_results_audit.sh
+# scripts/audit_proved.sh
 #
 # Audit documentaire des candidats [D].
 #
@@ -12,15 +12,15 @@ set -eu
 #   - theorem/lemma Lean dans les modules importes par Frozen.lean
 #
 # Usage :
-#   scripts/d_results_audit.sh
-#   scripts/d_results_audit.sh .
-#   scripts/d_results_audit.sh /chemin/vers/repo
+#   scripts/audit_proved.sh
+#   scripts/audit_proved.sh .
+#   scripts/audit_proved.sh /chemin/vers/repo
 #
 # Sorties :
-#   build_reports/d_markers.txt
-#   build_reports/d_theorems_all.txt
-#   build_reports/d_theorems_frozen.txt
-#   build_reports/d_summary.txt
+#   build_reports/proved_markers.txt
+#   build_reports/proved_theorems_all.txt
+#   build_reports/proved_theorems_frozen.txt
+#   build_reports/proved_summary.txt
 
 ROOT="${1:-.}"
 
@@ -30,11 +30,11 @@ BUILD_ROOT="$ROOT/build_reports"
 FROZEN_FILE="$LEAN_ROOT/Frozen.lean"
 
 OUT_DIR="$BUILD_ROOT"
-MARKERS_OUT="$OUT_DIR/d_markers.txt"
-ALL_THEOREMS_OUT="$OUT_DIR/d_theorems_all.txt"
-FROZEN_IMPORTS_OUT="$OUT_DIR/d_frozen_imports.txt"
-FROZEN_THEOREMS_OUT="$OUT_DIR/d_theorems_frozen.txt"
-SUMMARY_OUT="$OUT_DIR/d_summary.txt"
+MARKERS_OUT="$OUT_DIR/proved_markers.txt"
+ALL_THEOREMS_OUT="$OUT_DIR/proved_theorems_all.txt"
+FROZEN_IMPORTS_OUT="$OUT_DIR/proved_frozen_imports.txt"
+FROZEN_THEOREMS_OUT="$OUT_DIR/proved_theorems_frozen.txt"
+SUMMARY_OUT="$OUT_DIR/proved_summary.txt"
 
 mkdir -p "$OUT_DIR"
 
