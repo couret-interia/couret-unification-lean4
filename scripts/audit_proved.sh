@@ -49,7 +49,7 @@ if [ ! -f "$FROZEN_FILE" ]; then
 fi
 
 D_PATTERN='\[D\]|D-formal|D-computational|proved \[D\]|Status[[:space:]]*:[[:space:]]*proved|status[[:space:]]*:=[[:space:]]*.*Status\.proved|status[[:space:]]*:=[[:space:]]*.*\.proved'
-THEOREM_PATTERN='^(theorem|lemma)[[:space:]]+'
+THEOREM_PATTERN='(theorem|lemma)[[:space:]]+'
 
 echo "== Audit marqueurs [D] / proved =="
 {
