@@ -161,6 +161,7 @@
 │   │   ├── SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md
 │   │   └── z30-vs-units.md
 │   ├── PASSAGE_LOCAL_GLOBAL.md
+│   ├── PRESENTATION_PROGRAMME.md
 │   ├── RAPPORT_DEMONSTRATION_v5_FINAL.md
 │   ├── Rapport_Impasses_CouretUnification.md
 │   ├── registry
@@ -521,4 +522,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-64 directories, 458 files
+64 directories, 459 files
