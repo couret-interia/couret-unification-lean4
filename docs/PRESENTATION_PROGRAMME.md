@@ -38,8 +38,9 @@ L'invariant géométrique `λ = 1/√7`, échelle interne du simplexe centré `�
 
 Le programme n'est pas une promesse : c'est un corpus de résultats, mesurables et tracés.
 
-- **Un socle formel de 14 théorèmes `[D]`**, vérifiés au compilateur Lean 4, 0 sorry, dont un
-  lemme général réutilisable et la classification finie complète d'un groupe.
+- **Un socle formel d’au moins 14 résultats [D]** identifiés dans le registre courant vérifiés
+  au compilateur Lean 4, 0 sorry, dont un lemme général réutilisable et la classification finie
+  complète d'un groupe.
 - **Une classification fermée** : les 56 triplets de `G₃₀` entièrement répartis, sans reste,
   avec caractérisation positive de chaque famille.
 - **Plusieurs no-go structurels démontrés** : savoir *pourquoi* certaines routes vers
@@ -141,8 +142,8 @@ prouvé qu'il sait reconnaître ce qui ne marche pas.
 ## 6. Les faits mesurés `[M-solide]`
 
 - **Le confinement de Sophie Germain modulo 30** aux classes `{S.11, S.23, S.29}` — intégré
-  avec antériorité explicite comme corollaire du Théorème 2.1 d'Agoh (*Integers* 25, 2025,
-  #A83, preuve par A. Granville). Le programme cite sa source ; il ne se l'attribue pas.
+  avec antériorité explicite comme corollaire du [Théorème 2.1 d'Agoh](https://math.colgate.edu/~integers/z83/z83.pdf) (*Integers* 25, 2025,
+  [#A83](https://math.colgate.edu/~integers/vol25#a83), preuve par A. Granville). Le programme cite sa source ; il ne se l'attribue pas.
 
 - **La limite du transport `3/5`** : la dominance algébrique `3/5` établie sur `G₃₀` **ne se
   transporte pas** aux premiers réels (`Z = −2,70 σ` à `5×10⁷` ; densité de comptage `≈ 3/8`,
@@ -185,10 +186,10 @@ répond à un problème vif de la communauté.
   non revendiqué.
 
 Le contexte rend cet actif pertinent : les agents scientifiques produisent en masse et
-peinent à trier — PaperBench (meilleur agent ~21 % contre ~41 % pour des doctorants),
+peinent à trier — PaperBench (meilleur agent testé : 21,0 %, avec une comparaison humaine dédiée),
 AutoResearchBench (~9 % en recherche de littérature), le *model collapse* (Nature, 2024). À
-l'inverse, la vérification formelle se révèle être la sortie — Aristotle atteint le niveau
-médaille d'or à l'IMO 2025 avec des solutions vérifiées en Lean 4. La contribution du
+l'inverse, la vérification formelle se révèle être la sortie — Aristotle est présenté comme atteignant
+un niveau médaille d’or à l’IMO 2025 avec des solutions vérifiées en Lean 4. La contribution du
 programme n'est pas de promettre une science automatisée souveraine : c'est de traiter les
 productions IA comme des objets à tracer, tester, dépromouvoir, conserver ou formaliser — en
 plaçant le tiers externe (Lean, modèle nul, référence, critère de FAIL) au centre de la
