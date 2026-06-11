@@ -155,6 +155,7 @@
 │   ├── L6_ratio_estimate_note.md
 │   ├── LTB0_README.md
 │   ├── notes-techniques
+│   │   ├── Petit_vocabulaire_lean.md
 │   │   ├── SquarefreeDensity_C04a_v38.5.12.md
 │   │   ├── SquarefreeDensity_C04b_v38.5.11.md
 │   │   ├── SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md
@@ -520,4 +521,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-64 directories, 457 files
+64 directories, 458 files
