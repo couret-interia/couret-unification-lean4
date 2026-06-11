@@ -1,0 +1,26 @@
+
+═══ Synthèse ═══
+
+# Audit candidats [D]
+
+Racine : .
+
+## Comptages bruts
+
+- Marqueurs documentaires [D]/proved : 168
+- Theorem/lemma Lean globaux         : 1788
+- Imports Frozen                     : 23
+- Theorem/lemma dans Frozen          : 126
+
+## Fichiers produits
+
+- ./build_reports/proved_markers.txt
+- ./build_reports/proved_theorems_all.txt
+- ./build_reports/proved_frozen_imports.txt
+- ./build_reports/proved_theorems_frozen.txt
+
+## Note doctrinale
+
+Ces nombres sont des indicateurs d'audit, pas un registre scientifique.
+Un theorem Lean technique ne vaut pas automatiquement claim [D].
+Un claim [D] doit etre inscrit manuellement dans un registre relu.
