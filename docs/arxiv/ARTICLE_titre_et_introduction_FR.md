@@ -56,10 +56,11 @@ sans `sorry`. Nous distinguons explicitement deux régimes de certification. Le 
 défaut ponctuel et les sommes de caractères dont il dépend sont prouvés au noyau
 (*kernel-pure*, sans axiome ajouté), et valent abstraitement pour tout groupe abélien fini
 avec caractère d'ordre 2. La classification de `G₃₀`, elle, est établie par énumération
-exhaustive (`native_decide`) : l'axiome `Lean.ofReduceBool` figure alors dans la base des
-théorèmes concernés, ce qui en fait une certification *computationnelle*, distincte du
-noyau pur. Le code est public, haché et rejouable ; un lecteur peut reproduire l'intégralité
-de la vérification par `lake build`.
+exhaustive (`native_decide`) : les théorèmes concernés dépendent alors de la primitive de
+confiance `Lean.ofReduceBool`, associée à l’évaluation native vérifiée par Lean ; cela en
+fait une certification *computationnelle*, distincte du noyau pur. Le code est public,
+versionné et rejouable ; un lecteur peut reproduire l’intégralité de la vérification par
+`lake build`, et les artefacts d’audit du dépôt documentent la provenance des résultats.
 
 Ce travail constitue le **socle fini** d'un programme de recherche plus large, le programme
 Couret-Unification, historiquement motivé par l'étude des structures modulaires des nombres
@@ -67,13 +68,15 @@ premiers et orienté, à son horizon, vers les questions de type Hilbert-Pólya 
 fonction `ξ` de Riemann. Le programme est dédié à la mémoire de Bernard Couret (1928–1999),
 dont les calculs manuscrits sur les premiers modulo 30 en sont à l'origine. La présente
 contribution est toutefois **entièrement finie** et n'emprunte rien à cet horizon : elle ne
-porte aucune revendication sur l'hypothèse de Riemann. En particulier, la dominance
-spectrale `3/5` mise en évidence sur `G₃₀` est un fait algébrique fini qui **ne se
-transporte pas** à la distribution des nombres premiers réels — la densité de comptage du
-triplet considéré modulo 30 vaut `≈ 3/8` (théorème de Dirichlet), non `3/5`. Les invariants
+porte aucune revendication sur l'hypothèse de Riemann. En particulier, la dominance spectrale
+`3/5` mise en évidence sur `G₃₀` est un fait algébrique fini qui **ne se transporte pas** à
+la distribution des nombres premiers réels : la densité naturelle des trois classes de résidus
+correspondantes parmi les huit classes admissibles modulo 30 est `3/8`, par équidistribution
+des nombres premiers dans les progressions arithmétiques, et non `3/5`. Les invariants
 du programme `RHClaimed = false` et `HilbertPolyaClaimed = false` sont maintenus sans
-exception ; le seul verrou reliant ce socle fini à l'horizon analytique (l'équivalence
-`det₂ ↔ ξ`) est nommé, non franchi, et demeure hors du périmètre de cet article.
+exception ; dans l’architecture plus large du programme, le verrou identifié entre ce socle
+fini et l’horizon analytique est l’équivalence candidate `det₂ ↔ ξ` ; il est nommé, non
+franchi, et demeure hors du périmètre de cet article.
 
 Notre contribution est donc double et bornée : un lemme spectral général, formellement
 vérifié, et la classification complète et fermée d'un groupe fini particulier — offerts
