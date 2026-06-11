@@ -38,28 +38,31 @@ SUMMARY_OUT="$OUT_DIR/proved_summary.txt"
 
 mkdir -p "$OUT_DIR"
 
+echo "╔═════════════════════════════════════════════════════════════╗"
+echo "║  Audit documentaire des candidats [D] — Couret-Unification  ║"
+echo "╚═════════════════════════════════════════════════════════════╝"
+echo ""
+
 if [ ! -d "$LEAN_ROOT" ]; then
-  echo "Erreur : dossier Lean introuvable : $LEAN_ROOT" >&2
+  echo "⚠️ Erreur : dossier Lean introuvable : $LEAN_ROOT" >&2
   exit 1
 fi
 
 if [ ! -f "$FROZEN_FILE" ]; then
-  echo "Erreur : Frozen.lean introuvable : $FROZEN_FILE" >&2
+  echo "⚠️ Erreur : Frozen.lean introuvable : $FROZEN_FILE" >&2
   exit 1
 fi
 
 D_PATTERN='\[D\]|D-formal|D-computational|proved \[D\]|Status[[:space:]]*:[[:space:]]*proved|status[[:space:]]*:=[[:space:]]*.*Status\.proved|status[[:space:]]*:=[[:space:]]*.*\.proved'
 THEOREM_PATTERN='(theorem|lemma)[[:space:]]+'
 
-echo "== Audit marqueurs [D] / proved =="
+# ━━━ Audit marqueurs [D] / proved ━━━
 {
   if [ -d "$DOCS_ROOT" ]; then
-    #~ find "$LEAN_ROOT" "$DOCS_ROOT" "$BUILD_ROOT" \
     find "$LEAN_ROOT" "$DOCS_ROOT" \
       -type f \( -name '*.lean' -o -name '*.md' -o -name '*.txt' \) \
       -print
   else
-    #~ find "$LEAN_ROOT" "$BUILD_ROOT" \
     find "$LEAN_ROOT" \
       -type f \( -name '*.lean' -o -name '*.md' -o -name '*.txt' \) \
       -print
@@ -67,20 +70,23 @@ echo "== Audit marqueurs [D] / proved =="
 } | sort | while IFS= read -r file; do
   grep -nE "$D_PATTERN" "$file" 2>/dev/null | sed "s|^|$file:|"
 done > "$MARKERS_OUT"
+echo "✓ Audit marqueurs [D] / proved"
 
-echo "== Audit theorem/lemma global =="
+# ━━━ Audit theorem/lemma global ━━━
 find "$LEAN_ROOT" -type f -name '*.lean' -print | sort | while IFS= read -r file; do
   grep -nE "$THEOREM_PATTERN" "$file" 2>/dev/null | sed "s|^|$file:|"
 done > "$ALL_THEOREMS_OUT"
+echo "✓ Audit theorem/lemma global"
 
-echo "== Extraction imports Frozen =="
+# ━━━ Extraction imports Frozen ━━━
 awk '
   /^import CouretUnification\./ {
     print $2
   }
 ' "$FROZEN_FILE" | sort -u > "$FROZEN_IMPORTS_OUT"
+echo "✓ Extraction imports Frozen"
 
-echo "== Audit theorem/lemma Frozen =="
+# ━━━ Audit theorem/lemma Frozen ━━━
 : > "$FROZEN_THEOREMS_OUT"
 
 while IFS= read -r module; do
@@ -92,6 +98,7 @@ while IFS= read -r module; do
     echo "WARN missing import path: $module -> $path" >> "$FROZEN_THEOREMS_OUT"
   fi
 done < "$FROZEN_IMPORTS_OUT"
+echo "✓ Audit theorem/lemma Frozen"
 
 MARKERS_COUNT="$(wc -l < "$MARKERS_OUT" | tr -d ' ')"
 ALL_THEOREMS_COUNT="$(wc -l < "$ALL_THEOREMS_OUT" | tr -d ' ')"
@@ -99,6 +106,9 @@ FROZEN_IMPORTS_COUNT="$(wc -l < "$FROZEN_IMPORTS_OUT" | tr -d ' ')"
 FROZEN_THEOREMS_COUNT="$(grep -cE "$THEOREM_PATTERN" "$FROZEN_THEOREMS_OUT" 2>/dev/null || true)"
 
 {
+  echo
+  echo "═══ Synthèse ═══"
+  echo
   echo "# Audit candidats [D]"
   echo
   echo "Racine : $ROOT"
