@@ -26,11 +26,22 @@ rejeté.
 - Logic/H3/LocalFactor                [0 sorry ✅]
 - Logic/H3/CriticalLineTransferSpec   [0 sorry ✅, spec-only]
 
-## À ajouter quand ready
+## Statut (v38.5.12)
 
-- Logic/TimeBridge/Basic              [LTB-0, 0 sorry]
-- Logic/TimeBridge/B2Calibration      [LTB-0, 0 sorry]
-- Logic/TimeBridge/ModularFlowSpec    [LTB-0, 0 sorry]
+- Logic/TimeBridge/Basic                [0 sorry ✅]
+- Logic/TimeBridge/B2Calibration        [0 sorry ✅]
+- Logic/TimeBridge/ModularFlowSpec      [0 sorry ✅]
+- Logic/H3/MoebiusBridge                [0 sorry ✅]
+- Core/QuadraticResonance               [0 sorry ✅]
+- Core/CharacterSubgroupSums            [0 sorry ✅, D-formal, abstract]
+- Core/PointDefectLemma                 [0 sorry ✅, D-formal, abstract]
+- Core/G30Classification                [0 sorry ✅, D-computational, local]
+- Core/G30ClassificationFromPointDefect [0 sorry ✅, D-formal, local bridge]
+- Logic/H3/SquarefreeSupport            [0 sorry ✅]
+- Logic/EulerBridgeInfinite             [0 sorry ✅]
+- Logic/H3/SquarefreeDensity            [0 sorry ✅, interface stable]
+- Logic/H3/SquarefreeDensityC04bClosed  [0 sorry ✅, C-04b [D]]
+- Logic/H3/SquarefreeDensityC04aClosed  [0 sorry ✅, C-04a [D]]
 
 ## Note doctrinale
 

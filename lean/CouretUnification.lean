@@ -35,6 +35,7 @@ import CouretUnification.Meta.Doctrine
 -- Couche Logic — briques fermées
 import CouretUnification.Logic.EulerBridgeInfiniteCompat
 import CouretUnification.Logic.C3Weak_Gram
+import CouretUnification.Logic.EulerBridgeInfinite
 
 -- ─── Couche 2 : opérateur centré + chiralité ───
 -- Couche Logic / Gold — chiralité finie mod 30 (since v35.8.7)
@@ -47,11 +48,11 @@ import CouretUnification.Logic.ChiralityLinear
 -- Sorry consommés 4
 import CouretUnification.Analytic.GammaFactor
 
--- Sorry consommé 1
-import CouretUnification.Logic.C3Weak
+-- Couche Logic — bridge conditionnel formalisé
+import CouretUnification.Logic.C3Weak -- (0 sorry → v38.5.6) [B-formal, local bridge, API, PROJ]
 
--- Sorry consommés 2
-import CouretUnification.Logic.EulerBridgeInfinite
+-- Couche Logic / H3 — spécification de transfert sur ligne critique
+import CouretUnification.Logic.H3.CriticalLineTransferSpec
 
 -- Couche Logic — interface L6 (since v35.8.6)
 import CouretUnification.Logic.L6Interface
@@ -73,14 +74,19 @@ import CouretUnification.Logic.OpenLocks
 
 -- Couche Logic / H3 — front arithmétique-analytique (since v35.8.8)
 import CouretUnification.Logic.H3.LocalFactor
--- Sorry consommé 1
+
+-- Couche Logic / H3 — front B : Glue combinatoire sur support squarefree premier (since v38.5.4)
 import CouretUnification.Logic.H3.SquarefreeSupport
--- Sorry consommés 3
-import CouretUnification.Logic.H3.SquarefreeDensity
--- Sorry consommé 1
+
+-- Couche Logic / H3 — (since v38.5.7)
 import CouretUnification.Logic.H3.MoebiusBridge
-import CouretUnification.Logic.H3.CriticalLineTransferSpec
 
 -- Couche AnalyticHorizon — transport analytique régularisé (since v35.8.8)
 -- Sorry consommé 1
 import CouretUnification.AnalyticHorizon.Det2Transport
+
+-- Front H3 : briques SquarefreeDensity (since v38.5.8+)
+-- v38.5.11 — C-04b [D], densité asymptotique 6 / π².
+import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+-- v38.5.12 — C-04a [D], minoration effective squarefreeCount ≥ N/2.
+import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
