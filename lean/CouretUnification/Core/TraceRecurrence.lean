@@ -1,21 +1,20 @@
 import CouretUnification.Core.FormuleLk
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace TraceRecurrence
+namespace CouretUnification.Core.TraceRecurrence
 
 /-!
 # Récurrence des traces spectrales
 
-The minimal polynomial (X−3)(X−1)(X+1) = X³ − 3X² − X + 3
-gives the recurrence on power sums:
-  s_k = 3·s_{k−1} + s_{k−2} − 3·s_{k−3}   for all k ≥ 3
+Le polynôme minimal (X−3)(X−1)(X+1) = X³ − 3X² − X + 3
+donne la récurrence sur les sommes de puissances :
+  s_k = 3·s_{k−1} + s_{k−2} − 3·s_{k−3}   pour tout k ≥ 3
 -/
 
 open FormuleLk
 
 -- ═══════════════════════════════════════════
--- Integer trace recurrence verified k = 3..10
+-- Récurrence entière des traces vérifiée pour k = 3..10
 -- ═══════════════════════════════════════════
 
 theorem init_0 : eigTrace 0 = 8 := by norm_num [eigTrace]
@@ -40,7 +39,7 @@ theorem rec_10 : eigTrace 10 = 3 * eigTrace 9 + eigTrace 8 - 3 * eigTrace 7 := b
   norm_num [eigTrace]
 
 -- ═══════════════════════════════════════════
--- Rational recurrence: L_k = L_{k−1} + L_{k−2}/9 − L_{k−3}/9
+-- Récurrence rationnelle : L_k = L_{k−1} + L_{k−2}/9 − L_{k−3}/9
 -- ═══════════════════════════════════════════
 
 theorem Lk_rec_3 : Lk 3 = Lk 2 + Lk 1 / 9 - Lk 0 / 9 := by
@@ -53,7 +52,7 @@ theorem Lk_rec_6 : Lk 6 = Lk 5 + Lk 4 / 9 - Lk 3 / 9 := by
   simp [Lk, eigTrace]; norm_num
 
 -- ═══════════════════════════════════════════
--- Minimal polynomial
+-- Polynôme minimal
 -- ═══════════════════════════════════════════
 
 theorem minpoly_expand (x : Int) :
@@ -64,13 +63,13 @@ theorem root_1 : (1 : Int) ^ 3 - 3 * 1 ^ 2 - 1 + 3 = 0 := by norm_num
 theorem root_m1 : (-1 : Int) ^ 3 - 3 * (-1) ^ 2 - (-1) + 3 = 0 := by norm_num
 
 -- ═══════════════════════════════════════════
--- Universal recurrence for each eigenvalue
+-- Récurrence universelle pour chaque valeur propre
 -- ═══════════════════════════════════════════
 
-/-- For any root r of X³ = 3X² + X − 3:
-    r^k = 3·r^{k−1} + r^{k−2} − 3·r^{k−3} for k ≥ 3.
+/-- Pour toute racine r de X³ = 3X² + X − 3 :
+    r^k = 3·r^{k−1} + r^{k−2} − 3·r^{k−3} pour k ≥ 3.
 
-    Proof: r^k = r^{k−3} · r³ = r^{k−3} · (3r² + r − 3). -/
+    Preuve : r^k = r^{k−3} · r³ = r^{k−3} · (3r² + r − 3). -/
 theorem root_recurrence (r : Int) (k : Nat) (hk : k ≥ 3)
     (hroot : r ^ 3 = 3 * r ^ 2 + r - 3) :
     r ^ k = 3 * r ^ (k - 1) + r ^ (k - 2) - 3 * r ^ (k - 3) := by
@@ -86,15 +85,14 @@ theorem hroot_1 : (1 : Int) ^ 3 = 3 * 1 ^ 2 + 1 - 3 := by norm_num
 theorem hroot_m1 : (-1 : Int) ^ 3 = 3 * (-1) ^ 2 + (-1) - 3 := by norm_num
 
 /-!
-## Summary
+## Synthèse
 
-**Recurrence**: s_k = 3·s_{k−1} + s_{k−2} − 3·s_{k−3}
-- Initial: s₀ = 8, s₁ = 8, s₂ = 24
-- Verified k = 3..10 by `norm_num`
-- Universal proof: `root_recurrence` (pow_add + ring)
+**Récurrence** : s_k = 3·s_{k−1} + s_{k−2} − 3·s_{k−3}
+- Initialisation : s₀ = 8, s₁ = 8, s₂ = 24
+- Vérifiée pour k = 3..10 par `norm_num`
+- Preuve universelle : `root_recurrence` (`pow_add` + `ring`)
 
-**Source**: minimal polynomial (X−3)(X−1)(X+1) = X³ − 3X² − X + 3
+**Source** : polynôme minimal (X−3)(X−1)(X+1) = X³ − 3X² − X + 3
 -/
 
-end TraceRecurrence
-end CouretUnification.Core
+end CouretUnification.Core.TraceRecurrence

@@ -1,0 +1,93 @@
+v36.0 — Frozen ExplicitFormula Core and Active certificate jurisdiction
+
+This release does not prove the Riemann Hypothesis.
+
+It establishes a proof jurisdiction for the Couret-Unification
+programme: the PrimeSide compact-support closure is isolated in the
+Frozen layer, while the Archimedean, ZeroSide, ExplicitFormulaBridge,
+Det2, torsion, and torsion-zero transfer components are localized as
+conditional Active certificates.
+
+DOCTRINAL STATUS
+================
+RHClaimed                       = false
+HilbertPolyaClaimed             = false
+SpectralCoincidenceClaimed      = false
+ExplicitFormulaClosed           = false
+Det2IdentityClaimed             = false
+RiemannVonMangoldtClaimed       = false
+CandidateCClaimed               = false
+MotherTheoremClaimed            = false
+
+FROZEN LAYER
+============
+Frozen core contains no sorry, no axiom, no admit.
+PrimeSideCompactSupport.lean is admissible only in its audited form.
+Any illustrative PrimeSide prototype containing sorry is excluded
+from the Frozen bundle.
+
+ACTIVE LAYER
+============
+Analytic debts remain localized, typed, auditable, and unpaid:
+  - ArchimedeanDigammaCertificate    (v36.1)
+  - ZeroCountingCertificate          (v36.2)
+       + ZeroSideSummabilityCertificate (canonical wrapper)
+  - ExplicitFormulaBridgeAudit       (v36.3)
+  - Det2TransportCertificate         (v36.4)
+  - SoinInterface                    (v36.6, structural)
+  - ArchimedeanTorsionCertificate    (v36.7)
+  - TorsionZeroTransferCertificate   (v36.8)
+       + TorsionAnalyticObligation : monotone, bi_lipschitz_lower,
+         bi_lipschitz_upper, polynomial_growth
+  - ActiveLayerFullAudit             (v36.9)
+
+TORSION DOCTRINE
+================
+The empirical gap nu_eff versus 1/sqrt(7) is treated as structural
+torsion of the transport, NOT as measurement noise.
+
+  TorsionClassifiedAsNoise        = false
+  TorsionMovesZeros               = false
+  TorsionChangesClockOnly         = true
+  NuEffNegativeResultPreserved    = true
+
+The torsion certificate v36.7 keeps the ArchimedeanTorsionMap minimal:
+phi_growth + amp_bounded + boundary_log_growth.
+
+The pullback interface v36.8 carries the four analytic constraints:
+  (T.1) monotone : StrictMono phi
+  (T.2) bi_lipschitz_lower
+  (T.3) bi_lipschitz_upper
+  (T.4) polynomial_growth
+
+These are typed obligations. They are not proved.
+
+ZERO TRANSFER DOCTRINE
+======================
+ZeroCountingCertificate remains neutral and classical.
+TorsionZeroTransferCertificate adds a separate pullback obligation:
+zero-counting must remain logarithmic in the torsion-deformed clock.
+
+  ZeroCountingPulledBackClaimedClosed   = false
+  RiemannVonMangoldtFromTorsionTransfer = false
+
+CANONICAL FORMULA
+=================
+The torsion does not contaminate zero-counting; it imposes a
+compatibility debt by pullback.
+
+REPRODUCIBILITY
+===============
+Run from repository root:
+
+  lake build CouretUnification
+  bash scripts/audit_v36.0.sh
+  bash scripts/audit_v36_torsion.sh
+  bash scripts/audit_v36.9.sh
+
+All scripts must exit 0. Any deviation indicates a doctrinal breach
+and must be rejected at the CI level.
+
+Build environment recorded in RELEASE_ENV.txt.
+
+For Bernard.

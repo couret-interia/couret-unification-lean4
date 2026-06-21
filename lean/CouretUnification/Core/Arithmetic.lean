@@ -18,7 +18,7 @@ namespace CouretUnification.Arithmetic
 -- §1. Fonction de Möbius par division récursive
 -- ═══════════════════════════════════════════════════════════
 
-/-- Möbius function via trial division. -/
+/-- Fonction de Möbius définie par division récursive. -/
 def mu : ℕ → ℤ
   | 0 => 0
   | 1 => 1
@@ -30,21 +30,21 @@ def mu : ℕ → ℤ
     let p := (n + 2).minFac
     if p ∣ ((n + 2) / p) then 0 else -(mu ((n + 2) / p))
 
+/-- Valeur initiale : `mu 0 = 0`. -/
 theorem mu_zero : mu 0 = 0 := by native_decide
+
+/-- Valeur initiale : `mu 1 = 1`. -/
 theorem mu_one  : mu 1 = 1 := by native_decide
 
 -- ═══════════════════════════════════════════════════════════
 -- §2. Fonction de Mertens
 -- ═══════════════════════════════════════════════════════════
 
-/-- Mertens function M(n) = Σ_{k=0}^{n} μ(k). -/
-def mertens (n : ℕ) : ℤ :=
-  Finset.sum (Finset.range (n + 1)) (fun k => mu k)
+/-- Fonction de Mertens `M(n) = Σ_{k=0}^{n} μ(k)`. -/
+def mertens (n : ℕ) : ℤ := Finset.sum (Finset.range (n + 1)) (fun k => mu k)
 
 /-- `M(0) = 0`. -/
-theorem mertens_zero : mertens 0 = 0 := by
-  unfold mertens
-  simp [mu_zero]
+theorem mertens_zero : mertens 0 = 0 := by unfold mertens; simp [mu_zero]
 
 /-- Formule de récurrence de Mertens :
 `M(n+1) = M(n) + μ(n+1)`. -/
@@ -178,7 +178,7 @@ noncomputable def K (q : ℕ) : ℝ :=
     ((Finset.range (q + 1)).filter (fun a => decide (0 < a ∧ Nat.Coprime a q)))
     (fun a => ((mertens a : ℤ) : ℝ) ^ 2)
 
-/-- K(q) ≥ 0, sum of squares. -/
+/-- K(q) ≥ 0, comme somme de carrés. -/
 theorem K_nonneg (q : ℕ) : 0 ≤ K q := by
   unfold K
   apply Finset.sum_nonneg
@@ -189,12 +189,19 @@ theorem K_nonneg (q : ℕ) : 0 ≤ K q := by
 -- §4. κ(q) normalisé
 -- ═══════════════════════════════════════════════════════════
 
+/-- Indicatrice d’Euler réelle `φ(q) = totient(q)`. -/
 noncomputable def phi (q : ℕ) : ℝ := (Nat.totient q : ℝ)
+
+/-- Carré normalisé `κ(q)² = K(q) / φ(q)`. -/
 noncomputable def kappaSq (q : ℕ) : ℝ := K q / phi q
+
+/-- Constante normalisée `κ(q) = sqrt(κ(q)²)`. -/
 noncomputable def kappa (q : ℕ) : ℝ := Real.sqrt (kappaSq q)
 
+/-- `κ(q)` est non négatif par définition comme racine carrée réelle. -/
 theorem kappa_nonneg (q : ℕ) : 0 ≤ kappa q := Real.sqrt_nonneg _
 
+/-- `κ(q)²` est non négatif, puisque `K(q) ≥ 0` et `φ(q) ≥ 0`. -/
 theorem kappaSq_nonneg (q : ℕ) : 0 ≤ kappaSq q := by
   unfold kappaSq phi
   apply div_nonneg (K_nonneg q)
@@ -204,7 +211,10 @@ theorem kappaSq_nonneg (q : ℕ) : 0 ≤ kappaSq q := by
 -- §5. Gouvernance
 -- ═══════════════════════════════════════════════════════════
 
+/-- Drapeau doctrinal : aucune revendication RH dans ce fichier. -/
 def RHClaimed : Bool := false
+
+/-- Vérification du drapeau doctrinal. -/
 theorem rh_not_claimed : RHClaimed = false := rfl
 
 end CouretUnification.Arithmetic

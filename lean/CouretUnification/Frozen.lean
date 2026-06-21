@@ -1,0 +1,108 @@
+/-
+# CouretUnification/Frozen.lean
+
+## Rôle
+
+Umbrella "frozen" : importe UNIQUEMENT les fichiers à 0 sorry, status
+`proved` ou `definitional-closed`, qui constituent le socle stable du
+dépôt.
+
+## Invariant
+
+**Ce fichier ne doit JAMAIS échouer au build.** Si un nouveau commit
+fait échouer `lake build CouretUnification.Frozen`, le merge doit être
+rejeté.
+
+## Statut (v35.8.8)
+
+- Meta/Doctrine                       [0 sorry ✅]
+- Logic/OpenLocks                     [0 sorry ✅, porte no_rh_wall_lock_proved]
+- Logic/EulerBridgeInfiniteCompat     [0 sorry ✅]
+- Logic/H3/C3Weak_Gram                [0 sorry ✅]
+- Logic/ChiralityFinite               [0 sorry ✅]
+- Logic/ChiralityLinear               [0 sorry ✅]
+- Logic/L6Interface                   [0 sorry ✅]
+- Logic/L6Bridge                      [0 sorry ✅]
+- Logic/H3/LocalFactor                [0 sorry ✅]
+- Logic/H3/CriticalLineTransferSpec   [0 sorry ✅, spec-only]
+
+## Statut (v38.5.12)
+
+- Logic/TimeBridge/Basic                [0 sorry ✅]
+- Logic/TimeBridge/B2Calibration        [0 sorry ✅]
+- Logic/TimeBridge/ModularFlowSpec      [0 sorry ✅]
+- Logic/H3/MoebiusBridge                [0 sorry ✅]
+- Core/QuadraticResonance               [0 sorry ✅]
+- Core/CharacterSubgroupSums            [0 sorry ✅, D-formal, abstract]
+- Core/PointDefectLemma                 [0 sorry ✅, D-formal, abstract]
+- Core/G30Classification                [0 sorry ✅, D-computational, local]
+- Core/G30ClassificationFromPointDefect [0 sorry ✅, D-formal, local bridge]
+- Logic/H3/SquarefreeSupport            [0 sorry ✅]
+- Logic/EulerBridgeInfinite             [0 sorry ✅]
+- Logic/H3/SquarefreeDensity            [0 sorry ✅, interface stable]
+- Logic/H3/SquarefreeDensityC04bClosed  [0 sorry ✅, C-04b [D]]
+- Logic/H3/SquarefreeDensityC04aClosed  [0 sorry ✅, C-04a [D]]
+
+## Note doctrinale
+
+**Aucun fichier listé ici ne peut importer un fichier de Active.lean.**
+La direction des dépendances va strictement Frozen → Active, jamais
+l'inverse. Si un besoin inverse apparaît, il faut d'abord rétrograder
+le fichier Frozen concerné.
+
+Layer : Meta (aggregator)
+Sorry : 0 (par construction, aucun fichier importé n'en a)
+RHClaimed : false (hérité via OpenLocks.no_rh_wall_lock_proved)
+-/
+
+-- Fondations épistémiques
+import CouretUnification.Meta.Doctrine
+
+-- Registre doctrinal (porte l'invariant RH au type-check)
+import CouretUnification.Logic.OpenLocks
+
+-- Briques analytiques fermées
+import CouretUnification.Logic.EulerBridgeInfiniteCompat
+import CouretUnification.Logic.H3.C3Weak_Gram
+
+-- Chiralité finie mod 30
+import CouretUnification.Logic.ChiralityFinite
+import CouretUnification.Logic.ChiralityLinear
+
+-- Interface et pont L6 (partie proved)
+import CouretUnification.Logic.L6Interface
+import CouretUnification.Logic.L6Bridge
+
+-- Front H3 : briques à 0 sorry uniquement
+import CouretUnification.Logic.H3.LocalFactor
+import CouretUnification.Logic.H3.CriticalLineTransferSpec
+import CouretUnification.Logic.H3.MoebiusBridge               -- v38.5.7
+
+-- v38.0 — TimeBridge LTB-0 (livré 7 mai 2026)
+-- Basic : socle de spec (openProblem, invariants doctrinaux)
+-- B2Calibration : identité algébrique t_* = ½ log(7/6) ⟺ λ² = 1/7
+-- ModularFlowSpec : spec Registre 3, conjecture B1 (openProblem)
+import CouretUnification.Logic.TimeBridge.Basic
+import CouretUnification.Logic.TimeBridge.B2Calibration
+import CouretUnification.Logic.TimeBridge.ModularFlowSpec
+
+-- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
+import CouretUnification.Core.QuadraticResonance
+
+-- v38.5.3 — Couche abstraite défaut ponctuel + classification finie G₃₀
+import CouretUnification.Core.CharacterSubgroupSums               -- [D-formal, abstract]
+import CouretUnification.Core.PointDefectLemma                    -- [D-formal, abstract]
+import CouretUnification.Core.G30Classification                   -- [D-computational, local]
+import CouretUnification.Core.G30ClassificationFromPointDefect    -- [D-formal, local bridge]
+
+-- v38.5.4
+import CouretUnification.Logic.H3.SquarefreeSupport
+
+-- v38.5.5
+import CouretUnification.Logic.EulerBridgeInfinite
+
+-- Front H3 : briques SquarefreeDensity (v38.5.8+)
+-- v38.5.11 — C-04b [D], densité asymptotique 6 / π².
+import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+-- v38.5.12 — C-04a [D], minoration effective squarefreeCount ≥ N/2.
+import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed

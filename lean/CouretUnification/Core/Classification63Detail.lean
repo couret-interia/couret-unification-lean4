@@ -1,13 +1,12 @@
 import CouretUnification.Core.Classification63
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace Classification63Detail
+namespace CouretUnification.Core.Classification63Detail
 
 /-!
 # Ventilation des 63 sous-ensembles à spectre entier par cardinalité
 
-| |S| | C(8,k) | Int-spec | Ratio |
+| |S| | C(8,k) | Spectre entier | Ratio |
 |-----|--------|----------|-------|
 | 1 | 8 | 4 | 50.0% |
 | 2 | 28 | 8 | 28.6% |
@@ -19,9 +18,9 @@ namespace Classification63Detail
 | 8 | 1 | 1 | 100% |
 | **Σ** | **255** | **63** | **24.7%** |
 
-The distribution is perfectly palindromic: count(k) = count(8−k).
-This follows from complement symmetry: F̂(Sᶜ)(χ) = −F̂(S)(χ) for χ ≠ χ₀,
-so S has integer spectrum iff Sᶜ does.
+La distribution est parfaitement palindromique : count(k) = count(8−k).
+Cela provient de la symétrie par complément : F̂(Sᶜ)(χ) = −F̂(S)(χ) pour χ ≠ χ₀,
+donc S possède un spectre entier si et seulement si Sᶜ en possède un.
 -/
 
 open Classification63
@@ -36,7 +35,7 @@ def totalByCard (k : Nat) : Nat :=
   (List.range 255).countP fun m => popcount (m + 1) == k
 
 -- ═══════════════════════════════════════════
--- Certified values
+-- Valeurs certifiées
 -- ═══════════════════════════════════════════
 
 theorem intSpec_1 : intSpecByCard 1 = 4 := by native_decide
@@ -49,7 +48,7 @@ theorem intSpec_7 : intSpecByCard 7 = 4 := by native_decide
 theorem intSpec_8 : intSpecByCard 8 = 1 := by native_decide
 
 -- ═══════════════════════════════════════════
--- Sum = 63
+-- Somme = 63
 -- ═══════════════════════════════════════════
 
 theorem ventilation_sum :
@@ -58,7 +57,7 @@ theorem ventilation_sum :
   native_decide
 
 -- ═══════════════════════════════════════════
--- Palindrome: count(k) = count(8−k)
+-- Palindrome : count(k) = count(8−k)
 -- ═══════════════════════════════════════════
 
 theorem palindrome_17 : intSpecByCard 1 = intSpecByCard 7 := by native_decide
@@ -66,21 +65,21 @@ theorem palindrome_26 : intSpecByCard 2 = intSpecByCard 6 := by native_decide
 theorem palindrome_35 : intSpecByCard 3 = intSpecByCard 5 := by native_decide
 
 -- ═══════════════════════════════════════════
--- Structural facts
+-- Faits structurels
 -- ═══════════════════════════════════════════
 
-/-- Only 4 of 8 singletons have integer spectrum (those with even C₄ coordinate). -/
+/-- Seuls 4 des 8 singletons possèdent un spectre entier
+    (ceux dont la coordonnée C₄ est paire). -/
 theorem half_singletons : intSpecByCard 1 = totalByCard 1 / 2 := by native_decide
 
-/-- The full group always has integer spectrum. -/
+/-- Le groupe complet possède toujours un spectre entier. -/
 theorem full_group : intSpecByCard 8 = 1 := intSpec_8
 
-/-- TC = {1,11,29} is one of the 12 integer-spectrum triplets. -/
+/-- TC = {1,11,29} est l’un des 12 triplets à spectre entier. -/
 theorem couretMask_card : popcount couretMask = 3 := by native_decide
 theorem couretMask_int_spec : hasIntSpec couretMask = true := by native_decide
 
-/-- Peak at |S| = 4 (14 subsets). -/
+/-- Pic en |S| = 4 (14 sous-ensembles). -/
 theorem peak_at_4 : intSpecByCard 4 = 14 := intSpec_4
 
-end Classification63Detail
-end CouretUnification.Core
+end CouretUnification.Core.Classification63Detail

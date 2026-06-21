@@ -2,24 +2,23 @@ import CouretUnification.Core.CayleySpectrum
 import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace Kurtosis
+namespace CouretUnification.Core.Kurtosis
 
 /-!
-# Spectral moments and kurtosis
+# Moments spectraux et kurtosis
 
-From the traces Tr(Aᵏ) already certified in `CayleySpectrum`,
-we derive the spectral moments and kurtosis ratios.
+À partir des traces Tr(Aᵏ) déjà certifiées dans `CayleySpectrum`,
+nous dérivons les moments spectraux et les rapports de kurtosis.
 
-Traces (certified by `native_decide`):
+Traces (certifiées par `native_decide`) :
   Tr(A) = 8,  Tr(A²) = 24,  Tr(A³) = 56,  Tr(A⁴) = 168.
 
-Spectral moments (n = 8):
+Moments spectraux (n = 8) :
   M₂ = Tr(A²)/n = 3
   M₄ = Tr(A⁴)/n = 21
   κ_raw = M₄/M₂² = 21/9 = 7/3
 
-Non-trivial Parseval mass:
+Masse de Parseval non triviale :
   P_{≠} = Parseval − ρ² = 24 − 9 = 15
   P_{≠}/M₂² = 15/9 = 5/3
 -/
@@ -27,20 +26,20 @@ Non-trivial Parseval mass:
 open CayleySpectrum
 
 -- ═══════════════════════════════════════════
--- Integer trace facts (new ones beyond CayleySpectrum)
+-- Faits de trace entiers (nouveaux par rapport à CayleySpectrum)
 -- ═══════════════════════════════════════════
 
-/-- Parseval mass = Tr(A²) = 24. -/
-theorem parseval_24 : tr (mm A A) = 24 := trace_A2
+/-- Masse de Parseval = Tr(A²) = 24. -/
+theorem parseval_24 :  CS_tr (CS_mm A A) = 24 := trace_A2
 
 /-- Tr(A⁴) = 168. -/
-theorem trace_fourth : tr (mm (mm (mm A A) A) A) = 168 := trace_A4
+theorem trace_fourth : CS_tr (CS_mm (CS_mm (CS_mm A A) A) A) = 168 := trace_A4
 
-/-- Dominant eigenvalue squared: ρ² = 9. -/
+/-- Carré de la valeur propre dominante : ρ² = 9. -/
 theorem dominant_sq : (3 : Int) ^ 2 = 9 := by norm_num
 
 -- ═══════════════════════════════════════════
--- Spectral moments (rational arithmetic)
+-- Moments spectraux (arithmétique rationnelle)
 -- ═══════════════════════════════════════════
 
 /-- M₂ = Tr(A²)/8 = 3. -/
@@ -49,27 +48,27 @@ theorem M2_eq : (24 : ℚ) / 8 = 3 := by norm_num
 /-- M₄ = Tr(A⁴)/8 = 21. -/
 theorem M4_eq : (168 : ℚ) / 8 = 21 := by norm_num
 
-/-- Raw spectral kurtosis κ = M₄/M₂² = 7/3. -/
+/-- Kurtosis spectral brut κ = M₄/M₂² = 7/3. -/
 theorem kurtosis_raw : (21 : ℚ) / (3 ^ 2) = 7 / 3 := by norm_num
 
 -- ═══════════════════════════════════════════
--- Non-trivial Parseval decomposition
+-- Décomposition de Parseval non triviale
 -- ═══════════════════════════════════════════
 
-/-- Non-trivial Parseval mass: P − ρ² = 24 − 9 = 15. -/
+/-- Masse de Parseval non triviale : P − ρ² = 24 − 9 = 15. -/
 theorem nontrivial_parseval : 24 - 9 = (15 : Int) := by norm_num
 
-/-- The 15 = 5 × 3. -/
+/-- Le 15 = 5 × 3. -/
 theorem fifteen_factored : (15 : Int) = 5 * 3 := by norm_num
 
-/-- Non-trivial ratio: (P − ρ²) / M₂² = 15/9 = 5/3. -/
+/-- Rapport non trivial : (P − ρ²) / M₂² = 15/9 = 5/3. -/
 theorem nontrivial_ratio : (15 : ℚ) / (3 ^ 2) = 5 / 3 := by norm_num
 
 -- ═══════════════════════════════════════════
--- Central moments (about mean eigenvalue μ = 1)
+-- Moments centraux (autour de la valeur propre moyenne μ = 1)
 -- ═══════════════════════════════════════════
 
-/-- Mean eigenvalue μ = Tr(A)/8 = 1. -/
+/-- Valeur propre moyenne μ = Tr(A)/8 = 1. -/
 theorem mean_eigenvalue : (8 : ℚ) / 8 = 1 := by norm_num
 
 /-- Tr((A-I)²) = Tr(A²) − 2·Tr(A) + n = 24 − 16 + 8 = 16. -/
@@ -85,27 +84,27 @@ theorem trace_centered_4 : 168 - 4 * 56 + 6 * 24 - 4 * 8 + 8 = (64 : Int) := by 
 /-- μ₄ = Tr((A-I)⁴)/n = 64/8 = 8. -/
 theorem central_M4 : (64 : ℚ) / 8 = 8 := by norm_num
 
-/-- Central kurtosis κ_c = μ₄/σ⁴ = 8/4 = 2. -/
+/-- Kurtosis central κ_c = μ₄/σ⁴ = 8/4 = 2. -/
 theorem kurtosis_central : (8 : ℚ) / (2 ^ 2) = 2 := by norm_num
 
-/-- Excess kurtosis = κ_c − 3 = −1.
-    (Sub-Gaussian: less peaked than Gaussian.) -/
+/-- Excès de kurtosis = κ_c − 3 = −1.
+    (Sous-gaussien : moins concentré qu’une gaussienne.) -/
 theorem excess_kurtosis : (2 : ℚ) - 3 = -1 := by norm_num
 
 -- ═══════════════════════════════════════════
--- Direct verification from eigenvalue multiplicities
+-- Vérification directe depuis les multiplicités des valeurs propres
 -- ═══════════════════════════════════════════
 
-/-- Σ λ⁴ = 2·81 + 4·1 + 2·1 = 168 (consistent with Tr(A⁴)). -/
+/-- Σ λ⁴ = 2·81 + 4·1 + 2·1 = 168 (cohérent avec Tr(A⁴)). -/
 theorem sum_fourth_powers : 2 * 81 + 4 * 1 + 2 * 1 = (168 : Int) := by norm_num
 
-/-- Σ (λ−1)⁴ = 2·16 + 4·0 + 2·16 = 64 (consistent with Tr((A-I)⁴)). -/
+/-- Σ (λ−1)⁴ = 2·16 + 4·0 + 2·16 = 64 (cohérent avec Tr((A-I)⁴)). -/
 theorem sum_central_fourth : 2 * 16 + 4 * 0 + 2 * 16 = (64 : Int) := by norm_num
 
 /-!
-## Summary of spectral moment invariants
+## Synthèse des invariants de moments spectraux
 
-| Quantity | Value | Theorem |
+| Quantité | Valeur | Théorème |
 |----------|-------|---------|
 | Tr(A) | 8 | `trace_A` |
 | Tr(A²) = Parseval | 24 | `parseval_24` |
@@ -114,12 +113,11 @@ theorem sum_central_fourth : 2 * 16 + 4 * 0 + 2 * 16 = (64 : Int) := by norm_num
 | M₂ = Parseval/8 | 3 | `M2_eq` |
 | M₄ = Tr(A⁴)/8 | 21 | `M4_eq` |
 | κ_raw = M₄/M₂² | 7/3 | `kurtosis_raw` |
-| P − ρ² (non-trivial mass) | 15 | `nontrivial_parseval` |
+| P − ρ² (masse non triviale) | 15 | `nontrivial_parseval` |
 | (P − ρ²)/M₂² | 5/3 | `nontrivial_ratio` |
-| σ² (central variance) | 2 | `variance` |
+| σ² (variance centrale) | 2 | `variance` |
 | κ_central = μ₄/σ⁴ | 2 | `kurtosis_central` |
-| Excess kurtosis | −1 | `excess_kurtosis` |
+| Excès de kurtosis | −1 | `excess_kurtosis` |
 -/
 
-end Kurtosis
-end CouretUnification.Core
+end CouretUnification.Core.Kurtosis

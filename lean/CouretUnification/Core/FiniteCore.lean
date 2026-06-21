@@ -41,35 +41,30 @@ theorem admissibleResidues_card : admissibleResidues.card = 8 :=
 /-- [REAL] Le triplet de Couret `TC = {1, 11, 29}`. -/
 abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
 
-/-- [REAL] `TC` a exactement trois éléments. -/
-theorem TC_card : TC.card = 3 :=
-  CouretUnification.Core.TC_card
+/-- [REAL] `TC` a exactement trois éléments, alias de U30 (TC_card). -/
+theorem FCTC_card : TC.card = 3 := CouretUnification.Core.TC_card
 
-/-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles. -/
-theorem TC_subset : TC ⊆ admissibleResidues := by
-  exact CouretUnification.Core.TC_subset
+/-- [REAL] `TC` est inclus dans l’ensemble des résidus admissibles, alias de U30 (TC_subset). -/
+theorem FCTC_subset : TC ⊆ admissibleResidues := by exact CouretUnification.Core.TC_subset
 
 -- ═══════════════════════════════════════════════════════════
 -- §3. Fantôme 19
 -- ═══════════════════════════════════════════════════════════
 
 /-- [REAL] Produit fantôme :
-`11 * 29 ≡ 19 [ZMOD 30]`. -/
-theorem phantom_product : (11 * 29 : ZMod 30) = 19 :=
-  CouretUnification.Core.phantom_product
+`11 * 29 ≡ 19 [ZMOD 30]`, alias de U30 (phantom_product). -/
+theorem FCphantom_product : (11 * 29 : ZMod 30) = 19 := CouretUnification.Core.phantom_product
 
-/-- [REAL] Le fantôme `19` n’appartient pas au triplet `TC`. -/
-theorem phantom_not_in_TC : (19 : ZMod 30) ∉ TC :=
-  CouretUnification.Core.phantom_not_in_TC
+/-- [REAL] Le fantôme `19` n’appartient pas au triplet `TC`, alias de U30 (phantom_not_in_TC). -/
+theorem FCphantom_not_in_TC : (19 : ZMod 30) ∉ TC := CouretUnification.Core.phantom_not_in_TC
 
 /-- [REAL] Le fantôme `19` reste néanmoins admissible dans `G₃₀`. -/
 theorem phantom_in_G : (19 : ZMod 30) ∈ admissibleResidues := by native_decide
 
 /-- [REAL] `TC` n’est pas un sous-groupe multiplicatif de `(ℤ/30ℤ)×`.
 
-Preuve : `11,29 ∈ TC`, mais `11*29 = 19` et `19 ∉ TC`. -/
-theorem TC_not_subgroup :
-    ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
+Preuve : `11,29 ∈ TC`, mais `11*29 = 19` et `19 ∉ TC`, alias de U30 (TC_not_subgroup). -/
+theorem FCTC_not_subgroup : ¬ (∀ a b : ZMod 30, a ∈ TC → b ∈ TC → a * b ∈ TC) :=
   CouretUnification.Core.TC_not_subgroup
 
 -- ═══════════════════════════════════════════════════════════
@@ -130,11 +125,11 @@ theorem parseval_normalized : (24 : ℚ) / 8 = 3 := by norm_num
 -- §6. Ordres des générateurs
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] `11` est d’ordre `2` modulo `30`. -/
-theorem order_11 : (11 : ZMod 30) ^ 2 = 1 := by native_decide
+/-- [REAL] `11` est d’ordre `2` modulo `30`, alias de U30 (order_11). -/
+theorem FCorder_11 : (11 : ZMod 30) ^ 2 = 1 := CouretUnification.Core.order_11
 
-/-- [REAL] `7` est d’ordre `4` modulo `30`. -/
-theorem order_7 : (7 : ZMod 30) ^ 4 = 1 := by native_decide
+/-- [REAL] `7` est d’ordre `4` modulo `30`, alias de U30 (order_7). -/
+theorem FCorder_7 : (7 : ZMod 30) ^ 4 = 1 := CouretUnification.Core.order_7
 
 /-- [REAL] `7` n’est pas d’ordre `2`. -/
 theorem order_7_not_2 : (7 : ZMod 30) ^ 2 ≠ 1 := by native_decide
@@ -171,14 +166,14 @@ theorem crt_23 : (11 : ZMod 30) ^ 1 * (7 : ZMod 30) ^ 3 = 23 := by native_decide
 -- §8. Tour primoriale
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] `φ(30) = 8`. -/
-theorem phi_30   : Nat.totient 30   = 8   := by native_decide
+/-- [REAL] `φ(30) = 8`, alias de U30 (phi_30). -/
+theorem FCphi_30   : Nat.totient 30   = 8   := CouretUnification.Core.phi_30
 
-/-- [REAL] `φ(210) = 48`. -/
-theorem phi_210  : Nat.totient 210  = 48  := by native_decide
+/-- [REAL] `φ(210) = 48`, alias de U30 (phi_210). -/
+theorem FCphi_210  : Nat.totient 210  = 48  := CouretUnification.Core.phi_210
 
-/-- [REAL] `φ(2310) = 480`. -/
-theorem phi_2310 : Nat.totient 2310 = 480 := by native_decide
+/-- [REAL] `φ(2310) = 480`, alias de U30 (phi_2310). -/
+theorem FCphi_2310 : Nat.totient 2310 = 480 := CouretUnification.Core.phi_2310
 
 /-- [REAL] Passage `30 → 210` : facteur `7 - 1 = 6`. -/
 theorem split_7  : 48  = 8  * (7 - 1)  := by norm_num
@@ -190,9 +185,8 @@ theorem split_11 : 480 = 48 * (11 - 1) := by norm_num
 -- §9. Obstruction symplectique
 -- ═══════════════════════════════════════════════════════════
 
-/-- [REAL] Le cardinal de `TC` est impair. -/
-theorem TC_dim_odd : ¬ 2 ∣ TC.card :=
-  CouretUnification.Core.TC_dim_odd
+/-- [REAL] Le cardinal de `TC` est impair, alias de U30 (TC_dim_odd). -/
+theorem FCTC_dim_odd : ¬ 2 ∣ TC.card := CouretUnification.Core.TC_dim_odd
 
 /-- [REAL] Le cardinal de `G₃₀` est pair. -/
 theorem G30_dim_even : 2 ∣ admissibleResidues.card := by native_decide

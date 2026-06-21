@@ -2,21 +2,20 @@ import CouretUnification.Core.CayleyConnected
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Tactic
 
-namespace CouretUnification.Core
-namespace ComponentSpectrum
+namespace CouretUnification.Core.ComponentSpectrum
 
 /-!
 # Spectre des 2 composantes connexes
 
-Spec(Aeven) = Spec(Aodd) = {3, 1, 1, −1} on Fin 4.
+Spec(Aeven) = Spec(Aodd) = {3, 1, 1, −1} sur Fin 4.
 
-Eigenvectors derived from the system (Ae − λI)v = 0:
+Vecteurs propres dérivés du système (Ae − λI)v = 0 :
 
   Ae = [[1,0,1,1],[0,1,1,1],[1,1,1,0],[1,1,0,1]]
 
-λ=3: v₀=v₁=v₂=v₃ → [1,1,1,1]
-λ=−1: v₀=v₁, v₂=v₃=−v₀ → [1,1,−1,−1]
-λ=1: v₀=−v₁, v₂=−v₃ (2-dim) → [1,−1,0,0], [0,0,1,−1]
+λ=3 : v₀=v₁=v₂=v₃ → [1,1,1,1]
+λ=−1 : v₀=v₁, v₂=v₃=−v₀ → [1,1,−1,−1]
+λ=1 : v₀=−v₁, v₂=−v₃ (dimension 2) → [1,−1,0,0], [0,0,1,−1]
 -/
 
 open CayleySpectrum CayleyConnected
@@ -57,18 +56,18 @@ def dot4 (u v : V4) : Int :=
 theorem components_identical : meq4 Aeven Aodd = true := by native_decide
 
 -- ═══════════════════════════════════════════
--- Even component: Spec = {3, 1, 1, −1}
+-- Composante paire : Spec = {3, 1, 1, −1}
 -- ═══════════════════════════════════════════
 
 theorem Ae_symmetric : meq4 Aeven (fun i j => Aeven j i) = true := by native_decide
 
--- Step 1: eigenvalues ⊆ {−1, 1, 3}
+-- Étape 1 : les valeurs propres sont incluses dans {−1, 1, 3}
 theorem Ae_minpoly :
     meq4 (mm4 (mm4 (msub4 Aeven (scI4 3)) (msub4 Aeven (scI4 1)))
       (msub4 Aeven (scI4 (-1)))) mzero4 = true := by
   native_decide
 
--- Step 2: traces → mult(3)=1, mult(1)=2, mult(−1)=1
+-- Étape 2 : traces → mult(3)=1, mult(1)=2, mult(−1)=1
 theorem Ae_tr1 : tr4 Aeven = 4 := by native_decide
 theorem Ae_tr2 : tr4 (mm4 Aeven Aeven) = 12 := by native_decide
 
@@ -76,7 +75,7 @@ theorem Ae_mult_dim : 1 + 2 + 1 = (4 : Int) := by norm_num
 theorem Ae_mult_tr1 : 1 * 3 + 2 * 1 + 1 * (-1) = (4 : Int) := by norm_num
 theorem Ae_mult_tr2 : 1 * 9 + 2 * 1 + 1 * 1 = (12 : Int) := by norm_num
 
--- Step 3: eigenvectors (derived from row equations)
+-- Étape 3 : vecteurs propres (dérivés des équations de ligne)
 def v3 : V4 := ![1, 1, 1, 1]          -- λ=3
 def vm1 : V4 := ![1, 1, -1, -1]       -- λ=−1
 def v1a : V4 := ![1, -1, 0, 0]        -- λ=1
@@ -87,7 +86,7 @@ theorem vm1_eig : veq4 (mv4 Aeven vm1) (sv4 (-1) vm1) = true := by native_decide
 theorem v1a_eig : veq4 (mv4 Aeven v1a) (sv4 1 v1a) = true := by native_decide
 theorem v1b_eig : veq4 (mv4 Aeven v1b) (sv4 1 v1b) = true := by native_decide
 
--- Pairwise orthogonality
+-- Orthogonalité deux à deux
 theorem orth_3_m1 : dot4 v3 vm1 = 0 := by native_decide
 theorem orth_3_1a : dot4 v3 v1a = 0 := by native_decide
 theorem orth_3_1b : dot4 v3 v1b = 0 := by native_decide
@@ -95,14 +94,14 @@ theorem orth_m1_1a : dot4 vm1 v1a = 0 := by native_decide
 theorem orth_m1_1b : dot4 vm1 v1b = 0 := by native_decide
 theorem orth_1a_1b : dot4 v1a v1b = 0 := by native_decide
 
--- Nonzero
+-- Non-nullité
 theorem v3_nz : dot4 v3 v3 ≠ 0 := by native_decide
 theorem vm1_nz : dot4 vm1 vm1 ≠ 0 := by native_decide
 theorem v1a_nz : dot4 v1a v1a ≠ 0 := by native_decide
 theorem v1b_nz : dot4 v1b v1b ≠ 0 := by native_decide
 
 -- ═══════════════════════════════════════════
--- Odd component: same spectrum (Ae = Ao)
+-- Composante impaire : même spectre (Ae = Ao)
 -- ═══════════════════════════════════════════
 
 theorem Ao_minpoly :
@@ -119,24 +118,23 @@ theorem v1a_eig_odd : veq4 (mv4 Aodd v1a) (sv4 1 v1a) = true := by native_decide
 theorem v1b_eig_odd : veq4 (mv4 Aodd v1b) (sv4 1 v1b) = true := by native_decide
 
 -- ═══════════════════════════════════════════
--- Global consistency
+-- Cohérence globale
 -- ═══════════════════════════════════════════
 
 theorem global_tr1 : tr4 Aeven + tr4 Aodd = 8 := by native_decide
 theorem global_tr2 : tr4 (mm4 Aeven Aeven) + tr4 (mm4 Aodd Aodd) = 24 := by native_decide
 
 /-!
-## Summary
+## Synthèse
 
-| Component | Residues | Spectrum | ρ=3 mult |
+| Composante | Résidus | Spectre | mult ρ=3 |
 |-----------|----------|----------|----------|
-| Even {0,2,4,6} | {1,11,17,23} | {3, 1, 1, −1} | 1 (simple) |
-| Odd {1,3,5,7} | {7,13,19,29} | {3, 1, 1, −1} | 1 (simple) |
+| Paire {0,2,4,6} | {1,11,17,23} | {3, 1, 1, −1} | 1 (simple) |
+| Impaire {1,3,5,7} | {7,13,19,29} | {3, 1, 1, −1} | 1 (simple) |
 
-**Aeven = Aodd** : identical 4×4 matrices.
+**Aeven = Aodd** : matrices 4×4 identiques.
 
 {3², 1⁴, (−1)²} = {3, 1, 1, −1} ⊎ {3, 1, 1, −1}
 -/
 
-end ComponentSpectrum
-end CouretUnification.Core
+end CouretUnification.Core.ComponentSpectrum

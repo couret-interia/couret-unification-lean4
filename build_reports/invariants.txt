@@ -1,0 +1,190 @@
+=== Invariants cardinaux (RHClaimed, etc. doivent être false) ===
+lean/CouretUnification/Finite/Foundations.lean:47:`RHClaimed = false`.
+lean/CouretUnification/Finite/Foundations.lean:304:def RHClaimed : Bool := false
+lean/CouretUnification/Finite/Foundations.lean:307:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/SophieGermainUmbrella.lean:24:  * RHClaimed = false
+lean/CouretUnification/SophieGermainUmbrella.lean:25:  * HilbertPolyaClaimed = false
+lean/CouretUnification/SophieGermainUmbrella.lean:76:  "[D] core SG + [M] empirical/numerics; RHClaimed = false"
+lean/CouretUnification/Logic/L6Bridge.lean:38:`RHClaimed = false` est strictement préservé.
+lean/CouretUnification/Logic/L10NoGoTheorem.lean:7:  - RHClaimed = false
+lean/CouretUnification/Logic/C2/Umbrella.lean:48:  "[M] C2 typed scaffold; local [D] Fejer compact support; RHClaimed = false"
+lean/CouretUnification/Logic/ExplicitFormula/StatusFlags.lean:32:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/ExplicitFormula/StatusFlags.lean:35:def HilbertPolyaClaimed : Bool := false
+lean/CouretUnification/Logic/Lock3/RHGuard.lean:42:theorem rh_not_claimed_lock3 : RHClaimed = false := rfl
+lean/CouretUnification/Logic/Lock3/RHGuard.lean:50:`RHClaimed = false` — mais son NOM et son EMPLACEMENT comptent
+lean/CouretUnification/Logic/Lock3/RHGuard.lean:64:    RHClaimed = false := rfl
+lean/CouretUnification/Logic/Lock3/RHGuard.lean:78:    RHClaimed = false := rfl
+lean/CouretUnification/Logic/Lock3/RHGuard.lean:92:    RHClaimed = false := by
+lean/CouretUnification/Logic/Lock3/RHGuard.lean:105:    RHClaimed = false := by
+lean/CouretUnification/Logic/FEnriched30.lean:148:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/FEnriched30.lean:149:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/CriticalLineTransferSpec.lean:10:  - RHClaimed = false
+lean/CouretUnification/Logic/EulerBridgeInfiniteReal.lean:10:  - RHClaimed = false
+lean/CouretUnification/Logic/Doctrine.lean:12:  1. L'invariant `RHClaimed = false`, vérifié statiquement par `rfl`.
+lean/CouretUnification/Logic/Doctrine.lean:21:  example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/Doctrine.lean:35:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/Doctrine.lean:38:theorem rh_claimed_false : RHClaimed = false := rfl
+lean/CouretUnification/Logic/Doctrine.lean:101:example : RHClaimed = false := rh_claimed_false
+lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:8:  - RHClaimed = false
+lean/CouretUnification/Logic/ChiralityFinite.lean:46:L'invariant `RHClaimed = false` est enforcé au niveau du type.
+lean/CouretUnification/Logic/ChiralityFinite.lean:232:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/ChiralityFinite.lean:234:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/C3Weak.lean:25:  - Invariant constitutionnel : RHClaimed = false
+lean/CouretUnification/Logic/C3Weak.lean:208:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/C3Weak.lean:209:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/ChiralityLinear.lean:246:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/ChiralityLinear.lean:248:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/FEnrichedSpec.lean:24:  - RHClaimed = false
+lean/CouretUnification/Logic/FEnrichedSpec.lean:180:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/FEnrichedSpec.lean:181:example : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:73:  RHClaimed = false. Aucun sorry consommé par les six sous-branches
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:368:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouretEta.lean:371:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:24:RHClaimed = false, car la version infinie touche à E2 (det₂), E3 (convergence
+lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:32:  - RHClaimed = false.
+lean/CouretUnification/Logic/H3/LocalSquarefreeBridge.lean:195:l'invariant RHClaimed = false.** La frontière est maintenue.
+lean/CouretUnification/Logic/H3/H3TestSpace.lean:7:  RHClaimed = false.
+lean/CouretUnification/Logic/H3/T5Weak.lean:71:`RHClaimed = false`.
+lean/CouretUnification/Logic/H3/T5Weak.lean:308:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/T5Weak.lean:309:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/T5Weak.lean:322:`RHClaimed = false`.
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:79:  RHClaimed = false. Aucun sorry consommé par les cinq sous-branches
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:278:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouretZeta.lean:281:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/ParityGamma30.lean:3:   0 sorry. RHClaimed = false. -/
+lean/CouretUnification/Logic/H3/SquarefreeDensityAsymptotic.lean:4441:    RHClaimed = false.
+lean/CouretUnification/Logic/H3/C3Weak.lean:27:  RHClaimed = false.
+lean/CouretUnification/Logic/H3/C3Weak.lean:127:theorem RHClaimed_false_guard : True := trivial
+lean/CouretUnification/Logic/H3/C3Weak.lean:128:-- Marqueur doctrinal.  RHClaimed = false dans tous les contextes
+lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:8:  - RHClaimed = false
+lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:57:/-- Alias de promotion : C-04a fermé dans la façade stable, RHClaimed = false. -/
+lean/CouretUnification/Logic/H3/AlgebraTC.lean:419:theorem RHClaimed_false_AlgebraTC : True := trivial
+lean/CouretUnification/Logic/H3/RouteC.lean:37:`RHClaimed = false.`
+lean/CouretUnification/Logic/H3/RouteC.lean:924:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/RouteC.lean:927:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/C2Restricted.lean:6:  RHClaimed = false.
+lean/CouretUnification/Logic/H3/RigidityParams.lean:10:  RHClaimed = false.
+lean/CouretUnification/Logic/H3/AbelWeightedBound.lean:48:`RHClaimed = false`.
+lean/CouretUnification/Logic/H3/AbelWeightedBound.lean:225:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/AbelWeightedBound.lean:226:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/L10_MassPersistence.lean:63:`RHClaimed = false`.
+lean/CouretUnification/Logic/H3/L10_MassPersistence.lean:175:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/L10_MassPersistence.lean:176:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouret.lean:62:  RHClaimed = false. Aucun sorry consommé par les cinq branches
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouret.lean:217:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/PhaseBCompositionCouret.lean:220:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/SpectralSpatial.lean:47:RHClaimed = false.
+lean/CouretUnification/Logic/H3/SpectralSpatial.lean:205:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/SpectralSpatial.lean:206:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/PhaseBComposition.lean:58:  RHClaimed = false. Le seul sorry consommé transitivement est celui
+lean/CouretUnification/Logic/H3/PhaseBComposition.lean:167:    de consommation est explicite ici. RHClaimed = false : ce
+lean/CouretUnification/Logic/H3/PhaseBComposition.lean:270:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/PhaseBComposition.lean:273:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/L10Bridge.lean:466:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/L10Bridge.lean:469:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/H3/SpectralBridge.lean:62:- `RHClaimed = false`
+lean/CouretUnification/Logic/H3/SpectralBridge.lean:63:- `HilbertPolyaClaimed = false`
+lean/CouretUnification/Logic/H3/SpectralBridge.lean:64:- `Det2IdentityClaimed = false`
+lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:56:/-- Alias de promotion : C-04b fermé dans la façade stable, RHClaimed = false. -/
+lean/CouretUnification/Logic/H3/FiniteSpectralAPI.lean:3:   0 sorry. RHClaimed = false. -/
+lean/CouretUnification/Logic/H3/ZeroMatching.lean:7:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/H3/ZeroMatching.lean:8:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:252:def RHClaimed : Bool := false
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:255:def HilbertPolyaClaimed : Bool := false
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:264:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Logic/TimeBridge/BostConnesMod30Spec.lean:267:theorem hp_not_claimed : HilbertPolyaClaimed = false := rfl
+lean/CouretUnification/Logic/TimeBridge/ModularFlowSpec.lean:146:    `HilbertPolyaClaimed = false` : ce pont reste ouvert. -/
+lean/CouretUnification/Logic/TimeBridge/ModularFlowSpec.lean:149:  status := "équivalent à Hilbert-Pólya — HilbertPolyaClaimed = false"
+lean/CouretUnification/Meta/AuditHints.lean:9:  - RHClaimed = false
+lean/CouretUnification/AnalyticHorizon/LegendreChannelCalibration.lean:88:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/MomentRigidity30.lean:258:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/MomentRigidity30.lean:261:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/MomentRigidity30.lean:264:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/PerturbedSpectralIsolation.lean:96:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/AdmissibleSigmaBand.lean:86:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/ActiveLayerFullAudit.lean:69:def RHClaimedFromActiveLayerFull : Bool := false
+lean/CouretUnification/AnalyticHorizon/ActiveLayerFullAudit.lean:72:def HilbertPolyaClaimedFromActiveLayerFull : Bool := false
+lean/CouretUnification/AnalyticHorizon/ActiveLayerFullAudit.lean:81:def Det2IdentityClaimedFromActiveLayerFull : Bool := false
+lean/CouretUnification/AnalyticHorizon/DefectOperator30.lean:184:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/L6Stirling.lean:8:- RHClaimed = false.
+lean/CouretUnification/AnalyticHorizon/L6Stirling.lean:10:- Det2IdentityClaimed = false.
+lean/CouretUnification/AnalyticHorizon/PhaseStabilityTargets.lean:77:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/ProtectedMinusTraceTargets.lean:142:    RHClaimed = false := rfl
+lean/CouretUnification/AnalyticHorizon/Det2TransportCertificate.lean:67:def Det2IdentityClaimedFromCertificate : Bool := false
+lean/CouretUnification/AnalyticHorizon/TraceFormulaTargets.lean:53:    RHClaimed = false := rfl
+lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:12:  - maintenir RHClaimed = false tant que le pont det₂ ↔ ξ n'est pas fermé.
+lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:82:def RHClaimed : Bool := false
+lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:175:    RHClaimed = false := by
+lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:254:- RHClaimed = false ;
+lean/CouretUnification/EpistemicDiscipline/DoctrinalInvariants.lean:262:    RHClaimed = false ∧
+lean/CouretUnification/ResGold/Status.lean:5:de compilation `RHClaimed = false`.
+lean/CouretUnification/ResGold/Status.lean:47:def RHClaimed : Bool := false
+lean/CouretUnification/ResGold/Status.lean:50:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:37:`RHClaimed = false`.
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:414:def RHClaimed : Bool := false
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:417:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/FiniteDefect/T1_to_T7.lean:438:Aucun `sorry`. Aucun axiome. `RHClaimed = false`.
+lean/CouretUnification/Release/ReleaseManifest.lean:49:def RHClaimed_v36 : Bool := false
+lean/CouretUnification/Release/ReleaseManifest.lean:52:def HilbertPolyaClaimed_v36 : Bool := false
+lean/CouretUnification/Release/ReleaseManifest.lean:61:def Det2IdentityClaimed_v36 : Bool := false
+lean/CouretUnification/Analytic/AbelTailCore.lean:421:def RHClaimed : Bool := false
+lean/CouretUnification/Analytic/AbelTailCore.lean:424:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Analytic/ZeroDensityAxioms.lean:19:0 sorry, 0 axiome. RHClaimed = false.
+lean/CouretUnification/Analytic/ZeroDensityAxioms.lean:66:def RHClaimed : Bool := false
+lean/CouretUnification/Analytic/ZeroDensityAxioms.lean:67:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Analytic/VerifiedIntervals.lean:28:- `RHClaimed = false`
+lean/CouretUnification/Analytic/VerifiedIntervals.lean:160:def RHClaimed : Bool := false
+lean/CouretUnification/Analytic/VerifiedIntervals.lean:163:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/All.lean:24:-- RHClaimed = false
+lean/CouretUnification/All.lean:182:-- RHClaimed = false. Sorry consommé : Lemma7Residual (branche β.2).
+lean/CouretUnification/All.lean:189:-- RHClaimed = false. Aucun sorry consommé.
+lean/CouretUnification/All.lean:197:-- RHClaimed = false. Aucun sorry consommé.
+lean/CouretUnification/All.lean:209:-- RHClaimed = false. Aucun sorry consommé.
+lean/CouretUnification/Core/Arithmetic.lean:10:RHClaimed = false. Dédié à Bernard Couret (1928–1999).
+lean/CouretUnification/Core/Arithmetic.lean:215:def RHClaimed : Bool := false
+lean/CouretUnification/Core/Arithmetic.lean:218:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/PointDefectLemma.lean:17:`RHClaimed = false. ScopeExpansionClaimed = false.`
+lean/CouretUnification/Core/SophieGermainTowerLift.lean:41:identité analytique globale. Les invariants `RHClaimed = false`,
+lean/CouretUnification/Core/SophieGermainTowerLift.lean:42:`HilbertPolyaClaimed = false` et `L7Established = false` sont préservés.
+lean/CouretUnification/Core/SophieGermainTowerLift.lean:250:  * `RHClaimed = false`
+lean/CouretUnification/Core/SophieGermainTowerLift.lean:251:  * `HilbertPolyaClaimed = false`
+lean/CouretUnification/Core/Doctrine.lean:9:  - `RHClaimed = false` : aucun fichier ne prétend prouver RH
+lean/CouretUnification/Core/Doctrine.lean:14:statiquement leur invariant via `example : RHClaimed = false := rfl`.
+lean/CouretUnification/Core/Doctrine.lean:28:`RHClaimed = false` est l'invariant le plus fort du programme.
+lean/CouretUnification/Core/Doctrine.lean:34:def RHClaimed : Bool := false
+lean/CouretUnification/Core/Doctrine.lean:37:theorem rhClaimed_eq_false : RHClaimed = false := rfl
+lean/CouretUnification/Core/Doctrine.lean:84:/-- [P] Tout `FileIdentity` respecte l'invariant RHClaimed = false. -/
+lean/CouretUnification/Core/SophieGermain.lean:31:  - RHClaimed = false (résultat indépendant de RH par construction).
+lean/CouretUnification/Core/U30.lean:36:`RHClaimed = false`.
+lean/CouretUnification/Core/U30.lean:163:def RHClaimed : Bool := false
+lean/CouretUnification/Core/U30.lean:166:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/CayleySpectrum.lean:38:`RHClaimed = false`.
+lean/CouretUnification/Core/CayleySpectrum.lean:262:def RHClaimed : Bool := false
+lean/CouretUnification/Core/CayleySpectrum.lean:264:example : RHClaimed = false := rfl
+lean/CouretUnification/Core/FiniteCore.lean:243:def RHClaimed : Bool := false
+lean/CouretUnification/Core/FiniteCore.lean:246:theorem rh_not_claimed : RHClaimed = false := rfl
+lean/CouretUnification/Core/QuadraticResonance.lean:271:    Invariants préservés : RHClaimed = false. ScopeExpansionClaimed = false.
+lean/CouretUnification/Core/G30Classification.lean:257:Selon la convention de fin de fichier du dépôt (`RHClaimed_false_AlgebraTC : True := trivial`),
+lean/CouretUnification/Core/G30Classification.lean:266:Invariants préservés : RHClaimed = false. ScopeExpansionClaimed = false.
+lean/CouretUnification/Core/SophieGermainHecke.lean:26:RHClaimed = false.
+lean/CouretUnification/Core/CharacterSubgroupSums.lean:44:`RHClaimed = false. ScopeExpansionClaimed = false.`
+lean/CouretUnification/Core/CenteredCoordinates.lean:28:    • RHClaimed = false (invariant préservé via import Core.U30).
+lean/CouretUnification/Core/CenteredCoordinates.lean:142:    RHClaimed = false := rh_not_claimed
+lean/CouretUnification/Core/LMFDBAlignment.lean:18:  RHClaimed = false.
+lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:53:`RHClaimed = false`.
+lean/CouretUnification/Core/Characters30Bridge.lean:11:  - RHClaimed = false.
+lean/CouretUnification/Core/README.md:16:`RHClaimed = false`. Aucune revendication globale n'est portée par ce
+lean/CouretUnification/FCI/CausalSupportImmunity.lean:42:  RHClaimed = false.
+lean/CouretUnification/FCI/ModThirtyCheckerBridge.lean:37:  RHClaimed = false.
+lean/CouretUnification/FCI/CausalSupportMeasureBridge.lean:43:  RHClaimed = false.
+lean/CouretUnification/FCI/ModThirtyChecker.lean:37:  RHClaimed = false.
+lean/CouretUnification/ResGold.lean:7:Importe les couches L0, L1, L2 et vérifie l'invariant de compilation `RHClaimed = false`.
+lean/CouretUnification/ResGold.lean:65:theorem ResGold_module_does_not_claim_RH : RHClaimed = false := rfl
+lean/CouretUnification/Speculative/AnalogyMTF.lean:10:  - RHClaimed = false
+lean/CouretUnification/Speculative/Ontology.lean:9:  - RHClaimed = false
+lean/CouretUnification/Residue/SGShiftSpectrum.lean:42:  - RHClaimed = false.
+lean/CouretUnification/Residue/TorsionLift210.lean:282:def RHClaimed : Bool := false
+lean/CouretUnification/Residue/TorsionLift210.lean:286:    RHClaimed = false := by
+lean/CouretUnification/Residue/SGShiftSqrt2.lean:59:`RHClaimed = false`.
+lean/CouretUnification/Empirical/SophieGermainTransitions.lean:10:  - RHClaimed = false
+lean/CouretUnification/Empirical/SophieGermainExpected.lean:11:  - RHClaimed = false

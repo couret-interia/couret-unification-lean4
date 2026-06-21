@@ -3,42 +3,41 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
 
-namespace CouretUnification
-namespace T2Gap
+namespace CouretUnification.T2Gap
 
 open FiniteCore
 
 /-!
 # T2Gap
 
-This file packages the finite-core coercive inequality into the abstract
-`HasTargetGap` formulation used by the T2 layer.
+Ce fichier empaquette l’inégalité coercive du noyau fini dans la formulation
+abstraite `HasTargetGap` utilisée par la couche T2.
 
-Logical route:
-1. define the coercive sector (`CoerciveSector`);
-2. define the canonical data (`canonicalT2Data`);
-3. express the target gap as an abstract proposition (`HasTargetGap`);
-4. show that this proposition is equivalent to a concrete sector bound;
-5. import the finite-core lower bound and conclude `HasTargetGap`.
+Route logique :
+1. définir le secteur coercif (`CoerciveSector`) ;
+2. définir les données canoniques (`canonicalT2Data`) ;
+3. exprimer le trou cible comme proposition abstraite (`HasTargetGap`) ;
+4. montrer que cette proposition est équivalente à une borne concrète sur le secteur ;
+5. importer la borne inférieure du noyau fini et conclure `HasTargetGap`.
 -/
 
 /-!
-## 1. Coercive sector
+## 1. Secteur coercif
 -/
 
-/-- Coercive sector: centered vectors orthogonal to `altVec`. -/
+/-- Secteur coercif : vecteurs centrés orthogonaux à `altVec`. -/
 def CoerciveSector : Type :=
   { x : Centered8 // GoodSubspace x }
 
 namespace CoerciveSector
 
-/-- Underlying centered vector. -/
+/-- Vecteur centré sous-jacent. -/
 def val (x : CoerciveSector) : Centered8 := x.1
 
-/-- Squared norm inherited from `Centered8`. -/
+/-- Norme au carré héritée de `Centered8`. -/
 def normSq (x : CoerciveSector) : ℝ := x.1.normSq
 
-/-- Energy induced by the finite-core quadratic form. -/
+/-- Énergie induite par la forme quadratique du noyau fini. -/
 def energy (x : CoerciveSector) : ℝ := quadratic x.1.1
 
 theorem normSq_nonneg (x : CoerciveSector) : 0 ≤ x.normSq := by
@@ -47,29 +46,29 @@ theorem normSq_nonneg (x : CoerciveSector) : 0 ≤ x.normSq := by
 end CoerciveSector
 
 /-!
-## 2. Canonical T2 data
+## 2. Données T2 canoniques
 -/
 
-/-- Formal gap constant kept as the target constant of the Couret programme. -/
+/-- Constante de trou formelle conservée comme constante cible du programme Couret. -/
 def kappa : ℝ := 2
 
 theorem kappa_pos : 0 < kappa := by
   unfold kappa
   norm_num
 
-/-- Minimal T2 data wrapper for the lightweight stage. -/
+/-- Enveloppe minimale de données T2 pour l’étape légère. -/
 structure T2Data where
   Q : CoerciveSector → ℝ
   κ : ℝ
   κ_pos : 0 < κ
 
-/-- Canonical energy data induced by the finite core. -/
+/-- Données d’énergie canoniques induites par le noyau fini. -/
 def canonicalT2Data : T2Data :=
   { Q := CoerciveSector.energy
     κ := kappa
     κ_pos := kappa_pos }
 
-/-- Generic gap statement attached to a `T2Data` package. -/
+/-- Énoncé générique de trou attaché à un paquet `T2Data`. -/
 def GapStatementFor (T : T2Data) : Prop :=
   ∀ x : CoerciveSector, T.κ * x.normSq ≤ T.Q x
 
@@ -79,14 +78,14 @@ theorem canonical_gap_statement_def :
   rfl
 
 /-!
-## 3. Abstract target proposition
+## 3. Proposition cible abstraite
 -/
 
-/-- Abstract coercive-gap predicate on the current sector. -/
+/-- Prédicat abstrait de trou coercif sur le secteur courant. -/
 def HasAbstractGap (κ : ℝ) : Prop :=
   ∀ x : CoerciveSector, κ * x.normSq ≤ x.energy
 
-/-- The target coercive statement for the programme. -/
+/-- Énoncé coercif cible pour le programme. -/
 def HasTargetGap : Prop :=
   HasAbstractGap kappa
 
@@ -111,7 +110,7 @@ theorem canonicalT2Data_kappa :
   rfl
 
 /-!
-## 4. Optional packaging of a proof object
+## 4. Empaquetage optionnel d’un objet de preuve
 -/
 
 structure GapData where
@@ -141,7 +140,7 @@ theorem canonicalGapData_of_targetGap (h : HasTargetGap) :
   exact ⟨mkGapData h⟩
 
 /-!
-## 5. Equivalences between formulations
+## 5. Équivalences entre formulations
 -/
 
 theorem hasTargetGap_iff_canonicalGapStatement :
@@ -154,12 +153,12 @@ theorem canonical_gap_statement_explicit :
   rw [canonical_gap_statement_def]
   rfl
 
-/-- Sector vectors are orthogonal to `altVec` by construction. -/
+/-- Les vecteurs du secteur sont orthogonaux à `altVec` par construction. -/
 theorem dot_altVec_zero_of_sector (x : CoerciveSector) :
     dot x.1.1 altVec = 0 := by
   exact (goodSubspace_iff_dot_altVec_zero x.1).1 x.2
 
-/-- A canonical gap statement yields the concrete lower bound on each sector vector. -/
+/-- Un énoncé de trou canonique fournit la borne inférieure concrète sur chaque vecteur du secteur. -/
 theorem canonical_gap_statement_on_sector (x : CoerciveSector) :
     GapStatementFor canonicalT2Data →
     2 * x.normSq ≤ quadratic x.1.1 := by
@@ -168,7 +167,7 @@ theorem canonical_gap_statement_on_sector (x : CoerciveSector) :
     exact (canonical_gap_statement_explicit.mp h) x
   simpa [normSq_def_on_sector, energy_def_on_sector] using hx
 
-/-- Conversely, a concrete lower bound on the sector yields the canonical gap statement. -/
+/-- Réciproquement, une borne inférieure concrète sur le secteur fournit l’énoncé de trou canonique. -/
 theorem canonical_gap_statement_of_sector_bound
     (h : ∀ x : CoerciveSector, 2 * x.normSq ≤ quadratic x.1.1) :
     GapStatementFor canonicalT2Data := by
@@ -176,7 +175,7 @@ theorem canonical_gap_statement_of_sector_bound
   intro x
   simpa [normSq_def_on_sector, energy_def_on_sector] using h x
 
-/-- Main equivalence between the canonical gap statement and the explicit sector bound. -/
+/-- Équivalence principale entre l’énoncé de trou canonique et la borne explicite sur le secteur. -/
 theorem canonical_gap_statement_iff_sector_bound :
     GapStatementFor canonicalT2Data ↔
       ∀ x : CoerciveSector, 2 * x.normSq ≤ quadratic x.1.1 := by
@@ -186,51 +185,50 @@ theorem canonical_gap_statement_iff_sector_bound :
   · intro h
     exact canonical_gap_statement_of_sector_bound h
 
-/-- Reformulation of `HasTargetGap` as the explicit sector inequality. -/
+/-- Reformulation de `HasTargetGap` comme inégalité explicite sur le secteur. -/
 theorem hasTargetGap_iff_sector_bound :
     HasTargetGap ↔ ∀ x : CoerciveSector, 2 * x.normSq ≤ quadratic x.1.1 := by
   rw [hasTargetGap_iff_canonicalGapStatement]
   exact canonical_gap_statement_iff_sector_bound
 
-/-- Same target reformulation, written in the exact shape often used as a goal. -/
+/-- Même reformulation cible, écrite sous la forme exacte souvent utilisée comme objectif. -/
 theorem sector_bound_goal_form :
     HasTargetGap ↔
       ∀ x : CoerciveSector, 2 * x.1.normSq ≤ quadratic x.1.1 := by
   simpa using hasTargetGap_iff_sector_bound
 
 /-!
-## 6. Import from `FiniteCore`
+## 6. Import depuis `FiniteCore`
 -/
 
-/-- Finite-core coercive inequality, transported to the coercive sector. -/
+/-- Inégalité coercive du noyau fini, transportée vers le secteur coercif. -/
 theorem quadratic_lower_bound_on_sector (x : CoerciveSector) :
     2 * x.normSq ≤ quadratic x.1.1 := by
   simpa using quadratic_lower_bound_on_goodSubspace x.1 x.2
 
-/-- The target gap is proved by the finite-core lower bound. -/
+/-- Le trou cible est prouvé par la borne inférieure du noyau fini. -/
 theorem hasTargetGap_proved : HasTargetGap := by
   rw [hasTargetGap_iff_sector_bound]
   intro x
   simpa using quadratic_lower_bound_on_sector x
 
-/-- Final exported bridge from the finite core to the abstract T2 target. -/
+/-- Pont final exporté du noyau fini vers la cible abstraite T2. -/
 theorem hasTargetGap_from_finiteCore :
   HasTargetGap := hasTargetGap_proved
 
 /-!
-## Exact coercive gap (exported from the finite core)
+## Trou coercif exact (exporté depuis le noyau fini)
 -/
 
-/-- Exact coercive gap at κ = 2, inherited from the finite core. -/
+/-- Trou coercif exact en κ = 2, hérité du noyau fini. -/
 theorem exact_coercive_gap_kappa_two :
     HasTargetGap := by
   exact hasTargetGap_from_finiteCore
 
-/-- Explicit coercive inequality on the sector. -/
+/-- Inégalité coercive explicite sur le secteur. -/
 theorem exact_coercive_gap_kappa_two_explicit :
     ∀ x : CoerciveSector, 2 * x.normSq ≤ x.energy := by
   intro x
   exact (canonical_gap_statement_explicit.mp exact_coercive_gap_kappa_two) x
 
-end T2Gap
-end CouretUnification
+end CouretUnification.T2Gap

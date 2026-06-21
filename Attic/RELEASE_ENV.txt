@@ -1,0 +1,12 @@
+# RELEASE_ENV — v36.0-proof-jurisdiction
+#
+# This file captures the build environment at tag time.
+# Filled in by the seal script at git tag creation.
+# Format : KEY=VALUE per line.
+
+LEAN_VERSION=
+LAKE_VERSION=
+REPOSITORY_COMMIT=
+MATHLIB_COMMIT=
+TAG_DATE=
+SIGNED=

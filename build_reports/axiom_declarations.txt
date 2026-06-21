@@ -1,0 +1,10 @@
+=== Déclarations 'axiom' dans le code (hors commentaires) ===
+lean/CouretUnification/Logic/H3/ArithmeticBridge.lean:29:axiom Det2IdentifiesXi : Prop
+lean/CouretUnification/Logic/H3/ArithmeticBridge.lean:30:axiom ZeroMatching : Prop
+lean/CouretUnification/Logic/H3/AlgebraTC.lean:195:axiom mellinConvolve_comm :
+lean/CouretUnification/Logic/H3/C2Restricted.lean:60:axiom restricted_explicit_formula_old
+lean/CouretUnification/Logic/H3/C2Restricted.lean:91:axiom restricted_explicit_formula_holds
+lean/CouretUnification/Logic/H3/C2Restricted.lean:112:axiom mainTermPositive_of_positiveBias
+lean/CouretUnification/Logic/H3/RigidityParams.lean:50:axiom sigma_G_critical_pos
+lean/CouretUnification/Logic/H3/Lock2Conditional.lean:6:axiom local_bridge_to_det2_xi
+lean/CouretUnification/Logic/H3/ZeroMatching.lean:5:axiom spectral_id_to_zero_matching (hDet : Det2IdentifiesXi) : ZeroMatching

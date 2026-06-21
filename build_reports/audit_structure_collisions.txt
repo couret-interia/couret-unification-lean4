@@ -1,0 +1,366 @@
+╔═══════════════════════════════════════════════════════════╗
+║     AUDIT IDENTIFIANTS RÉPLIQUÉS — Couret-Unification     ║
+╚═══════════════════════════════════════════════════════════╝
+
+[Audit Complet]
+
+VERSION   = scripts/audit_structure_collisions.sh v38.4.19
+Recherche : def / structure / inductive / abbrev / theorem
+            identifiants répliqués à travers les modules
+
+═══ Identifiants répliqués (≥ 2 occurrences) ═══
+── Catégorie 1 — Réplications doctrinales attendues (whitelist) ──
+(gardes RH/HP, fileIdentity, statuts, métriques d'audit par module)
+        ──      32 RHClaimed
+        ──      21 rh_not_claimed
+        ──      21 fileIdentity
+        ──       3 status
+        ──       3 sorryCount
+        ──       3 loaded
+        ──       3 axiomCount
+        ──       2 rh_claimed_false
+        ──       2 Layer
+        ──       2 HilbertPolyaClaimed
+        ──       2 FileIdentity
+        ──       2 EpistemicStatus
+        ──       2 CandidateCClaimed
+        ──       2 BridgeStatus
+
+── Catégorie 2.1 — Réplications hors whitelist (à examiner) ──
+ ⚠ Core ──       4 TC
+       ./Logic/ChiralityFinite.lean:70:def TC : Finset (ZMod 30) := {1, 11, 29}
+       ./Core/U30.lean:43:def TC : Finset (ZMod 30) := {1, 11, 29}
+       ./Core/FiniteCore.lean:42:abbrev TC : Finset (ZMod 30) := CouretUnification.Core.TC
+       ./Residue/ClosureTC.lean:56:def TC : Finset Z30 := {1, 11, 29}
+        ──       4 normSq
+       ./Finite/Foundations.lean:66:def normSq (f : Sig) : ℚ := dot f f
+       ./Spectral/T2Gap.lean:38:def normSq (x : CoerciveSector) : ℝ := x.1.normSq
+       ./Spectral/FiniteCore.lean:106:def normSq (x : Vec) : ℝ :=  dot x x
+       ./Spectral/FiniteCore.lean:124:def normSq (x : Centered8) : ℝ := FiniteCore.normSq x.1
+ ⚠ Core ──       3 parsevalMass
+       ./Core/Classification63.lean:121:def parsevalMass (mask : Nat) : Nat := (List.finRange 8).foldl
+       ./Core/Parseval.lean:7:def parsevalMass : Nat := TCParsevalMass
+       ./Core/ParsevalL5.lean:76:def parsevalMass (q : Nat) : Nat := Nat.totient q * tcCoprime q
+        ──       3 normSq_nonneg
+       ./Spectral/T2Gap.lean:43:theorem normSq_nonneg (x : CoerciveSector) : 0 ≤ x.normSq := by
+       ./Spectral/FiniteCore.lean:112:theorem normSq_nonneg (x : Vec) : 0 ≤ normSq x := by
+       ./Spectral/FiniteCore.lean:130:theorem normSq_nonneg (x : Centered8) : 0 ≤ x.normSq := by
+ ⚠ Core ──       3 Idx
+       ./Spectral/FiniteCore.lean:15:abbrev Idx := Fin 8
+       ./Core/CayleySpectrum.lean:46:abbrev Idx := Fin 8
+       ./Core/Mod30.lean:8:abbrev Idx := Fin 8
+ ⚠ Core ──       3 energy
+       ./Spectral/T2Gap.lean:41:def energy (x : CoerciveSector) : ℝ := quadratic x.1.1
+       ./Core/G30Classification.lean:137:def energy (T : List (Fin 8)) (χ : QuadCharIdx) : Int :=
+       ./Core/ParsevalL5.lean:93:noncomputable def energy (q : Nat) : ℚ := (parsevalMass q : ℚ) / (Nat.totient q : ℚ)
+        ──       2 ZeroShellData
+       ./Logic/ExplicitFormula/ZeroSideObligation.lean:41:structure ZeroShellData where
+       ./AnalyticHorizon/ZeroCountingCertificate.lean:40:structure ZeroShellData where
+ ⚠ Core ──       2 Vec
+       ./Spectral/FiniteCore.lean:18:abbrev Vec := Idx → ℝ
+       ./Core/FiniteOperator.lean:12:abbrev Vec := Idx → ℂ
+ ⚠ Core ──       2 v1b
+       ./Core/ComponentSpectrum.lean:82:def v1b : V4 := ![0, 0, 1, -1]
+       ./Core/CayleySpectrum.lean:185:def v1b : IVec := ![0, 1, 0, -1, 0, 1, 0, -1]
+ ⚠ Core ──       2 v1a
+       ./Core/ComponentSpectrum.lean:81:def v1a : V4 := ![1, -1, 0, 0]
+       ./Core/CayleySpectrum.lean:182:def v1a : IVec := ![1, 0, -1, 0, 1, 0, -1, 0]
+ ⚠ Core ──       2 unitsMod30
+       ./Spectral/FiniteCore.lean:24:def unitsMod30 : Idx → ℤ
+       ./Core/SpectralMoments.lean:27:def unitsMod30 : Fin 8 → Nat
+        ──       2 squarefreeCount
+       ./Logic/H3/RouteC.lean:120:noncomputable def squarefreeCount (q : ℕ) : ℝ :=
+       ./Logic/H3/SquarefreeDensity.lean:81:def squarefreeCount (N : ℕ) : ℕ :=
+ ⚠ Core ──       2 QuadCharIdx
+       ./Core/QuadraticResonance.lean:120:abbrev QuadCharIdx := Fin 2 × Fin 4
+       ./Core/G30Classification.lean:104:abbrev QuadCharIdx := Fin 2 × Fin 4
+ ⚠ Core ──       2 oneVec
+       ./Spectral/FiniteCore.lean:80:def oneVec : Vec := fun _ => 1
+       ./Core/FiniteOperator.lean:53:def oneVec : Vec := fun _ => 1
+ ⚠ Core ──       2 nineteen_not_in_TC
+       ./Core/TCAutoInverse.lean:23:theorem nineteen_not_in_TC : 19 ≠ 1 ∧ 19 ≠ 11 ∧ 19 ≠ 29 := by omega
+       ./Residue/ClosureTC.lean:91:theorem nineteen_not_in_TC :
+ ⚠ Core ──       2 negOneG30
+       ./Logic/H3/FiniteSpectralAPI.lean:15:abbrev negOneG30 : G30 := u29
+       ./Core/CharParity30.lean:5:def negOneG30 : G30 := -1
+ ⚠ Core ──       2 kappa
+       ./Spectral/T2Gap.lean:53:def kappa : ℝ := 2
+       ./Core/Arithmetic.lean:199:noncomputable def kappa (q : ℕ) : ℝ := Real.sqrt (kappaSq q)
+        ──       2 H3TestFunction
+       ./Logic/C3Weak.lean:57:structure H3TestFunction where
+       ./Logic/C3Weak.lean:74:noncomputable def H3TestFunction.mulConj (f g : H3TestFunction) : H3TestFunction where
+       ./Logic/H3/H3TestSpace.lean:49:structure H3TestFunction where
+       ./Logic/H3/H3TestSpace.lean:89:theorem H3TestFunction.isEvenTestFunction (f : H3TestFunction) :
+        ──       2 gram_semidef_of_rigid
+       ./Logic/C3Weak.lean:168:theorem gram_semidef_of_rigid
+       ./Logic/H3/C3Weak_Gram.lean:174:theorem gram_semidef_of_rigid
+ ⚠ Core ──       2 G30
+       ./Core/UnitsBridge.lean:16:abbrev G30 : Type := (ZMod 30)ˣ
+       ./Core/UnitsBridge.lean:29:def G30.toZMod (u : G30) : ZMod 30 := (u : ZMod 30)
+       ./Core/UnitsBridge.lean:32:theorem G30.toZMod_mem_U30 (u : G30) : G30.toZMod u ∈ U30 := by
+       ./FCI/ModThirtyChecker.lean:51:abbrev G30 := CouretUnification.Core.G30
+        ──       2 empirical_statement
+       ./Empirical/SophieGermainTransitions.lean:121:def empirical_statement : Statement := {
+       ./Empirical/SophieGermainExpected.lean:171:def empirical_statement : Statement := {
+        ──       2 E
+       ./Logic/ChiralityFinite.lean:61:def E : Finset (ZMod 30) := {1, 7, 11, 13, 17, 19, 23, 29}
+       ./Logic/H3/RouteC.lean:509:noncomputable def E (q _d : ℕ) : ℝ := ErrorTerm q
+        ──       2 dot
+       ./Finite/Foundations.lean:63:def dot (f g : Sig) : ℚ := (List.finRange 8).foldl (fun acc i => acc + f i * g i) 0
+       ./Spectral/FiniteCore.lean:103:def dot (x y : Vec) : ℝ := ∑ i, x i * y i
+ ⚠ Core ──       2 crt_decomposition_correct
+       ./Core/QuadraticResonance.lean:108:def crt_decomposition_correct : Bool :=
+       ./Core/G30Classification.lean:87:def crt_decomposition_correct : Bool :=
+ ⚠ Core ──       2 crt_decomposition
+       ./Core/QuadraticResonance.lean:115:theorem crt_decomposition : crt_decomposition_correct = true := by native_decide
+       ./Core/G30Classification.lean:94:theorem crt_decomposition : crt_decomposition_correct = true := by native_decide
+ ⚠ Core ──       2 charParity
+       ./Analytic/GammaFactor.lean:41:def charParity : CharIdx → Bool := fun _ => true
+       ./Core/CharParity30.lean:27:noncomputable def charParity (χ : CharIdx) : Bool :=
+ ⚠ Core ──       2 altVec_centered
+       ./Spectral/FiniteCore.lean:136:theorem altVec_centered : ∑ i, altVec i = 0 := by
+       ./Core/CenteredEigenspace.lean:28:theorem altVec_centered : vsum v3b = 0 := by native_decide
+        ──       2 altVec
+       ./Finite/Foundations.lean:104:abbrev altVec : Sig := chi5
+       ./Spectral/FiniteCore.lean:83:def altVec : Vec
+ ⚠ Core ──       2 admissibleResidues
+       ./Core/FiniteCore.lean:31:abbrev admissibleResidues : Finset (ZMod 30) := CouretUnification.Core.U30
+       ./Core/Mod30.lean:10:def admissibleResidues : List Nat := [1, 7, 11, 13, 17, 19, 23, 29]
+
+[INFO] Ces identifiants apparaissent dans plusieurs modules.
+       Ce n'est pas forcément un problème (chaque namespace
+       protège sa propre version), mais une revue manuelle
+       peut révéler des duplications non-intentionnelles.
+
+── Catégorie 2.2 — Relevé des imports à examiner ──
+        ──        import CouretUnification.Logic.ChiralityFinite
+       ./Frozen.lean:69:import CouretUnification.Logic.ChiralityFinite
+       ./All.lean:253:import CouretUnification.Logic.ChiralityFinite
+        ──        import CouretUnification.Core.U30
+       ./Logic/ChiralityFinite.lean:54:import CouretUnification.Core.U30
+       ./Logic/H3/T5Weak.lean:2:import CouretUnification.Core.U30
+       ./All.lean:124:import CouretUnification.Core.U30
+       ./Core/FiniteCore.lean:6:import CouretUnification.Core.U30
+       ./Core/SymplecticObstruction.lean:2:import CouretUnification.Core.U30
+       ./Core/CenteredCoordinates.lean:35:import CouretUnification.Core.U30
+       ./Core/ParsevalL5.lean:6:import CouretUnification.Core.U30
+       ./Core/UnitsBridge.lean:7:import CouretUnification.Core.U30
+        ──        import CouretUnification.Core.FiniteCore
+       ./All.lean:117:import CouretUnification.Core.FiniteCore
+        ──        import CouretUnification.Residue.ClosureTC
+       ./All.lean:323:import CouretUnification.Residue.ClosureTC
+       ./Residue/PuncturedKlein30.lean:22:import CouretUnification.Residue.ClosureTC
+       ./Residue/CycleCoset.lean:85:import CouretUnification.Residue.ClosureTC
+        ──        import CouretUnification.Finite.Foundations
+       ./Finite/Defect.lean:1:import CouretUnification.Finite.Foundations
+       ./FiniteDefect/T1_to_T7.lean:1:import CouretUnification.Finite.Foundations
+       ./All.lean:126:import CouretUnification.Finite.Foundations
+       ./Core/CayleySpectrum.lean:1:import CouretUnification.Finite.Foundations
+       ./Core/CenteredEigenspace.lean:2:import CouretUnification.Finite.Foundations
+       ./Core/FormuleLk.lean:2:import CouretUnification.Finite.Foundations
+        ──        import CouretUnification.Spectral.T2Gap
+       ./All.lean:54:import CouretUnification.Spectral.T2Gap
+        ──        import CouretUnification.Spectral.FiniteCore
+       ./Spectral/T2Gap.lean:1:import CouretUnification.Spectral.FiniteCore
+       ./Logic/H3/PhaseBCompositionCouret.lean:75:import CouretUnification.Spectral.FiniteCore
+       ./All.lean:53:import CouretUnification.Spectral.FiniteCore
+        ──        import CouretUnification.Core.Classification63
+       ./Logic/H3/PhaseBCompositionCouretEta.lean:85:import CouretUnification.Core.Classification63
+       ./Logic/H3/PhaseBCompositionCouretEta.lean:86:import CouretUnification.Core.Classification63Detail
+       ./All.lean:57:import CouretUnification.Core.Classification63
+       ./All.lean:91:import CouretUnification.Core.Classification63Detail
+       ./Core/QuadraticResonance.lean:1:import CouretUnification.Core.Classification63
+       ./Core/DefectProjection.lean:1:import CouretUnification.Core.Classification63
+       ./Core/Classification63Detail.lean:1:import CouretUnification.Core.Classification63
+        ──        import CouretUnification.Core.Parseval
+       ./Logic/H3/PhaseBCompositionCouret.lean:72:import CouretUnification.Core.Parseval
+       ./Logic/H3/PhaseBCompositionCouret.lean:73:import CouretUnification.Core.ParsevalL5
+       ./All.lean:31:import CouretUnification.Core.Parseval
+       ./All.lean:70:import CouretUnification.Core.ParsevalL5
+        ──        import CouretUnification.Core.ParsevalL5
+       ./Logic/H3/PhaseBCompositionCouret.lean:73:import CouretUnification.Core.ParsevalL5
+       ./All.lean:70:import CouretUnification.Core.ParsevalL5
+        ──        import CouretUnification.Core.CayleySpectrum
+       ./Logic/H3/PhaseBCompositionCouretEta.lean:80:import CouretUnification.Core.CayleySpectrum
+       ./All.lean:61:import CouretUnification.Core.CayleySpectrum
+       ./Core/CayleyConnected.lean:1:import CouretUnification.Core.CayleySpectrum
+       ./Core/CenteredEigenspace.lean:1:import CouretUnification.Core.CayleySpectrum
+       ./Core/FormuleLk.lean:1:import CouretUnification.Core.CayleySpectrum
+       ./Core/Kurtosis.lean:1:import CouretUnification.Core.CayleySpectrum
+       ./Core/CharPoly.lean:1:import CouretUnification.Core.CayleySpectrum
+       ./Core/CarlemanUniqueness.lean:1:import CouretUnification.Core.CayleySpectrum
+        ──        import CouretUnification.Core.Mod30
+       ./All.lean:27:import CouretUnification.Core.Mod30
+       ./Core/Characters30.lean:1:import CouretUnification.Core.Mod30
+       ./Core/FiniteOperator.lean:1:import CouretUnification.Core.Mod30
+       ./Core/SophieGermainHecke.lean:29:import CouretUnification.Core.Mod30
+       ./Core/ExceptionalTriplets.lean:1:import CouretUnification.Core.Mod30
+        ──        import CouretUnification.Core.G30Classification
+       ./Frozen.lean:95:import CouretUnification.Core.G30Classification
+       ./Frozen.lean:96:import CouretUnification.Core.G30ClassificationFromPointDefect
+       ./All.lean:383:import CouretUnification.Core.G30Classification
+       ./All.lean:385:import CouretUnification.Core.G30ClassificationFromPointDefect
+       ./Core/G30ClassificationFromPointDefect.lean:2:import CouretUnification.Core.G30Classification
+        ──        import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+       ./Logic/ExplicitFormula/ExplicitFormulaBridge.lean:66:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+       ./All.lean:314:import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+        ──        import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+       ./AnalyticHorizon/ActiveLayerFullAudit.lean:4:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+       ./AnalyticHorizon/TorsionZeroTransferCertificate.lean:7:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+       ./Release/ReleaseManifest.lean:3:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+       ./All.lean:301:import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+        ──        import CouretUnification.Core.FiniteOperator
+       ./All.lean:28:import CouretUnification.Core.FiniteOperator
+       ./Core/SpectralProfile.lean:1:import CouretUnification.Core.FiniteOperator
+       ./Core/Fourier30.lean:2:import CouretUnification.Core.FiniteOperator
+        ──        import CouretUnification.Core.ComponentSpectrum
+       ./Logic/H3/PhaseBCompositionCouretEta.lean:84:import CouretUnification.Core.ComponentSpectrum
+       ./All.lean:88:import CouretUnification.Core.ComponentSpectrum
+        ──        import CouretUnification.Core.SpectralMoments
+       ./All.lean:58:import CouretUnification.Core.SpectralMoments
+        ──        import CouretUnification.Logic.H3.RouteC
+       ./Active.lean:63:import CouretUnification.Logic.H3.RouteC
+       ./All.lean:145:import CouretUnification.Logic.H3.RouteC
+        ──        import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Frozen.lean:106:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./Frozen.lean:108:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
+       ./Logic/H3/SquarefreeDensityAsymptotic.lean:23:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./Logic/H3/SquarefreeDensityC04aClosed.lean:29:import CouretUnification.Logic.H3.SquarefreeDensityHalf
+       ./Logic/H3/SquarefreeDensityHalf.lean:24:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./Logic/H3/SquarefreeDensityC04bClosed.lean:28:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
+       ./All.lean:261:import CouretUnification.Logic.H3.SquarefreeDensity
+       ./All.lean:388:import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
+       ./All.lean:390:import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+       ./All.lean:392:import CouretUnification.Logic.H3.SquarefreeDensityHalf
+       ./All.lean:394:import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
+        ──        import CouretUnification.Core.QuadraticResonance
+       ./Frozen.lean:90:import CouretUnification.Core.QuadraticResonance
+       ./All.lean:376:import CouretUnification.Core.QuadraticResonance
+        ──        import CouretUnification.Core.TCAutoInverse
+       ./All.lean:79:import CouretUnification.Core.TCAutoInverse
+        ──        import CouretUnification.Logic.H3.FiniteSpectralAPI
+       ./Logic/H3/H3TestSpace.lean:39:import CouretUnification.Logic.H3.FiniteSpectralAPI
+       ./Logic/H3/ParityGamma30.lean:5:import CouretUnification.Logic.H3.FiniteSpectralAPI
+       ./All.lean:171:import CouretUnification.Logic.H3.FiniteSpectralAPI
+        ──        import CouretUnification.Core.CharParity30
+       ./Logic/H3/AlgebraTC.lean:17:import CouretUnification.Core.CharParity30
+       ./All.lean:167:import CouretUnification.Core.CharParity30
+        ──        import CouretUnification.Core.Arithmetic
+       ./Logic/H3/RouteC.lean:8:import CouretUnification.Core.Arithmetic
+       ./All.lean:146:import CouretUnification.Core.Arithmetic
+        ──        import CouretUnification.Logic.C3Weak
+       ./Active.lean:52:import CouretUnification.Logic.C3Weak
+       ./All.lean:218:import CouretUnification.Logic.C3Weak
+       ./All.lean:248:import CouretUnification.Logic.C3Weak_Gram
+        ──        import CouretUnification.Logic.H3.H3TestSpace
+       ./Logic/H3/C3Weak.lean:31:import CouretUnification.Logic.H3.H3TestSpace
+       ./Logic/H3/AlgebraTC.lean:19:import CouretUnification.Logic.H3.H3TestSpace
+       ./Logic/H3/C2Restricted.lean:36:import CouretUnification.Logic.H3.H3TestSpace
+       ./Logic/H3/RigidityParams.lean:32:import CouretUnification.Logic.H3.H3TestSpace
+       ./All.lean:173:import CouretUnification.Logic.H3.H3TestSpace
+        ──        import CouretUnification.Logic.H3.C3Weak_Gram
+       ./Frozen.lean:66:import CouretUnification.Logic.H3.C3Weak_Gram
+       ./Logic/C3Weak_Gram.lean:11:import CouretUnification.Logic.H3.C3Weak_Gram
+       ./All.lean:242:import CouretUnification.Logic.H3.C3Weak_Gram
+        ──        import CouretUnification.Core.UnitsBridge
+       ./All.lean:149:import CouretUnification.Core.UnitsBridge
+       ./Core/CenteredSpace30.lean:6:import CouretUnification.Core.UnitsBridge
+       ./FCI/ModThirtyChecker.lean:44:import CouretUnification.Core.UnitsBridge
+        ──        import CouretUnification.FCI.ModThirtyChecker
+       ./All.lean:286:import CouretUnification.FCI.ModThirtyChecker
+       ./All.lean:341:import CouretUnification.FCI.ModThirtyCheckerBridge
+       ./FCI/FCI.lean:24:import CouretUnification.FCI.ModThirtyChecker
+       ./FCI/FCI.lean:25:import CouretUnification.FCI.ModThirtyCheckerBridge
+       ./FCI/ModThirtyCheckerBridge.lean:40:import CouretUnification.FCI.ModThirtyChecker
+        ──        import CouretUnification.Empirical.SophieGermainTransitions
+       ./SophieGermainUmbrella.lean:39:import CouretUnification.Empirical.SophieGermainTransitions
+       ./All.lean:217:import CouretUnification.Empirical.SophieGermainTransitions
+        ──        import CouretUnification.Empirical.SophieGermainExpected
+       ./SophieGermainUmbrella.lean:38:import CouretUnification.Empirical.SophieGermainExpected
+       ./All.lean:229:import CouretUnification.Empirical.SophieGermainExpected
+        ──        import CouretUnification.Analytic.GammaFactor
+       ./Active.lean:70:import CouretUnification.Analytic.GammaFactor
+       ./All.lean:247:import CouretUnification.Analytic.GammaFactor
+        ──        import CouretUnification.Core.CenteredEigenspace
+       ./All.lean:64:import CouretUnification.Core.CenteredEigenspace
+
+── Catégorie 2.3 — Liste des imports à examiner ──
+       import CouretUnification.Logic.ChiralityFinite
+       import CouretUnification.Core.U30
+       import CouretUnification.Core.FiniteCore
+       import CouretUnification.Residue.ClosureTC
+       import CouretUnification.Finite.Foundations
+       import CouretUnification.Spectral.T2Gap
+       import CouretUnification.Spectral.FiniteCore
+       import CouretUnification.Core.Classification63
+       import CouretUnification.Core.Parseval
+       import CouretUnification.Core.ParsevalL5
+       import CouretUnification.Core.CayleySpectrum
+       import CouretUnification.Core.Mod30
+       import CouretUnification.Core.G30Classification
+       import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+       import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+       import CouretUnification.Core.FiniteOperator
+       import CouretUnification.Core.ComponentSpectrum
+       import CouretUnification.Core.SpectralMoments
+       import CouretUnification.Logic.H3.RouteC
+       import CouretUnification.Logic.H3.SquarefreeDensity
+       import CouretUnification.Core.QuadraticResonance
+       import CouretUnification.Core.TCAutoInverse
+       import CouretUnification.Logic.H3.FiniteSpectralAPI
+       import CouretUnification.Core.CharParity30
+       import CouretUnification.Core.Arithmetic
+       import CouretUnification.Logic.C3Weak
+       import CouretUnification.Logic.H3.H3TestSpace
+       import CouretUnification.Logic.H3.C3Weak_Gram
+       import CouretUnification.Core.UnitsBridge
+       import CouretUnification.FCI.ModThirtyChecker
+       import CouretUnification.Empirical.SophieGermainTransitions
+       import CouretUnification.Empirical.SophieGermainExpected
+       import CouretUnification.Analytic.GammaFactor
+       import CouretUnification.Core.CenteredEigenspace
+
+── Catégorie 2.4 — Liste des fichiers (unique) à examiner ──
+       ./Logic/ChiralityFinite.lean
+       ./Core/U30.lean
+       ./Core/FiniteCore.lean
+       ./Residue/ClosureTC.lean
+       ./Finite/Foundations.lean
+       ./Spectral/T2Gap.lean
+       ./Spectral/FiniteCore.lean
+       ./Core/Classification63.lean
+       ./Core/Parseval.lean
+       ./Core/ParsevalL5.lean
+       ./Core/CayleySpectrum.lean
+       ./Core/Mod30.lean
+       ./Core/G30Classification.lean
+       ./Logic/ExplicitFormula/ZeroSideObligation.lean
+       ./AnalyticHorizon/ZeroCountingCertificate.lean
+       ./Core/FiniteOperator.lean
+       ./Core/ComponentSpectrum.lean
+       ./Core/SpectralMoments.lean
+       ./Logic/H3/RouteC.lean
+       ./Logic/H3/SquarefreeDensity.lean
+       ./Core/QuadraticResonance.lean
+       ./Core/TCAutoInverse.lean
+       ./Logic/H3/FiniteSpectralAPI.lean
+       ./Core/CharParity30.lean
+       ./Core/Arithmetic.lean
+       ./Logic/C3Weak.lean
+       ./Logic/H3/H3TestSpace.lean
+       ./Logic/H3/C3Weak_Gram.lean
+       ./Core/UnitsBridge.lean
+       ./FCI/ModThirtyChecker.lean
+       ./Empirical/SophieGermainTransitions.lean
+       ./Empirical/SophieGermainExpected.lean
+       ./Analytic/GammaFactor.lean
+       ./Core/CenteredEigenspace.lean
+
+═══ Synthèse ═══
+Identifiants doctrinaux répliqués     (whitelist) : 14
+Identifiants répliqués             hors whitelist : 29
+Identifiants répliqués     (total) hors whitelist : 62
+Fichiers identifiés hors whitelist avec répliques : 34 fichiers
+
+[INFO] Cet audit est informatif, non bloquant.
+       (Les vraies collisions intra-namespace sont refusées par Lean.)

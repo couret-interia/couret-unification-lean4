@@ -34,6 +34,8 @@ import CouretUnification.Core.SpectralGap
 import CouretUnification.Core.CRTTransport
 import CouretUnification.Core.InvariantE
 import CouretUnification.Core.SophieGermainMod30
+import CouretUnification.Core.SophieGermainHecke
+import CouretUnification.Core.SophieGermainTowerLift
 import CouretUnification.Core.HarmonicCertificate
 import CouretUnification.Core.TripletDocumentaryCertificate
 import CouretUnification.Core.CouretDocumentaryCertificate
@@ -113,7 +115,6 @@ import CouretUnification.Analytic.Integration
 import CouretUnification.Analytic.VerifiedIntervals
 import CouretUnification.Analytic.ZeroDensityAxioms
 import CouretUnification.Core.FiniteCore
-import CouretUnification.Core.SymplecticObstruction
 
 import CouretUnification.FunctionalFoundation.DiscreteConnection
 import CouretUnification.FunctionalFoundation.DiscretePaths
@@ -165,6 +166,7 @@ import CouretUnification.Core.CouretMinimalPackage
 import CouretUnification.Core.CharacterLemmas
 import CouretUnification.Core.CharParity30
 import CouretUnification.Core.CRTEquiv
+import CouretUnification.Core.LMFDBAlignment
 
 import CouretUnification.Logic.H3.FiniteSpectralAPI
 import CouretUnification.Logic.H3.ParityGamma30
@@ -206,3 +208,191 @@ import CouretUnification.Logic.H3.PhaseBCompositionCouretZeta
 -- CenteredEigenspace par dépendance/cascade).
 -- RHClaimed = false. Aucun sorry consommé.
 import CouretUnification.Logic.H3.PhaseBCompositionCouretEta
+
+-- v35.6
+import CouretUnification.Core.SophieGermain
+
+-- v35.7
+import CouretUnification.Meta.Layer
+import CouretUnification.Empirical.SophieGermainTransitions
+import CouretUnification.Logic.C3Weak
+import CouretUnification.Logic.CriticalLineTransferSpec
+import CouretUnification.Logic.Doctrine
+import CouretUnification.Logic.EulerBridgeInfinite
+import CouretUnification.Logic.FEnriched30
+import CouretUnification.Logic.FEnrichedSpec
+
+import CouretUnification.Speculative.AnalogyMTF
+import CouretUnification.Speculative.Ontology
+
+-- v35.8
+import CouretUnification.Empirical.SophieGermainExpected
+import CouretUnification.Logic.EulerBridgeInfiniteCompat
+import CouretUnification.Logic.EulerBridgeInfiniteReal
+import CouretUnification.Logic.L10NoGoTheorem
+import CouretUnification.Logic.OpenLocks
+
+-- v35.8.1
+import CouretUnification.Logic.L6Bridge
+
+-- v35.8.1-bis
+import CouretUnification.Meta.AuditHints
+
+-- v35.8.5
+import CouretUnification.Logic.H3.C3Weak_Gram
+import CouretUnification.Logic.L6RatioEstimateDerived
+import CouretUnification.Meta.Doctrine
+
+-- v35.8.6
+import CouretUnification.Analytic.GammaFactor
+import CouretUnification.Logic.C3Weak_Gram  -- Facade vers H3.C3Weak_Gram
+import CouretUnification.Logic.L6Analytic
+import CouretUnification.Logic.L6Interface
+
+-- v35.8.7
+import CouretUnification.Logic.ChiralityFinite
+import CouretUnification.Logic.ChiralityLinear
+
+-- v35.8.8
+import CouretUnification.AnalyticHorizon.Det2Transport
+import CouretUnification.Logic.H3.CriticalLineTransferSpec
+import CouretUnification.Logic.H3.LocalFactor
+import CouretUnification.Logic.H3.MoebiusBridge
+import CouretUnification.Logic.H3.SquarefreeDensity
+import CouretUnification.Logic.H3.SquarefreeSupport
+import CouretUnification.Logic.H3.LocalSquarefreeBridge
+import CouretUnification.Logic.L6Analytic
+import CouretUnification.Logic.L6Bridge
+import CouretUnification.Logic.L6Interface
+import CouretUnification.Logic.L6RatioEstimateDerived
+import CouretUnification.Meta.Doctrine
+
+-- v35.9-pre
+import CouretUnification.AnalyticHorizon.Det2Obligations
+import CouretUnification.AnalyticHorizon.Det2Transport
+import CouretUnification.Logic.ExplicitFormula.ExplicitFormulaBridge
+import CouretUnification.Logic.ExplicitFormula.TestFunctions
+import CouretUnification.Logic.H3.HPCertificate
+import CouretUnification.Meta.ProofJurisdiction
+
+-- v35.9.0
+import CouretUnification.Logic.ExplicitFormula.ArchimedeanSide
+import CouretUnification.Logic.ExplicitFormula.ArithmeticWeight
+import CouretUnification.Logic.ExplicitFormula.PrimeSide
+import CouretUnification.Logic.ExplicitFormula.ZeroCounting
+
+-- v35.9.1
+import CouretUnification.Active
+import CouretUnification.FCI.ModThirtyChecker -- TODO (TODO N1, I1)
+import CouretUnification.Frozen
+import CouretUnification.Logic.ExplicitFormula.TestPair
+import CouretUnification.Logic.ExplicitFormula.TraceObject
+import CouretUnification.Meta.SnapshotSentinel
+-- TimeBridge LTB-0 (voir Frozen)
+import CouretUnification.Logic.TimeBridge.Basic
+import CouretUnification.Logic.TimeBridge.B2Calibration
+import CouretUnification.Logic.TimeBridge.ModularFlowSpec
+
+-- v35.9.2-prospective
+import CouretUnification.Logic.TimeBridge.BostConnesMod30Spec
+
+-- v36 Proof Jurisdiction
+import CouretUnification.AnalyticHorizon.ArchimedeanDigammaCertificate
+import CouretUnification.AnalyticHorizon.ZeroCountingCertificate
+import CouretUnification.AnalyticHorizon.ExplicitFormulaBridgeAudit
+import CouretUnification.AnalyticHorizon.Det2TransportCertificate
+import CouretUnification.AnalyticHorizon.SoinInterface
+import CouretUnification.AnalyticHorizon.ArchimedeanTorsionCertificate
+import CouretUnification.AnalyticHorizon.TorsionZeroTransferCertificate
+import CouretUnification.AnalyticHorizon.ActiveLayerFullAudit
+import CouretUnification.AnalyticHorizon.A8ArchimedeanAbsorption
+import CouretUnification.Logic.ExplicitFormula.ArchimedeanKernelBound
+import CouretUnification.Logic.ExplicitFormula.ExplicitFormulaBridge
+import CouretUnification.Logic.ExplicitFormula.PrimeSideCompactSupport
+import CouretUnification.Logic.ExplicitFormula.StatusFlags
+import CouretUnification.Logic.ExplicitFormula.TraceObject
+import CouretUnification.Logic.ExplicitFormula.ZeroSideObligation
+import CouretUnification.Release.ReleaseManifest
+
+-- v36 Active-Extensions
+import CouretUnification.Active.PrimeSideRealClosure
+import CouretUnification.Active.TraceObjectEnriched
+
+-- v37.0
+import CouretUnification.EpistemicDiscipline.DoctrinalInvariants
+import CouretUnification.Residue.ClosureTC
+import CouretUnification.Residue.CycleCoset
+import CouretUnification.Residue.TorsionLift210
+
+-- v38.0
+import CouretUnification.EpistemicDiscipline.BridgeStatus
+import CouretUnification.Residue.PuncturedKlein30
+import CouretUnification.AnalyticHorizon.TraceFormulaTargets
+import CouretUnification.AnalyticHorizon.MomentRigidity30
+import CouretUnification.AnalyticHorizon.ProtectedMinusTraceTargets
+import CouretUnification.AnalyticHorizon.LegendreChannelCalibration
+import CouretUnification.AnalyticHorizon.PerturbedSpectralIsolation
+import CouretUnification.AnalyticHorizon.AdmissibleSigmaBand
+import CouretUnification.AnalyticHorizon.PhaseStabilityTargets
+import CouretUnification.AnalyticHorizon.DefectOperator30
+import CouretUnification.Logic.Lock3.LocalDebiasing
+import CouretUnification.Logic.Lock3.ProtectedTraceGate
+import CouretUnification.Logic.Lock3.RHGuard
+import CouretUnification.FCI.ModThirtyCheckerBridge     -- TODO (TODO G1 2 3)
+import CouretUnification.FCI.CausalSupportImmunity      -- TODO (TODO-V1, S1, D1)
+import CouretUnification.FCI.CausalSupportMeasureBridge -- TODO (TODO-M1 2 3 4)
+import CouretUnification.FCI.FCI
+
+-- v38.0.1
+import CouretUnification.Logic.C2.Window
+import CouretUnification.Logic.C2.Umbrella
+
+-- v38.1
+import CouretUnification.AnalyticHorizon.L6Stirling
+
+-- v38.2 Sophie Germain (TowerLift)
+import CouretUnification.Residue.SGShiftSqrt2
+import CouretUnification.Residue.SGShiftSpectrum -- [O] frontière spectrale
+import CouretUnification.Numerics.ScanSummary
+import CouretUnification.Numerics.UseScanSummary
+import CouretUnification.Experimental.TowerLift.ToyModelSpec
+-- umbrella
+import CouretUnification.SophieGermainUmbrella
+import CouretUnification.Experimental.TowerLift
+
+-- v38.3
+import CouretUnification.Logic.H3.SpectralBridge
+
+-- v38.4.3
+import CouretUnification.Residue.Bridge.DefectOperatorBridge
+
+-- v38.4.7 — fermeture coordonnée du sous-espace centré sur U30
+import CouretUnification.Core.CenteredCoordinates
+
+-- v38.5 ResGold
+import CouretUnification.ResGold
+
+-- v38.5.2 — ResGold QuadraticResonance — intégration A.4 (3/5 dominance) + A.4' (k_A4 = (1/2)·(·/5))
+import CouretUnification.Core.QuadraticResonance
+
+-- v38.5.3 — Sommes de caractères sur sous-groupe (ordre 2), moteur du défaut ponctuel — [D-formal]
+import CouretUnification.Core.CharacterSubgroupSums
+-- v38.5.3 — Loi d'annihilation globale sur un espace arbitraire
+import CouretUnification.Core.PointDefectLemma
+-- v38.5.3 — Classification spectrale finie des triplets de G₃₀
+import CouretUnification.Core.G30Classification
+-- v38.5.3 — Spécialisation à G₃₀ (|T|=3, fibres d'ordre 4 de taille 2).
+import CouretUnification.Core.G30ClassificationFromPointDefect
+
+-- v38.5.11 — laboratoire compilable pour fermer C-04b SquarefreeDensity.
+import CouretUnification.Logic.H3.SquarefreeDensityAsymptotic
+-- v38.5.11 — importe le lab C-04b et transforme le bridge public de `SquarefreeDensity.lean` en résultat prouvé.
+import CouretUnification.Logic.H3.SquarefreeDensityC04bClosed
+-- v38.5.12 — laboratoire compilable pour fermer C-04a SquarefreeDensity.
+import CouretUnification.Logic.H3.SquarefreeDensityHalf
+-- v38.5.12 — importe le lab C-04a et transforme le bridge public de `SquarefreeDensity.lean` en résultat prouvé.
+import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
+
+-- TODO v38.1+ : une fois les TODO FCI levés, activer
+-- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
+-- la construction de tout fichier orphelin.

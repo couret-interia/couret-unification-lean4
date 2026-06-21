@@ -2,7 +2,7 @@ import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
-namespace CouretUnification.Finite
+namespace CouretUnification.Finite.Foundations
 
 /-!
 # Foundations — Noyau spectral fini sur `Fin 8 → ℚ`
@@ -60,8 +60,7 @@ Produit scalaire discret sur `Sig`.
 Lecture :
 `dot f g = Σ_i f(i) g(i)`.
 -/
-def dot (f g : Sig) : ℚ :=
-  (List.finRange 8).foldl (fun acc i => acc + f i * g i) 0
+def dot (f g : Sig) : ℚ := (List.finRange 8).foldl (fun acc i => acc + f i * g i) 0
 
 /-- Norme quadratique discrète : `‖f‖² = ⟨f,f⟩`. -/
 def normSq (f : Sig) : ℚ := dot f f
@@ -307,4 +306,4 @@ def RHClaimed : Bool := false
 /-- Vérification formelle de la garde épistémique. -/
 theorem rh_not_claimed : RHClaimed = false := rfl
 
-end CouretUnification.Finite
+end CouretUnification.Finite.Foundations
