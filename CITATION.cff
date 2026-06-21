@@ -7,10 +7,14 @@ authors:
     given-names: "Alexandre"
     affiliation: "Independent researcher, Rasiguères, France"
 abstract: >
-  224 Lean 4 files, 0 sorry, 3510 jobs. Finite exact spectral core
-  on (Z/30Z)× with 29 machine-certified results including Cayley
-  spectrum, 63/255 classification, Parseval tower, coercive gap,
-  and universal trace recurrence. No proof of RH is claimed.
+  Couret-Unification is a Lean 4 formalization project centered on finite
+  spectral and arithmetic structures modulo 30. The frozen layer contains
+  0-sorry verified modules, including the finite exact spectral core on
+  (Z/30Z)×, character sums, point-defect spectra, G30 triplet classification,
+  Cayley-spectrum structures, squarefree-density closures, and related audited
+  bridges. Active analytic layers remain explicitly separated and contain
+  documented open obligations. No proof of the Riemann Hypothesis is claimed.
+  RHClaimed = false.
 license: "MIT"
 keywords:
   - number theory
@@ -18,5 +22,12 @@ keywords:
   - Lean 4
   - formal verification
   - modular arithmetic
-version: "32.20"
-date-released: "2026-04-08"
+  - mod 30
+  - Cayley graph
+  - CRT
+  - Sophie Germain
+  - squarefree density
+  - finite exact core
+version: "v38.5.13"
+date-released: "2026-06-21"
+

@@ -130,6 +130,11 @@
 │   ├── broken_imports.txt
 │   ├── errors_unique.txt
 │   ├── invariants.txt
+│   ├── proved_frozen_imports.txt
+│   ├── proved_markers.txt
+│   ├── proved_summary.txt
+│   ├── proved_theorems_all.txt
+│   ├── proved_theorems_frozen.txt
 │   ├── sorries_declarations.txt
 │   ├── true_statements.txt
 │   ├── warnings_non_sorry.txt
@@ -146,6 +151,8 @@
 │   ├── Algebre_arithmetique_flux_modulaire_30.docx
 │   ├── Ameliorations_Architecture_Thomas.md
 │   ├── ARCHITECTURE.md
+│   ├── arxiv
+│   │   └── ARTICLE_titre_et_introduction_FR.md
 │   ├── BuildGraph.md
 │   ├── DOCTRINE_PROGRAMME.md
 │   ├── ETAT_DEFINITIF_v5_INTEGRAL.md
@@ -161,6 +168,7 @@
 │   │   ├── SquarefreeDensity_note_explicite_sur_les_conditions_de_fermeture_[D].md
 │   │   └── z30-vs-units.md
 │   ├── PASSAGE_LOCAL_GLOBAL.md
+│   ├── PRESENTATION_PROGRAMME.md
 │   ├── RAPPORT_DEMONSTRATION_v5_FINAL.md
 │   ├── Rapport_Impasses_CouretUnification.md
 │   ├── registry
@@ -171,6 +179,7 @@
 │   │   ├── NO_GO_SG_1SQRT7.md
 │   │   ├── README_RESGOLD-V38.5b.md
 │   │   ├── RESGOLD_CORRECTIONS_v38.5_NOTE.md
+│   │   ├── RESULTATS_D_FORMELS.md
 │   │   └── SophieGermain.md
 │   ├── ROADMAP_FINAL.md
 │   ├── THOMAS_BUILD_PROTOCOL.md
@@ -473,6 +482,7 @@
 ├── scripts
 │   ├── audit_doctrine.sh
 │   ├── audit_orphans.sh
+│   ├── audit_proved.sh
 │   ├── audit_reachability.sh
 │   ├── audit_structure_collisions.sh
 │   ├── audit_v36.0.sh
@@ -521,4 +531,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-64 directories, 458 files
+65 directories, 467 files

@@ -2,7 +2,7 @@
         audit-imports audit-axioms audit-sorries audit-warnings \
         audit-axiom-declarations audit-true-statements audit-invariants \
         audit-collisions audit-collisions-basic audit-orphans audit-reachability \
-        audit-doctrine audit-scripts audit-all audit-historical \
+        audit-doctrine audit-scripts audit-all audit-historical audit-proved \
         check-frozen gate-frozen \
         build-log-all tree report doctrine-check \
         snapshot test-all \
@@ -103,6 +103,10 @@ audit-invariants: $(REPORTS)
 
 # ─── AUDIT D'INTÉGRITÉ — SCRIPTS EXTERNES ─────────────────────────
 
+audit-proved: $(REPORTS)
+	bash scripts/audit_proved.sh \
+	    2>&1 | tee $(REPORTS)/audit_proved.log
+
 audit-collisions: $(REPORTS)
 	bash scripts/audit_structure_collisions.sh \
 	    2>&1 | tee $(REPORTS)/collisions.log
@@ -135,7 +139,6 @@ audit-scripts: $(REPORTS)
 	cd lean/ && bash ../scripts/sorry_audit.sh \
 	    2>&1 | tee ../$(REPORTS)/sorry_audit_detailed.log
 
-
 # ─── ANCIENS AUDITS : V36 + V37 AGGRÉGÉS ──────────────────────────
 
 audit-v37: $(REPORTS)
@@ -147,7 +150,8 @@ audit-v37: $(REPORTS)
 audit-all: build-log-all audit-imports audit-axioms audit-sorries \
            audit-warnings audit-axiom-declarations audit-true-statements \
            audit-invariants audit-collisions check-frozen gate-frozen \
-           audit-orphans audit-reachability audit-doctrine audit-scripts
+           audit-orphans audit-reachability audit-doctrine audit-proved \
+           audit-scripts
 	@echo ""
 	@echo "═══════════════════════════════════════════════════"
 	@echo " AUDIT COMPLET — $$(date +%Y-%m-%d) — $$(date +%H:%M)"

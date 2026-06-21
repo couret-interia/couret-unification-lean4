@@ -1,0 +1,126 @@
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:60:theorem unit_sq_eq_one_imp (z : ℂˣ) (h : (z : ℂ) ^ 2 = 1) :
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:67:theorem char_val_eq_one_or_neg_one
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:90:theorem quadraticProjectorC_eq_kerIndicatorC
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:117:theorem trivial_on_ker_iff
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:175:theorem sum_monoidHomChar_eq_zero (ξ : G →* ℂˣ) (hξ : ξ ≠ 1) :
+./lean/CouretUnification/Core/CharacterSubgroupSums.lean:200:theorem sum_over_ker_eq_zero
+./lean/CouretUnification/Core/G30Classification.lean:94:theorem crt_decomposition : crt_decomposition_correct = true := by native_decide
+./lean/CouretUnification/Core/G30Classification.lean:100:theorem unitValue_in_G30 : unitValue_coprime_30 = true := by decide
+./lean/CouretUnification/Core/G30Classification.lean:154:theorem dichotomy :
+./lean/CouretUnification/Core/G30Classification.lean:159:theorem count_Q : (triplets.filter isTypeQ).length = 24 := by native_decide
+./lean/CouretUnification/Core/G30Classification.lean:162:theorem count_C : (triplets.filter isTypeC).length = 32 := by native_decide
+./lean/CouretUnification/Core/G30Classification.lean:165:theorem total_56 :
+./lean/CouretUnification/Core/G30Classification.lean:173:theorem parseval_total_15 : total_energy_const = true := by native_decide
+./lean/CouretUnification/Core/G30Classification.lean:204:theorem twoFixed_count : (tripletsVals.filter fixedByAll).length = 2 := by native_decide
+./lean/CouretUnification/Core/G30Classification.lean:207:theorem twoFixed_members :
+./lean/CouretUnification/Core/G30Classification.lean:219:theorem TC_is_typeQ : isTypeQ [⟨0, by decide⟩, ⟨2, by decide⟩, ⟨7, by decide⟩] = true := by
+./lean/CouretUnification/Core/G30Classification.lean:251:theorem typeQ_iff_quadratic_fiber :
+./lean/CouretUnification/Core/G30Classification.lean:268:theorem G30Classification_machine_anchor : True := trivial
+./lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:72:theorem mem_triplets_of_isTypeQTriplet (T : List (Fin 8)) :
+./lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:79:theorem typeQ_of_isTypeQTriplet (T : List (Fin 8)) :
+./lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:89:theorem typeQ_implies_quadratic_fiber_of_mem (T : List (Fin 8))
+./lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:108:theorem typeQTriplet_implies_quadratic_fiber (T : List (Fin 8)) :
+./lean/CouretUnification/Core/G30ClassificationFromPointDefect.lean:120:theorem typeQ_implies_quadratic_fiber (T : List (Fin 8)) :
+./lean/CouretUnification/Core/PointDefectLemma.lean:37:theorem energy_secondary_eq_one
+./lean/CouretUnification/Core/PointDefectLemma.lean:83:theorem energy_dominant
+./lean/CouretUnification/Core/QuadraticResonance.lean:115:theorem crt_decomposition : crt_decomposition_correct = true := by native_decide
+./lean/CouretUnification/Core/QuadraticResonance.lean:163:theorem fourier_quadratic_dominant :
+./lean/CouretUnification/Core/QuadraticResonance.lean:168:theorem fourier_other_nontrivial_eq_64 :
+./lean/CouretUnification/Core/QuadraticResonance.lean:173:theorem fourier_trivial_eq_zero :
+./lean/CouretUnification/Core/QuadraticResonance.lean:186:theorem total_energy_eq_960 : totalEnergyNonTrivial_scaled = 960 := by native_decide
+./lean/CouretUnification/Core/QuadraticResonance.lean:194:theorem quadratic_resonance_three_fifths :
+./lean/CouretUnification/Core/QuadraticResonance.lean:210:theorem chi_quadratic_eq_legendre_mod5 :
+./lean/CouretUnification/Core/QuadraticResonance.lean:238:theorem A4_pure_quadratic :
+./lean/CouretUnification/Core/QuadraticResonance.lean:255:theorem kA4_eq_four_times_legendre :
+./lean/CouretUnification/Core/QuadraticResonance.lean:273:theorem AFourStatus_machine_verified : True := trivial
+./lean/CouretUnification/Logic/ChiralityFinite.lean:64:theorem card_E : E.card = 8 := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:67:theorem E_closed_under_mul : ∀ a ∈ E, ∀ b ∈ E, a * b ∈ E := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:73:theorem TC_subset_E : TC ⊆ E := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:76:theorem TC_auto_inverse :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:87:theorem P_preserves_E (g : ZMod 30) (hg : g ∈ E) :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:99:theorem orbA_cycle :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:104:theorem orbB_cycle :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:109:theorem orbits_partition : orbA ∪ orbB = E := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:112:theorem orbits_disjoint : orbA ∩ orbB = (∅ : Finset (ZMod 30)) := by
+./lean/CouretUnification/Logic/ChiralityFinite.lean:116:theorem card_orbA : orbA.card = 4 := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:117:theorem card_orbB : orbB.card = 4 := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:120:theorem order_of_7 : (7 : ZMod 30)^4 = 1 := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:123:theorem P7_fourth_iterate :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:127:theorem powers_of_7_eq_orbA :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:133:theorem eleven_not_power_of_7 :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:144:theorem TC_splits :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:149:theorem TC_not_in_orbA : ¬ TC ⊆ orbA := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:150:theorem TC_not_in_orbB : ¬ TC ⊆ orbB := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:155:theorem phantom_mul : (11 : ZMod 30) * 29 = 19 := by native_decide
+./lean/CouretUnification/Logic/ChiralityFinite.lean:158:theorem phantom_19_not_in_TC : (19 : ZMod 30) ∉ TC := CouretUnification.Core.phantom_not_in_TC
+./lean/CouretUnification/Logic/ChiralityFinite.lean:169:theorem phantom_jumps_orbit :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:195:theorem Omega7Fun_antisymmetric (f : ZMod 30 → ℂ) (a : ZMod 30) :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:209:theorem janus_involution_check :
+./lean/CouretUnification/Logic/ChiralityFinite.lean:218:theorem janus_pairs_cross_orbits :
+./lean/CouretUnification/Logic/ChiralityLinear.lean:83:theorem P7_mul_P7inv : P7 * P7inv = 1 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:86:theorem P7inv_mul_P7 : P7inv * P7 = 1 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:89:theorem P7_order_four : P7 * P7 * P7 * P7 = 1 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:99:theorem Omega7_eq :
+./lean/CouretUnification/Logic/ChiralityLinear.lean:112:theorem Omega7_antisymmetric : Omega7.transpose = -Omega7 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:115:theorem trace_Omega7 : Omega7.trace = 0 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:126:theorem Omega7_cubed_plus_four :
+./lean/CouretUnification/Logic/ChiralityLinear.lean:131:theorem Omega7_factored :
+./lean/CouretUnification/Logic/ChiralityLinear.lean:137:theorem trace_Omega7_squared : (Omega7 * Omega7).trace = -16 := by
+./lean/CouretUnification/Logic/ChiralityLinear.lean:164:theorem Omega7_kills_vA_plus : Omega7.mulVec vA_plus = 0 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:167:theorem Omega7_kills_vA_minus : Omega7.mulVec vA_minus = 0 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:170:theorem Omega7_kills_vB_plus : Omega7.mulVec vB_plus = 0 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:173:theorem Omega7_kills_vB_minus : Omega7.mulVec vB_minus = 0 := by native_decide
+./lean/CouretUnification/Logic/ChiralityLinear.lean:186:theorem Omega7_e0 : Omega7.mulVec e0 = ![0, 1, 0, -1, 0, 0, 0, 0] := by
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:83:lemma e4_1_prime_pow_eq_zero
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:103:lemma e4_2_prime_pow_tsum_eq_one_add
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:137:lemma e3_1_summable_norm_of_domination
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:156:lemma e3_2_summable_norm_of_nat_add_rpow_bound
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:182:theorem e4_bridge_tprod
+./lean/CouretUnification/Logic/EulerBridgeInfinite.lean:201:theorem squarefree_limit_eq_euler_product
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:43:lemma summable_domination_nonneg
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:55:private lemma tsum_prime_powers_eq_one_add_self_aux
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:88:lemma tsum_prime_powers_eq_one_add_self
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:99:lemma local_factor_squarefree_tsum
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:117:lemma shifted_rpow_majorant_nonneg {C σ : ℝ} (hC : 0 ≤ C) (n : ℕ) :
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:127:lemma summable_shifted_rpow_majorant
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:150:theorem target_bound
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:164:theorem target_bound_norm
+./lean/CouretUnification/Logic/EulerBridgeInfiniteCompat.lean:175:lemma target_bound_from_legacy_bound
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:65:theorem HasGramFactorization.toIsRigid
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:75:lemma gram_entry_eq_inner_Av
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:98:lemma semidef_of_gram_factor
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:111:lemma gram_quadratic_eq_inner_sum
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:156:lemma gram_quadratic_re_eq_norm_sq
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:174:theorem gram_semidef_of_rigid
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:187:theorem gram_semidef_of_rigid_real_part
+./lean/CouretUnification/Logic/H3/C3Weak_Gram.lean:199:theorem gram_semidef_of_isRigid
+./lean/CouretUnification/Logic/H3/CriticalLineTransferSpec.lean:76:theorem mellin_inversion_public_anchor : True := by trivial
+./lean/CouretUnification/Logic/H3/LocalFactor.lean:40:lemma local_factor_normSq (a θ : ℝ) :
+./lean/CouretUnification/Logic/H3/LocalFactor.lean:68:lemma local_factor_normSq_bounds (a θ : ℝ) (ha0 : 0 ≤ a) (_ha1 : a ≤ 1) :
+./lean/CouretUnification/Logic/H3/LocalFactor.lean:80:lemma local_factor_prime_half (p : ℕ) (hp : Nat.Prime p) (θ : ℝ) :
+./lean/CouretUnification/Logic/H3/LocalFactor.lean:107:lemma local_factor_prime_sigma (p : ℕ) (hp : Nat.Prime p) (σ θ : ℝ) (hσ : 0 ≤ σ) :
+./lean/CouretUnification/Logic/H3/MoebiusBridge.lean:73:lemma moebius_LSeriesSummable_two :
+./lean/CouretUnification/Logic/H3/MoebiusBridge.lean:80:lemma arithmetic_convolution_bridge
+./lean/CouretUnification/Logic/H3/MoebiusBridge.lean:93:theorem LSeries_mu_at_two_project_target : True := by
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:41:theorem squarefreeCountGeHalfBridge_promoted :
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:49:theorem squarefreeCount_ge_half_unconditional
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:58:theorem C04a_squarefree_half_promoted
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04aClosed.lean:69:theorem squarefreeDensityC04aClosure_proved :
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:40:theorem squarefreeAsymptoticDensityBridge_proved :
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:50:theorem squarefree_asymptotic_density_unconditional :
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:57:theorem C04b_squarefree_density_promoted :
+./lean/CouretUnification/Logic/H3/SquarefreeDensityC04bClosed.lean:70:theorem squarefreeDensityC04bClosure_proved :
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:66:lemma coprime_prime_prod_subset
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:91:lemma powerset_prod_disjoint
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:131:lemma squarefree_mul_iff_of_coprime {m n : ℕ} (h : Coprime m n) :
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:141:theorem squarefree_support_transfer
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:182:theorem squarefree_support_transfer_real
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:213:lemma isMultiplicative_norm_sq
+./lean/CouretUnification/Logic/H3/SquarefreeSupport.lean:226:lemma sum_normSq_squarefree_eq_prod
+./lean/CouretUnification/Logic/L6Bridge.lean:109:theorem Aarch_bridge :
+./lean/CouretUnification/Logic/L6Bridge.lean:118:theorem Ztot_bridge :
+./lean/CouretUnification/Logic/OpenLocks.lean:122:theorem no_rh_wall_lock_proved :
+./lean/CouretUnification/Logic/OpenLocks.lean:131:theorem L12_H3_no_strategy :
+./lean/CouretUnification/Logic/TimeBridge/B2Calibration.lean:63:lemma exp_neg_two_t_canonical : Real.exp (-2 * t_canonical) = 6/7 := by
+./lean/CouretUnification/Logic/TimeBridge/B2Calibration.lean:83:theorem B2_calibration_identity :
+./lean/CouretUnification/Logic/TimeBridge/B2Calibration.lean:91:theorem t_canonical_characterization :
