@@ -172,14 +172,18 @@
 │   ├── RAPPORT_DEMONSTRATION_v5_FINAL.md
 │   ├── Rapport_Impasses_CouretUnification.md
 │   ├── registry
+│   │   ├── CHECK_LIST_DIFFICULTES_LEAN4_v38.5.13.md
 │   │   ├── CHIRALITY_MULTI_Q_PROTOCOL.md
 │   │   ├── DOCTRINE_FINITECORE_VS_CORE_v38.5.md
 │   │   ├── DOCTRINE_L7_KRUSKAL_v38.2.md
 │   │   ├── DOCTRINE_L7_KRUSKAL_v38.3_ADDENDUM.md
+│   │   ├── ETAT_LEAN4_v38.5.13.md
+│   │   ├── INTERACTS_SORRIES_LEAN4_v38.5.13.md
 │   │   ├── NO_GO_SG_1SQRT7.md
 │   │   ├── README_RESGOLD-V38.5b.md
 │   │   ├── RESGOLD_CORRECTIONS_v38.5_NOTE.md
 │   │   ├── RESULTATS_D_FORMELS.md
+│   │   ├── ROADMAP_LEAN4_v38.5.13.md
 │   │   └── SophieGermain.md
 │   ├── ROADMAP_FINAL.md
 │   ├── THOMAS_BUILD_PROTOCOL.md
@@ -531,4 +535,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-65 directories, 467 files
+65 directories, 471 files

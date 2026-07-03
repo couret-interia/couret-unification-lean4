@@ -26,6 +26,10 @@
 ./docs/PRESENTATION_PROGRAMME.md:87:### Les autres théorèmes du socle `[D]`
 ./docs/PRESENTATION_PROGRAMME.md:173:- **La grammaire des statuts** — 8 statuts (`[D] [M] [C] [H] [P] [O] [F] [T]`) plus la
 ./docs/PRESENTATION_PROGRAMME.md:224:Registre v54.7 — 34 claims : **14 `[D]`**, 4 `[M-solide]`, 2 `[P]`, 1 `[P|H]`, 1 `[C]`,
+./docs/registry/CHECK_LIST_DIFFICULTES_LEAN4_v38.5.13.md:243:5. Ne promouvoir aucun résultat en [D] avant preuve Lean réelle.
+./docs/registry/CHECK_LIST_DIFFICULTES_LEAN4_v38.5.13.md:257:[C] → [D] si l’API analytique est construite
+./docs/registry/CHECK_LIST_DIFFICULTES_LEAN4_v38.5.13.md:311:Pas `[D]` à ce stade.
+./docs/registry/CHECK_LIST_DIFFICULTES_LEAN4_v38.5.13.md:387:[ ] Le statut du module permet-il une fermeture [D] ?
 ./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:110:C'est le pivot transmissible. Si on diluait `FiniteCore` en y mettant des choses analytiques (même `[D]`),
 ./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:121: sont parfaitement légitimes en `[D]` mais qui dépendent d'instruments analytiques généraux
 ./docs/registry/DOCTRINE_FINITECORE_VS_CORE_v38.5.md:161:**Non si** : le fichier utilise des limites, des séries infinies, des intégrales, des objets analytiques (continuité, dérivabilité), même si chaque pas est `[D]`.
@@ -37,6 +41,25 @@
 ./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:256:| L7.2 — facteur G archimédien | AnalyticHorizon/L6 + GammaFactor | `[D] partiel` |
 ./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:312:1. Fermer L7.1 strict (transport σ = ½) — `[D] partiel → [D]`
 ./docs/registry/DOCTRINE_L7_KRUSKAL_v38.2.md:313:2. Réduire les 4 sorrys de `Analytic/GammaFactor.lean` — `[O] → [D] partiel`
+./docs/registry/ETAT_LEAN4_v38.5.13.md:283:Un theorem Lean technique ne vaut pas automatiquement claim [D].
+./docs/registry/ETAT_LEAN4_v38.5.13.md:290:## Audit des candidats `[D]`
+./docs/registry/ETAT_LEAN4_v38.5.13.md:301:Marqueurs documentaires [D]/proved : 168
+./docs/registry/ETAT_LEAN4_v38.5.13.md:312:Cela ne signifie pas 1784 claims [D].
+./docs/registry/ETAT_LEAN4_v38.5.13.md:319:claim [D] = résultat nommé, relu, situé, et inscrit dans le registre
+./docs/registry/ETAT_LEAN4_v38.5.13.md:324:## Résultats formels centraux `[D]`
+./docs/registry/ETAT_LEAN4_v38.5.13.md:337:[D-formal]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:357:[D-formal]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:394:[D-computational]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:437:[D-formal local]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:456:[D]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:486:[D]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:566:C-04a : fermé [D]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:567:C-04b : fermé [D]
+./docs/registry/ETAT_LEAN4_v38.5.13.md:600:[D] dans le fini
+./docs/registry/INTERACTS_SORRIES_LEAN4_v38.5.13.md:80:RouteC peut devenir [D] localement,
+./docs/registry/INTERACTS_SORRIES_LEAN4_v38.5.13.md:163:[D] noyau fini G30
+./docs/registry/INTERACTS_SORRIES_LEAN4_v38.5.13.md:169:[D] squarefree
+./docs/registry/INTERACTS_SORRIES_LEAN4_v38.5.13.md:177:[D]/[C] interfaces archimédiennes locales
 ./docs/registry/NO_GO_SG_1SQRT7.md:161:## 5. Invariant structurel 1/√2 — confirmé [D]
 ./docs/registry/NO_GO_SG_1SQRT7.md:215:**Statut actualisé v38x : `[D]`**, via :
 ./docs/registry/NO_GO_SG_1SQRT7.md:242:| Support SG actif `{11, 23, 29}` pour `p > 5` | [D] déterministe par contraintes de pgcd |
@@ -76,6 +99,9 @@
 ./docs/registry/RESULTATS_D_FORMELS.md:645:au moins 14 résultats [D]
 ./docs/registry/RESULTATS_D_FORMELS.md:658:un socle formel d’au moins 18 résultats agrégés [D],
 ./docs/registry/RESULTATS_D_FORMELS.md:669:Le registre donne le droit de dire [D].
+./docs/registry/ROADMAP_LEAN4_v38.5.13.md:202:Dans ce second cas, le nombre de `sorry` baisse aussi, mais le statut devient `[C]`, pas `[D]`.
+./docs/registry/ROADMAP_LEAN4_v38.5.13.md:380:et non `[D]`.
+./docs/registry/ROADMAP_LEAN4_v38.5.13.md:438:Le meilleur résultat à court terme n’est pas forcément un théorème `[D]`, mais :
 ./docs/registry/SophieGermain.md:5:- `Residue/SGShiftSqrt2.lean` : `[D]`
 ./docs/registry/SophieGermain.md:18:  - distingue `[D]`, `[M]`, `[O]`
 ./docs/registry/SophieGermain.md:23:### Modules démontrés `[D]`
