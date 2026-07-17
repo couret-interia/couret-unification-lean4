@@ -142,6 +142,7 @@
 ./lean/CouretUnification/Core/SophieGermainTowerLift.lean:38:Statut : `[D]` — certifié par machine. Aucun `sorry`, aucun `axiom`, aucun `admit`.
 ./lean/CouretUnification/Core/SophieGermainTowerLift.lean:44:Le tower lift de Sophie Germain est un fait [D] dans le noyau combinatoire
 ./lean/CouretUnification/Core/SophieGermainTowerLift.lean:234:Établi, statut `[D]` :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:163:  [D-computational, finite]
 ./lean/CouretUnification/Experimental/TowerLift.lean:8:et l'exploration, mais ne constituent pas le noyau démonstratif `[D]`.
 ./lean/CouretUnification/Experimental/TowerLift.lean:20:/-- Statut doctrinal de cette ombrelle : expérimental, non démonstratif `[D]`. -/
 ./lean/CouretUnification/Frozen.lean:36:- Core/CharacterSubgroupSums            [0 sorry ✅, D-formal, abstract]

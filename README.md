@@ -18,14 +18,14 @@ dit, et ne dit rien de plus.
 
 ---
 
-## État du dépôt (v38.5.13)
+## État du dépôt (v38.5.14)
 
 | Métrique | Valeur |
 |----------|--------|
 | Toolchain | Lean 4.29.1 · Mathlib 4.29.1 |
 | Branche | `main` |
 | Compilation `Frozen` | `lake build` ✓ — **3569 jobs, 0 sorry, 0 warn** |
-| Compilation `All` | `lake build` ✓ — **3753 jobs**, 11 sorry documentés |
+| Compilation `All` | `lake build` ✓ — **3754 jobs**, 11 sorry documentés |
 | Sorries doctrinaux | **11** (documentés, dans les couches Active) |
 | Fichiers `.lean` (source) | `find lean -name '*.lean' \| wc -l` |
 | RHClaimed | `false` |

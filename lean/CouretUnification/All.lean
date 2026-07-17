@@ -393,6 +393,9 @@ import CouretUnification.Logic.H3.SquarefreeDensityHalf
 -- v38.5.12 — importe le lab C-04a et transforme le bridge public de `SquarefreeDensity.lean` en résultat prouvé.
 import CouretUnification.Logic.H3.SquarefreeDensityC04aClosed
 
+-- v38.5.14 — certifie la double admissibilité finie du triplet TC.
+import CouretUnification.Core.TripletTCDoubleAdmissibility
+
 -- TODO v38.1+ : une fois les TODO FCI levés, activer
 -- globs := #[`CouretUnification.*] dans lakefile.lean pour forcer
 -- la construction de tout fichier orphelin.

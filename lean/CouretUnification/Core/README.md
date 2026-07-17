@@ -69,6 +69,9 @@ On y trouve, organisés en quatre familles :
 - recollement harmonique du cas Couret (façades canoniques :
   `CouretDocumentaryCertificate`, `CouretPowerCertificate`,
   `CouretMinimalPackage`) ;
+- certificat fini de double admissibilité du triplet Couret (`TripletTCDoubleAdmissibility`) :
+  `T_C = {1} ∪ ({11,29})`, où `{11,29}` est le noyau non neutre doublement
+  admissible pour les filtres jumeaux et Sophie-Germain modulo 30 ;
 - bornes de cohérence quadratique et candidates
   (`TripletCandidateInterface`, `TripletDocumentaryCertificate`,
   `TripletDocumentaryPowerInterface`,

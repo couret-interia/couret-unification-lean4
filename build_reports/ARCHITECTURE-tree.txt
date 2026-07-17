@@ -310,6 +310,7 @@
 │   │   │   ├── TripletRawIntegralCriterion.lean
 │   │   │   ├── TripletRawQuadraticConsistency.lean
 │   │   │   ├── TripletSpectrum.lean
+│   │   │   ├── TripletTCDoubleAdmissibility.lean
 │   │   │   ├── TripletToFiniteSpectrum.lean
 │   │   │   ├── U30.lean
 │   │   │   └── UnitsBridge.lean
@@ -535,4 +536,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-65 directories, 471 files
+65 directories, 472 files
