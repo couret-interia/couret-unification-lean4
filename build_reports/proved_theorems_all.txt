@@ -882,6 +882,19 @@
 ./lean/CouretUnification/Core/TripletRawQuadraticConsistency.lean:145:theorem couretTripletRawQuadraticConsistency_harmonic_eq :
 ./lean/CouretUnification/Core/TripletRawQuadraticConsistency.lean:158:theorem couretTripletRawQuadraticConsistency_valid :
 ./lean/CouretUnification/Core/TripletSpectrum.lean:46:lemma couretTripletParsevalMass_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:52:theorem twinSet_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:57:theorem sophieSet_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:62:theorem intersection_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:67:theorem TC_from_double_admissibility :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:72:theorem torsion2_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:77:theorem TC_as_torsion_without_neg11 :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:85:theorem TC_not_closed_witness :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:90:theorem nonneutral_torsion_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:95:theorem eleven_survives_both :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:104:theorem twentynine_survives_both :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:113:theorem nineteen_fails_both :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:129:theorem nonneutralDoubleSurvivors_eq :
+./lean/CouretUnification/Core/TripletTCDoubleAdmissibility.lean:138:theorem TC_as_neutral_plus_survivors :
 ./lean/CouretUnification/Core/TripletToFiniteSpectrum.lean:8:private theorem I_pow_six : (Complex.I : ℂ)^6 = (-1 : ℂ) := by
 ./lean/CouretUnification/Core/TripletToFiniteSpectrum.lean:11:private theorem neg_I_pow_six : (-Complex.I : ℂ)^6 = (-1 : ℂ) := by
 ./lean/CouretUnification/Core/TripletToFiniteSpectrum.lean:14:private theorem sum_fin8 (f : Fin 8 → ℂ) :
