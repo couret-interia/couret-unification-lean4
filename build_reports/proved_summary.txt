@@ -7,7 +7,7 @@ Racine : .
 
 ## Comptages bruts
 
-- Marqueurs documentaires [D]/proved : 219
+- Marqueurs documentaires [D]/proved : 220
 - Theorem/lemma Lean globaux         : 1797
 - Imports Frozen                     : 23
 - Theorem/lemma dans Frozen          : 126

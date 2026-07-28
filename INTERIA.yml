@@ -1,0 +1,29 @@
+repository: couret-interia/couret-unification-lean4
+protocol: AGENTS/INTERIA.md
+default_response_language: fr
+english_support: optional
+lean:
+  namespace: CouretUnification
+  toolchain: leanprover/lean4:v4.29.1
+  mathlib: v4.29.1
+makefile:
+  canonical_audit_doc: AGENTS/LEAN_AUDIT.md
+  recommended_short_audit:
+    - make build-log-all
+    - make audit-sorries
+    - make audit-warnings
+    - make doctrine-check
+  release_audit:
+    - make audit-all
+    - make report
+    - make snapshot
+status_tags:
+  - L-verified
+  - D-computational, finite
+  - T-theorem
+  - S-speculative
+  - X-blocked
+language_instruction: >-
+  Please respond in French by default. Keep Lean code, paths, commands,
+  theorem names, identifiers, and error messages unchanged. Add a short
+  English abstract only when useful for international contributors.

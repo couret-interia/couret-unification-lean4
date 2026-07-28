@@ -105,6 +105,7 @@
 ./docs/registry/SophieGermain.md:5:- `Residue/SGShiftSqrt2.lean` : `[D]`
 ./docs/registry/SophieGermain.md:18:  - distingue `[D]`, `[M]`, `[O]`
 ./docs/registry/SophieGermain.md:23:### Modules démontrés `[D]`
+./docs/STATUS_TAGS.md:9:Tags principaux : `[L-verified]`, `[D-computational, finite]`, `[T-theorem]`, `[S-speculative]`, `[X-blocked]`.
 ./docs/towerlift/delta7_sg_synthese.md:20:> - `Core/SophieGermainHecke.lean` : SG-shift modulo 30 `[D]` ;
 ./docs/towerlift/delta7_sg_synthese.md:21:> - `Core/SophieGermainTowerLift.lean` : tower lift primoriel avec règle `ℓ - 2` `[D]` ;
 ./docs/towerlift/delta7_sg_synthese.md:22:> - `Residue/SGShiftSqrt2.lean` : identité cubique rationnelle `M³ = (1/2)M` `[D]`.
