@@ -1,4 +1,13 @@
 .
+├── AGENTS
+│   ├── INTERIA.md
+│   ├── LANGUAGE_POLICY.md
+│   ├── LEAN_AUDIT.md
+│   ├── MAKE_TARGETS.md
+│   ├── PR_REVIEW_CHECKLIST.md
+│   ├── README.md
+│   └── STATUS_TAGS.md
+├── AGENTS.md
 ├── Attic
 │   ├── docs
 │   │   ├── ARCHITECTURE_CIBLE_v36.md
@@ -140,6 +149,7 @@
 │   ├── warnings_non_sorry.txt
 │   └── warnings_unique.txt
 ├── CITATION.cff
+├── CLAUDE.md
 ├── docbuild
 │   ├── lakefile.toml
 │   ├── lake-manifest.json
@@ -159,7 +169,10 @@
 │   ├── FICHE_NIVEAU_5_C2Restricted_H1.md
 │   ├── H3_boundary_map.md
 │   ├── IMPORT_HYGIENE.md
+│   ├── INTERIA_PROTOCOL.md
 │   ├── L6_ratio_estimate_note.md
+│   ├── LANGUAGE_POLICY.md
+│   ├── LEAN_AUDIT.md
 │   ├── LTB0_README.md
 │   ├── notes-techniques
 │   │   ├── Petit_vocabulaire_lean.md
@@ -186,6 +199,7 @@
 │   │   ├── ROADMAP_LEAN4_v38.5.13.md
 │   │   └── SophieGermain.md
 │   ├── ROADMAP_FINAL.md
+│   ├── STATUS_TAGS.md
 │   ├── THOMAS_BUILD_PROTOCOL.md
 │   ├── towerlift
 │   │   ├── delta7_sg_results.json
@@ -201,6 +215,8 @@
 │   │   ├── toymodel_scan_complete.json
 │   │   └── v19_dimensional_test.json
 │   └── TOWERLIFT.md
+├── GEMINI.md
+├── INTERIA.yml
 ├── lakefile.lean
 ├── lake-manifest.json
 ├── lean
@@ -483,6 +499,7 @@
 │   ├── guinand_weil_channelwise.py
 │   └── proof_chain.py
 ├── README.md
+├── README_PLACEMENT.md
 ├── requirements.txt
 ├── scripts
 │   ├── audit_doctrine.sh
@@ -536,4 +553,4 @@
 └── sprint
     └── 14_Route_D_contradiction.tex
 
-65 directories, 472 files
+66 directories, 488 files

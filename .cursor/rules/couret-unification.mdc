@@ -1,0 +1,23 @@
+---
+description: Couret-Unification Lean 4 rules
+globs:
+  - "**/*.lean"
+  - "**/*.md"
+---
+
+Répondre en français par défaut.
+
+Lire `AGENTS/INTERIA.md` et `AGENTS/LEAN_AUDIT.md`.
+
+Ne pas ajouter `sorry`, `axiom` ou `admit` dans les fichiers Lean de production.
+
+Utiliser les cibles `make` du dépôt :
+
+```bash
+make build-log-all
+make audit-sorries
+make audit-warnings
+make doctrine-check
+```
+
+Ne pas transformer un résultat fini modulo 30 en revendication globale.

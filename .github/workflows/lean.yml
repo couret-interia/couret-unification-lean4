@@ -1,0 +1,81 @@
+name: Lean + InterIA audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      full_audit:
+        description: "Lancer make audit-all et make report"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-interia-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lean-and-audit:
+    name: Lean build + Makefile audits
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install shell utilities
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree
+
+      - name: Setup Lean toolchain and Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: auto
+
+      - name: Show pinned toolchain
+        run: |
+          echo "lean-toolchain: $(cat lean-toolchain)"
+          lake --version
+          lean --version
+
+      - name: Build once and run internal Makefile audits
+        run: |
+          make audit-imports \
+            audit-sorries \
+            audit-warnings \
+            audit-axiom-declarations \
+            audit-true-statements \
+            audit-invariants
+
+      - name: Doctrine check
+        run: make doctrine-check
+
+      - name: Optional full audit
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.full_audit == 'true' }}
+        run: |
+          make audit-all
+          make report
+          make snapshot
+
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_reports
+          path: build_reports/
+          if-no-files-found: warn
